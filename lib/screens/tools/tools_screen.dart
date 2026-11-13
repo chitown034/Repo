@@ -77,8 +77,8 @@ class ToolsScreen extends StatelessWidget {
             AppleRow(
               icon: CupertinoIcons.person_badge_plus_fill,
               iconColor: Hue.blue,
-              title: 'Invite Friends',
-              subtitle: 'Text the free VA seminar to people you know',
+              title: 'Pay It Forward',
+              subtitle: 'Introduce people you know to Steven with a 3-way text',
               onTap: () => pushScreen(context, const ReferScreen(), title: 'Tools'),
             ),
           ],

@@ -19,10 +19,20 @@ void main() {
 
     test('the Pay It Forward tones introduce Steven to the friend', () {
       final text = fillReferral(referralTones.first.template, 'Maria');
-      expect(text, startsWith("Hey Maria, hope you're good. Adding Steven here"));
-      expect(text, endsWith('Steven, this is Maria. Take care of them.'));
+      expect(text, startsWith("Hey Maria, hope you're doing well."));
+      expect(text, contains("I'm adding Steven here."));
+      expect(text, endsWith('Steven, this is Maria. Take good care of them.'));
       for (final t in referralTones.where((t) => t.id != 'classic')) {
         expect(t.template, contains('Steven'), reason: t.id);
+      }
+    });
+
+    test('no em dashes, and short enough for one text on older phones', () {
+      for (final t in referralTones) {
+        expect(t.template, isNot(contains('\u2014')), reason: t.id);
+      }
+      for (final t in referralTones.where((t) => t.id != 'classic')) {
+        expect(fillReferral(t.template, 'Michael').length, lessThanOrEqualTo(300), reason: t.id);
       }
     });
 

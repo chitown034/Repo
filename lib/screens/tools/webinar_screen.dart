@@ -123,7 +123,7 @@ class WebinarScreen extends StatelessWidget {
               AppleRow(
                 icon: CupertinoIcons.person_badge_plus_fill,
                 iconColor: Hue.blue,
-                title: 'Invite Friends to the Seminar',
+                title: 'Pay It Forward',
                 onTap: () => pushScreen(context, const ReferScreen(), title: 'Webinar'),
               ),
             ],

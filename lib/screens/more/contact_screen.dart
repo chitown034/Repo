@@ -133,7 +133,7 @@ class ContactScreen extends StatelessWidget {
                 AppleRow(
                   icon: CupertinoIcons.person_badge_plus_fill,
                   iconColor: Hue.blue,
-                  title: 'Invite Friends',
+                  title: 'Pay It Forward',
                   onTap: () => pushScreen(context, const ReferScreen(), title: 'Contact'),
                 ),
                 AppleRow(

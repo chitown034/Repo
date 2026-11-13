@@ -352,8 +352,8 @@ class _ToolShelf extends StatelessWidget {
       (
         CupertinoIcons.person_badge_plus_fill,
         Hue.blue,
-        'Invite Friends',
-        'Share the seminar',
+        'Pay It Forward',
+        'Introduce a friend',
         () => pushScreen(context, const ReferScreen(), title: 'Home'),
       ),
     ];

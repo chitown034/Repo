@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 /// Pay It Forward referral logic: pre-drafted 3-way intro texts (the friend,
-/// the sender, and Steven) shared with chitown034.github.io/pay-it-forward.
+/// the sender, and Steven). The wording matches chitown034.github.io/pay-it-forward.
 
 const referralToken = '[First Name]';
 
@@ -31,32 +31,25 @@ const referralTones = <ReferralTone>[
     'default',
     'Default',
     'Warm, a little story',
-    "Hey $referralToken, hope you're good. Adding Steven here — he ran a VA homebuying seminar I went to today "
-        "and I thought of you the whole time. Navy vet, does VA home loans, and he'll walk you through your "
-        'benefits for free.\n\nSteven, this is $referralToken. Take care of them.',
+    "Hey $referralToken, hope you're doing well. I went to a VA home buying seminar today and thought of you right away. I'm adding Steven here. He's a Navy vet who helps veterans use their VA home loan benefit, and he'll walk you through yours for free.\n\nSteven, this is $referralToken. Take good care of them.",
   ),
   ReferralTone(
     'short',
     'Short',
     'Quick and to the point',
-    'Hey $referralToken, adding Steven — Navy vet who does VA home loans. Went to his seminar today and thought '
-        "of you. He'll walk you through your benefits for free.\n\nSteven, meet $referralToken.",
+    "Hey $referralToken, I just left a VA home buying seminar and thought of you. I'm adding Steven here. He's a Navy vet who does VA home loans, and he'll go over your benefits with you for free.\n\nSteven, meet $referralToken.",
   ),
   ReferralTone(
     'family',
     'Family',
     'For relatives and close friends',
-    'Hey $referralToken, love you. Adding Steven here — I went to his VA homebuying seminar today and kept '
-        "thinking about you. He's a Navy vet, does VA loans, and will go over your benefits for free. No "
-        "pressure, just talk to him.\n\nSteven, this is $referralToken. They're family, take good care of them.",
+    "Hey $referralToken, love you. I went to a VA home buying seminar today and kept thinking about you. I'm adding Steven here. He's a Navy vet who does VA loans, and he'll go over your benefits for free. No pressure, just talk with him.\n\nSteven, this is $referralToken. They're family, so take good care of them.",
   ),
   ReferralTone(
     'direct',
     'Direct',
     'Straight to it',
-    '$referralToken, you should be using your VA home loan benefit. Adding Steven — Navy vet, VA loan '
-        "specialist, ran the seminar I went to today. He'll walk you through it for free.\n\n"
-        'Steven, this is $referralToken. Take care of them.',
+    "$referralToken, you should be using your VA home loan benefit. I'm adding Steven here. He's a Navy vet and VA loan specialist who ran the seminar I went to today, and he'll walk you through it for free.\n\nSteven, this is $referralToken. Take care of them.",
   ),
   ReferralTone('classic', 'Seminar Invite', 'The original invite to the free seminar', _classic),
 ];

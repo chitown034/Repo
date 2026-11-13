@@ -9,7 +9,7 @@ import '../../app/routes.dart';
 import '../../logic/referral.dart';
 import '../../ui/apple.dart';
 
-/// "Invite Friends" (Pay It Forward): pick people from the phone's contacts,
+/// Pay It Forward: pick people from the phone's contacts,
 /// choose a pre-drafted intro, and send each one a 3-way text with Steven.
 class ReferScreen extends StatefulWidget {
   const ReferScreen({super.key});
@@ -164,7 +164,7 @@ class _ReferScreenState extends State<ReferScreen> {
     final count = selected.length;
     final previewName = selected.isNotEmpty && selected.first.firstName.isNotEmpty ? selected.first.firstName : 'Alex';
     return LargeTitleScaffold(
-      title: 'Invite Friends',
+      title: 'Pay It Forward',
       bottomBar: count == 0
           ? null
           : DecoratedBox(

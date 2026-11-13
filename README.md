@@ -19,9 +19,9 @@ Shared components live in `lib/ui/apple.dart`.
 | **Benefits** | Native Benefits Finder: 2,345 federal/state/private benefits, filters, saved list, 52 state guides, VA phone numbers |
 | **Resources** | All ~70 website guides (benefits, careers, interview prep, education, relocation, county resources) with search across 829 resources; includes Real Estate Careers (LPT) |
 | **Tools** | VA loan payment, funding fee, BAH buying power, and combined VA rating calculators (same math as the website); Career Command Center; webinar registration; request forms |
-| **Contact** | Call, email, message form, social links, About us, Board, Testimonials, and *Donate, invite friends & settings* |
+| **Contact** | Call, email, message form, social links, About us, Board, Testimonials, and *Donate, Pay It Forward & settings* |
 
-**Invite Friends** (the referral feature from v1, now with the Pay It Forward workflow): pick people from the
+**Pay It Forward** (the referral feature from v1, renamed from Invite Friends): pick people from the
 phone's contacts with multi-select, choose a pre-drafted intro (Default, Short, Family, Direct, or the original
 seminar invite), then tap **Send**. Messages opens with a 3-way text for the first person (the friend, the sender,
 and Steven at 619-368-7141); each time the user comes back to the app, the next person's text opens, until everyone

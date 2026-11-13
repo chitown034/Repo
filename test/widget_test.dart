@@ -46,7 +46,7 @@ void main() {
     await tester.tap(find.text('More & Settings'));
     await tester.pumpAndSettle();
     expect(find.text('GET INVOLVED'), findsOneWidget);
-    expect(find.text('Invite Friends to the VA Seminar', skipOffstage: false), findsOneWidget);
+    expect(find.text('Pay It Forward', skipOffstage: false), findsWidgets);
   });
 
   testWidgets('calculators show the same result as the website', (tester) async {

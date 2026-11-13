@@ -27,7 +27,7 @@ class Org {
   static const homelessHotlineDisplay = '877-424-3838';
   static const homelessHotlineTel = 'tel:18774243838';
 
-  // Referral ("Invite friends to the VA seminar") — kept from the original app.
+  // Pay It Forward referral: every text includes this number, as in the original app.
   static const referralCcNumber = '619-368-7141';
 
   static const disclaimer =

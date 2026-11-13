@@ -47,7 +47,7 @@ class MoreScreen extends StatelessWidget {
               AppleRow(
                 icon: CupertinoIcons.person_badge_plus_fill,
                 iconColor: Hue.blue,
-                title: 'Invite Friends to the VA Seminar',
+                title: 'Pay It Forward',
                 onTap: () => pushScreen(context, const ReferScreen(), title: 'More'),
               ),
               AppleRow(
@@ -128,7 +128,7 @@ class MoreScreen extends StatelessWidget {
             header: 'Legal',
             footer:
                 'Saved items, your state, and Career Command Center data stay on this device. Contacts are only read '
-                'when you invite friends and are never uploaded.',
+                'when you use Pay It Forward and are never uploaded.',
             children: [
               nav(CupertinoIcons.doc_text_fill, Hue.gray, 'Terms & Conditions', 'app://terms-and-conditions'),
               const AppleRow(
