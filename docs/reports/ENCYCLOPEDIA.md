@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-11-12 by `bin/brain encyclopedia` from `brain/index.json` — 443 pages, 586 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-11-13 by `bin/brain encyclopedia` from `brain/index.json` — 443 pages, 586 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [#](#other) · [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [Z](#z)
 
@@ -883,8 +883,8 @@ Vanessa · [ok] read recordings, summaries · connected — no recordings yet
 See also: `integrations/APIS.md`
 
 ### Fieldy meetings — digest (written daily by the "Fieldy → brain" task)
-Last checked: 2026-11-11  
-`memory/fieldy-meetings.md` · Memory · newest date stamp 2026-11-11  
+Last checked: 2026-11-12  
+`memory/fieldy-meetings.md` · Memory · newest date stamp 2026-11-12  
 Sections: 2026-10-31  
 See also: `routines/fub-removal-2026-09-24.md`, `wiki/mortgage-programs/loan-task-agents.md`, `wiki/mortgage-programs/va-eligibility.md`
 
