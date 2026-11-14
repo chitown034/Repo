@@ -6,6 +6,7 @@ import '../../app/routes.dart';
 import '../../data/site_content.dart';
 import '../../services/links.dart';
 import '../../ui/apple.dart';
+import '../../widgets/block_list.dart';
 import '../../widgets/common.dart';
 import '../forms/site_form_screen.dart';
 import 'more_screen.dart';
@@ -19,7 +20,9 @@ class ContactScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fields = SiteContent.instance['contact-us']?.form?.fields ?? const [];
+    final page = SiteContent.instance['contact-us'];
+    final fields = page?.form?.fields ?? const [];
+    final faqs = page?.blocks.whereType<FaqBlock>().toList() ?? const <FaqBlock>[];
     void message() => pushScreen(
       context,
       SiteFormScreen(title: 'New Message', fields: fields, webPath: 'contact-us'),
@@ -77,6 +80,7 @@ class ContactScreen extends StatelessWidget {
             children: [
               _InfoRow(label: 'phone', value: Org.phoneDisplay, onTap: () => openLink(context, Org.phoneTel)),
               _InfoRow(label: 'email', value: Org.email, onTap: () => openLink(context, 'mailto:${Org.email}')),
+              const _InfoRow(label: 'hours', value: Org.hours),
             ],
           ),
         ),
@@ -146,6 +150,12 @@ class ContactScreen extends StatelessWidget {
             ),
           ),
         ],
+        if (page != null && faqs.isNotEmpty) ...[
+          const SliverToBoxAdapter(child: SectionTitle('Questions')),
+          SliverToBoxAdapter(
+            child: BlockList(page: page, blocks: faqs),
+          ),
+        ],
         const SliverToBoxAdapter(child: CrisisCard(compact: true)),
         const SliverToBoxAdapter(child: OrgFooter()),
       ],
@@ -155,10 +165,10 @@ class ContactScreen extends StatelessWidget {
 
 /// Contacts-app style "label / value" row.
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value, required this.onTap});
+  const _InfoRow({required this.label, required this.value, this.onTap});
   final String label;
   final String value;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => Material(
@@ -172,7 +182,7 @@ class _InfoRow extends StatelessWidget {
           children: [
             Text(label, style: context.t.bodySmall?.copyWith(color: context.c.label)),
             const SizedBox(height: 2),
-            Text(value, style: context.t.bodyLarge?.copyWith(color: context.c.tint)),
+            Text(value, style: context.t.bodyLarge?.copyWith(color: onTap == null ? context.c.label : context.c.tint)),
           ],
         ),
       ),

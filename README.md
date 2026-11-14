@@ -63,9 +63,16 @@ keyAlias=upload
 keyPassword=...
 ```
 
+## Publishing
+
+Step-by-step App Store and Google Play instructions are in [`docs/PUBLISHING.md`](docs/PUBLISHING.md).
+Store screenshots, the Play icon and feature graphic, and ready-to-paste listing text are in [`store/`](store).
+
 ## Updating content
 
 Website content lives in `assets/content/site.json` (pages) and `assets/content/benefits.json`
-(Benefits Finder). Both were generated from the live website; the Career Command Center tool is
+(Benefits Finder). Both were generated from the live website. To refresh the pages, run
+`tool/content/refresh.sh` (needs `pip install beautifulsoup4`); it reapplies the app's edits
+(no street address, no "Temecula" as the organization's location); the Career Command Center tool is
 `assets/tools/career_command_center.html`. Icons and the splash screen are generated from
 `assets/branding/` with `dart run flutter_launcher_icons` and `dart run flutter_native_splash:create`.

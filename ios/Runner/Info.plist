@@ -25,7 +25,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>active_duty</string>
+		<string>Hometown Hero</string>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -34,6 +34,8 @@
 		<string>????</string>
 		<key>CFBundleVersion</key>
 		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<key>ITSAppUsesNonExemptEncryption</key>
+		<false/>
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>UIApplicationSceneManifest</key>

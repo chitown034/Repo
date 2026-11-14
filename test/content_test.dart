@@ -63,13 +63,20 @@ void main() {
   });
 
   test('street address is not included anywhere in the app', () {
-    for (final f in [
-      File('assets/content/site.json'),
-      ...Directory('lib').listSync(recursive: true).whereType<File>(),
-    ]) {
-      final text = f.readAsStringSync();
-      expect(text, isNot(contains('Crooked Stick')), reason: f.path);
-      expect(text, isNot(contains('92591')), reason: f.path);
+    // Everything that ships in the app or its store listing: code, bundled content and tools,
+    // iOS and Android settings, and the README.
+    final roots = ['lib', 'assets/content', 'assets/tools', 'ios/Runner', 'android/app/src/main'];
+    final files = [
+      for (final r in roots) ...Directory(r).listSync(recursive: true).whereType<File>(),
+      File('README.md'),
+      File('pubspec.yaml'),
+    ].where((f) => RegExp(r'\.(dart|json|html|plist|xml|kt|swift|md|yaml|strings)$').hasMatch(f.path));
+    expect(files.length, greaterThan(50));
+    for (final f in files) {
+      final text = f.readAsStringSync().toLowerCase();
+      for (final bit in ['crooked stick', '41150', '92591']) {
+        expect(text, isNot(contains(bit)), reason: '${f.path} contains "$bit"');
+      }
     }
   });
 

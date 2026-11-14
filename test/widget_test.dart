@@ -1,10 +1,10 @@
 import 'dart:io';
 
+import 'package:active_duty/app/org.dart';
 import 'package:active_duty/app/theme.dart';
 import 'package:active_duty/data/site_content.dart';
 import 'package:active_duty/main.dart';
 import 'package:active_duty/screens/content_page_screen.dart';
-import 'package:active_duty/screens/more/contact_screen.dart';
 import 'package:active_duty/screens/tools/calculators_screen.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:cupertino_ui/cupertino_ui.dart';
@@ -41,8 +41,11 @@ void main() {
     await tester.tap(find.text('Contact'));
     await tester.pumpAndSettle();
     expect(find.text('Send Us a Message'), findsOneWidget);
-    await tester.drag(find.byType(ContactScreen), const Offset(0, -3000));
+    // The website's contact FAQs and the office hours appear on this tab too.
+    expect(find.text(Org.hours), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('More & Settings'), 400, scrollable: find.byType(Scrollable).last);
     await tester.pumpAndSettle();
+    expect(find.text('What are your hours?', skipOffstage: false), findsOneWidget);
     await tester.tap(find.text('More & Settings'));
     await tester.pumpAndSettle();
     expect(find.text('GET INVOLVED'), findsOneWidget);

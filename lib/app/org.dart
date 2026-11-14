@@ -9,11 +9,14 @@ class Org {
   static const ein = '84-3348125';
   static const email = 'veteransandhometownhero@gmail.com';
   static const phoneDisplay = '(951) 267-0016';
+  static const hours = 'Monday to Friday, 9 AM to 5 PM Pacific';
   static const phoneTel = 'tel:9512670016';
   static const website = 'https://www.veteransresourcenetwork.org';
 
   static const donateUrl = 'https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=AFAKYM9EPMML4&source=url';
   static const candidUrl = 'https://www.guidestar.org/profile/84-3348125';
+  static const privacyUrl = 'https://chitown034.github.io/pay-it-forward/privacy.html';
+  static const termsUrl = 'https://www.veteransresourcenetwork.org/terms-and-conditions';
   static const facebookUrl = 'https://www.facebook.com/advethometownherohomeownersclub';
   static const instagramUrl = 'https://www.instagram.com/active_duty_heroes/';
   static const youtubeUrl = 'https://www.youtube.com/channel/UC7HCgbNzImAG2e4RLAAoRPA?view_as=subscriber';

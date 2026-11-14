@@ -71,6 +71,8 @@ class MoreScreen extends StatelessWidget {
               nav(CupertinoIcons.person_3_fill, Hue.teal, 'Board Members', 'app://board-members'),
               nav(CupertinoIcons.quote_bubble_fill, Hue.orange, 'Testimonials', 'app://testimonials'),
               nav(CupertinoIcons.checkmark_seal_fill, Hue.green, 'Verify Our 501(c)(3)', Org.candidUrl),
+              nav(CupertinoIcons.lock_shield_fill, Hue.gray, 'Privacy Policy', Org.privacyUrl),
+              nav(CupertinoIcons.doc_text_fill, Hue.gray, 'Terms of Use', Org.termsUrl),
             ],
           ),
         ),
