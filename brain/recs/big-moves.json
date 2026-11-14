@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-13T15:42:38Z",
- "date": "2026-11-13",
+ "generated": "2026-11-14T14:08:13Z",
+ "date": "2026-11-14",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -451,7 +451,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-11-13",
+     "why": "bench 30/31 on 2026-11-14",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -590,7 +590,7 @@
      "category": "ops",
      "topic": "",
      "title": "Repair Mac task brain-weekly-verify",
-     "why": "runnerStatus (2026-11-13) shows brain-weekly-verify last run refused.",
+     "why": "runnerStatus (2026-11-14) shows brain-weekly-verify last run refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -609,11 +609,11 @@
      "rank": 3
     },
     {
-     "id": "bm_b0b3c70b34",
+     "id": "bm_a1001f81be",
      "category": "ops",
      "topic": "",
-     "title": "Repair Mac task calendar-daily-sync",
-     "why": "runnerStatus (2026-11-13) shows calendar-daily-sync last run refused.",
+     "title": "Repair Mac task fabric-deck-sync",
+     "why": "runnerStatus (2026-11-14) shows fabric-deck-sync last run error.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -622,7 +622,7 @@
      "plan": [
       "Read the task's log from the next connect-all REPORT",
       "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run calendar-daily-sync`"
+      "Steven pastes `runnerctl run fabric-deck-sync`"
      ],
      "source": "deck runnerStatus",
      "coa": "risk",
@@ -742,7 +742,7 @@
   },
   {
    "q": "What should I do about: Fix the 1 gold question(s) the brain gets wrong?",
-   "a": "bench 30/31 on 2026-11-13.",
+   "a": "bench 30/31 on 2026-11-14.",
    "action": "bin/brain loop \u2192 the failing questions",
    "coa": "improve",
    "ref": "bm_d72970e1e7"
@@ -787,7 +787,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-11-13: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-14: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"
