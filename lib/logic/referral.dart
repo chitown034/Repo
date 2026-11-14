@@ -43,7 +43,7 @@ const referralTones = <ReferralTone>[
     'family',
     'Family',
     'For relatives and close friends',
-    "Hey $referralToken, love you. I went to a VA home buying seminar today and kept thinking about you. I'm adding Steven here. He's a Navy vet who does VA loans, and he'll go over your benefits for free. No pressure, just talk with him.\n\nSteven, this is $referralToken. They're family, so take good care of them.",
+    "Hey $referralToken, I went to a VA home buying seminar today and you were the first person I thought of. I'm adding Steven here. He's a Navy vet who does VA loans, and he'll go over your benefits for free. No pressure, just hear him out.\n\nSteven, this is $referralToken. They're family, so take good care of them.",
   ),
   ReferralTone(
     'direct',

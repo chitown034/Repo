@@ -3,7 +3,7 @@ import 'package:active_duty/logic/referral.dart';
 import 'package:active_duty/main.dart';
 import 'package:active_duty/screens/more/refer_screen.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart' show AppLifecycleState;
+import 'package:flutter/widgets.dart' show AppLifecycleState, Scrollable;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -142,5 +142,41 @@ void main() {
     expect(find.text('All 2 sent. Thank you.'), findsOneWidget);
     expect(find.text('Done'), findsOneWidget);
     expect(opened, ['Maria', 'James']);
+  });
+
+  testWidgets('Pay It Forward opens the phone contact directory as soon as the screen opens', (tester) async {
+    AppTheme.useGoogleFonts = false;
+    SharedPreferences.setMockInitialValues({});
+    var asked = 0;
+    await tester.pumpWidget(
+      HeroApp(
+        home: ReferScreen(
+          loadContacts: () async {
+            asked++;
+            return [Invitee('James Carter', '7025550188'), Invitee('Maria Lopez', '7025550123')];
+          },
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+    expect(asked, 1, reason: 'contacts are requested without tapping anything');
+    expect(find.text('Choose from Contacts'), findsNothing);
+    await tester.scrollUntilVisible(find.text('Maria Lopez'), 300, scrollable: find.byType(Scrollable).first);
+    await tester.tap(find.text('Maria Lopez'));
+    await tester.pump();
+    expect(find.text('Send to 1 Friend'), findsOneWidget);
+    expect(find.textContaining('Hey Maria,'), findsOneWidget);
+  });
+
+  testWidgets('Pay It Forward offers Settings when contacts access is refused', (tester) async {
+    AppTheme.useGoogleFonts = false;
+    SharedPreferences.setMockInitialValues({});
+    await tester.pumpWidget(HeroApp(home: ReferScreen(loadContacts: () async => null)));
+    await tester.pump();
+    await tester.pump();
+    await tester.scrollUntilVisible(find.text('Open Settings'), 300, scrollable: find.byType(Scrollable).first);
+    expect(find.text('Choose from Contacts'), findsOneWidget);
+    expect(find.text('Add Phone Number'), findsOneWidget);
   });
 }

@@ -11,8 +11,33 @@ import '../../ui/apple.dart';
 
 /// Pay It Forward: pick people from the phone's contacts,
 /// choose a pre-drafted intro, and send each one a 3-way text with Steven.
+/// Reads the phone's contact directory (asking for access first). Null means access was refused.
+Future<List<Invitee>?> readPhoneContacts() async {
+  final status = await FlutterContacts.permissions.request(PermissionType.read);
+  if (status != PermissionStatus.granted && status != PermissionStatus.limited) return null;
+  final list = await FlutterContacts.getAll(properties: {ContactProperty.name, ContactProperty.phone});
+  final steven = phoneKey(Org.referralCcNumber);
+  final out = <Invitee>[];
+  for (final c in list) {
+    if (c.phones.isEmpty) continue;
+    // Prefer a mobile number: the intro is a text message.
+    final phone = c.phones.firstWhere(
+      (p) => p.label.label == PhoneLabel.mobile || p.label.label == PhoneLabel.iPhone,
+      orElse: () => c.phones.first,
+    );
+    if (phoneKey(phone.number) == steven) continue;
+    final first = (c.name?.first ?? '').trim();
+    out.add(Invitee(c.displayName ?? 'No Name', phone.number, firstName: first.isEmpty ? null : first));
+  }
+  out.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+  return out;
+}
+
 class ReferScreen extends StatefulWidget {
-  const ReferScreen({super.key});
+  const ReferScreen({super.key, this.loadContacts = readPhoneContacts});
+
+  /// Where the contact directory comes from; replaceable in tests.
+  final Future<List<Invitee>?> Function() loadContacts;
 
   @override
   State<ReferScreen> createState() => _ReferScreenState();
@@ -33,43 +58,30 @@ class _ReferScreenState extends State<ReferScreen> {
   List<Invitee> get _all => [..._manual, ...?_contacts];
   List<Invitee> get _selected => _all.where((i) => i.selected).toList();
 
+  @override
+  void initState() {
+    super.initState();
+    // Same as the original app: ask for contacts as soon as the screen opens and show the phone's directory.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _loadContacts();
+    });
+  }
+
   Future<void> _loadContacts() async {
+    if (_loading) return;
     setState(() => _loading = true);
+    List<Invitee>? list;
     try {
-      final status = await FlutterContacts.permissions.request(PermissionType.read);
-      if (status != PermissionStatus.granted && status != PermissionStatus.limited) {
-        setState(() {
-          _denied = true;
-          _loading = false;
-        });
-        return;
-      }
-      final list = await FlutterContacts.getAll(properties: {ContactProperty.name, ContactProperty.phone});
-      final steven = phoneKey(Org.referralCcNumber);
-      final out = <Invitee>[];
-      for (final c in list) {
-        if (c.phones.isEmpty) continue;
-        // Prefer a mobile number: the intro is a text message.
-        final phone = c.phones.firstWhere(
-          (p) => p.label.label == PhoneLabel.mobile || p.label.label == PhoneLabel.iPhone,
-          orElse: () => c.phones.first,
-        );
-        if (phoneKey(phone.number) == steven) continue;
-        final first = (c.name?.first ?? '').trim();
-        out.add(Invitee(c.displayName ?? 'No Name', phone.number, firstName: first.isEmpty ? null : first));
-      }
-      out.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
-      setState(() {
-        _contacts = out;
-        _denied = false;
-        _loading = false;
-      });
+      list = await widget.loadContacts();
     } catch (_) {
-      setState(() {
-        _denied = true;
-        _loading = false;
-      });
+      list = null;
     }
+    if (!mounted) return;
+    setState(() {
+      _contacts = list;
+      _denied = list == null;
+      _loading = false;
+    });
   }
 
   Future<void> _addManual() async {
@@ -242,7 +254,7 @@ class _ReferScreenState extends State<ReferScreen> {
                   icon: CupertinoIcons.person_crop_circle_fill,
                   iconColor: Hue.blue,
                   title: 'Choose from Contacts',
-                  subtitle: 'Opens your phone’s contact list',
+                  subtitle: _loading ? 'Opening your contacts' : 'Opens your phone’s contact list',
                   trailing: _loading ? const CupertinoActivityIndicator() : null,
                   onTap: _loading ? null : _loadContacts,
                 ),

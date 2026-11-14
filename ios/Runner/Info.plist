@@ -3,7 +3,7 @@
 <plist version="1.0">
 	<dict>
 		<key>NSContactsUsageDescription</key>
-		<string>Choose friends to text an invite to the free VA Home Buying Seminar. Contacts are never uploaded.</string>
+		<string>Pick friends from your contacts to introduce to Steven by text with Pay It Forward. Your contacts stay on your phone and are never uploaded.</string>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
 			<string>https</string>
