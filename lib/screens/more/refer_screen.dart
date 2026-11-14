@@ -2,15 +2,13 @@ import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_contacts/flutter_contacts.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/org.dart';
 import '../../app/routes.dart';
 import '../../logic/referral.dart';
+import '../../services/message_composer.dart';
 import '../../ui/apple.dart';
 
-/// Pay It Forward: pick people from the phone's contacts,
-/// choose a pre-drafted intro, and send each one a 3-way text with Steven.
 /// Reads the phone's contact directory (asking for access first). Null means access was refused.
 Future<List<Invitee>?> readPhoneContacts() async {
   final status = await FlutterContacts.permissions.request(PermissionType.read);
@@ -33,11 +31,22 @@ Future<List<Invitee>?> readPhoneContacts() async {
   return out;
 }
 
+/// Opens one person's 3-way text (the friend and Steven) with the message filled in.
+typedef ComposeText = Future<ComposeResult> Function(Invitee person, String body);
+
+Future<ComposeResult> composeReferral(Invitee p, String body) =>
+    MessageComposer.compose([p.phone, Org.referralCcNumber], body);
+
+/// Pay It Forward, the referral feature from the original app: the phone's contacts open
+/// right away, the user ticks friends, and each one gets a 3-way text with the user and Steven.
 class ReferScreen extends StatefulWidget {
-  const ReferScreen({super.key, this.loadContacts = readPhoneContacts});
+  const ReferScreen({super.key, this.loadContacts = readPhoneContacts, this.compose = composeReferral});
 
   /// Where the contact directory comes from; replaceable in tests.
   final Future<List<Invitee>?> Function() loadContacts;
+
+  /// Opens one text; replaceable in tests.
+  final ComposeText compose;
 
   @override
   State<ReferScreen> createState() => _ReferScreenState();
@@ -139,11 +148,16 @@ class _ReferScreenState extends State<ReferScreen> {
   Future<void> _editMessage() async {
     final text = await Navigator.of(context).push<String>(
       appleRoute(
-        _EditMessageScreen(initial: _template, original: _tone.template),
+        _EditMessageScreen(initial: _template, original: _tone.template, previewName: _previewName),
         title: 'Back',
       ),
     );
     if (text != null) setState(() => _custom = text.trim().isEmpty || text == _tone.template ? null : text);
+  }
+
+  String get _previewName {
+    final s = _selected;
+    return s.isNotEmpty && s.first.firstName.isNotEmpty ? s.first.firstName : 'Alex';
   }
 
   Future<void> _startSending() async {
@@ -153,7 +167,7 @@ class _ReferScreenState extends State<ReferScreen> {
     }
     await pushScreen(
       context,
-      SendRunScreen(people: people, template: _template),
+      SendRunScreen(people: people, template: _template, compose: widget.compose),
       title: 'Back',
     );
     if (!mounted) return;
@@ -172,11 +186,20 @@ class _ReferScreenState extends State<ReferScreen> {
       for (final i in _all)
         if (q.isEmpty || i.name.toLowerCase().contains(q) || i.phone.contains(q)) i,
     ];
-    final selected = _selected;
-    final count = selected.length;
-    final previewName = selected.isNotEmpty && selected.first.firstName.isNotEmpty ? selected.first.firstName : 'Alex';
+    final count = _selected.length;
     return LargeTitleScaffold(
       title: 'Pay It Forward',
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          BarButton(icon: CupertinoIcons.plus, tooltip: 'Add Phone Number', onPressed: _addManual),
+          BarButton(
+            icon: CupertinoIcons.share,
+            tooltip: 'Share Another Way',
+            onPressed: () => SharePlus.instance.share(ShareParams(text: referralMessage(''))),
+          ),
+        ],
+      ),
       bottomBar: count == 0
           ? null
           : DecoratedBox(
@@ -199,36 +222,17 @@ class _ReferScreenState extends State<ReferScreen> {
       slivers: [
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter + 4, 16),
+            padding: const EdgeInsets.fromLTRB(kGutter + 4, 0, kGutter + 4, 14),
             child: Text(
-              'Know a vet who should be using their VA benefit? Pick them from your contacts and each one gets '
-              'their own 3-way text with you and Steven.',
+              'Tick the friends who should hear about their VA home loan benefit. Each one gets their own text '
+              'with you and Steven, with their first name filled in.',
               style: context.t.bodyLarge?.copyWith(color: c.secondaryLabel),
-            ),
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 12),
-            child: AppleCard(
-              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Align(alignment: Alignment.centerLeft, child: Caption('To: $previewName, Steven & You')),
-                  const SizedBox(height: 10),
-                  _Bubble(text: fillReferral(_template, previewName)),
-                ],
-              ),
             ),
           ),
         ),
         SliverToBoxAdapter(
           child: InsetSection(
             dividerIndent: 16,
-            footer:
-                "Each friend's first name is filled in automatically. Steven (${Org.referralCcNumber}) is in "
-                'every text so he can take it from there.',
             children: [
               AppleRow(
                 title: 'Message',
@@ -240,63 +244,79 @@ class _ReferScreenState extends State<ReferScreen> {
                 ),
                 onTap: _pickTone,
               ),
-              AppleRow(title: 'Edit Wording', onTap: _editMessage),
+              AppleRow(title: 'Preview & Edit Wording', onTap: _editMessage),
             ],
           ),
         ),
-        SliverToBoxAdapter(
-          child: InsetSection(
-            header: 'Who Comes to Mind?',
-            footer: _denied ? 'Contacts access is off. Turn it on in Settings, or add numbers yourself.' : null,
-            children: [
-              if (_contacts == null)
-                AppleRow(
-                  icon: CupertinoIcons.person_crop_circle_fill,
-                  iconColor: Hue.blue,
-                  title: 'Choose from Contacts',
-                  subtitle: _loading ? 'Opening your contacts' : 'Opens your phone’s contact list',
-                  trailing: _loading ? const CupertinoActivityIndicator() : null,
-                  onTap: _loading ? null : _loadContacts,
-                ),
-              if (_denied)
-                AppleRow(
-                  icon: CupertinoIcons.settings,
-                  iconColor: Hue.gray,
-                  title: 'Open Settings',
-                  onTap: () => FlutterContacts.permissions.openSettings(),
-                ),
-              AppleRow(icon: CupertinoIcons.plus, iconColor: Hue.green, title: 'Add Phone Number', onTap: _addManual),
-              AppleRow(
-                icon: CupertinoIcons.share,
-                iconColor: Hue.gray,
-                title: 'Share Another Way',
-                onTap: () => SharePlus.instance.share(ShareParams(text: referralMessage(''))),
-              ),
-            ],
+        if (_loading || _denied || _contacts == null)
+          SliverToBoxAdapter(
+            child: InsetSection(
+              header: 'Contacts',
+              footer: _denied
+                  ? 'Contacts access is off, so your friends can’t be listed here. Turn on Contacts for this app in '
+                        'Settings, or tap + to add a number yourself.'
+                  : null,
+              children: [
+                if (_loading)
+                  const AppleRow(
+                    leading: CupertinoActivityIndicator(),
+                    title: 'Opening your contacts…',
+                    accessory: RowAccessory.none,
+                  )
+                else ...[
+                  AppleRow(
+                    icon: CupertinoIcons.person_crop_circle_fill,
+                    iconColor: Hue.blue,
+                    title: 'Choose from Contacts',
+                    subtitle: 'Opens your phone’s contact list',
+                    onTap: _loadContacts,
+                  ),
+                  if (_denied)
+                    AppleRow(
+                      icon: CupertinoIcons.settings,
+                      iconColor: Hue.gray,
+                      title: 'Open Settings',
+                      onTap: () => FlutterContacts.permissions.openSettings(),
+                    ),
+                  AppleRow(
+                    icon: CupertinoIcons.plus,
+                    iconColor: Hue.green,
+                    title: 'Add Phone Number',
+                    onTap: _addManual,
+                  ),
+                ],
+              ],
+            ),
           ),
-        ),
-        if (_all.isNotEmpty)
+        if (_all.isNotEmpty) ...[
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 12),
+              padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 10),
               child: AppleSearchField(
                 placeholder: 'Search contacts',
                 onChanged: (v) => setState(() => _search = v.trim()),
               ),
             ),
           ),
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(kGutter + 16, 0, kGutter + 16, 6),
+              child: Caption(count == 0 ? '${_all.length} contacts' : '$count selected'),
+            ),
+          ),
+        ],
         if (_contacts != null && _all.isEmpty)
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(32),
               child: Text(
-                'No contacts with phone numbers.',
+                'No contacts with phone numbers. Tap + to add a number.',
                 textAlign: TextAlign.center,
                 style: context.t.bodyLarge?.copyWith(color: c.secondaryLabel),
               ),
             ),
           ),
-        // Lazily built inset-grouped list for large address books.
+        // The contact list with a checkbox on each row, like the original app. Built lazily for large address books.
         SliverPadding(
           padding: kPage,
           sliver: SliverList.builder(
@@ -316,20 +336,23 @@ class _ReferScreenState extends State<ReferScreen> {
                     children: [
                       if (!first)
                         Padding(
-                          padding: const EdgeInsets.only(left: 54),
+                          padding: const EdgeInsets.only(left: 70),
                           child: Container(height: 0.5, color: c.separator),
                         ),
-                      AppleRow(
-                        leading: Icon(
-                          i.selected ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
-                          color: i.selected ? c.tint : c.tertiaryLabel,
-                          size: 26,
+                      Semantics(
+                        checked: i.selected,
+                        child: AppleRow(
+                          leading: _Avatar(name: i.name),
+                          title: i.name.isEmpty ? i.phone : i.name,
+                          subtitle: i.phone,
+                          accessory: RowAccessory.none,
+                          trailing: Icon(
+                            i.selected ? CupertinoIcons.checkmark_circle_fill : CupertinoIcons.circle,
+                            color: i.selected ? c.tint : c.tertiaryLabel,
+                            size: 26,
+                          ),
+                          onTap: () => setState(() => i.selected = !i.selected),
                         ),
-                        title: i.name.isEmpty ? i.phone : i.name,
-                        subtitle: i.phone,
-                        value: i.sent ? 'Sent' : null,
-                        accessory: RowAccessory.none,
-                        onTap: () => setState(() => i.selected = !i.selected),
                       ),
                     ],
                   ),
@@ -339,6 +362,37 @@ class _ReferScreenState extends State<ReferScreen> {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Contacts-style initials circle.
+class _Avatar extends StatelessWidget {
+  const _Avatar({required this.name});
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    final parts = name.trim().split(RegExp(r'\s+')).where((w) => w.isNotEmpty && RegExp(r'[A-Za-z]').hasMatch(w[0]));
+    final initials = parts.take(2).map((w) => w[0].toUpperCase()).join();
+    return Container(
+      width: 40,
+      height: 40,
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0xFFA5ABB8), Color(0xFF858B98)],
+        ),
+      ),
+      child: initials.isEmpty
+          ? const Icon(CupertinoIcons.person_fill, color: Colors.white, size: 22)
+          : Text(
+              initials,
+              style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w600),
+            ),
     );
   }
 }
@@ -369,16 +423,19 @@ class _Bubble extends StatelessWidget {
 
 /// Edits the wording used for everyone; keeps [referralToken] as the name placeholder.
 class _EditMessageScreen extends StatefulWidget {
-  const _EditMessageScreen({required this.initial, required this.original});
+  const _EditMessageScreen({required this.initial, required this.original, required this.previewName});
   final String initial;
   final String original;
+  final String previewName;
 
   @override
   State<_EditMessageScreen> createState() => _EditMessageScreenState();
 }
 
 class _EditMessageScreenState extends State<_EditMessageScreen> {
-  late final _text = TextEditingController(text: widget.initial);
+  late final _text = TextEditingController(text: widget.initial)..addListener(_changed);
+
+  void _changed() => setState(() {});
 
   @override
   void dispose() {
@@ -393,7 +450,7 @@ class _EditMessageScreenState extends State<_EditMessageScreen> {
       backgroundColor: c.bg,
       appBar: appleBar(
         context,
-        'Edit Wording',
+        'Message',
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           minimumSize: const Size(44, 44),
@@ -408,7 +465,22 @@ class _EditMessageScreenState extends State<_EditMessageScreen> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.only(top: 16, bottom: 32),
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(kGutter, 0, kGutter, 22),
+            child: AppleCard(
+              padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Align(alignment: Alignment.centerLeft, child: Caption('To: ${widget.previewName}, Steven & You')),
+                  const SizedBox(height: 10),
+                  _Bubble(text: fillReferral(_text.text, widget.previewName)),
+                ],
+              ),
+            ),
+          ),
           InsetSection(
+            header: 'Wording',
             footer: 'Keep $referralToken where each friend’s name should go.',
             children: [
               Padding(
@@ -437,28 +509,34 @@ class _EditMessageScreenState extends State<_EditMessageScreen> {
   }
 }
 
-/// Sends the intro to everyone selected: Messages opens for the first person,
-/// and each time the user comes back the next one opens, until all are done.
+/// Sends the intro to everyone selected, like the original app: the first person's text opens,
+/// and as soon as it is sent the next one opens, until everyone selected is done.
 class SendRunScreen extends StatefulWidget {
-  const SendRunScreen({super.key, required this.people, required this.template, this.open, this.autoStart = true});
+  const SendRunScreen({
+    super.key,
+    required this.people,
+    required this.template,
+    this.compose = composeReferral,
+    this.autoStart = true,
+    this.beat = const Duration(milliseconds: 700),
+  });
 
   final List<Invitee> people;
   final String template;
-
-  /// Overridable for tests; defaults to opening the phone's messaging app.
-  final Future<bool> Function(Invitee)? open;
+  final ComposeText compose;
   final bool autoStart;
+  final Duration beat;
 
   @override
   State<SendRunScreen> createState() => _SendRunScreenState();
 }
 
 class _SendRunScreenState extends State<SendRunScreen> with WidgetsBindingObserver {
-  late final SendRun _run = SendRun(widget.people, open: widget.open ?? _openMessages);
-
-  Future<bool> _openMessages(Invitee p) =>
-      launchUrl(referralSmsUri([p.phone, Org.referralCcNumber], fillReferral(widget.template, p.firstName)))
-          .catchError((_) => false);
+  late final SendRun _run = SendRun(
+    widget.people,
+    open: (p) => widget.compose(p, fillReferral(widget.template, p.firstName)),
+    beat: widget.beat,
+  );
 
   @override
   void initState() {
@@ -485,13 +563,7 @@ class _SendRunScreenState extends State<SendRunScreen> with WidgetsBindingObserv
     if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
       _run.onLeftApp();
     } else if (state == AppLifecycleState.resumed) {
-      final next = _run.onReturned();
-      if (next != null) {
-        // A short beat so the user sees who was sent before Messages opens again.
-        Future<void>.delayed(const Duration(milliseconds: 900), () {
-          if (mounted && _run.auto && _run.awaiting == null && !next.sent) _run.send(next);
-        });
-      }
+      _run.onReturned();
     }
   }
 
@@ -502,6 +574,8 @@ class _SendRunScreenState extends State<SendRunScreen> with WidgetsBindingObserv
     final total = _run.people.length;
     final next = _run.next;
     final awaiting = _run.awaiting;
+    final cancelled = _run.cancelled;
+    final sendError = _run.sendError;
     final (IconData icon, Color color, String title, String body) = _run.done
         ? (
             CupertinoIcons.checkmark_seal_fill,
@@ -513,28 +587,44 @@ class _SendRunScreenState extends State<SendRunScreen> with WidgetsBindingObserv
         ? (
             CupertinoIcons.exclamationmark_circle_fill,
             c.red,
-            'Messages didn’t open',
-            'This device has no messaging app available. Try again on your phone.',
+            'This phone can’t send texts',
+            'Check that Messages is set up, then tap Send again.',
+          )
+        : sendError != null
+        ? (
+            CupertinoIcons.exclamationmark_circle_fill,
+            c.red,
+            'The text to ${_name(sendError)} didn’t go through',
+            'Check your signal, then tap Send to try again.',
+          )
+        : cancelled != null
+        ? (
+            CupertinoIcons.pause_circle_fill,
+            Hue.orange,
+            'Not sent to ${_name(cancelled)}',
+            next == null
+                ? 'Tap Send next to their name to try again.'
+                : 'Tap Continue for ${_name(next)}, or Send next to anyone below.',
           )
         : awaiting != null
         ? (
             CupertinoIcons.chat_bubble_2_fill,
             c.tint,
-            'Messages is open for ${_name(awaiting)}',
-            'Tap Send there, then come back here. The next text opens by itself.',
+            'Text ready for ${_name(awaiting)}',
+            'Tap Send in the message. The next friend’s text opens right after.',
           )
         : _run.auto && _run.sentCount > 0
         ? (
             CupertinoIcons.paperplane_fill,
             c.tint,
-            'Opening Messages for ${_name(next!)}…',
+            'Next up: ${_name(next!)}',
             'Sent ${_run.sentCount} of $total so far.',
           )
         : (
             CupertinoIcons.paperplane_fill,
             c.tint,
-            'Ready to send ${_run.sentCount == 0 ? total : total - _run.sentCount}',
-            'Each person gets their own 3-way text with you and Steven.',
+            'Ready to send ${total - _run.sentCount}',
+            'Each friend gets their own 3-way text with you and Steven.',
           );
     return LargeTitleScaffold(
       title: 'Sending',
@@ -581,25 +671,24 @@ class _SendRunScreenState extends State<SendRunScreen> with WidgetsBindingObserv
                 : awaiting != null
                 ? AppleButton(
                     kind: ButtonStyleKind.gray,
-                    label: 'Open Messages Again',
+                    label: 'Open the Text Again',
                     onPressed: () => _run.send(awaiting),
                   )
                 : _run.auto && _run.sentCount > 0
                 ? AppleButton(kind: ButtonStyleKind.gray, label: 'Pause', onPressed: _run.pause)
                 : AppleButton(
                     icon: CupertinoIcons.paperplane_fill,
-                    label: _run.sentCount == 0 ? 'Send to All $total' : 'Continue with ${_name(next!)}',
-                    onPressed: () {
-                      _run.auto = true;
-                      _run.send();
-                    },
+                    label: _run.sentCount == 0 && cancelled == null
+                        ? 'Send to All $total'
+                        : 'Continue with ${_name(next!)}',
+                    onPressed: _run.resume,
                   ),
           ),
         ),
         SliverToBoxAdapter(
           child: InsetSection(
             dividerIndent: 54,
-            footer: 'A text counts as sent once you come back from Messages. Didn’t send one? Tap Resend.',
+            footer: 'Changed your mind about someone? Tap Send or Resend next to their name.',
             children: [
               for (final p in _run.people)
                 AppleRow(
@@ -614,10 +703,12 @@ class _SendRunScreenState extends State<SendRunScreen> with WidgetsBindingObserv
                   trailing: CupertinoButton(
                     padding: EdgeInsets.zero,
                     minimumSize: const Size(44, 30),
-                    onPressed: () {
-                      if (p.sent) _run.retry(p);
-                      _run.send(p);
-                    },
+                    onPressed: awaiting != null
+                        ? null
+                        : () {
+                            if (p.sent) _run.retry(p);
+                            _run.send(p);
+                          },
                     child: Text(p.sent ? 'Resend' : 'Send', style: TextStyle(color: c.tint)),
                   ),
                 ),

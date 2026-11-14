@@ -21,11 +21,20 @@ Shared components live in `lib/ui/apple.dart`.
 | **Tools** | VA loan payment, funding fee, BAH buying power, and combined VA rating calculators (same math as the website); Career Command Center; webinar registration; request forms |
 | **Contact** | Call, email, message form, social links, About us, Board, Testimonials, and *Donate, Pay It Forward & settings* |
 
-**Pay It Forward** (the referral feature from v1, renamed from Invite Friends): the screen asks for contacts
-access and shows the phone's contact directory as soon as it opens, as v1 did. Pick people with multi-select, choose a pre-drafted intro (Default, Short, Family, Direct, or the original
-seminar invite), then tap **Send**. Messages opens with a 3-way text for the first person (the friend, the sender,
-and Steven at 619-368-7141); each time the user comes back to the app, the next person's text opens, until everyone
-selected is done. Works the same on iPhone and Android. Logic is in `lib/logic/referral.dart`.
+**Pay It Forward** (the referral feature from v1, renamed from Invite Friends), with the same workflow as v1:
+tap **Pay It Forward** (on Home, Tools, or Contact), allow contacts access, and the phone's contact list
+appears with a checkbox on each person. Tick friends, choose a pre-drafted message (Default, Short, Family,
+Direct, or the original seminar invite), and tap **Send**. Each friend gets their own 3-way text with the
+sender and Steven (619-368-7141), with their first name filled in.
+
+- iPhone: Apple's "New iMessage" sheet slides up inside the app (as in v1). As soon as one text is sent,
+  the next friend's sheet opens. Cancel stops the run; the user can continue or skip that person.
+- Android: the texting app opens with the group text ready; each time the user comes back to the app,
+  the next friend's text opens.
+
+The native pieces are in `ios/Runner/AppDelegate.swift` (`MessageComposerPlugin`, using MessageUI) and
+`android/.../MainActivity.kt`; the Dart side is `lib/services/message_composer.dart` and
+`lib/logic/referral.dart`. Neither platform lets an app send a text without the user tapping Send.
 
 ## App IDs (unchanged from v1 so the stores treat this as an update)
 

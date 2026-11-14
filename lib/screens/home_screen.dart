@@ -276,6 +276,12 @@ class _HeroCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 10),
+                    AppleButton(
+                      icon: CupertinoIcons.person_badge_plus_fill,
+                      label: 'Pay It Forward',
+                      onPressed: () => pushScreen(context, const ReferScreen(), title: 'Home'),
+                    ),
                     if (stats.isNotEmpty) ...[
                       const SizedBox(height: 18),
                       Container(height: 0.5, color: Colors.white.withValues(alpha: 0.18)),

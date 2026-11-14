@@ -94,67 +94,163 @@ class Invitee {
   bool sent = false;
 }
 
-/// Sends to everyone selected, one group text per person. The app can't see
-/// whether Send was tapped in Messages, so a text counts as sent once the
-/// user has left for Messages and come back.
+/// How opening one text ended.
+enum ComposeResult {
+  /// iPhone's in-app message sheet: the user tapped Send.
+  sent,
+
+  /// iPhone's in-app message sheet: the user closed it without sending.
+  cancelled,
+
+  /// iPhone's in-app message sheet: the text could not be sent.
+  failed,
+
+  /// The phone's texting app was opened (Android, or the fallback link). The app
+  /// can't see what happens there, so the text counts as sent once the user comes back.
+  opened,
+
+  /// This device can't send texts.
+  unavailable,
+}
+
+/// Sends to everyone selected, one group text per person, like the original app:
+/// the text for the first person opens, and as soon as it is sent the next one opens,
+/// until everyone selected is done.
 class SendRun extends ChangeNotifier {
-  SendRun(this.people, {required this.open});
+  SendRun(this.people, {required this.open, this.beat = const Duration(milliseconds: 700)});
 
   final List<Invitee> people;
 
-  /// Opens the composer for one person; false when no messaging app is available.
-  final Future<bool> Function(Invitee) open;
+  /// Opens the text for one person.
+  final Future<ComposeResult> Function(Invitee) open;
+
+  /// Pause between one text and the next, so the user sees the progress.
+  final Duration beat;
 
   Invitee? _awaiting;
+  bool _external = false;
   bool _leftApp = false;
+  bool _cameBack = false;
+  bool _disposed = false;
   bool auto = true;
+
+  /// This device can't send texts.
   bool failed = false;
+
+  /// The last text that was closed without sending.
+  Invitee? cancelled;
+
+  /// The last text that could not be sent.
+  Invitee? sendError;
 
   Invitee? get awaiting => _awaiting;
   Invitee? get next => people.where((p) => !p.sent).firstOrNull;
   int get sentCount => people.where((p) => p.sent).length;
   bool get done => next == null;
 
-  /// Opens the composer for [person], or for the next unsent person.
-  Future<void> send([Invitee? person]) async {
-    final p = person ?? next;
-    if (p == null) return;
-    _awaiting = p;
-    _leftApp = false;
-    failed = false;
-    notifyListeners();
-    final ok = await open(p);
-    if (!ok) {
-      _awaiting = null;
-      failed = true;
-      auto = false;
-    }
-    notifyListeners();
+  void _notify() {
+    if (!_disposed) notifyListeners();
   }
 
-  /// The app went to the background (Messages took over).
+  /// Opens the text for [person], or for the next unsent person.
+  Future<void> send([Invitee? person]) async {
+    final p = person ?? next;
+    if (p == null || _disposed) return;
+    if (_awaiting != null && _awaiting != p) return;
+    _awaiting = p;
+    _external = false;
+    _leftApp = false;
+    _cameBack = false;
+    failed = false;
+    cancelled = null;
+    sendError = null;
+    _notify();
+    ComposeResult r;
+    try {
+      r = await open(p);
+    } catch (_) {
+      r = ComposeResult.unavailable;
+    }
+    if (_disposed || _awaiting != p) return;
+    switch (r) {
+      case ComposeResult.sent:
+        _complete(p);
+      case ComposeResult.opened:
+        _external = true;
+        // The user may already have gone to Messages and come back before the reply arrived.
+        if (_leftApp && _cameBack) {
+          _complete(p);
+        } else {
+          _notify();
+        }
+      case ComposeResult.cancelled:
+        _awaiting = null;
+        auto = false;
+        cancelled = p;
+        _notify();
+      case ComposeResult.failed:
+        _awaiting = null;
+        auto = false;
+        sendError = p;
+        _notify();
+      case ComposeResult.unavailable:
+        _awaiting = null;
+        auto = false;
+        failed = true;
+        _notify();
+    }
+  }
+
+  void _complete(Invitee p) {
+    p.sent = true;
+    _awaiting = null;
+    _external = false;
+    _leftApp = false;
+    _cameBack = false;
+    _notify();
+    final n = next;
+    if (auto && n != null) {
+      Future<void>.delayed(beat, () {
+        if (!_disposed && auto && _awaiting == null && !n.sent) send(n);
+      });
+    }
+  }
+
+  /// The app went to the background (the texting app took over).
   void onLeftApp() {
     if (_awaiting != null) _leftApp = true;
   }
 
-  /// The app is in front again. Returns the next person to open automatically, if any.
-  Invitee? onReturned() {
+  /// The app is in front again: a text opened in the texting app counts as sent.
+  void onReturned() {
     final p = _awaiting;
-    if (p == null || !_leftApp) return null;
-    p.sent = true;
-    _awaiting = null;
-    _leftApp = false;
-    notifyListeners();
-    return auto ? next : null;
+    if (p == null || !_leftApp) return;
+    if (!_external) {
+      _cameBack = true;
+      return;
+    }
+    _complete(p);
+  }
+
+  /// Picks up again with the next unsent person.
+  void resume() {
+    auto = true;
+    send();
   }
 
   void pause() {
     auto = false;
-    notifyListeners();
+    _notify();
   }
 
   void retry(Invitee p) {
     p.sent = false;
-    notifyListeners();
+    _notify();
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 }

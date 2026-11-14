@@ -3,7 +3,7 @@ import 'package:active_duty/logic/referral.dart';
 import 'package:active_duty/main.dart';
 import 'package:active_duty/screens/more/refer_screen.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart' show AppLifecycleState, Scrollable;
+import 'package:flutter/widgets.dart' show AppLifecycleState;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -57,51 +57,146 @@ void main() {
 
   group('send to everyone selected', () {
     List<Invitee> people() => [Invitee('Maria Lopez', '7025550123'), Invitee('James Carter', '7025550188')];
+    Future<void> beat() => Future<void>.delayed(Duration.zero);
 
-    test('each return from Messages marks one sent and queues the next', () async {
+    test('iPhone message sheet: as soon as one text is sent, the next one opens', () async {
       final opened = <String>[];
       final run = SendRun(
         people(),
+        beat: Duration.zero,
         open: (p) async {
           opened.add(p.firstName);
-          return true;
+          return ComposeResult.sent;
+        },
+      );
+      await run.send();
+      await beat();
+      await beat();
+      expect(opened, ['Maria', 'James']);
+      expect(run.sentCount, 2);
+      expect(run.done, isTrue);
+    });
+
+    test('iPhone message sheet: Cancel stops and lets the user continue', () async {
+      final opened = <String>[];
+      final run = SendRun(
+        people(),
+        beat: Duration.zero,
+        open: (p) async {
+          opened.add(p.firstName);
+          return p.firstName == 'Maria' ? ComposeResult.cancelled : ComposeResult.sent;
+        },
+      );
+      await run.send();
+      await beat();
+      expect(opened, ['Maria']);
+      expect(run.cancelled?.firstName, 'Maria');
+      expect(run.sentCount, 0);
+      run.people.first.sent = true; // the user chose to skip Maria
+      run.resume();
+      await beat();
+      await beat();
+      expect(opened, ['Maria', 'James']);
+      expect(run.people.last.sent, isTrue);
+    });
+
+    test('Android texting app: each return to the app marks one sent and opens the next', () async {
+      final opened = <String>[];
+      final run = SendRun(
+        people(),
+        beat: Duration.zero,
+        open: (p) async {
+          opened.add(p.firstName);
+          return ComposeResult.opened;
         },
       );
       await run.send();
       expect(opened, ['Maria']);
       // Coming back without ever leaving the app (e.g. a system dialog) changes nothing.
-      expect(run.onReturned(), isNull);
+      run.onReturned();
       expect(run.sentCount, 0);
       run.onLeftApp();
-      final next = run.onReturned();
+      run.onReturned();
       expect(run.sentCount, 1);
-      expect(next?.firstName, 'James');
-      await run.send(next);
+      await beat();
+      expect(opened, ['Maria', 'James']);
       run.onLeftApp();
-      expect(run.onReturned(), isNull);
+      run.onReturned();
+      await beat();
       expect(run.done, isTrue);
       expect(opened, ['Maria', 'James']);
     });
 
     test('pausing stops the automatic next text', () async {
-      final run = SendRun(people(), open: (_) async => true);
+      final opened = <String>[];
+      final run = SendRun(
+        people(),
+        beat: Duration.zero,
+        open: (p) async {
+          opened.add(p.firstName);
+          return ComposeResult.opened;
+        },
+      );
       await run.send();
       run.pause();
       run.onLeftApp();
-      expect(run.onReturned(), isNull);
+      run.onReturned();
+      await beat();
       expect(run.sentCount, 1);
+      expect(opened, ['Maria']);
       expect(run.next?.firstName, 'James');
     });
 
-    test('no messaging app: nothing is marked sent', () async {
-      final run = SendRun(people(), open: (_) async => false);
+    test('no messaging available: nothing is marked sent', () async {
+      final run = SendRun(people(), beat: Duration.zero, open: (_) async => ComposeResult.unavailable);
       await run.send();
       expect(run.failed, isTrue);
       expect(run.sentCount, 0);
     });
   });
 
-  testWidgets('Send run opens Messages for each person in turn', (tester) async {
+  testWidgets('Pay It Forward: contacts open on arrival, tick a friend, the 3-way text opens with their name', (
+    tester,
+  ) async {
+    AppTheme.useGoogleFonts = false;
+    SharedPreferences.setMockInitialValues({});
+    var asked = 0;
+    final texts = <String, String>{};
+    await tester.pumpWidget(
+      HeroApp(
+        home: ReferScreen(
+          loadContacts: () async {
+            asked++;
+            return [Invitee('James Carter', '7025550188'), Invitee('Maria Lopez', '7025550123')];
+          },
+          compose: (p, body) async {
+            texts[p.phone] = body;
+            return ComposeResult.sent;
+          },
+        ),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+    expect(asked, 1, reason: 'contacts are requested without tapping anything');
+    expect(find.text('Choose from Contacts'), findsNothing);
+    expect(find.text('James Carter'), findsOneWidget);
+    expect(find.text('Maria Lopez'), findsOneWidget);
+    await tester.tap(find.text('Maria Lopez'));
+    await tester.tap(find.text('James Carter'));
+    await tester.pump();
+    expect(find.text('2 SELECTED'), findsOneWidget);
+    await tester.tap(find.text('Send to 2 Friends'));
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
+    expect(texts.keys, ['7025550188', '7025550123']);
+    expect(texts['7025550123'], startsWith('Hey Maria,'));
+    expect(texts['7025550188'], startsWith('Hey James,'));
+    expect(find.text('All 2 sent. Thank you.'), findsOneWidget);
+  });
+
+  testWidgets('Sending screen: texts opened in the texting app count once the user comes back', (tester) async {
     AppTheme.useGoogleFonts = false;
     SharedPreferences.setMockInitialValues({});
     final opened = <String>[];
@@ -111,16 +206,16 @@ void main() {
         home: SendRunScreen(
           people: people,
           template: referralTones.first.template,
-          open: (p) async {
+          compose: (p, body) async {
             opened.add(p.firstName);
-            return true;
+            return ComposeResult.opened;
           },
         ),
       ),
     );
     await tester.pump();
     expect(opened, ['Maria']);
-    expect(find.text('Messages is open for Maria'), findsOneWidget);
+    expect(find.text('Text ready for Maria'), findsOneWidget);
 
     Future<void> leaveAndReturn() async {
       tester.binding.handleAppLifecycleStateChanged(AppLifecycleState.inactive);
@@ -144,38 +239,13 @@ void main() {
     expect(opened, ['Maria', 'James']);
   });
 
-  testWidgets('Pay It Forward opens the phone contact directory as soon as the screen opens', (tester) async {
-    AppTheme.useGoogleFonts = false;
-    SharedPreferences.setMockInitialValues({});
-    var asked = 0;
-    await tester.pumpWidget(
-      HeroApp(
-        home: ReferScreen(
-          loadContacts: () async {
-            asked++;
-            return [Invitee('James Carter', '7025550188'), Invitee('Maria Lopez', '7025550123')];
-          },
-        ),
-      ),
-    );
-    await tester.pump();
-    await tester.pump();
-    expect(asked, 1, reason: 'contacts are requested without tapping anything');
-    expect(find.text('Choose from Contacts'), findsNothing);
-    await tester.scrollUntilVisible(find.text('Maria Lopez'), 300, scrollable: find.byType(Scrollable).first);
-    await tester.tap(find.text('Maria Lopez'));
-    await tester.pump();
-    expect(find.text('Send to 1 Friend'), findsOneWidget);
-    expect(find.textContaining('Hey Maria,'), findsOneWidget);
-  });
-
   testWidgets('Pay It Forward offers Settings when contacts access is refused', (tester) async {
     AppTheme.useGoogleFonts = false;
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(HeroApp(home: ReferScreen(loadContacts: () async => null)));
     await tester.pump();
     await tester.pump();
-    await tester.scrollUntilVisible(find.text('Open Settings'), 300, scrollable: find.byType(Scrollable).first);
+    expect(find.text('Open Settings'), findsOneWidget);
     expect(find.text('Choose from Contacts'), findsOneWidget);
     expect(find.text('Add Phone Number'), findsOneWidget);
   });
