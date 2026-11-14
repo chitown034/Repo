@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-11-13 by `bin/brain encyclopedia` from `brain/index.json` — 443 pages, 586 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-11-14 by `bin/brain encyclopedia` from `brain/index.json` — 443 pages, 586 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [#](#other) · [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [Z](#z)
 
@@ -366,9 +366,9 @@ Not ingested yet (2026-10-23). This file is written by bin/brain ingest claude-e
 `memory/claude-chats.md` · Memory · newest date stamp 2026-10-23  
 See also: `integrations/MCP-SERVERS.md`, `integrations/pivo/README.md`, `wiki/real-estate-playbooks/showing-operations.md`
 
-### Claude Code sessions — ledger (generated 2026-11-12; newest first)
+### Claude Code sessions — ledger (generated 2026-11-13; newest first)
 Every Claude Code session on Steven's account: title, when, status.  
-`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-11-12  
+`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-11-13  
 Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `memory.md`  
 See also: `docs/inventory/cloud-routines.md`
 
