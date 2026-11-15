@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # install.sh — browser control + skill discovery for Steven's Mac (2026-10-10). macOS bash 3.2 safe.
 # Asks y/N before EACH change (Enter = no). --dry-run asks and changes nothing. Never asks for or stores a password or key.
-#   1. agent-browser (Vercel Labs, Apache-2.0) — fast browser CLI for Claude Code, pinned 0.39.0, + its Chrome for Testing
+#   1. agent-browser (Vercel Labs, Apache-2.0) — fast browser CLI for Claude Code, pinned 0.43.0, + its Chrome for Testing
 #   2. Playwright MCP (Microsoft, Apache-2.0) — 25 browser tools for Claude Code (user scope), pinned 0.0.83, own profile
 #   3. The same Playwright MCP for Claude Desktop — PRINTED, not written (Steven pastes it; the config is his)
 #   4. skills CLI (Vercel Labs, MIT) — `npx skills find <topic>` / `npx skills add <repo>`; nothing global to install
@@ -10,7 +10,7 @@
 set -u
 DRY=0; [ "${1:-}" = "--dry-run" ] && DRY=1
 HERE="$(cd "$(dirname "$0")" && pwd)"; REPO="$(cd "$HERE/../.." && pwd)"
-AB_VER=0.39.0; PW_VER=0.0.83
+AB_VER=0.43.0; PW_VER=0.0.83
 PROFILE="$HOME/.config/playwright-mcp/profile"
 ask() { if [ $DRY = 1 ]; then echo "  [dry-run] would ask: $1"; return 1; fi; printf '  %s [y/N] ' "$1"; read -r a || a=''; case "$a" in y|Y|yes|YES) return 0 ;; *) return 1 ;; esac; }
 ok()  { echo "  done: $*"; }

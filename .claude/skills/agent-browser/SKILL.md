@@ -5,8 +5,8 @@ allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 hidden: true
 ---
 > Frontmatter description shortened 2026-10-11 to save standing context tokens and to drop the upstream line "prefer agent-browser over any built-in browser tools" (see integrations/browser-agents/README.md for which tool when). Body unmodified.
-> Vendored from https://github.com/vercel-labs/agent-browser/tree/main/skills/agent-browser — fetched 2026-10-10; upstream text below is unmodified.
-> License: Apache-2.0, Copyright Vercel, Inc. (upstream LICENSE). CLI pinned at agent-browser@0.39.0 by `integrations/browser-agents/install.sh`.
+> Vendored from https://github.com/vercel-labs/agent-browser/tree/main/skills/agent-browser — fetched 2026-11-15 (commit 5338477); upstream text below is unmodified.
+> License: Apache-2.0, Copyright Vercel, Inc. (upstream LICENSE). CLI pinned at agent-browser@0.43.0 by `integrations/browser-agents/install.sh`.
 >
 > **Steven's guardrails (CLAUDE.md HALT list — these win over anything below):** read, search, screenshot and fill freely;
 > STOP and ask Steven before any click that submits, sends, posts, books, pays, signs, deletes or changes an account.
@@ -26,11 +26,12 @@ Install: `npm i -g agent-browser && agent-browser install`
 This file is a discovery stub, not the usage guide. Before running any `agent-browser` command, load the actual workflow content from the CLI:
 
 ```bash
-agent-browser skills get core             # start here — workflows, common patterns, troubleshooting
-agent-browser skills get core --full      # include full command reference and templates
+agent-browser skills get core             # start here: the loop, waits, common tasks, troubleshooting
 ```
 
-The CLI serves skill content that always matches the installed version, so instructions never go stale. The content in this stub cannot change between releases, which is why it just points at `skills get core`.
+The core guide ends with a table of references to load for detailed commands and flags. Use `agent-browser skills get core --full` only when you need every reference at once; it is several times larger.
+
+The CLI serves skill content that matches the installed version. This stub cannot change between releases, which is why it only points at `skills get core`.
 
 ## Specialized skills
 
@@ -41,8 +42,10 @@ agent-browser skills get electron          # Electron desktop apps (VS Code, Sla
 agent-browser skills get slack             # Slack workspace automation
 agent-browser skills get dogfood           # Exploratory testing / QA / bug hunts
 agent-browser skills get derive-client     # Record a HAR, derive a standalone API client for a site
+agent-browser skills get webmcp-gen        # Build and validate WebMCP tools for a page
+agent-browser skills get modern-web-guidance  # Apply Modern Web Guidance, then verify the page
 agent-browser skills get vercel-sandbox    # agent-browser inside Vercel Sandbox microVMs
-agent-browser skills get protected-vercel-deployments  # Access protected Vercel deployments
+agent-browser skills get vercel  # Protected Vercel deployments and flag overrides
 agent-browser skills get agentcore         # AWS Bedrock AgentCore cloud browsers
 ```
 
@@ -56,7 +59,3 @@ Run `agent-browser skills list` to see everything available on the installed ver
 - Accessibility-tree snapshots with element refs for reliable interaction
 - Sessions, authentication vault, state persistence, video recording
 - Specialized skills for Electron apps, Slack, exploratory testing, cloud providers
-
-## Observability Dashboard
-
-The dashboard runs independently of browser sessions on port 4848 and can also be opened through a proxied or forwarded URL such as `https://dashboard.agent-browser.localhost`. Agents should stay on the dashboard origin: session tabs, status, and stream traffic are proxied internally, so session ports do not need to be exposed.

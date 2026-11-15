@@ -898,3 +898,16 @@ through Apple Health and the same export file once Steven switches the nutrition
   the skills and routines that name her model, the org chart on all three dashboards and the 6D Brain follow.
 - **Team count.** 185 AI agents: 184 Opus 5.5 + 1 Fable 5.2.
 - **Owner.** Derek (agent files), Nadia (tiering). **Status.** Done 2026-11-10; Mac agent files take it at the next repo-sync paste.
+
+## 2026-11-15 — OpenMausBot: the AI org as a team of chat bots; agent-browser 0.39.0 → 0.43.0
+- **Decision.** Steven: "install OpenMausBot and wire my AI org to be structured within Mausbots" and "install
+  vercel-labs/agent-browser". OpenMausBot is installed on the Mac by `integrations/openmausbot/install.sh` (CLI pinned
+  0.1.160); `build-team.py` builds `team.yaml` from the roster: Vanessa is Chief of the Executive Office and manages
+  every department; each executive is Chief of their department team; every seat joins the department of the executive
+  above it. OpenMausBot holds at most 100 bots per workspace, so 91 core seats get bots and the other 94 are on their
+  Chief's specialist bench (dispatched as Claude Code subagents). Every bot starts on Ask, no computer, no browser.
+- **agent-browser** was already installed (2026-10-10); the pin moves to 0.43.0 (0.41 stops MCP arguments overriding
+  the domain allowlist) and the vendored skill text is refreshed.
+- **Verified.** Cloud sandbox: team file applied end to end on a throwaway OpenMausBot server (110 created, re-run: no
+  changes); agent-browser 0.43.0 fill/click/read self-test PASS. **Owner.** Derek (install), Vanessa (org). **Status.**
+  Steven runs `install.sh`, opens the app, then `install.sh plan` and `install.sh apply` on the Mac.

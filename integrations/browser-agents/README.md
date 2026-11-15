@@ -10,7 +10,7 @@ navigate websites on my behalf."* Owner: Integration Engineer (under Elon); secu
 |---|---|---|
 | `vercel-labs/skills` (MIT) | The `skills` CLI: `npx skills find <topic>` searches the open skills directory (skills.sh); `npx skills add <repo>` installs one | Nothing to install (runs through `npx`, pinned 1.7.2). Its `find-skills` skill was already vendored (2026-09-22) and is identical to upstream today |
 | `vercel-labs/agent-skills` (MIT) | Vercel's own skill pack: mostly React/Next.js and Vercel deploy skills, plus two general ones | Vendored the two that fit Steven's work: **`web-design-guidelines`** (UI/accessibility review — the Command Deck and ISA Portal) and **`writing-guidelines`** (prose review — Sofia's copy, these docs). The React, React Native and Vercel deploy/token skills were not added: no Next.js/Vercel project here, and the deploy skills need a Vercel token. `npx skills add vercel-labs/agent-skills` adds them later in one line |
-| `vercel-labs/agent-browser` (Apache-2.0) | Fast Rust browser CLI for agents: open, accessibility snapshot with `@e1` refs, fill, click, read, screenshot, sessions | **`agent-browser` skill vendored** (with Steven's guardrails on top); the Mac installer pins the CLI at 0.39.0 and downloads its Chrome |
+| `vercel-labs/agent-browser` (Apache-2.0) | Fast Rust browser CLI for agents: open, accessibility snapshot with `@e1` refs, fill, click, read, screenshot, sessions | **`agent-browser` skill vendored** (with Steven's guardrails on top); the Mac installer pins the CLI at 0.43.0 (bumped from 0.39.0 on 2026-11-15) and downloads its Chrome |
 | `microsoft/playwright` (Apache-2.0) | The browser-automation library. What gives Claude control of a browser is Microsoft's **Playwright MCP** (`@playwright/mcp`), built on it | Mac installer registers Playwright MCP 0.0.83 for Claude Code (user scope) with its own browser profile; prints the 3-line block for Claude Desktop |
 | `agenticskills.io/tools` | — | **Could not be reached: the domain does not resolve (DNS: ENOTFOUND, 2026-10-10).** Nothing installed. If Steven has the right address, the weekly scout or `npx skills find` covers the same need |
 
@@ -55,6 +55,11 @@ It ends with a self-test (opens a local page, types an address, clicks Search, r
 - agent-browser 0.39.0 with the sandbox's Chromium: opened a local page, took an accessibility snapshot (`heading`,
   `textbox @e2`, `button @e3`), filled `123 Main St Temecula`, clicked, read back `searched:123 Main St Temecula`; opened
   example.com and read its title. The installer's self-test commands were run exactly as written: PASS.
+- agent-browser 0.43.0 (2026-11-15 bump): same self-test with the sandbox's Chromium — accessibility snapshot
+  (`textbox "Search" @e1`, `button "Go" @e2`), fill, click, read back `clicked:hello steven`: PASS. The 0.40/0.41
+  breaking changes are in the separate `@agent-browser/eve` extension, not this CLI; 0.41 also stops an MCP tool
+  argument from overriding the domain allowlist. OpenMausBot (`integrations/openmausbot/`) uses its own pinned
+  agent-browser as its bots' browser.
 - Playwright MCP 0.0.83: MCP handshake and `tools/list` over stdio: 25 browser tools.
 - skills CLI 1.7.2: `--help` runs; its search reached no results from this sandbox (network policy).
 - `install.sh --dry-run`: every step asks, nothing changes.
