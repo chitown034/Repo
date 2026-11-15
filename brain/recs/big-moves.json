@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-14T14:08:13Z",
- "date": "2026-11-14",
+ "generated": "2026-11-15T20:12:10Z",
+ "date": "2026-11-15",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -108,6 +108,27 @@
    "rank": 5
   },
   {
+   "id": "bm_18a228a6eb",
+   "category": "sync",
+   "topic": "fieldy",
+   "title": "Resync the Fieldy meetings (recorded conversations) layer",
+   "why": "last stamp 2026-11-12, 3 days old, cadence 1 d",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.9,
+   "plan": [
+    "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
+    "bin/brain layers --write; confirm 'even: yes'"
+   ],
+   "source": "layers",
+   "weight": 1.0,
+   "score": 2.7,
+   "value": "high",
+   "rank": 6
+  },
+  {
    "id": "bm_c8dd0e3f61",
    "category": "steven",
    "topic": "drip",
@@ -128,7 +149,7 @@
    "weight": 1.772,
    "score": 2.51,
    "value": "high",
-   "rank": 6
+   "rank": 7
   },
   {
    "id": "bm_6b1e5bf84e",
@@ -150,7 +171,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 7
+   "rank": 8
   },
   {
    "id": "bm_52e0d6276e",
@@ -172,7 +193,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 8
+   "rank": 9
   },
   {
    "id": "bm_da69253e89",
@@ -188,28 +209,6 @@
    "plan": [
     "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
     "nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread",
-    "Vanessa re-checks the status on the next connect report and closes the item"
-   ],
-   "source": "toolkit:connector",
-   "weight": 1.0,
-   "score": 2.4,
-   "value": "high",
-   "rank": 9
-  },
-  {
-   "id": "bm_96168aa081",
-   "category": "connect",
-   "topic": "",
-   "title": "Connect Night-time answer latency",
-   "why": "up to 60 minutes until the Mac window is widened, then 10 minutes",
-   "owner": "Derek",
-   "executor": "vanessa",
-   "impact": 3,
-   "effort": 1,
-   "confidence": 0.8,
-   "plan": [
-    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
-    "\u2014",
     "Vanessa re-checks the status on the next connect report and closes the item"
    ],
    "source": "toolkit:connector",
@@ -415,29 +414,6 @@
      "value": "high",
      "rank": 8,
      "coa": "big-move"
-    },
-    {
-     "id": "bm_96168aa081",
-     "category": "connect",
-     "topic": "",
-     "title": "Connect Night-time answer latency",
-     "why": "up to 60 minutes until the Mac window is widened, then 10 minutes",
-     "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.8,
-     "plan": [
-      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
-      "\u2014",
-      "Vanessa re-checks the status on the next connect report and closes the item"
-     ],
-     "source": "toolkit:connector",
-     "weight": 1.0,
-     "score": 2.4,
-     "value": "high",
-     "rank": 9,
-     "coa": "big-move"
     }
    ]
   },
@@ -542,6 +518,28 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
+     "id": "bm_18a228a6eb",
+     "category": "sync",
+     "topic": "fieldy",
+     "title": "Resync the Fieldy meetings (recorded conversations) layer",
+     "why": "last stamp 2026-11-12, 3 days old, cadence 1 d",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.9,
+     "plan": [
+      "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
+      "bin/brain layers --write; confirm 'even: yes'"
+     ],
+     "source": "layers",
+     "weight": 1.0,
+     "score": 2.7,
+     "value": "high",
+     "rank": 1,
+     "coa": "risk"
+    },
+    {
      "id": "bm_4d61c46e96",
      "category": "ops",
      "topic": "",
@@ -560,7 +558,7 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 1,
+     "rank": 2,
      "coa": "risk"
     },
     {
@@ -582,15 +580,15 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 2,
+     "rank": 3,
      "coa": "risk"
     },
     {
-     "id": "bm_a0cbe5ca2b",
+     "id": "bm_df7be88089",
      "category": "ops",
      "topic": "",
-     "title": "Repair Mac task brain-weekly-verify",
-     "why": "runnerStatus (2026-11-14) shows brain-weekly-verify last run refused.",
+     "title": "Repair Mac task brain-learn-daily",
+     "why": "runnerStatus (2026-11-14) shows brain-learn-daily last run refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -599,30 +597,7 @@
      "plan": [
       "Read the task's log from the next connect-all REPORT",
       "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run brain-weekly-verify`"
-     ],
-     "source": "deck runnerStatus",
-     "coa": "risk",
-     "weight": 1.0,
-     "score": 1.2,
-     "value": "medium",
-     "rank": 3
-    },
-    {
-     "id": "bm_a1001f81be",
-     "category": "ops",
-     "topic": "",
-     "title": "Repair Mac task fabric-deck-sync",
-     "why": "runnerStatus (2026-11-14) shows fabric-deck-sync last run error.",
-     "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 2,
-     "confidence": 0.8,
-     "plan": [
-      "Read the task's log from the next connect-all REPORT",
-      "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run fabric-deck-sync`"
+      "Steven pastes `runnerctl run brain-learn-daily`"
      ],
      "source": "deck runnerStatus",
      "coa": "risk",
@@ -748,11 +723,11 @@
    "ref": "bm_d72970e1e7"
   },
   {
-   "q": "What should I do about: Clear Needs-Steven item 1 in today's brief (p1)?",
-   "a": "cosBrief needsSteven, deadline overdue (39 days at Clear to Close).",
-   "action": "Open the Command Deck cosBrief card",
+   "q": "What should I do about: Resync the Fieldy meetings (recorded conversations) layer?",
+   "a": "last stamp 2026-11-12, 3 days old, cadence 1 d.",
+   "action": "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
    "coa": "risk",
-   "ref": "bm_4d61c46e96"
+   "ref": "bm_18a228a6eb"
   },
   {
    "q": "What should I do about: Drips and texts?",
