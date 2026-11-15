@@ -917,6 +917,8 @@ through Apple Health and the same export file once Steven switches the nutrition
   `bin/brain org` carries the summary to the Command Deck's new MausBots panel; `scripts/fix-mine.sh` installs the
   command and applies the org when the app is open. The app's model list was checked: Fable 5.2 and Opus 5.5 are both
   offered. Still Steven's: open the app once on the Mac (its first-run sign-in is his).
+- **Same day: "add Mausbots to the personal and business bots tabs".** The Bot Crew has a MausBots group on its
+  Personal tab (7 cards) and its Professional tab (9 team Chiefs); see `wiki/ai-team/bot-crew.md`.
 
 ## 2026-11-15 — Sellbird (cold-email outreach) installed locked
 - **Decision.** Steven: "install and configure sellbird within my dashboard". `integrations/sellbird/install.sh` clones

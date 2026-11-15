@@ -4,6 +4,16 @@ The Bot Crew (https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG) is Steven's in-
 `wiki/ai-team/org-chart.md` has a chat card there, plus the specialist groups that roll up under each executive.
 It sits under Vanessa as a surface, not a new seat. Last aligned with the org chart 2026-10-22 (wave 6).
 
+## MausBots groups (2026-11-15)
+
+Steven: "add Mausbots to the personal and business bots tabs as well". Two groups mirror the OpenMausBot teams
+(`integrations/openmausbot/`): **Personal tab** — MausBots personal team, 7 cards (Vanessa as the front door, Fitness
+Trainer, Meal Planner, Health Coach, Travel Desk, Meeting Scribe, markets Research Committee); **Professional tab** —
+MausBots business teams, 9 cards, one per team Chief (Executive Office, Finance, Marketing, Technology, Compliance, AI
+Strategy, Revenue, Security, Innovation). Each card works here with the crew's tools and names the team and bot to
+message in MausBots when the real bot is needed. Page total after the change: 470 cards (188 personal, 277
+professional, 5 originals). The Command Deck's MausBots card (AI Team page) links here.
+
 ## What is on it (2026-10-22)
 
 | Part | Count | Notes |
