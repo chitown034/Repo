@@ -911,3 +911,9 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Verified.** Cloud sandbox: team file applied end to end on a throwaway OpenMausBot server (110 created, re-run: no
   changes); agent-browser 0.43.0 fill/click/read self-test PASS. **Owner.** Derek (install), Vanessa (org). **Status.**
   Steven runs `install.sh`, opens the app, then `install.sh plan` and `install.sh apply` on the Mac.
+- **2026-11-15, later: "add mausbots to the dashboard and finish setting up".** The mapping moved into the brain:
+  `brain/mausbot.py` + `bin/brain mausbot` (check, `--write`, `--json`); `bin/brain os write` rebuilds the team file with
+  the agent files; every seat in `agents.json` carries its MausBots team and whether it is a bot or on a bench;
+  `bin/brain org` carries the summary to the Command Deck's new MausBots panel; `scripts/fix-mine.sh` installs the
+  command and applies the org when the app is open. The app's model list was checked: Fable 5.2 and Opus 5.5 are both
+  offered. Still Steven's: open the app once on the Mac (its first-run sign-in is his).

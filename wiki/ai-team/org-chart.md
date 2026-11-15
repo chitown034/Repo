@@ -205,6 +205,16 @@ click that submits, sends, pays or signs stops for Steven. `bin/brain route` bri
 
 Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia scans outward and writes the weekly Disruption Brief (replace/upgrade/adopt, graded ADOPT/PILOT/WATCH/IGNORE); Elon vets every item for feasibility, integration cost and security risk before it can enter the test queue. Both report to Vanessa like every seat (2026-11-02); their proposals reach Steven through her. The LLM Council and the digital twin are proposal-only in the same sense — see `wiki/ai-team/tool-integration-status.md` for what that means for Orca, Laya, and 77skills specifically.
 
+## Inside OpenMausBot (2026-11-15)
+
+The same org also runs as a chat team in OpenMausBot on the Mac (`integrations/openmausbot/`). Nine teams: Executive
+Office (Chief: Vanessa, who manages the other eight) and one per executive (Finance: Marcus, Marketing: Sofia,
+Technology: Derek, Compliance: Alexandra, AI Strategy: Nadia, Revenue: Victor, Security: Elena, Innovation: Elon). A
+seat joins the team of the executive above it. The app holds 100 bots, so 91 seats are bots and 94 sit on their Chief's
+specialist bench, dispatched as Claude Code subagents. Every bot starts on Ask, with no computer and no browser.
+`bin/brain mausbot` shows the counts and proves the team file matches the roster; the Command Deck's MausBots panel
+shows the same.
+
 ## See also
 
 - `wiki/ai-team/model-tiering-dispatch.md` — which model each layer of this chart runs on, and the parallel-dispatch limits.

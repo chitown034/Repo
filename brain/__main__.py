@@ -94,6 +94,9 @@ def _parser() -> argparse.ArgumentParser:
     cv.add_argument("--deck-doc", help="write the processCoverage document (JSON) for the deck's card to this path")
     cv.add_argument("--scan", help="a Command Deck HTML export: rebuild docs/inventory/deck-doc-panels.json from it")
     cv.add_argument("--json", action="store_true")
+    mb = sub.add_parser("mausbot", help="MausBots (OpenMausBot): the AI org as teams, Chiefs, bots and benches; --write rebuilds integrations/openmausbot/team.yaml")
+    mb.add_argument("--write", action="store_true", help="rewrite team.yaml and the Chiefs' souls from the roster")
+    mb.add_argument("--json", action="store_true", help="the dashboard summary as JSON")
     og = sub.add_parser("org", help="the AI org chart as one JSON: seats, lanes, pods, tiers (what every dashboard should show)")
     ex = sub.add_parser("export", help="export the brain for another tool: `notebooklm` writes exports/notebooklm/*.md (no client pages, PII masked)")
     ex.add_argument("target", choices=["notebooklm"]); ex.add_argument("--out", default=None, help="folder (default exports/notebooklm)")
@@ -278,13 +281,28 @@ def main(argv: list[str] | None = None) -> int:
             for r in coverage.gaps(rows):
                 print("  %-26s %-14s %-8s %s — %s" % (r["doc"], r["status"], "" if r["ageHours"] is None else "%dh" % r["ageHours"], r["owner"], (r["note"] or r["writer"])[:90]))
         return 0
+    if args.cmd == "mausbot":
+        from . import mausbot
+        try:
+            if args.write:
+                r = mausbot.write(root)
+                print(f"wrote {mausbot.TEAM_FILE}: {r['bots']} bots in {len(r['teams'])} teams, {len(r['rooms'])} rooms, {r['bench']} seats on Chiefs' benches")
+                for t in r["teams"]:
+                    print(f"  {t['name']}: {t['bots']} bots + {t['bench']} on {t['chief']}'s bench")
+                return 0
+            if args.json:
+                print(json.dumps(mausbot.summary(root), ensure_ascii=False, indent=1)); return 0
+        except mausbot.MausbotError as e:
+            print("mausbot: FAIL", e); return 1
+        r = mausbot.check(root); print(mausbot.format_check(r)); return 0 if r["ok"] else 1
     if args.cmd == "org":
-        from . import loop as loop_mod, route as route_mod
+        from . import loop as loop_mod, mausbot as mausbot_mod, route as route_mod
         rules = route_mod.load_rules(root)
         seats = loop_mod.org_seats(root)
         print(json.dumps({"generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "seats": seats,
                           "lanes": {k: v for k, v in rules["lanes"].items()}, "tiers": rules["tiers"],
                           "pods": [{"pod": n, "words": w, "seats": m, "delivers": d} for n, w, m, d in rules["pods"]],
+                          "mausbot": mausbot_mod.summary(root),
                           "source": "wiki/ai-team/org-chart.md + cross-functional.md (bin/brain org)"}, indent=1)); return 0
     if args.cmd == "deck-stamp":
         from . import layers
@@ -309,11 +327,17 @@ def main(argv: list[str] | None = None) -> int:
         from . import agentos
         t = " ".join(args.target)
         if args.action == "write":
-            print("wrote", agentos.write(root)); return 0
+            from . import mausbot
+            print("wrote", agentos.write(root))
+            if (root / mausbot.AGENT_DIR).is_dir():   # MausBots follows the roster: same seats, same reporting lines
+                r = mausbot.write(root); print(f"wrote {mausbot.TEAM_FILE}: {r['bots']} bots + {r['bench']} benched")
+            return 0
         if args.action == "agents":
             from . import agentfiles
             if args.write:
-                n, out = agentfiles.write(root); print(f"wrote {n} agent files -> {out}"); return 0
+                from . import mausbot
+                n, out = agentfiles.write(root); print(f"wrote {n} agent files -> {out}")
+                r = mausbot.write(root); print(f"wrote {mausbot.TEAM_FILE}: {r['bots']} bots + {r['bench']} benched"); return 0
             r = agentfiles.check(root); print(f"agent files: {r['present']}/{r['total']} present, {len(r['bad_frontmatter'])} bad, {len(r['bad_chains'])} broken reporting lines" + "".join("\n  " + b for b in r["bad_chains"])); return 0 if not r["missing"] and not r["bad_frontmatter"] and not r["bad_chains"] else 1
         if args.action == "check":
             r = agentos.check(root); print(agentos.format_check(r)); return 0 if not r["unreachable"] and not r["manifest_stale"] else 1

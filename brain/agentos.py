@@ -20,6 +20,7 @@ import json
 import re
 from pathlib import Path
 
+from . import mausbot as mausbot_mod
 from . import route as route_mod
 
 ROSTER = "docs/inventory/agent-roster.md"
@@ -103,9 +104,15 @@ def build(root: Path) -> dict:
     rules = route_mod.load_rules(root)
     agents = [entry(root, a, rules) for a in load_roster(root)]
     named = {n: {"agent": slug, "via": via} for n, (slug, via) in ALIASES.items()}
+    try:   # MausBots (OpenMausBot): the team each seat sits in, as its own bot or on its Chief's specialist bench
+        placement = mausbot_mod.place(agents, named)
+    except mausbot_mod.MausbotError:
+        placement = {}
+    for a in agents:
+        a["mausbot"] = placement.get(a["slug"]) or {"team": None, "as": None, "chief": None, "name": a["slug"]}
     return {"count": len(agents), "agents": agents, "named_seats": named,
             "surfaces": {"laya": "integrations/laya/", "jarvis": "integrations/jarvis/", "orca": "integrations/remote-control/orca-remote.sh",
-                         "planner": "bin/brain route"}}
+                         "mausbot": "integrations/openmausbot/", "planner": "bin/brain route"}}
 
 
 def write(root: Path) -> Path:
@@ -116,9 +123,10 @@ def write(root: Path) -> Path:
 
 
 def check(root: Path) -> dict:
-    """Is every roster agent reachable through all three surfaces, and is the written manifest current?"""
+    """Is every roster agent reachable through all four surfaces (Laya, Jarvis, Orca, MausBots), and is the manifest current?"""
     m = build(root)
-    bad = [a["slug"] for a in m["agents"] if not (a["laya"]["lane"] and a["jarvis"]["recall"] and a["orca"]["command"])]
+    bad = [a["slug"] for a in m["agents"]
+           if not (a["laya"]["lane"] and a["jarvis"]["recall"] and a["orca"]["command"] and a["mausbot"]["team"])]
     stale = True
     p = root / MANIFEST
     if p.is_file():
@@ -183,7 +191,7 @@ def plan_launch(root: Path, request: str) -> str:
 
 
 def format_check(r: dict) -> str:
-    out = [f"agent OS: {r['reachable']}/{r['total']} roster agents reachable via Laya lane + Jarvis recall + Orca launch command",
+    out = [f"agent OS: {r['reachable']}/{r['total']} roster agents reachable via Laya lane + Jarvis recall + Orca launch command + MausBots team",
            f"manifest {MANIFEST}: {'STALE — run bin/brain os write' if r['manifest_stale'] else 'current'}"]
     if r["named_seats_unresolved"]:
         out.append("named seats with no roster slug: " + ", ".join(r["named_seats_unresolved"]))

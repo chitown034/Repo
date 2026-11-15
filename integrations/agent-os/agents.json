@@ -32,6 +32,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "a11y-architect"
    }
   },
   {
@@ -58,6 +64,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Security",
+    "as": "bench",
+    "chief": "ciso-elena",
+    "name": "access-auditor"
    }
   },
   {
@@ -91,6 +103,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "ad-compliance-reviewer"
    }
   },
   {
@@ -117,6 +135,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "agent-evaluator"
    }
   },
   {
@@ -144,6 +168,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "appraisal-manager"
    }
   },
   {
@@ -177,6 +207,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "architect"
    }
   },
   {
@@ -210,6 +246,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "automation-engineer"
    }
   },
   {
@@ -236,6 +278,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "bookkeeper"
    }
   },
   {
@@ -263,6 +311,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "borrower-retention-agent"
    }
   },
   {
@@ -289,6 +343,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "Maxwell (broker-coach-maxwell)"
    }
   },
   {
@@ -322,6 +382,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "build-error-resolver"
    }
   },
   {
@@ -349,6 +415,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "buyer-matching-engine"
    }
   },
   {
@@ -376,6 +448,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "Gwen (buyers-agent-elite)"
    }
   },
   {
@@ -403,6 +481,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bot",
+    "chief": "cco-alexandra",
+    "name": "Denise (ca-loan-processor)"
    }
   },
   {
@@ -430,6 +514,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "Carmen (ca-transaction-coordinator)"
    }
   },
   {
@@ -457,6 +547,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bot",
+    "chief": "cco-alexandra",
+    "name": "Howard (ca-underwriter)"
    }
   },
   {
@@ -483,6 +579,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bot",
+    "chief": "caio-nadia",
+    "name": "Nadia (caio-nadia)"
    }
   },
   {
@@ -509,6 +611,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bench",
+    "chief": "vanessa-orchestrator",
+    "name": "calendar-prep"
    }
   },
   {
@@ -541,6 +649,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "capability-engineer"
    }
   },
   {
@@ -568,6 +682,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bot",
+    "chief": "cco-alexandra",
+    "name": "Alexandra (cco-alexandra)"
    }
   },
   {
@@ -594,6 +714,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "Marcus (cfo-marcus)"
    }
   },
   {
@@ -620,6 +746,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "chief-automation-strategist"
    }
   },
   {
@@ -646,6 +778,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "chief-of-staff"
    }
   },
   {
@@ -672,6 +810,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Security",
+    "as": "bot",
+    "chief": "ciso-elena",
+    "name": "Elena (ciso-elena)"
    }
   },
   {
@@ -699,6 +843,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "client-concierge"
    }
   },
   {
@@ -726,6 +876,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "closing-coordinator"
    }
   },
   {
@@ -753,6 +909,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "Sofia (cmo-sofia)"
    }
   },
   {
@@ -786,6 +948,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "code-architect"
    }
   },
   {
@@ -819,6 +987,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "code-explorer"
    }
   },
   {
@@ -852,6 +1026,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "code-reviewer"
    }
   },
   {
@@ -885,6 +1065,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "code-simplifier"
    }
   },
   {
@@ -918,6 +1104,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "code-validator"
    }
   },
   {
@@ -951,6 +1143,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "comment-analyzer"
    }
   },
   {
@@ -977,6 +1175,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "commission-tracker"
    }
   },
   {
@@ -1004,6 +1208,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "competitive-intelligence-analyst"
    }
   },
   {
@@ -1030,6 +1240,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bench",
+    "chief": "cro-victor",
+    "name": "competitor-watch"
    }
   },
   {
@@ -1057,6 +1273,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "content-writer"
    }
   },
   {
@@ -1083,6 +1305,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "conversation-analyzer"
    }
   },
   {
@@ -1116,6 +1344,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "cpp-build-resolver"
    }
   },
   {
@@ -1149,6 +1383,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "cpp-reviewer"
    }
   },
   {
@@ -1176,6 +1416,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "credit-analyst"
    }
   },
   {
@@ -1203,6 +1449,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "Victor (cro-victor)"
    }
   },
   {
@@ -1236,6 +1488,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "csharp-reviewer"
    }
   },
   {
@@ -1269,6 +1527,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bot",
+    "chief": "cto-derek",
+    "name": "Derek (cto-derek)"
    }
   },
   {
@@ -1302,6 +1566,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Innovation",
+    "as": "bot",
+    "chief": "cto-innovator",
+    "name": "Elon (cto-innovator)"
    }
   },
   {
@@ -1335,6 +1605,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "dart-build-resolver"
    }
   },
   {
@@ -1368,6 +1644,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "data-steward"
    }
   },
   {
@@ -1401,6 +1683,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "database-reviewer"
    }
   },
   {
@@ -1428,6 +1716,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "deal-desk-analyst"
    }
   },
   {
@@ -1454,6 +1748,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "disruption-scout"
    }
   },
   {
@@ -1487,6 +1787,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "django-build-resolver"
    }
   },
   {
@@ -1520,6 +1826,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "django-reviewer"
    }
   },
   {
@@ -1553,6 +1865,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "doc-updater"
    }
   },
   {
@@ -1579,6 +1897,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "docs-lookup"
    }
   },
   {
@@ -1606,6 +1930,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "Document Intake Clerk (document-intake-clerk)"
    }
   },
   {
@@ -1633,6 +1963,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "document-intelligence-agent"
    }
   },
   {
@@ -1666,6 +2002,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "e2e-runner"
    }
   },
   {
@@ -1699,6 +2041,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bot",
+    "chief": "cto-derek",
+    "name": "ecc-accessibility-lead"
    }
   },
   {
@@ -1731,6 +2079,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "ecc-agent-safety-officer"
    }
   },
   {
@@ -1763,6 +2117,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Security",
+    "as": "bench",
+    "chief": "ciso-elena",
+    "name": "ecc-dependency-steward"
    }
   },
   {
@@ -1796,6 +2156,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "ecc-observability-lead"
    }
   },
   {
@@ -1828,6 +2194,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Security",
+    "as": "bench",
+    "chief": "ciso-elena",
+    "name": "ecc-security-steward"
    }
   },
   {
@@ -1861,6 +2233,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "ecc-standards-officer"
    }
   },
   {
@@ -1894,6 +2272,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "ecc-test-architect"
    }
   },
   {
@@ -1926,6 +2310,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "efficiency-engineer"
    }
   },
   {
@@ -1952,6 +2342,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "escalation-recovery-agent"
    }
   },
   {
@@ -1985,6 +2381,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "fastapi-reviewer"
    }
   },
   {
@@ -2011,6 +2413,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "fitness-trainer"
    }
   },
   {
@@ -2044,6 +2452,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "flutter-reviewer"
    }
   },
   {
@@ -2077,6 +2491,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "fsharp-reviewer"
    }
   },
   {
@@ -2103,6 +2523,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "fundamental-analyst"
    }
   },
   {
@@ -2129,6 +2555,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "gan-evaluator"
    }
   },
   {
@@ -2162,6 +2594,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Innovation",
+    "as": "bench",
+    "chief": "cto-innovator",
+    "name": "gan-generator"
    }
   },
   {
@@ -2195,6 +2633,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Innovation",
+    "as": "bench",
+    "chief": "cto-innovator",
+    "name": "gan-planner"
    }
   },
   {
@@ -2222,6 +2666,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "geo-aeo-optimizer"
    }
   },
   {
@@ -2255,6 +2705,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "go-build-resolver"
    }
   },
   {
@@ -2288,6 +2744,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "go-reviewer"
    }
   },
   {
@@ -2321,6 +2783,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "harmonyos-app-resolver"
    }
   },
   {
@@ -2347,6 +2815,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "harness-optimizer"
    }
   },
   {
@@ -2373,6 +2847,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "health-coach-analyst"
    }
   },
   {
@@ -2406,6 +2886,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "healthcare-reviewer"
    }
   },
   {
@@ -2439,6 +2925,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "homelab-architect"
    }
   },
   {
@@ -2466,6 +2958,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bench",
+    "chief": "cmo-sofia",
+    "name": "hook-writer"
    }
   },
   {
@@ -2492,6 +2990,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bench",
+    "chief": "cro-victor",
+    "name": "inbox-triage"
    }
   },
   {
@@ -2518,6 +3022,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "incentives-programs-scout"
    }
   },
   {
@@ -2545,6 +3055,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "inspection-repair-negotiator"
    }
   },
   {
@@ -2577,6 +3093,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "integration-engineer"
    }
   },
   {
@@ -2604,6 +3126,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "investor-client-manager"
    }
   },
   {
@@ -2637,6 +3165,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "java-build-resolver"
    }
   },
   {
@@ -2670,6 +3204,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "java-reviewer"
    }
   },
   {
@@ -2703,6 +3243,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "kotlin-build-resolver"
    }
   },
   {
@@ -2736,6 +3282,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "kotlin-reviewer"
    }
   },
   {
@@ -2763,6 +3315,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "lead-triage-analyst"
    }
   },
   {
@@ -2790,6 +3348,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "Marguerite (listing-agent-elite)"
    }
   },
   {
@@ -2817,6 +3381,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "loan-servicing-transfer"
    }
   },
   {
@@ -2843,6 +3413,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "loop-operator"
    }
   },
   {
@@ -2870,6 +3446,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "lpt-recruiting-downline"
    }
   },
   {
@@ -2897,6 +3479,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "luxury-market-specialist"
    }
   },
   {
@@ -2923,6 +3511,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "market-scout"
    }
   },
   {
@@ -2950,6 +3544,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bench",
+    "chief": "cmo-sofia",
+    "name": "marketing-agent"
    }
   },
   {
@@ -2976,6 +3576,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "mbs-market-intelligence"
    }
   },
   {
@@ -3002,6 +3608,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "meal-planner"
    }
   },
   {
@@ -3028,6 +3640,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "Meeting Scribe (meeting-scribe)"
    }
   },
   {
@@ -3055,6 +3673,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "military-licensing-partnerships"
    }
   },
   {
@@ -3082,6 +3706,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "military-relocation-specialist"
    }
   },
   {
@@ -3109,6 +3739,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-affiliate-partnerships"
    }
   },
   {
@@ -3136,6 +3772,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-analytics-lead"
    }
   },
   {
@@ -3163,6 +3805,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-brand-strategist"
    }
   },
   {
@@ -3190,6 +3838,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-creative-designer"
    }
   },
   {
@@ -3217,6 +3871,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-direct-mail-farming"
    }
   },
   {
@@ -3244,6 +3904,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-email-campaign-manager"
    }
   },
   {
@@ -3271,6 +3937,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-listing-marketing-specialist"
    }
   },
   {
@@ -3298,6 +3970,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-paid-ads-manager"
    }
   },
   {
@@ -3325,6 +4003,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-pr-media-relations"
    }
   },
   {
@@ -3352,6 +4036,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-reputation-manager"
    }
   },
   {
@@ -3379,6 +4069,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-social-media-manager"
    }
   },
   {
@@ -3406,6 +4102,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "mktg-video-producer"
    }
   },
   {
@@ -3438,6 +4140,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "mle-reviewer"
    }
   },
   {
@@ -3465,6 +4173,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "modelmatch-partner-network"
    }
   },
   {
@@ -3491,6 +4205,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "mortgage-analytics-lead"
    }
   },
   {
@@ -3518,6 +4238,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "mortgage-broker-elite"
    }
   },
   {
@@ -3545,6 +4271,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "mortgage-guideline-agent"
    }
   },
   {
@@ -3572,6 +4304,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "mortgage-intake-agent"
    }
   },
   {
@@ -3599,6 +4337,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "mortgage-isa-ai"
    }
   },
   {
@@ -3626,6 +4370,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "mortgage-qa-auditor"
    }
   },
   {
@@ -3659,6 +4409,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "network-architect"
    }
   },
   {
@@ -3692,6 +4448,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "network-config-reviewer"
    }
   },
   {
@@ -3725,6 +4487,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "network-troubleshooter"
    }
   },
   {
@@ -3752,6 +4520,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "new-construction-specialist"
    }
   },
   {
@@ -3778,6 +4552,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "news-analyst"
    }
   },
   {
@@ -3805,6 +4585,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "nonprofit-grant-writer"
    }
   },
   {
@@ -3831,6 +4617,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "nonprofit-grants-lead"
    }
   },
   {
@@ -3858,6 +4650,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "Open House Captain (open-house-captain)"
    }
   },
   {
@@ -3891,6 +4689,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Innovation",
+    "as": "bench",
+    "chief": "cto-innovator",
+    "name": "opensource-forker"
    }
   },
   {
@@ -3924,6 +4728,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Innovation",
+    "as": "bench",
+    "chief": "cto-innovator",
+    "name": "opensource-packager"
    }
   },
   {
@@ -3950,6 +4760,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Security",
+    "as": "bench",
+    "chief": "ciso-elena",
+    "name": "opensource-sanitizer"
    }
   },
   {
@@ -3983,6 +4799,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "performance-optimizer"
    }
   },
   {
@@ -4009,6 +4831,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Security",
+    "as": "bench",
+    "chief": "ciso-elena",
+    "name": "phishing-triage"
    }
   },
   {
@@ -4042,6 +4870,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "php-reviewer"
    }
   },
   {
@@ -4075,6 +4909,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "planner"
    }
   },
   {
@@ -4101,6 +4941,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "portfolio-manager"
    }
   },
   {
@@ -4134,6 +4980,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "pr-test-analyzer"
    }
   },
   {
@@ -4161,6 +5013,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "predictive-lead-mining"
    }
   },
   {
@@ -4188,6 +5046,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "premium-lead-partnerships"
    }
   },
   {
@@ -4221,6 +5085,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "python-reviewer"
    }
   },
   {
@@ -4254,6 +5124,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "pytorch-build-resolver"
    }
   },
   {
@@ -4280,6 +5156,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "quant-analyst"
    }
   },
   {
@@ -4312,6 +5194,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "rag-pipeline-reviewer"
    }
   },
   {
@@ -4339,6 +5227,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "rate-pricing-optimizer"
    }
   },
   {
@@ -4365,6 +5259,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "re-market-analytics"
    }
   },
   {
@@ -4398,6 +5298,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "react-build-resolver"
    }
   },
   {
@@ -4431,6 +5337,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "react-reviewer"
    }
   },
   {
@@ -4458,6 +5370,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "realtor-reciprocity-agent"
    }
   },
   {
@@ -4491,6 +5409,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "refactor-cleaner"
    }
   },
   {
@@ -4518,6 +5442,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "Refi Watch Analyst (refi-watch-analyst)"
    }
   },
   {
@@ -4545,6 +5475,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "refinance-hunter"
    }
   },
   {
@@ -4577,6 +5513,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "reliability-engineer"
    }
   },
   {
@@ -4603,6 +5545,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "AI Strategy",
+    "as": "bench",
+    "chief": "caio-nadia",
+    "name": "research-analyst"
    }
   },
   {
@@ -4629,6 +5577,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "risk-manager"
    }
   },
   {
@@ -4662,6 +5616,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "rust-build-resolver"
    }
   },
   {
@@ -4695,6 +5655,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "rust-reviewer"
    }
   },
   {
@@ -4727,6 +5693,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "sandbox-qa"
    }
   },
   {
@@ -4759,6 +5731,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Security",
+    "as": "bench",
+    "chief": "ciso-elena",
+    "name": "security-reviewer"
    }
   },
   {
@@ -4786,6 +5764,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bench",
+    "chief": "cmo-sofia",
+    "name": "seo-specialist"
    }
   },
   {
@@ -4813,6 +5797,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "showing-coordinator"
    }
   },
   {
@@ -4846,6 +5836,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "silent-failure-hunter"
    }
   },
   {
@@ -4879,6 +5875,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "spec-miner"
    }
   },
   {
@@ -4906,6 +5908,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "Sphere Nurture Coordinator (sphere-nurture-coordinator)"
    }
   },
   {
@@ -4938,6 +5946,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "stress-test-engineer"
    }
   },
   {
@@ -4971,6 +5985,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "swift-build-resolver"
    }
   },
   {
@@ -5004,6 +6024,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "swift-reviewer"
    }
   },
   {
@@ -5030,6 +6056,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Finance",
+    "as": "bot",
+    "chief": "cfo-marcus",
+    "name": "tax-deadline-analyst"
    }
   },
   {
@@ -5063,6 +6095,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "tdd-guide"
    }
   },
   {
@@ -5089,6 +6127,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "technical-analyst"
    }
   },
   {
@@ -5116,6 +6160,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "title-report-analyst"
    }
   },
   {
@@ -5142,6 +6192,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "Travel Desk (travel-desk)"
    }
   },
   {
@@ -5169,6 +6225,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Compliance",
+    "as": "bench",
+    "chief": "cco-alexandra",
+    "name": "trid-timeline-checker"
    }
   },
   {
@@ -5202,6 +6264,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "type-design-analyzer"
    }
   },
   {
@@ -5235,6 +6303,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "typescript-reviewer"
    }
   },
   {
@@ -5268,6 +6342,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "ux-designer"
    }
   },
   {
@@ -5294,6 +6374,12 @@
     "gates": [
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Executive Office",
+    "as": "bot",
+    "chief": "vanessa-orchestrator",
+    "name": "Vanessa (vanessa-orchestrator)"
    }
   },
   {
@@ -5321,6 +6407,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "vendor-network-manager"
    }
   },
   {
@@ -5348,6 +6440,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Revenue",
+    "as": "bot",
+    "chief": "cro-victor",
+    "name": "Voicemail & Inbox Triage (voicemail-inbox-triage)"
    }
   },
   {
@@ -5381,6 +6479,12 @@
      "ECC",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Technology",
+    "as": "bench",
+    "chief": "cto-derek",
+    "name": "vue-reviewer"
    }
   },
   {
@@ -5408,6 +6512,12 @@
      "Alexandra",
      "Vanessa"
     ]
+   },
+   "mausbot": {
+    "team": "Marketing",
+    "as": "bot",
+    "chief": "cmo-sofia",
+    "name": "webinar-producer"
    }
   }
  ],
@@ -5521,6 +6631,7 @@
   "laya": "integrations/laya/",
   "jarvis": "integrations/jarvis/",
   "orca": "integrations/remote-control/orca-remote.sh",
+  "mausbot": "integrations/openmausbot/",
   "planner": "bin/brain route"
  }
 }

@@ -10,15 +10,18 @@ Staff**) and talk in **rooms**. Data stays on the Mac in `~/.openmausbot`.
 
 ## How the org maps
 
-`build-team.py` turns `integrations/agent-os/agents.json` into `team.yaml`, the file OpenMausBot's
-`openmausbot team apply` reads.
+`bin/brain mausbot --write` (code in `brain/mausbot.py`; `build-team.py` is a thin wrapper for the installer) turns the
+roster into `team.yaml`, the file OpenMausBot's `openmausbot team apply` reads. `bin/brain os write` rebuilds it with
+the agent files, so the two never drift, and every seat in `integrations/agent-os/agents.json` carries its MausBots
+placement (`mausbot.team`, `mausbot.as` = bot or bench, `mausbot.chief`). `bin/brain mausbot` checks the file is
+current; `bin/brain mausbot --json` is what the Command Deck's MausBots panel shows.
 
 | OpenMausBot | AI org |
 |---|---|
 | Team **Executive Office**, Chief **Vanessa** (Fable 5.2), manages every other team | Vanessa and the seats that report straight to her |
 | Teams **Finance, Marketing, Technology, Compliance, AI Strategy, Revenue, Security, Innovation** | One per executive: Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon (Opus 5.5), each its Chief |
 | A bot's team | The department of the executive above it in its reporting line |
-| A bot's soul (standing instructions) | Its agent file in `integrations/agent-os/agents/` (CLAUDE.md first, HALT list, gates) |
+| A bot's soul (standing instructions) | Its hand-written file in `.claude/agents/` when there is one, else its generated agent file in `integrations/agent-os/agents/` (CLAUDE.md first, HALT list, gates) |
 | Room **Exec council** (Vanessa answers) | Vanessa + the eight executives |
 | Room **<Team> room** (the Chief answers) | Everyone in that department |
 
@@ -68,6 +71,6 @@ updates only what changed. Bots are matched by name; nothing is deleted unless a
 - Current `team.yaml`: `--dry-run` plan, then apply: **110 created** (9 teams, 91 bots, 10 rooms), exit 0. Second
   apply with `--check`: **No changes**, exit 0. Vanessa listed as Chief of Executive Office on Fable 5.2; each
   executive as Chief of their team on Opus 5.5; every bot on Ask with computer off.
-- **Not verified (Mac only):** the desktop app, the bots answering on your Claude Code sign-in, and
-  `claude-fable-5-2` / `claude-opus-5-5` appearing in its model list (`openmausbot models`). If a model is not
-  offered there, change `MODELS`/`DEFAULT_MODEL` in `build-team.py` to one it lists and run `plan` again.
+- Model list (`openmausbot models`, engine `claude`): `claude-fable-5-2` and `claude-opus-5-5` are both offered, so
+  Vanessa on Fable 5.2 and everyone else on Opus 5.5 applies as written.
+- **Not verified (Mac only):** the desktop app, and the bots answering on your Claude Code sign-in.
