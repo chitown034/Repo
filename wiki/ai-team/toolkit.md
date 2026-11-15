@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (4 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 49 skills · 7 Claude mods (plugins) · 53 connectors (4 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -252,6 +252,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (4 ok, 49 need at
 - `openflowkit`: Draw diagrams that stay valid, editable and saved next to the code. Use when a flowchart, architecture, sequence, state, ER, class, mindmap or git graph would explain something better than prose, or when the user asks fo
 - `pr-lens`: WHAT: Draws a code change or part of a codebase as an animated architecture or data-flow diagram, on its own or in a pull request. WHEN: asked to diagram, visualise or explain a change or a system, or when a pull request
 - `reverse-engineering`: Reverse-engineering capability (REA) — gated. Describes morluto/rea (MIT, MCP server via npx rea-agents setup, 6.x) and the rules for when Steven's agents may use it and when not. Use when a seat proposes analysing a bin
+- `sellbird-setup`: Finish installing Sellbird (github.com/ethanplusai/sellbird) on Steven's Mac for partner prospecting, using the configuration in integrations/sellbird/. Use when Steven says 'finish setting up Sellbird', 'set up Sellbird
 - `source-driven-development`: Grounds every implementation decision in official documentation. Use when you want to verify an approach against the official docs before implementing it, or when you want authoritative, source-cited code free from outda
 
 **Claude mods (plugins)**
