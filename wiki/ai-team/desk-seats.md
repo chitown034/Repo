@@ -342,3 +342,12 @@ Daily Flow in the Broker Command Center:
   when consent is on file, otherwise a consent task.
 Morning Power Hour task in autopilot, a "every new lead touched within a day" health check, the Daily Flow numbers on
 the Command Deck live card, the Power week mission and the `daily_flow` tool.
+
+## Hollis — Partner Outreach Lead (Sellbird)
+
+Added 2026-11-15. Reports to Riley; member of the Growth & Marketing pod. Runs
+[Sellbird](https://github.com/ethanplusai/sellbird) (open source, AGPL-3.0) for the referral-partner channel —
+attorneys, builders and contractors in Temecula Valley and San Diego County, business-to-business only. Setup,
+configuration and the Mac installer live in `integrations/sellbird/`. Every email waits in Sellbird's Outbox for
+Steven's approval. The weekly export imports into Alliances on Growth → Sellbird Outreach in the Broker Command
+Center; replies become intro-call tasks for Riley and show in the Daily Flow inbox. Vanessa tool: `sellbird`.

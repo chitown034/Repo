@@ -1,0 +1,127 @@
+persona:
+  name: Steven
+  company: LPT Realty
+  role: 'Broker Associate & Mortgage Loan Originator (DRE #01988316, NMLS #2449246)'
+  email: steven@YOUR-SENDING-DOMAIN.com
+  linkedin: ''
+  tone: plain-spoken, warm, organized, no hype (retired Navy Chief)
+product:
+  name: Lending and real estate partner for your clients
+  description: 'A California broker associate (LPT Realty) who is also a licensed mortgage loan originator. Helps
+    local professionals serve clients who need to buy, sell or refinance a home: VA and military families (Camp
+    Pendleton, Miramar, NB San Diego, March ARB), first-time buyers, divorce and probate/trust sales, and investors,
+    across Temecula Valley and San Diego County. One point of contact for the loan and the transaction, fast pre-approvals,
+    and clear updates to the referring professional.'
+  pricing: No cost to partners. No referral fees or kickbacks (RESPA Section 8); clients choose their own providers.
+  key_benefits:
+  - VA, FHA, conventional and jumbo financing plus the real estate side under one licensed professional
+  - 'Military PCS specialist: remote tours, e-signing and timelines built around orders'
+  - Divorce, probate and trust sales handled with court and attorney timelines in mind
+  - Same-day pre-approval conversations and a written status update to you at every milestone
+  - Local data on Temecula, Murrieta, Menifee, Winchester, French Valley and San Diego communities
+  objection_responses:
+    already have a lender: Makes sense. Most attorneys and agents keep a short bench; I am happy to be the VA/military
+      option when a client needs one.
+    we do not refer: Understood, and no referral fees either way. If a client ever asks who handles VA loans or
+      a probate sale locally, I am an easy name to give.
+    not interested: No problem at all. I will not follow up again.
+    send me something: 'Sure: a one-page overview of how I keep referring professionals updated. What is the best
+      email?'
+  offer:
+    primary: A short intro call to see whether your clients could use a VA-savvy lender and agent
+    entry: A one-page partner overview and a sample client update
+    goal: book_call
+    booking_method: calendar_link
+    booking_url: https://tidycal.com/stevenshearrill/discovery-call
+    meeting_duration: 15 minutes
+    meeting_owner: Steven
+icp:
+  industries:
+  - real estate attorney
+  - estate planning attorney
+  - family law attorney
+  - divorce attorney
+  - probate attorney
+  - bankruptcy attorney
+  - home builder
+  - general contractor
+  company_size: 1-50 employees
+  titles:
+  - Owner
+  - Founder
+  - Managing Partner
+  - Partner
+  - Attorney
+  - Principal
+  - Broker
+  - President
+  geography:
+  - Temecula, CA
+  - Murrieta, CA
+  - Menifee, CA
+  - San Diego, CA
+  - Carlsbad, CA
+  - Oceanside, CA
+  - Escondido, CA
+  - Chula Vista, CA
+  hiring_signals: []
+  geo_coordinates:
+    Temecula, CA: 33.4936,-117.1484,15
+    Murrieta, CA: 33.5539,-117.2139,12
+    Menifee, CA: 33.6971,-117.1850,12
+    San Diego, CA: 32.7157,-117.1611,25
+    Carlsbad, CA: 33.1581,-117.3506,12
+    Oceanside, CA: 33.1959,-117.3795,12
+    Escondido, CA: 33.1192,-117.0864,12
+    Chula Vista, CA: 32.6401,-117.0842,12
+channels:
+  email:
+    enabled: true
+    provider: gmail
+    max_daily_sends: 25
+    require_approval: true
+    send_to_risky: false
+    max_bounce_rate: 0.05
+    warmup:
+      start_date: ''
+      min_days: 14
+      start_sends: 5
+      daily_increase: 3
+      dkim_selector: ''
+    signature:
+      logo: ''
+      width: 120
+      alt: ''
+      link: ''
+      direction: auto
+    min_write_score: 50
+    send_window:
+      start: 08:30
+      end: '16:30'
+      weekdays_only: true
+      recipient_timezone: true
+  linkedin:
+    enabled: false
+    max_daily_connections: 20
+    max_daily_messages: 10
+usage:
+  max_daily_claude_percent: 40
+  heartbeat_interval_minutes: 15
+  quiet_hours:
+    start: '20:00'
+    end: 07:00
+    timezone: America/Los_Angeles
+compliance:
+  postal_address: ''
+  opt_out_line: Not a fit? Just reply "no thanks" and I will not email you again.
+  do_not_contact:
+  - lpt.com
+  - lptrealty.com
+  precleared:
+    enabled: true
+    sender_country: US
+    address_source: published
+    prospect_country: US
+writer:
+  email_rules: skills/email_rules.md
+  require_tip: true
