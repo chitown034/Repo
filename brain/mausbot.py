@@ -69,6 +69,9 @@ def place(agents: list[dict], named_seats: dict) -> dict:
     """Where every seat sits in MausBots: {slug: {team, as: 'bot'|'bench', chief, name}}. Pure; raises MausbotError."""
     by = {a["slug"]: a for a in agents}
     names = {v["agent"]: k for k, v in named_seats.items()}
+    gone = sorted(s for s in [TOP, *DEPTS] if s not in by)
+    if gone:
+        raise MausbotError(f"the roster has no seat for {', '.join(gone)}: every team needs its Chief")
 
     def dept(slug):
         seen = set()

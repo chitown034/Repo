@@ -174,12 +174,14 @@ step_vanessa_everywhere() {
   [ -f integrations/agent-os/connect-orca-laya.sh ] && run_quiet "Laya routed + Orca checked"                 bash integrations/agent-os/connect-orca-laya.sh --apply
   [ -f integrations/agent-os/install-mac.sh ]       && run_quiet "AI team wired to Laya, Jarvis, Orca"        bash integrations/agent-os/install-mac.sh --apply
   if have brain; then run_quiet "team reachability (brain os check)" brain os check; fi
-  if [ -f integrations/openmausbot/install.sh ] && have node; then
-    run_quiet "OpenMausBot command" bash integrations/openmausbot/install.sh install
-    if have openmausbot && openmausbot doctor >/dev/null 2>&1; then run_quiet "AI org applied to MausBots (9 teams)" bash integrations/openmausbot/install.sh apply
-    else you_ "H. MausBots (once): open the OpenMausBot app (or run: openmausbot start), pick your Claude Code sign-in, then run this again; it creates the 9 teams."; fi
-  fi
   you_ "G. Orca phone view (once): Orca on the Mac -> account/status menu -> pairing screen; scan it with the 'Orca IDE' iPhone app. Never read the code to anyone."
+  if [ -f integrations/openmausbot/install.sh ]; then
+    if have node; then
+      run_quiet "OpenMausBot command" bash integrations/openmausbot/install.sh install
+      if have openmausbot && openmausbot doctor >/dev/null 2>&1; then run_quiet "AI org applied to MausBots (9 teams)" bash integrations/openmausbot/install.sh apply
+      else you_ "H. MausBots (once): open the OpenMausBot app (or run: openmausbot start), pick your Claude Code sign-in, then run this again; it creates the 9 teams."; fi
+    else you_ "H. MausBots: install Node.js 24 (https://nodejs.org), then run this again; it installs OpenMausBot and creates the 9 teams."; fi
+  fi
 }
 
 # ---- 4. runner ----------------------------------------------------------------------------------------------------------

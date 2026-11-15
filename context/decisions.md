@@ -917,3 +917,18 @@ through Apple Health and the same export file once Steven switches the nutrition
   `bin/brain org` carries the summary to the Command Deck's new MausBots panel; `scripts/fix-mine.sh` installs the
   command and applies the org when the app is open. The app's model list was checked: Fable 5.2 and Opus 5.5 are both
   offered. Still Steven's: open the app once on the Mac (its first-run sign-in is his).
+
+## 2026-11-15 — Sellbird (cold-email outreach) installed locked
+- **Decision.** Steven: "install and configure sellbird within my dashboard". `integrations/sellbird/install.sh` clones
+  Sellbird (AGPL-3.0, v0.4.0, commit 25ec839) next to the repo on the Mac, in its own Python environment, then turns
+  its kill switch on and leaves approval mode on. No mailbox, key or paid source is connected; nothing is trained,
+  searched or sent. The Command Deck has a Sellbird panel (what it is, the guards, the steps).
+  A second session the same day added the referral-partner configuration, the email rules, the Hollis seat and the
+  Broker Command Center's Sellbird Outreach screen (`install-sellbird.sh`); `install.sh` copies that configuration and
+  adds the commit pin and the pause.
+- **Why locked.** Cold email from a licensed agent and MLO is advertising and a send to third parties (HALT list). Who
+  it prospects, which business it speaks for, the licence footer and postal address, broker/lender sign-off and the
+  sending mailbox are Steven's decisions; Alexandra drafts the compliance read.
+- **Verified.** Cloud sandbox: installer end to end, "sending PAUSED · approval on · LinkedIn off", dashboard serves on
+  127.0.0.1:5555. **Owner.** Victor (use), Alexandra (compliance draft), Derek (install). **Status.** Steven runs the
+  installer on the Mac.

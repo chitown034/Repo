@@ -36,3 +36,40 @@ at most 40% of the Claude plan per day. `sellbird sending pause` stops everythin
 Broker Command Center → Growth → Sellbird Outreach (Hollis, under Riley): setup checklist, configuration,
 compliance, and weekly import of `sellbird export --out ~/Desktop/sellbird-prospects.csv` into Alliances; engaged
 partners become intro-call tasks and appear in the Daily Flow inbox.
+
+## Locked install and status check (`install.sh`)
+
+`install.sh` does the same install as `install-sellbird.sh` (it copies the configuration and email rules above
+without overwriting), with two differences: it pins Sellbird to the commit reviewed on 2026-11-15 (`25ec839`,
+v0.4.0) rather than taking the newest code, and it turns Sellbird's kill switch on, so nothing can leave until you
+run `sellbird sending resume` yourself. Running it again pauses sending again.
+
+```sh
+bash integrations/sellbird/install.sh             # install or update at the reviewed commit, then lock
+bash integrations/sellbird/install.sh status      # one line, no names; exits 1 unless paused with approval on
+bash integrations/sellbird/install.sh dashboard   # open Sellbird's own screen (127.0.0.1:5555, Mac only)
+```
+
+## Before anything is sent (Steven decides; CLAUDE.md HALT list)
+
+Cold email from a licensed real-estate and mortgage professional is advertising. These are open decisions, not
+settings Claude chooses. Alexandra drafts the compliance read; Steven decides.
+
+1. **Who it prospects** is set in `sellbird.local.yaml` (referral partners, business-to-business). Consumer leads
+   stay in Lofty and Zoho. Confirm the list is the one you want.
+2. **Which business it speaks for**: LPT Realty or Patriot Pacific Financial. The email footer needs the right
+   licence line (NMLS 1921615 on anything about loans) and a postal address; Sellbird's `status` reports the postal
+   address as missing until it is set.
+3. **Broker and lender sign-off** on the wording, and the state rules for the states the prospects are in.
+4. **A mailbox to send from**, ideally a separate sending domain with warmup (about $7 a month; spending money).
+5. Only then: `sellbird train <site>`, `sellbird signals --confirm free`, `sellbird discover`, approve drafts in the
+   Outbox, and `sellbird sending resume`. Autopilot stays off.
+
+## Verified here (cloud sandbox, 2026-11-15) / not verified
+
+- `install.sh` end to end into a throwaway folder (Python 3.13): clone at the pin, install, pause, state line
+  "sending PAUSED · approval on · LinkedIn off"; second run the same; `status` on a missing folder says not installed.
+- `sellbird sending status`: PAUSED. Effective settings: approval on, LinkedIn off, 50 a day limit.
+- `sellbird dashboard`: serves on 127.0.0.1:5555 (HTTP 200), loopback only, token link.
+- **Not verified (Mac only):** the install on macOS, the Claude Code sign-in driving it, any mailbox. Nothing was
+  trained, searched or sent.

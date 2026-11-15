@@ -33,15 +33,33 @@ class Placement(unittest.TestCase):
         self.assertEqual(self.pl[mausbot.TOP]["team"], mausbot.EXEC_OFFICE)
         self.assertEqual(self.pl["cro-victor"]["team"], "Revenue")
 
+    def _chiefs(self):
+        return [{"slug": s, "tier": "1", "lead": None, "model": "Opus 5.5", "role": "r"} for s in [mausbot.TOP, *mausbot.DEPTS]]
+
     def test_over_cap_is_refused_before_anything_is_written(self):
         many = [{"slug": f"x{i}", "tier": "1", "lead": None, "model": "Opus 5.5", "role": "r"} for i in range(mausbot.CAP + 1)]
+        with self.assertRaisesRegex(mausbot.MausbotError, "exceed CAP"):
+            mausbot.place(self._chiefs() + many, {})
+
+    def test_missing_chief_is_a_clear_refusal(self):
+        agents = [a for a in self.m["agents"] if a["slug"] != "cto-innovator"]
         with self.assertRaises(mausbot.MausbotError):
-            mausbot.place(many, {})
+            mausbot.place(agents, self.m["named_seats"])
+
+    def test_org_json_survives_a_mausbot_refusal(self):
+        import contextlib, io, json
+        from unittest import mock
+        from brain import __main__ as cli
+        out = io.StringIO()
+        with mock.patch.object(mausbot, "CAP", 3), contextlib.redirect_stdout(out):
+            rc = cli.main(["org"])
+        d = json.loads(out.getvalue())
+        self.assertEqual(rc, 0); self.assertTrue(d["seats"]); self.assertIn("error", d["mausbot"])
 
     def test_reporting_cycle_does_not_hang(self):
         a = [{"slug": "a", "tier": "3", "lead": "b", "model": "Opus 5.5", "role": "r"},
              {"slug": "b", "tier": "3", "lead": "a", "model": "Opus 5.5", "role": "r"}]
-        self.assertEqual(mausbot.place(a, {})["a"]["team"], mausbot.EXEC_OFFICE)
+        self.assertEqual(mausbot.place(self._chiefs() + a, {})["a"]["team"], mausbot.EXEC_OFFICE)
 
 
 class TeamFile(unittest.TestCase):

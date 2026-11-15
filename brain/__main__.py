@@ -299,10 +299,14 @@ def main(argv: list[str] | None = None) -> int:
         from . import loop as loop_mod, mausbot as mausbot_mod, route as route_mod
         rules = route_mod.load_rules(root)
         seats = loop_mod.org_seats(root)
+        try:
+            maus = mausbot_mod.summary(root)
+        except mausbot_mod.MausbotError as e:   # the org chart still goes out; the MausBots panel shows why it is empty
+            maus = {"error": str(e)}
         print(json.dumps({"generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "seats": seats,
                           "lanes": {k: v for k, v in rules["lanes"].items()}, "tiers": rules["tiers"],
                           "pods": [{"pod": n, "words": w, "seats": m, "delivers": d} for n, w, m, d in rules["pods"]],
-                          "mausbot": mausbot_mod.summary(root),
+                          "mausbot": maus,
                           "source": "wiki/ai-team/org-chart.md + cross-functional.md (bin/brain org)"}, indent=1)); return 0
     if args.cmd == "deck-stamp":
         from . import layers
