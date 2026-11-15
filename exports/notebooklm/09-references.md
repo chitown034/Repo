@@ -1,6 +1,6 @@
 # Source documents and external systems
 
-Second Brain export for NotebookLM · as of 2026-11-09 · bundle `09-references`.
+Second Brain export for NotebookLM · as of 2026-11-15 · bundle `09-references`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -587,6 +587,8 @@ Same four facts as any other row here — **no content copied, pointers only.**
 | **77 Skills** (77skills.ai) | 77 business-principle skills as Markdown, packaged for Claude Code; **one-time purchase, no subscription** | **Candidate only, 2026-09-28.** `77skills.ai` is egress-blocked from this sandbox — not read, contents unverified | Only after Steven decides to buy it (**HALT: spends money**); then `skills-refresh` plus an ECC security review, before anything from it is enabled |
 | **Perplexica (Vane)** | `integrations/perplexica/` (Mac installer, Docker, http://localhost:3010); source `github.com/BunsDev/perplexica-search-engine-ai` pinned `348feca` (MIT, Vane 1.12.2) — self-hosted SearxNG + LLM answer engine | Installed 2026-11-09 (Steven) | Private cited web answers on the Mac; manual tool, not a recall level; never a client detail in a query |
 | **AI Engineering from Scratch** | `integrations/ai-engineering-from-scratch/` (Mac installer → `~/Learning/`); `github.com/rohitg00/ai-engineering-from-scratch` (MIT), web `aiengineeringfromscratch.com` — 542 lessons, 20 phases, Claude certification tracks | Installed 2026-11-09 (Steven) | How to build an agent, RAG pipeline or eval from first principles; Derek/Nadia cite a lesson in proposals; never indexed into the brain |
+| **OpenMausBot (MausBot)** | `integrations/openmausbot/` (Mac installer: pinned CLI `openmausbot@0.1.160` + bots' browser; `build-team.py` → `team.yaml`); `github.com/milind-soni/OpenMausBot` (Apache-2.0) — chat app where each contact is a local Claude Code agent, in teams with a Chief of Staff | Installed 2026-11-15 (Steven) | The AI org as chat bots: 9 teams (Vanessa + 8 executives as Chiefs), 91 bots, 10 rooms, the other 94 seats on Chiefs' specialist benches (100-bot workspace limit); every bot on Ask, no computer, no browser |
+| **Sellbird** | `integrations/sellbird/` (Mac installer: clones at pinned commit `25ec839`, v0.4.0, into `~/sellbird`); `github.com/ethanplusai/sellbird` (AGPL-3.0, not vendored) — cold-email outreach on the Claude Code sign-in with its own local dashboard | Installed locked 2026-11-15 (Steven) | Referral-partner outreach drafts (Hollis, under Riley; configuration in `sellbird.local.yaml`, rules in `email_rules.md`). `install.sh` pins and pauses; licence footer, sign-off and mailbox are Steven's decisions |
 
 ## Research notes (internal)
 | `references/memory-projects.md` | Read of four open-source memory/knowledge projects (Karpathy's LLM-wiki gist, qmd, gbrain, Graphify) against this repo's five levels — steal/skip calls, not a library | Written 2026-09-27, one-time research pass | Before extending `vector-index/`, `knowledge-graph/` or the `brain/` retrieval engine's ingest/lint verbs — see what's already proven elsewhere first |

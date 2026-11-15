@@ -1,6 +1,6 @@
 # AI team: org chart, seats, pods, toolkit, push-button system
 
-Second Brain export for NotebookLM · as of 2026-11-09 · bundle `04-wiki-ai-team`.
+Second Brain export for NotebookLM · as of 2026-11-15 · bundle `04-wiki-ai-team`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -80,6 +80,16 @@ The seven desk seats of 2026-10-22 (`refi-watch-analyst`, `sphere-nurture-coordi
 The Bot Crew (https://claude.ai/artifact/B8BPDvyE55p8hT7PTyKbjG) is Steven's in-Claude agent page: every seat on
 `wiki/ai-team/org-chart.md` has a chat card there, plus the specialist groups that roll up under each executive.
 It sits under Vanessa as a surface, not a new seat. Last aligned with the org chart 2026-10-22 (wave 6).
+
+## MausBots groups (2026-11-15)
+
+Steven: "add Mausbots to the personal and business bots tabs as well". Two groups mirror the OpenMausBot teams
+(`integrations/openmausbot/`): **Personal tab** — MausBots personal team, 7 cards (Vanessa as the front door, Fitness
+Trainer, Meal Planner, Health Coach, Travel Desk, Meeting Scribe, markets Research Committee); **Professional tab** —
+MausBots business teams, 9 cards, one per team Chief (Executive Office, Finance, Marketing, Technology, Compliance, AI
+Strategy, Revenue, Security, Innovation). Each card works here with the crew's tools and names the team and bot to
+message in MausBots when the real bot is needed. Page total after the change: 470 cards (188 personal, 277
+professional, 5 originals). The Command Deck's MausBots card (AI Team page) links here.
 
 ## What is on it (2026-10-22)
 
@@ -239,7 +249,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Open House Captain | open house, sign-in sheet, sign-in, visitor, thank-you, thank you note | `wiki/ai-team/desk-seats.md` |
 | Travel Desk | travel, trip, flight, hotel, points vs cash, points, miles, price watch, gondola, itinerary | `wiki/ai-team/desk-seats.md` |
 | Meeting Scribe | meeting recap, recap, meeting notes, action items, fieldy, zoom, meeting minutes, debrief | `wiki/ai-team/desk-seats.md` |
-| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking, demographics, median age, population, employers, unemployment, mello-roos, cfd, special assessment, tax rate, lowest taxes, transfer tax, sales tax, zip code, area brief | `wiki/real-estate-playbooks/` |
+| Maya | market data, median price, zip code, neighborhood, school, schools, days on market, months of supply, inventory, comps, city stats, redfin, caaspp, community ranking, demographics, median age, population, employers, unemployment, mello-roos, cfd, special assessment, tax rate, lowest taxes, transfer tax, sales tax, zip code, area brief community 411, temecula, murrieta, menifee, winchester, french valley, master plan, san diego communities | `wiki/real-estate-playbooks/` |
 | Rosa | pcs, military, base, bah, relocation, orders, scra, camp pendleton, miramar, coronado, march arb, deployment, rent buy or wait, rent vs buy, duty radius, bah affordability, breakeven, military objection, military & relocation pod | `wiki/real-estate-playbooks/military-relocation.md` |
 | Quincy | lofty, pabbly, integration, connector, crm sync, import leads, export leads, webhook, zoho lofty, smart plan command deck feed, live feed, deck relay, lofty live | `integrations/CONNECTIONS.md` |
 | Owen | autopilot, sweep, auto task, follow-up task, dedupe, daily automation, launchpad, mission, push button, run everything, monday kickoff, friday wrap, automation & ai pod automation control, orchestrator, what runs automatically, job schedule | `docs/AUTOMATION-MAP-2026-10-20.md` |
@@ -256,13 +266,13 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Wren | referral ledger, reciprocal referral, referral fee, partner tier | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Bianca | absorption, months of inventory, price per sqft, list-to-sale, market report, pricing authority | `wiki/real-estate-playbooks/listing-process.md` |
 | Lucia | eligibility, guideline, va m26-7, fha 4000.1, usda, program fit | `wiki/mortgage-programs/program-selection.md` |
-| Priya | instant response, new lead, speed-to-lead call, appointment setting | `wiki/real-estate-playbooks/buyer-process.md` |
+| Priya | instant response, new lead, speed-to-lead call, appointment setting personalization research, list building, fit scoring | `wiki/real-estate-playbooks/buyer-process.md` |
 | Vera | sphere, soi, past client, review request, home anniversary, post-close, preference profile, closing gift, lifetime cadence | `wiki/real-estate-playbooks/referral-reciprocity.md` |
 | Rafael | workflow studio, workflow, automation flow, lifecycle automation, trigger, automation coverage | `wiki/dashboard-ops/index.md` |
 | Celeste | coach hq, coaching, training plan, skills assessment, recommendation, role-play gym, weekly 1:1, coach, skills plan, knowledge & coaching pod | `wiki/ai-team/mentors-and-benches.md` |
 | Lenora | q&a, question and answer, glossary, reference library, roles and responsibilities, raci, broker's guide, law library, who does what, guidebook, office policy manual, property management guide, employment law, short sale guide, foreclosure guide, lead paint, environmental hazards, earthquake safety, new broker start-up, team building, transaction playbook, every step, rpa deadline, legal holiday deadline, wire verification | `wiki/index.md` |
 | Showing Coordinator | showingtime, showami, showing, tour, schedule a showing, showing assistant, lockbox, showing feedback, route, route planner, drive time, showing route, optimize route | `wiki/real-estate-playbooks/showing-operations.md` |
-| Halle | new construction, builder, new build, builder incentive, model home | `wiki/real-estate-playbooks/buyer-process.md` |
+| Halle | new construction, builder, new build, builder incentive, model home new development, new homes in, builder co-op | `wiki/real-estate-playbooks/buyer-process.md` |
 | Lorenzo | investor, income property, 1031, cash flow, fourplex, duplex, adu, cap rate, investor & special sales pod | `wiki/real-estate-playbooks/buyer-process.md` |
 | Tariq | social media, instagram, tiktok, facebook post, reel | `wiki/real-estate-playbooks/listing-process.md` |
 | Delia | reviews, google review, testimonial, reputation, net promoter, scorecard | `wiki/real-estate-playbooks/referral-reciprocity.md` |
@@ -277,9 +287,11 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Kai | kaizen, bottleneck, capacity, scale, scalability, process improvement, workload, hire trigger, efficiency, automation coverage | `wiki/ai-team/desk-seats.md` |
 | Sloane | doc screener, screen document, document review, fine print, hidden clause, clause, hidden fee, prelim, title report, cc&rs, hoa documents, closing disclosure, loan estimate, lease review, contract review, deadline extraction | `wiki/ai-team/desk-seats.md` |
 | Nova | coverage, uncovered, who owns, owner for, sync status, is it synced, live data, sweep, what is missing, process gap, health check, process coverage, coverage register, which doc is stale, who writes self-heal, failing health check | `wiki/ai-team/desk-seats.md` |
-| Sienna | bland, ai call, call center, voice agent, ai isa, dial, call queue, tcpa consent, voicemail drop, phone follow-up | `wiki/ai-team/desk-seats.md` |
+| Sienna | bland, ai call, call center, voice agent, ai isa, dial, call queue, tcpa consent, voicemail drop, phone follow-up jessica, skilltree, skill desk, proposal generation, follow-up drafting, meeting booking, cold email, approval queue, quiet leads | `wiki/ai-team/desk-seats.md` |
 | Dax | role play, role-play, roleplay, spar, sparring, practice call, objection drill, mock call, rehearse | `wiki/ai-team/desk-seats.md` |
 | Regina | new law, new laws, regulation, effective date, legislation, reference library, statute, ordinance, what changed | `wiki/ai-team/desk-seats.md` |
+| Bennett | daily flow, action inbox, what needs me, power hour, call list, who should i call, quick capture, lead router, route lead | `wiki/ai-team/desk-seats.md` |
+| Hollis | sellbird, partner prospecting, find attorneys, find builders, cold email partners, outreach engine, prospect list | `integrations/sellbird/` |
 | Isabel | loan processing, processor, conditions, underwriting conditions, document checklist, voe, vod, application date, loan estimate, le deadline, appraisal order, intent to proceed | `wiki/mortgage-programs/` |
 | Reyes | closing disclosure, cd timing, trid, consummation, rate lock, lock expiration, funding, rescission, signing appointment, clear to close | `wiki/mortgage-programs/` |
 
@@ -668,6 +680,63 @@ reading every chapter marks the module read. The New Rules & Laws desk gained 45
 Foundational law) next to the 113 recent changes, and the reference library grew to about 170 official sources.
 Items the writers could not confirm are marked "verify" in the text. Vanessa tool: `course_material`.
 
+## Community & New Development 411 (Maya, with Halle)
+
+Added 2026-11-09. Local Markets → Community & New Development 411 in the Broker Command Center covers 38 areas:
+Southwest Riverside (Temecula, Murrieta, Menifee, Winchester, French Valley) and 33 San Diego County areas from
+the coast to East County and the South Bay. Each area has an overview, neighborhoods and master plans, schools,
+property tax and Mello-Roos, HOA, commute, military access (2026 San Diego BAH where relevant), hazards and
+insurance, amenities, employers, pros and cons, and the growth pipeline. New homes merge 123 researched
+communities with the October builder snapshot and each builder's co-op registration rule. A local services
+directory lists 183 offices: utilities, permits, schools, hospitals, DMV, transit and military housing. Compare
+up to four areas; copy or email a client guide carrying the DRE and NMLS numbers. Research dated November 2026;
+items marked "verify" (most Mello-Roos amounts, some builder prices) must be confirmed. Vanessa tool:
+`community_411`.
+
+## ISA Skill Desk — SkillTree setup (Sienna / "Jessica", with Priya, Booking Concierge, Harrison, Vera, Tariq, Ansel)
+
+Added 2026-11-11 from Steven's SkillTree plan ("Your AI org for Mortgage Broker": 6 agents, ~10 h/week, valued at
+$38,500/yr at $80/h). Installed in the Broker Command Center AI Call Center → ISA Skill Desk. The six plan agents in
+build order: Proposal Generation (Harrison), Follow-Up Drafting (Vera), Meeting Booking (Booking Concierge),
+Personalization Research (Priya), List Building (Priya), Cold Email Drafting (Tariq). Nine more Sales-directory jobs:
+ICP Definition, Trigger Detection (Ansel), Fit Scoring, Cold-Call Scripting, LinkedIn Messaging, Proof Matching,
+Video Prospecting, Send Optimization, Campaign Orchestration. Each reads its context file — `sales/icp.md`,
+`voice.md`, `sales/offer.md`, `deals/booking-rules.md`, `deals/follow-up-cadence.md`, `deals/pricing.md`,
+`sales/proof.md` (pre-filled starters, editable on the desk; pricing intentionally blank) — and queues a draft with a
+two-line summary for approval. Drafts only: approve, then Gmail draft / text task / call task; never sent, booked or
+quoted automatically; Do-Not-Contact leads blocked; TCPA, CAN-SPAM, RESPA §8, fair housing and DRE/NMLS rules built
+into every prompt. Batch "draft follow-ups for all due", run log, time-saved tracker, autopilot tasks and a health
+check on drafts older than 2 days. The AI org also has a live animated map (seven departments, every seat and skill,
+rotating; click to open) on the org chart and the Skill Desk, linked to the Command Deck and this brain.
+Vanessa tool: `isa_skill_desk`. SKILL.md files: `skills/isa/`.
+
+## Bennett — Daily Flow & Power Hour Lead
+
+Added 2026-11-11. Reports to Vanessa; member of the Automation & AI and Growth & Marketing pods. Runs Overview →
+Daily Flow in the Broker Command Center:
+- **Action inbox**: everything waiting on Steven from every module in one list — new leads with no first touch,
+  ISA Skill Desk drafts awaiting approval, escrow dates inside 48 hours, consults today, his overdue tasks, rule
+  changes within 60 days, leads ready for Jessica's AI calls — each with a one-click action.
+- **Power Hour**: the prioritized call list (fit score × urgency, DNC and already-called excluded) with tap-to-call,
+  text and email, the matching script on hand, and one-tap outcomes (booked, talked, voicemail, no answer, not now,
+  DNC) that update the stage, set the next follow-up, create the confirmation or voicemail-text task and record DNC.
+- **Quick Capture**: one sentence becomes a lead, task or note (AI parse with a plain fallback); duplicates are
+  merged into the existing contact.
+- **Lead Router** (automatic on every new lead): fit score and A/B/C tier; owner by type (sellers → Marguerite,
+  military/VA → Rosa, buyers → Gwen) with a prep task; a 5-minute speed-to-lead call task; Jessica's AI call queued
+  when consent is on file, otherwise a consent task.
+Morning Power Hour task in autopilot, a "every new lead touched within a day" health check, the Daily Flow numbers on
+the Command Deck live card, the Power week mission and the `daily_flow` tool.
+
+## Hollis — Partner Outreach Lead (Sellbird)
+
+Added 2026-11-15. Reports to Riley; member of the Growth & Marketing pod. Runs
+[Sellbird](https://github.com/ethanplusai/sellbird) (open source, AGPL-3.0) for the referral-partner channel —
+attorneys, builders and contractors in Temecula Valley and San Diego County, business-to-business only. Setup,
+configuration and the Mac installer live in `integrations/sellbird/`. Every email waits in Sellbird's Outbox for
+Steven's approval. The weekly export imports into Alliances on Growth → Sellbird Outreach in the Broker Command
+Center; replies become intro-call tasks for Riley and show in the Daily Flow inbox. Vanessa tool: `sellbird`.
+
 
 ---
 
@@ -734,7 +803,7 @@ hold the actual detail once you know which seat or layer you need.
 
 | Owns (ask about) | Seat | Model tier |
 |---|---|---|
-| Anything at all, first | **Vanessa** — Chief of Staff / COO, orchestrator, council chair | Fable 5.1 masterminds |
+| Anything at all, first | **Vanessa** — Chief of Staff / COO, orchestrator, council chair | Fable 5.2 masterminds |
 | Net worth, income, budget, liabilities, close | **Marcus** — CFO | Opus 5.5 |
 | Marketing, campaigns, content, social, email | **Sofia** — CMO | Opus 5.5 |
 | Automation health, connectors, stack, what is broken | **Derek** — CTO | Opus 5.5 |
@@ -829,7 +898,7 @@ Which model each seat runs on, and the rules that bound how many run at once —
 
 | Seat | Model |
 |---|---|
-| Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.1 masterminds |
+| Vanessa — orchestration, council chair, final synthesis | Claude Fable 5.2 masterminds |
 | Executives (Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon) | Claude Opus 5.5 (since 2026-09-28) |
 | Reports, benches, execution and report-only seats | Claude Opus 5.5 (Steven, 2026-11-08: every seat on Opus 5.5) |
 | Research heavy lifting | Claude web research — Opus 5.5 with WebSearch/WebFetch on Steven's subscription (Perplexity removed 2026-10-05) |
@@ -1081,6 +1150,16 @@ click that submits, sends, pays or signs stops for Steven. `bin/brain route` bri
 ## Proposal-only seats
 
 Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia scans outward and writes the weekly Disruption Brief (replace/upgrade/adopt, graded ADOPT/PILOT/WATCH/IGNORE); Elon vets every item for feasibility, integration cost and security risk before it can enter the test queue. Both report to Vanessa like every seat (2026-11-02); their proposals reach Steven through her. The LLM Council and the digital twin are proposal-only in the same sense — see `wiki/ai-team/tool-integration-status.md` for what that means for Orca, Laya, and 77skills specifically.
+
+## Inside OpenMausBot (2026-11-15)
+
+The same org also runs as a chat team in OpenMausBot on the Mac (`integrations/openmausbot/`). Nine teams: Executive
+Office (Chief: Vanessa, who manages the other eight) and one per executive (Finance: Marcus, Marketing: Sofia,
+Technology: Derek, Compliance: Alexandra, AI Strategy: Nadia, Revenue: Victor, Security: Elena, Innovation: Elon). A
+seat joins the team of the executive above it. The app holds 100 bots, so 91 seats are bots and 94 sit on their Chief's
+specialist bench, dispatched as Claude Code subagents. Every bot starts on Ask, with no computer and no browser.
+`bin/brain mausbot` shows the counts and proves the team file matches the roster; the Command Deck's MausBots panel
+shows the same.
 
 ## See also
 
@@ -1443,7 +1522,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 49 skills · 7 Claude mods (plugins) · 53 connectors (4 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -1466,8 +1545,8 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 - `Zoho CRM` — *attention*: self-client keys prompt in the paste; API 403 until the profile tick
 - `TidyCal` — *attention*: token prompt in the paste + read-only proof call
 - `Arive` — *attention*: credentials prompt in the paste; no call yet
-- `Mac runner` — *attention*: synced 2026-11-03 05:08 UTC, logged in; most tasks ok. Last-run refused/error: brain-weekly-verify, health-coaching-weekly, mortgage-desk-weekly, ops-knowledge-graph (error), r14-content-pipeline, ste
-- `Kapso WhatsApp` — *pending*: number connected; deck doc last synced 2026-10-31 23:55 UTC; Mac sign-in and Keychain keys pending; vanessa-whatsapp-inbox task disabled
+- `Mac runner` — *attention*: synced 2026-11-12T01:07:13Z, logged in. Last-run refused/error: brain-weekly-verify (refused), fabric-deck-sync (refused), loop-engineering-weekly (error), mortgage-desk-weekly (refused), ops-knowledg
+- `Kapso WhatsApp` — *pending*: number connected; deck doc last synced 2026-10-31 23:55 UTC; Pabbly triggers wait on the Kapso webhook paste; Mac sign-in and Keychain keys pending
 - `Jarvis = Vanessa` — *attention*: scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b
 - `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
 - `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
@@ -1572,6 +1651,9 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 **Skills**
 - `tax-assessor-agent`: Property tax lookup for San Diego and Riverside County: reads PUBLIC assessor and tax-collector pages with read-only browser tools and writes a one-page Property Tax Sheet (APN, assessed values, exemptions to verify, Pro
 
+**Connectors**
+- `claude.ai connectors (ListConnectors)` — *ok*: connected: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, Strava, Composio, Inkbox, Candid, Canva, Zoom, Pabbly, WhisperAI, You.com, Context7. Needs reconnect: TidyCal,
+
 **MCP servers**
 - `Composio (cloud)` — *attention*: Zoho CRM, Google Docs, GitHub tool calls through Composio · connected — Zoho 403 until the API box is ticked
 
@@ -1629,7 +1711,6 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 - `Lofty` — *attention*: two paths on Mac 1 (2026-10-23 13:05 PT): the old local bridge is the MCP named lofty (stdio, ~/Applications/lofty-bridge/mcp-server.js, connected — the runner tasks use its mcp__lofty__* tools; it re
 - `ShowingTime · Showami · homes.com` — *attention*: read-only CLI-Anything wrappers scripted (connect-all 7d)
 - `CLI-Anything` — *attention*: harnesses for homes.com / ShowingTime / Showami / Lofty installed by the paste
-- `claude.ai connectors in this session` — *attention*: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox present in the tool list; ListConnectors not callable from this routine, so per-connect
 
 **MCP servers**
 - `kapso` — *attention*: WhatsApp Business Cloud API read/answer (sandbox number first) · registered — needs Steven's sign-in (/mcp → kapso)
@@ -1687,6 +1768,7 @@ toolkit: 48 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 - `openflowkit`: Draw diagrams that stay valid, editable and saved next to the code. Use when a flowchart, architecture, sequence, state, ER, class, mindmap or git graph would explain something better than prose, or when the user asks fo
 - `pr-lens`: WHAT: Draws a code change or part of a codebase as an animated architecture or data-flow diagram, on its own or in a pull request. WHEN: asked to diagram, visualise or explain a change or a system, or when a pull request
 - `reverse-engineering`: Reverse-engineering capability (REA) — gated. Describes morluto/rea (MIT, MCP server via npx rea-agents setup, 6.x) and the rules for when Steven's agents may use it and when not. Use when a seat proposes analysing a bin
+- `sellbird-setup`: Finish installing Sellbird (github.com/ethanplusai/sellbird) on Steven's Mac for partner prospecting, using the configuration in integrations/sellbird/. Use when Steven says 'finish setting up Sellbird', 'set up Sellbird
 - `source-driven-development`: Grounds every implementation decision in official documentation. Use when you want to verify an approach against the official docs before implementing it, or when you want authoritative, source-cited code free from outda
 
 **Claude mods (plugins)**

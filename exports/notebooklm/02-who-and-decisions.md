@@ -1,6 +1,6 @@
 # Who Steven is, standing decisions, remembered facts
 
-Second Brain export for NotebookLM · as of 2026-11-09 · bundle `02-who-and-decisions`.
+Second Brain export for NotebookLM · as of 2026-11-15 · bundle `02-who-and-decisions`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -982,7 +982,7 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Request (Steven, verbatim).** *"ensure all ai agents are using opus 5.5 and vanessa use fable 5.1. ensure ai org chart are
   up to date in both vommand desk, broker dashboard and loan dashboard. ensure they are linked to work as cross functional teams"*.
 - **Decision.** The Sonnet 5 tier is retired: reports, benches, desk seats and the web-research seat move to Opus 5.5
-  (89 roster rows); the eight executives stay on Opus 5.5; Vanessa runs on Fable 5.1 (agent file `model: claude-fable-5-1`).
+  (89 roster rows); the eight executives stay on Opus 5.5; Vanessa runs on Claude Fable 5.1 masterminds (agent file `model: claude-fable-5-1`).
   The local PII tier (Bonsai 27B, Mac only) is unchanged: it is a privacy boundary, not a seat. CLAUDE.md tiering table,
   `brain/agentfiles.py`, `brain/agentos.py`, the roster and the generated agent files follow.
 - **Org chart.** The Command Deck, the Broker Command Center and the Loan Dashboard carry the same chart: Steven at the top;
@@ -991,6 +991,7 @@ through Apple Health and the same export file once Steven switches the nutrition
   in parallel waves of at most eight through one queue (vanessaQueue).
 - **Cost note.** Opus on every seat costs more per run than Sonnet did; Marcus reports the AI team's monthly cost.
 - **Owner.** Vanessa (dispatch), Derek (agent files), Nadia (tiering). **Status.** Done 2026-11-08.
+- **Superseded in part 2026-11-10:** Vanessa now runs on Claude Fable 5.2 (see that entry).
 
 ## 2026-11-08 — One mirror across the Command Deck, the Broker Command Center and the Loan Dashboard
 
@@ -1022,6 +1023,52 @@ through Apple Health and the same export file once Steven switches the nutrition
   detail ever goes into a Perplexica query. The curriculum is a reference, never indexed into the brain, and its lesson
   outputs are not auto-installed.
 - **Owner.** Derek. **Status.** Installers committed 2026-11-09; they take effect when Steven pastes them on the Mac.
+
+## 2026-11-10 — Which model Vanessa runs on: Claude Fable 5.2 masterminds (was Fable 5.1)
+
+- **Request (Steven, verbatim).** *"update vanessa to fable 5.2 update ai org chart and then update 6d brain and total agents"*.
+- **Decision.** Vanessa (orchestration, council chair, final synthesis) runs on **Claude Fable 5.2 masterminds**
+  (`claude-fable-5-2`, the successor to Fable 5.1 at a lower price). The other 184 seats stay on Opus 5.5. CLAUDE.md
+  tiering, `brain/agentfiles.py`, `brain/agentos.py`, `brain/route.py`, the roster-generated agent files and manifest,
+  the skills and routines that name her model, the org chart on all three dashboards and the 6D Brain follow.
+- **Team count.** 185 AI agents: 184 Opus 5.5 + 1 Fable 5.2.
+- **Owner.** Derek (agent files), Nadia (tiering). **Status.** Done 2026-11-10; Mac agent files take it at the next repo-sync paste.
+
+## 2026-11-15 — OpenMausBot: the AI org as a team of chat bots; agent-browser 0.39.0 → 0.43.0
+- **Decision.** Steven: "install OpenMausBot and wire my AI org to be structured within Mausbots" and "install
+  vercel-labs/agent-browser". OpenMausBot is installed on the Mac by `integrations/openmausbot/install.sh` (CLI pinned
+  0.1.160); `build-team.py` builds `team.yaml` from the roster: Vanessa is Chief of the Executive Office and manages
+  every department; each executive is Chief of their department team; every seat joins the department of the executive
+  above it. OpenMausBot holds at most 100 bots per workspace, so 91 core seats get bots and the other 94 are on their
+  Chief's specialist bench (dispatched as Claude Code subagents). Every bot starts on Ask, no computer, no browser.
+- **agent-browser** was already installed (2026-10-10); the pin moves to 0.43.0 (0.41 stops MCP arguments overriding
+  the domain allowlist) and the vendored skill text is refreshed.
+- **Verified.** Cloud sandbox: team file applied end to end on a throwaway OpenMausBot server (110 created, re-run: no
+  changes); agent-browser 0.43.0 fill/click/read self-test PASS. **Owner.** Derek (install), Vanessa (org). **Status.**
+  Steven runs `install.sh`, opens the app, then `install.sh plan` and `install.sh apply` on the Mac.
+- **2026-11-15, later: "add mausbots to the dashboard and finish setting up".** The mapping moved into the brain:
+  `brain/mausbot.py` + `bin/brain mausbot` (check, `--write`, `--json`); `bin/brain os write` rebuilds the team file with
+  the agent files; every seat in `agents.json` carries its MausBots team and whether it is a bot or on a bench;
+  `bin/brain org` carries the summary to the Command Deck's new MausBots panel; `scripts/fix-mine.sh` installs the
+  command and applies the org when the app is open. The app's model list was checked: Fable 5.2 and Opus 5.5 are both
+  offered. Still Steven's: open the app once on the Mac (its first-run sign-in is his).
+- **Same day: "add Mausbots to the personal and business bots tabs".** The Bot Crew has a MausBots group on its
+  Personal tab (7 cards) and its Professional tab (9 team Chiefs); see `wiki/ai-team/bot-crew.md`.
+
+## 2026-11-15 — Sellbird (cold-email outreach) installed locked
+- **Decision.** Steven: "install and configure sellbird within my dashboard". `integrations/sellbird/install.sh` clones
+  Sellbird (AGPL-3.0, v0.4.0, commit 25ec839) next to the repo on the Mac, in its own Python environment, then turns
+  its kill switch on and leaves approval mode on. No mailbox, key or paid source is connected; nothing is trained,
+  searched or sent. The Command Deck has a Sellbird panel (what it is, the guards, the steps).
+  A second session the same day added the referral-partner configuration, the email rules, the Hollis seat and the
+  Broker Command Center's Sellbird Outreach screen (`install-sellbird.sh`); `install.sh` copies that configuration and
+  adds the commit pin and the pause.
+- **Why locked.** Cold email from a licensed agent and MLO is advertising and a send to third parties (HALT list). Who
+  it prospects, which business it speaks for, the licence footer and postal address, broker/lender sign-off and the
+  sending mailbox are Steven's decisions; Alexandra drafts the compliance read.
+- **Verified.** Cloud sandbox: installer end to end, "sending PAUSED · approval on · LinkedIn off", dashboard serves on
+  127.0.0.1:5555. **Owner.** Victor (use), Alexandra (compliance draft), Derek (install). **Status.** Steven runs the
+  installer on the Mac.
 
 
 ---

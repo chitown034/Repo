@@ -1,6 +1,6 @@
 # Integrations: connections register, Pabbly workflows, per-integration READMEs
 
-Second Brain export for NotebookLM · as of 2026-11-09 · bundle `12-integrations`.
+Second Brain export for NotebookLM · as of 2026-11-15 · bundle `12-integrations`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -671,6 +671,16 @@ Read from the Command Deck documents (runnerStatus, whatsappKapso); claude.ai co
 | Kapso WhatsApp | number connected; deck doc last synced 2026-10-31 23:55 UTC; Mac sign-in and Keychain keys pending; `vanessa-whatsapp-inbox` task disabled | `bash setup.sh`, then `claude` → `/mcp` → kapso | Steven |
 | claude.ai connectors in this session | Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox present in the tool list; ListConnectors not callable from this routine, so per-connector auth was not re-tested | none | cloud |
 
+## Connection status — daily rebuild, 2026-11-12 01:15 UTC (6D Brain routine, 7-day re-check)
+
+Read from the Command Deck documents (runnerStatus, whatsappKapso) and ListConnectors. No keys, no numbers.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | synced 2026-11-12T01:07:13Z, logged in. Last-run refused/error: brain-weekly-verify (refused), fabric-deck-sync (refused), loop-engineering-weekly (error), mortgage-desk-weekly (refused), ops-knowledge-graph (error), r4-quantvue-sync (refused), r9-feed-freshness-sweep (error), skills-refresh-weekly (error), steve-twin-sweep (refused), toolkit-deck-sync (error), vanessa-morning-brief-text (refused), weekly-self-update (error). Disabled: r8-apple-health-snapshot, r9-feed-freshness-sweep, strava-daily-sync, vanessa-whatsapp-inbox | look at the refused tasks on the Mac (next connect-all REPORT) | Steven |
+| Kapso WhatsApp | number connected; deck doc last synced 2026-10-31 23:55 UTC; Pabbly triggers wait on the Kapso webhook paste; Mac sign-in and Keychain keys pending | STEVEN-STEPS step 5; `claude` → `/mcp` → kapso | Steven |
+| claude.ai connectors (ListConnectors) | connected: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, Strava, Composio, Inkbox, Candid, Canva, Zoom, Pabbly, WhisperAI, You.com, Context7. Needs reconnect: TidyCal, Turo. Connect incomplete: Lofty, Microsoft 365, BlackRock, Health Data Avatar, Plaid, PlayMCP, Similarweb. Not connected: Higgsfield | reconnect TidyCal and Lofty in claude.ai Settings → Connectors | Steven |
+
 
 ---
 
@@ -1059,7 +1069,7 @@ navigate websites on my behalf."* Owner: Integration Engineer (under Elon); secu
 |---|---|---|
 | `vercel-labs/skills` (MIT) | The `skills` CLI: `npx skills find <topic>` searches the open skills directory (skills.sh); `npx skills add <repo>` installs one | Nothing to install (runs through `npx`, pinned 1.7.2). Its `find-skills` skill was already vendored (2026-09-22) and is identical to upstream today |
 | `vercel-labs/agent-skills` (MIT) | Vercel's own skill pack: mostly React/Next.js and Vercel deploy skills, plus two general ones | Vendored the two that fit Steven's work: **`web-design-guidelines`** (UI/accessibility review — the Command Deck and ISA Portal) and **`writing-guidelines`** (prose review — Sofia's copy, these docs). The React, React Native and Vercel deploy/token skills were not added: no Next.js/Vercel project here, and the deploy skills need a Vercel token. `npx skills add vercel-labs/agent-skills` adds them later in one line |
-| `vercel-labs/agent-browser` (Apache-2.0) | Fast Rust browser CLI for agents: open, accessibility snapshot with `@e1` refs, fill, click, read, screenshot, sessions | **`agent-browser` skill vendored** (with Steven's guardrails on top); the Mac installer pins the CLI at 0.39.0 and downloads its Chrome |
+| `vercel-labs/agent-browser` (Apache-2.0) | Fast Rust browser CLI for agents: open, accessibility snapshot with `@e1` refs, fill, click, read, screenshot, sessions | **`agent-browser` skill vendored** (with Steven's guardrails on top); the Mac installer pins the CLI at 0.43.0 (bumped from 0.39.0 on 2026-11-15) and downloads its Chrome |
 | `microsoft/playwright` (Apache-2.0) | The browser-automation library. What gives Claude control of a browser is Microsoft's **Playwright MCP** (`@playwright/mcp`), built on it | Mac installer registers Playwright MCP 0.0.83 for Claude Code (user scope) with its own browser profile; prints the 3-line block for Claude Desktop |
 | `agenticskills.io/tools` | — | **Could not be reached: the domain does not resolve (DNS: ENOTFOUND, 2026-10-10).** Nothing installed. If Steven has the right address, the weekly scout or `npx skills find` covers the same need |
 
@@ -1104,6 +1114,11 @@ It ends with a self-test (opens a local page, types an address, clicks Search, r
 - agent-browser 0.39.0 with the sandbox's Chromium: opened a local page, took an accessibility snapshot (`heading`,
   `textbox @e2`, `button @e3`), filled `123 Main St Temecula`, clicked, read back `searched:123 Main St Temecula`; opened
   example.com and read its title. The installer's self-test commands were run exactly as written: PASS.
+- agent-browser 0.43.0 (2026-11-15 bump): same self-test with the sandbox's Chromium — accessibility snapshot
+  (`textbox "Search" @e1`, `button "Go" @e2`), fill, click, read back `clicked:hello steven`: PASS. The 0.40/0.41
+  breaking changes are in the separate `@agent-browser/eve` extension, not this CLI; 0.41 also stops an MCP tool
+  argument from overriding the domain allowlist. OpenMausBot (`integrations/openmausbot/`) uses its own pinned
+  agent-browser as its bots' browser.
 - Playwright MCP 0.0.83: MCP handshake and `tools/list` over stdio: 25 browser tools.
 - skills CLI 1.7.2: `--help` runs; its search reached no results from this sandbox (network policy).
 - `install.sh --dry-run`: every step asks, nothing changes.
@@ -2797,6 +2812,89 @@ Owner: Derek (automation). Upstream: <https://github.com/nexu-io/open-design>.
 
 ---
 
+<!-- source file: integrations/openmausbot/README.md -->
+# FILE: integrations/openmausbot/README.md
+
+# OpenMausBot: the AI org as a team of chat bots
+
+Steven, 2026-11-15: "install https://github.com/milind-soni/OpenMausBot.git and wire my AI org to be structured
+within Mausbots".
+
+[OpenMausBot](https://github.com/milind-soni/OpenMausBot) (Apache-2.0, also called MausBot) is a desktop chat app
+(macOS, Windows, Ubuntu) where every contact is a real agent: Claude Code running locally on your own sign-in,
+with its own standing instructions, model and approval level. Bots live in **teams** (each with one **Chief of
+Staff**) and talk in **rooms**. Data stays on the Mac in `~/.openmausbot`.
+
+## How the org maps
+
+`bin/brain mausbot --write` (code in `brain/mausbot.py`; `build-team.py` is a thin wrapper for the installer) turns the
+roster into `team.yaml`, the file OpenMausBot's `openmausbot team apply` reads. `bin/brain os write` rebuilds it with
+the agent files, so the two never drift, and every seat in `integrations/agent-os/agents.json` carries its MausBots
+placement (`mausbot.team`, `mausbot.as` = bot or bench, `mausbot.chief`). `bin/brain mausbot` checks the file is
+current; `bin/brain mausbot --json` is what the Command Deck's MausBots panel shows.
+
+| OpenMausBot | AI org |
+|---|---|
+| Team **Executive Office**, Chief **Vanessa** (Fable 5.2), manages every other team | Vanessa and the seats that report straight to her |
+| Teams **Finance, Marketing, Technology, Compliance, AI Strategy, Revenue, Security, Innovation** | One per executive: Marcus, Sofia, Derek, Alexandra, Nadia, Victor, Elena, Elon (Opus 5.5), each its Chief |
+| A bot's team | The department of the executive above it in its reporting line |
+| A bot's soul (standing instructions) | Its hand-written file in `.claude/agents/` when there is one, else its generated agent file in `integrations/agent-os/agents/` (CLAUDE.md first, HALT list, gates) |
+| Room **Exec council** (Vanessa answers) | Vanessa + the eight executives |
+| Room **<Team> room** (the Chief answers) | Everyone in that department |
+
+**The 100-bot limit.** An OpenMausBot workspace holds at most 100 bots (`MAX_WORKSPACE_BOTS`, OpenMausBot
+0.1.160), and the org has 185 seats. So 91 seats get bots: all tier-1 seats, all named seats, every seat that
+leads others, and the tier-2 seats of Revenue, Executive Office, Marketing and Finance. That leaves 9 slots for
+bots you add yourself. The other 94 seats are on their department Chief's **specialist bench**: listed in the
+Chief's soul (`souls/<chief>.md`) and dispatched as Claude Code subagents by name. `integrations/agent-os/install-mac.sh`
+links all 185 agent files into `~/.claude/agents`, so the subagents are there.
+
+| Team | Bots | On the Chief's bench |
+|---|---|---|
+| Executive Office | 24 | 1 |
+| Revenue | 32 | 2 |
+| Marketing | 17 | 3 |
+| Finance | 10 | 0 |
+| Compliance | 3 | 11 |
+| Technology | 2 | 57 (the code-review and engineering specialists) |
+| AI Strategy | 1 | 10 |
+| Security | 1 | 6 |
+| Innovation | 1 | 4 |
+
+## Guardrails (CLAUDE.md HALT list)
+
+Every bot starts on approval **Ask** (each action waits for your yes), with **no computer** and **no browser**.
+No key, connector or routine is created; connectors stay off until you approve them in the app. Each team's brief
+repeats the rules: nothing sent, paid, signed or written to a client-facing system; first names only; client data
+stays on the local model.
+
+## Install (on the Mac)
+
+```sh
+bash integrations/openmausbot/install.sh          # the pinned CLI (0.1.160) + the bots' browser engine
+# open the OpenMausBot desktop app, or: openmausbot start
+bash integrations/openmausbot/install.sh plan     # what would be created (changes nothing)
+bash integrations/openmausbot/install.sh apply    # create the org; safe to run again, it only applies changes
+```
+
+After a change to the roster (`bin/brain os agents --write`), run `apply` again: it rebuilds `team.yaml` and
+updates only what changed. Bots are matched by name; nothing is deleted unless a team is marked `prune: true`.
+
+## Verified here (cloud sandbox, 2026-11-15) / not verified
+
+- `openmausbot` 0.1.160 from npm; `openmausbot serve` on a throwaway data folder: `doctor` ready, engine `claude`.
+- First version of the file (185 bots) was refused at bot 101 ("this workspace is limited to 100 bots"), which is
+  why the core and benches exist.
+- Current `team.yaml`: `--dry-run` plan, then apply: **110 created** (9 teams, 91 bots, 10 rooms), exit 0. Second
+  apply with `--check`: **No changes**, exit 0. Vanessa listed as Chief of Executive Office on Fable 5.2; each
+  executive as Chief of their team on Opus 5.5; every bot on Ask with computer off.
+- Model list (`openmausbot models`, engine `claude`): `claude-fable-5-2` and `claude-opus-5-5` are both offered, so
+  Vanessa on Fable 5.2 and everyone else on Opus 5.5 applies as written.
+- **Not verified (Mac only):** the desktop app, and the bots answering on your Claude Code sign-in.
+
+
+---
+
 <!-- source file: integrations/openmontage/README.md -->
 # FILE: integrations/openmontage/README.md
 
@@ -3183,6 +3281,91 @@ Script: `orca-remote.sh` (subcommands `serve pair status unpair report doctor`, 
 - Shape of `orca environment list --json` (the script reads `"name"` fields; if the shape differs `report` shows an empty list, never a wrong one) and whether `orca status` exits non-zero when no runtime is up (drives `runtimeReachable`).
 - Whether `serve` offers a link on every start or only with `--mobile-pairing`, whether stopping the server really invalidates an offer, and that the phone app pairs from the `--mobile-pairing` link.
 - Whether `orca` (not only `orca-dev`) is on PATH on the Macs; set `ORCA_BIN=/path/to/orca` if not.
+
+
+---
+
+<!-- source file: integrations/sellbird/README.md -->
+# FILE: integrations/sellbird/README.md
+
+# Sellbird — partner prospecting for Steven
+
+[Sellbird](https://github.com/ethanplusai/sellbird) (open source, AGPL-3.0) finds local businesses, the person who
+decides, verifies their email, drafts a short personal sequence, sends from your own mailbox after you approve it,
+and handles replies. It runs on the Mac with the Claude Code login; nothing here holds a key or password.
+
+Configured for the **referral-partner channel** (business-to-business only): real-estate, estate-planning/probate,
+family-law, divorce and bankruptcy attorneys, home builders and general contractors in Temecula, Murrieta, Menifee,
+San Diego, Carlsbad, Oceanside, Escondido and Chula Vista. Realtors, CPAs and financial planners need a search key
+(TinyFish or Serper, both with free tiers): the free OpenStreetMap source maps lawyers and builders, not them.
+
+## Files
+- `sellbird.local.yaml` — Steven's configuration, built from Sellbird's own template and validated with its
+  config loader (2026-11-15; Sellbird's 3,700-test suite passed on the install used to check it).
+- `email_rules.md` — what the writer may and may not say (RESPA §8 no-referral-fee language, no rate claims, fair
+  housing, DRE/NMLS signature). Installed to `~/sellbird/skills/email_rules.md`.
+- `install-sellbird.sh` — clones to `~/sellbird`, installs, copies the two files above without overwriting, checks
+  the config and prints the remaining one-time steps.
+
+## Install (on the Mac)
+```bash
+bash integrations/sellbird/install-sellbird.sh
+```
+Then fill in `persona.email` (the sending mailbox, on a separate domain) and `compliance.postal_address`
+(CAN-SPAM) in `~/sellbird/sellbird.local.yaml`, the Gmail OAuth client and a Reoon or ZeroBounce key in
+`~/sellbird/.env`, and run `sellbird gmail auth`, `sellbird precleared-key`, `sellbird warmup`, `sellbird signals`,
+`sellbird discover`, `sellbird dashboard`, `sellbird run`.
+
+## Safety settings
+Approval required for every email (autopilot off); 25 a day; weekdays 8:30–4:30 in the recipient's time zone;
+quiet 8 PM–7 AM Pacific; writes only for fit score ≥ 50 and only with something specific to say; verified
+addresses only; Precleared legality check on; LinkedIn automation off; LPT Realty addresses never emailed;
+at most 40% of the Claude plan per day. `sellbird sending pause` stops everything.
+
+## Dashboard
+Broker Command Center → Growth → Sellbird Outreach (Hollis, under Riley): setup checklist, configuration,
+compliance, and weekly import of `sellbird export --out ~/Desktop/sellbird-prospects.csv` into Alliances; engaged
+partners become intro-call tasks and appear in the Daily Flow inbox.
+
+## Locked install and status check (`install.sh`)
+
+`install.sh` does the same install as `install-sellbird.sh` (it copies the configuration and email rules above
+without overwriting), with two differences: it pins Sellbird to the commit reviewed on 2026-11-15 (`25ec839`,
+v0.4.0) rather than taking the newest code, and it turns Sellbird's kill switch on, so nothing can leave until you
+run `sellbird sending resume` yourself. Running it again pauses sending again.
+
+```sh
+bash integrations/sellbird/install.sh             # install or update at the reviewed commit, then lock
+bash integrations/sellbird/install.sh status      # one line, no names; exits 1 unless paused with approval on
+bash integrations/sellbird/install.sh dashboard   # open Sellbird's own screen (127.0.0.1:5555, Mac only)
+```
+
+## Before anything is sent (Steven decides; CLAUDE.md HALT list)
+
+Cold email from a licensed real-estate and mortgage professional is advertising. These are open decisions, not
+settings Claude chooses. Alexandra drafts the compliance read; Steven decides.
+
+1. **Who it prospects** is set in `sellbird.local.yaml` (referral partners, business-to-business). Consumer leads
+   stay in Lofty and Zoho. Confirm the list is the one you want.
+2. **Which business it speaks for**: LPT Realty or Patriot Pacific Financial. The email footer needs the right
+   licence line (NMLS 1921615 on anything about loans) and a postal address; Sellbird's `status` reports the postal
+   address as missing until it is set.
+3. **Broker and lender sign-off** on the wording, and the state rules for the states the prospects are in.
+4. **A mailbox to send from**, ideally a separate sending domain with warmup (about $7 a month; spending money).
+5. Only then: `sellbird train <site>`, `sellbird signals --confirm free`, `sellbird discover`, approve drafts in the
+   Outbox, and `sellbird sending resume`. Autopilot stays off.
+
+## Verified here (cloud sandbox, 2026-11-15) / not verified
+
+- `install.sh` end to end into a throwaway folder (Python 3.13): clone at the pin, install, pause, state line
+  "sending PAUSED · approval on · LinkedIn off"; second run the same; `status` on a missing folder says not installed.
+- `sellbird sending status`: PAUSED. Effective settings: approval on, LinkedIn off, 50 a day limit.
+- `sellbird dashboard`: serves on 127.0.0.1:5555 (HTTP 200), loopback only, token link.
+- **Not verified (Mac only):** the install on macOS, the Claude Code sign-in driving it, any mailbox. Nothing was
+  trained, searched or sent.
+
+## Finish setup with Claude on the Mac
+Open Claude Code (or the Claude desktop app) in the Repo folder on the Mac and say **"finish setting up Sellbird"**. The `sellbird-setup` skill (`.claude/skills/sellbird-setup/`) checks what is done, runs the installer if needed, asks only for what you must supply (sending mailbox, postal address, Gmail sign-in, a verifier key), runs the checks and opens Sellbird's dashboard.
 
 
 ---
