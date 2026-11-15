@@ -1,0 +1,143 @@
+# Sellbird configuration for Steven Shearrill — Patriot Pacific Financial Corp.
+# Copy this file into your Sellbird folder as sellbird.local.yaml (install.sh does it).
+# sellbird.local.yaml replaces Sellbird's default sellbird.yaml completely and git never touches it.
+#
+# Use: B2B partner prospecting only — real estate brokerages and agents, home builders,
+# CPAs / financial advisors and attorneys who refer buyers and homeowners. Never use Sellbird
+# to cold email consumers or borrowers about loans.
+# Every email waits in the Outbox for Steven's approval (require_approval: true). Leave it on.
+
+persona:
+  name: "Steven Shearrill"
+  company: "Patriot Pacific Financial Corp"
+  role: "Mortgage Broker · NMLS 2449246 · CA DRE #01988316"
+  email: ""                       # FILL: the sending address on your dedicated sending domain
+  linkedin: ""
+  tone: "direct, warm and plain-spoken; retired Navy Chief; short sentences, one idea per line, no hype"
+
+product:
+  name: "A lending partner for your buyers"
+  description: >-
+    Steven Shearrill is a mortgage broker with Patriot Pacific Financial Corp (NMLS 1921615) in Murrieta,
+    California. As a broker he shops many wholesale lenders for each borrower instead of one bank's menu:
+    VA, FHA, conventional, jumbo, non-QM (bank statement, DSCR, ITIN) and reverse/HECM. For real estate
+    agents, builders and advisors in San Diego and Riverside counties he is a responsive lending partner:
+    fast, solid pre-approvals, weekend availability, VA expertise from a retired Navy Chief, and plain-English
+    status updates to the agent from contract to closing.
+  pricing: "No cost to the partner. Borrower pricing is quoted only from a current lender rate sheet, never in outreach."
+  key_benefits:
+    - "Pre-approvals agents can rely on, usually within 24 hours of a complete file"
+    - "Broker access to many wholesale lenders, so harder files (self-employed, VA, non-QM) still close"
+    - "A veteran who specializes in VA loans and military buyers (PCS moves, entitlement questions)"
+    - "Proactive updates to the agent at every milestone, so nobody chases the lender"
+  objection_responses:
+    "already have a lender": "Makes sense. Most agents I work with keep a primary lender and want a broker for the files that don't fit: self-employed, VA, non-QM. Worth a 15-minute call to see if I'm a good backup?"
+    "not interested": "Understood, thanks for the reply. I won't follow up again."
+    "send me info": "Happy to. What kinds of buyers do you see most? I'll send what's relevant instead of a brochure."
+    "what do you pay for referrals": "I can't pay or give anything for referrals; federal law (RESPA) prohibits it. What I can offer is fast pre-approvals and on-time closings for your clients."
+  offer:
+    primary: "A broker lending partner for your buyers: VA, FHA, conventional, jumbo and non-QM"
+    entry: "A 15-minute intro call"
+    goal: "book_call"
+    booking_method: "suggest_times"   # switch to calendar_link once booking_url is filled
+    booking_url: ""                   # FILL: your TidyCal link
+    meeting_duration: "15 minutes"
+    meeting_owner: "Steven Shearrill"
+
+icp:
+  industries:
+    - "real estate agency"
+    - "real estate brokerage"
+    - "home builder"
+    - "contractor"
+    - "property management"
+    - "CPA firm"
+    - "financial advisor"
+    - "estate planning attorney"
+  company_size: "1-200 employees"
+  titles:
+    - "Broker/Owner"
+    - "Managing Broker"
+    - "Team Lead"
+    - "Realtor"
+    - "Owner"
+    - "Sales Manager"
+    - "Financial Advisor"
+    - "CPA"
+  geography:
+    - "Temecula, CA"
+    - "Murrieta, CA"
+    - "Menifee, CA"
+    - "Riverside, CA"
+    - "San Diego, CA"
+    - "Oceanside, CA"
+  geo_coordinates:
+    "Temecula, CA": "33.4936,-117.1484,20"
+    "Murrieta, CA": "33.5539,-117.2139,20"
+    "Menifee, CA": "33.7286,-117.1461,20"
+    "Riverside, CA": "33.9806,-117.3755,25"
+    "San Diego, CA": "32.7157,-117.1611,30"
+    "Oceanside, CA": "33.1959,-117.3795,20"
+  hiring_signals:
+    - "buyer's agent"
+    - "real estate agent"
+    - "transaction coordinator"
+  keyword_variants:
+    "real estate agency": ["realtor", "real estate team"]
+    "home builder": ["new home builder", "custom home builder"]
+
+channels:
+  email:
+    enabled: true
+    provider: "gmail"            # gmail (recommended) | microsoft | smtp
+    max_daily_sends: 20          # cold email per day once warmed; replies never count
+    require_approval: true       # every email waits in the Outbox for Steven. Keep on.
+    link_domains: ["patriotpacific.com", "patriotpacificmlo.com", "valoaneducator.tv"]
+    send_to_risky: false
+    min_write_score: 60          # only write for prospects that clearly fit
+    max_bounce_rate: 0.03
+    warmup:
+      start_date: ""             # FILL: YYYY-MM-DD the day warmup starts on the sending mailbox
+      min_days: 21
+      start_sends: 5
+      daily_increase: 2
+      dkim_selector: ""
+    send_window:
+      start: "08:30"
+      end: "16:30"
+      weekdays_only: true
+      recipient_timezone: true
+    signature:
+      logo: ""
+      width: 120
+      alt: ""
+      link: ""
+      direction: "auto"
+  linkedin:
+    enabled: false               # LinkedIn automation breaks LinkedIn's terms; leave off
+    max_daily_connections: 0
+    max_daily_messages: 0
+
+usage:
+  max_daily_claude_percent: 35   # leaves most of your Claude plan for VANESSA and your own work
+  heartbeat_interval_minutes: 30
+  quiet_hours:
+    start: "20:00"
+    end: "07:00"
+    timezone: "America/Los_Angeles"
+
+compliance:
+  postal_address: "Patriot Pacific Financial Corp, 24910 Las Brisas Rd Suite 122, Murrieta, CA 92562"
+  opt_out_line: "Not the right fit? Just reply and I won't email you again."
+  do_not_contact:
+    - "patriotpacific.com"       # your own company
+    - "patriotpacificmlo.com"
+    # add current referral partners and competitors here
+  precleared:
+    enabled: true
+    sender_country: "US"
+    address_source: "published"
+    prospect_country: "US"
+
+writer:
+  email_rules: "skills/email_rules.md"
