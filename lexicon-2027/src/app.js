@@ -387,14 +387,15 @@ function viewRhymes(main,item){
 function isMulti(f){ return syllables(f.sample||"")>1 && !(f.one||[]).every(w=>syllables(w)===1); }
 function drawFams(){
   const arr=L.rhymes.filter(f=>rhyFilter==="all"||(rhyFilter==="f")===isMulti(f)).sort((a,b)=>a.key.localeCompare(b.key));
-  $("#famGrid").innerHTML=arr.map(f=>{ const n=(f.one||[]).length+(f.two||[]).length+(f.three||[]).length; return `<a class="fam" href="#rhymes--${slug(f.key)}"><b>-${esc(f.key.replace(/-.*$/,""))}</b><span>${esc(f.sound)} · ${esc(f.sample)}</span><small>${n} words</small></a>`; }).join("");
+  $("#famGrid").innerHTML=arr.map(f=>{ const n=(f.one||[]).length+(f.two||[]).length+(f.three||[]).length; return `<a class="fam" href="#rhymes--${slug(f.key)}"><b>${famLabel(f)}</b><span>${esc(f.sound)} · ${esc(f.sample)}</span><small>${n} words</small></a>`; }).join("");
 }
+function famLabel(f){ const [a,b]=f.key.split("-"); return "-"+esc(a)+(b?` <small style="font-family:var(--f-ui);font-weight:400">(${esc(b)})</small>`:""); }
 function rwords(arr){ return `<div class="rwords">${(arr||[]).map(w=>`<a href="${dictBy.has(norm(w))?"#dictionary--"+slug(w):"#rhymes--"+slug(w)}" class="${dictBy.has(norm(w))?"has":""}">${esc(w)}</a>`).join("")||`<span class="muted tiny">none listed</span>`}</div>`; }
 function rhymeResult(f,word,guess){
   const n=syllables(word);
   const ex=x=>(x||[]).filter(w=>norm(w)!==norm(word));
   const cols=[["One syllable",ex(f.one)],["Two syllables",ex(f.two)],["Three or more",ex(f.three)]];
-  if(isMulti(f)) cols[0][0]="Shortest";
+  if(isMulti(f)){ cols[0][0]="Shortest"; cols[1][0]="Longer"; cols[2][0]="Longest"; }
   return `<div class="reader" style="--sc:var(--c-rhymes)">
    <div class="eyebrow" style="color:var(--sc)">${guess?"Closest rhyme family (matched by spelling, check by ear)":"Perfect rhymes"}</div>
    <div style="display:flex;flex-wrap:wrap;gap:8px 18px;align-items:baseline"><h2 class="hw" style="font-size:clamp(1.8rem,4vw,2.6rem)">${esc(word)}</h2><span class="ipa" style="font-size:1.2rem;color:var(--ink-2)">rhymes on ${esc(f.sound)}</span><span class="sylcount" title="Estimated syllables">${"<i></i>".repeat(Math.min(n,8))} ${n} syllable${n>1?"s":""}</span></div>
