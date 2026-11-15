@@ -15,12 +15,22 @@ VANESSA has a page for it: **Growth & Ops → 🐦 Sellbird Outreach**. That pag
 | `install.sh` | Installs or updates Sellbird into `~/sellbird` with this config. Safe to re-run: if you've edited a config file, it keeps yours and saves VANESSA's version next to it as `*.vanessa`. |
 | `embed.py` | Copies these files into VANESSA's page (`vanessa/app84.js`). Run it after editing any of them, then rebuild VANESSA. |
 
-## Install (on the Mac)
+## Fastest way: let Claude Code do it on your Mac
+
+Open Claude Code on the Mac (the Claude desktop app, or `claude` in Terminal) and paste:
+
+```text
+Set up Sellbird for me using my VANESSA config. 1) If ~/vanessa-repo exists run git -C ~/vanessa-repo checkout claude/focused-bardeen-klwryi and git -C ~/vanessa-repo pull, otherwise git clone -b claude/focused-bardeen-klwryi https://github.com/chitown034/Repo.git ~/vanessa-repo. 2) Run bash ~/vanessa-repo/sellbird-setup/install.sh and show me the result. 3) Then walk me through one step at a time, waiting for me after each: a Google Cloud OAuth desktop client for the Gmail API on my sending mailbox (a separate domain, never patriotpacific.com) with GMAIL_CLIENT_ID and GMAIL_CLIENT_SECRET in ~/sellbird/.env, then sellbird gmail auth; a free Serper key (serper.dev) as SERPER_API_KEY and a free Reoon key (reoon.com) as REOON_API_KEY in ~/sellbird/.env; persona.email and channels.email.warmup.start_date in ~/sellbird/sellbird.local.yaml; sellbird precleared-key; sellbird warmup; sellbird signals; sellbird discover --provider serper --estimate. Rules: run everything from ~/sellbird with its .venv; never print or repeat my .env values or the dashboard token; never set require_approval to false or turn on autopilot; don't send or approve any email; stop and ask me if anything fails.
+```
+
+The same prompt has a Copy button on VANESSA's Sellbird page.
+
+## Install by hand (on the Mac)
 
 ```bash
 brew install python@3.13          # if python3 --version is below 3.11
 claude login                      # Sellbird thinks through Claude Code
-git clone https://github.com/chitown034/Repo.git
+git clone -b claude/focused-bardeen-klwryi https://github.com/chitown034/Repo.git
 bash Repo/sellbird-setup/install.sh
 cd ~/sellbird && source .venv/bin/activate
 ```
@@ -33,7 +43,7 @@ Then:
    - `SERPER_API_KEY` (serper.dev, 2,500 free searches).
    - `REOON_API_KEY` (600 free verifications a month). Without a verifier, addresses stay "guess" and are never sent.
    - Optional: `sellbird precleared-key`.
-3. **Fill `sellbird.local.yaml`:** `persona.email`, `offer.booking_url` (your TidyCal link; then set `booking_method: calendar_link`) and `warmup.start_date`. Or fill them in VANESSA and re-download the file.
+3. **Fill `sellbird.local.yaml`:** `persona.email` and `warmup.start_date`, or fill them in VANESSA and re-download the file. The booking link is already set to your TidyCal "Realtor & Partner Intro Call" (https://tidycal.com/stevenshearrill/partner-intro).
 4. `sellbird warmup` tells you whether the mailbox is ready.
 5. `sellbird signals` shows what Sellbird proposes to look for on each business's website. Confirm the signals you want.
 6. `sellbird discover --provider serper --estimate`, then run it without `--estimate`. Six cities × eight industries is about 72 searches, roughly $0.07, inside the free tier.

@@ -39,8 +39,8 @@ product:
     primary: "A broker lending partner for your buyers: VA, FHA, conventional, jumbo and non-QM"
     entry: "A 15-minute intro call"
     goal: "book_call"
-    booking_method: "suggest_times"   # switch to calendar_link once booking_url is filled
-    booking_url: ""                   # FILL: your TidyCal link
+    booking_method: "calendar_link"
+    booking_url: "https://tidycal.com/stevenshearrill/partner-intro"   # TidyCal "Realtor & Partner Intro Call" (15 min, free)
     meeting_duration: "15 minutes"
     meeting_owner: "Steven Shearrill"
 

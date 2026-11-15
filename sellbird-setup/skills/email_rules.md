@@ -24,6 +24,6 @@ These replace Sellbird's built-in email shape. Sellbird's send gate still enforc
 - Email 1: under 75 words. One specific observation about their business from their own website or listings (a recent sale, a new community, a VA-heavy area, a hiring post), then one question. No pitch paragraph.
 - Email 2 (a few days later): a different, useful angle, such as how a broker helps when a buyer is self-employed, a veteran or needs non-QM. Under 70 words.
 - Email 3: a short, polite close-out. Under 40 words.
-- At most one link, and only patriotpacific.com, patriotpacificmlo.com or valoaneducator.tv.
+- At most one link. Prefer the booking link https://tidycal.com/stevenshearrill/partner-intro (a free 15-minute partner intro call); otherwise only patriotpacific.com, patriotpacificmlo.com or valoaneducator.tv.
 - Subject lines: short, lowercase-friendly, specific to them; no clickbait, no "Re:" or "Fwd:" tricks.
 - Voice: direct, warm, plain English; short sentences; no exclamation marks; no buzzwords.
