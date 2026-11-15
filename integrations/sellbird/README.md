@@ -73,3 +73,6 @@ settings Claude chooses. Alexandra drafts the compliance read; Steven decides.
 - `sellbird dashboard`: serves on 127.0.0.1:5555 (HTTP 200), loopback only, token link.
 - **Not verified (Mac only):** the install on macOS, the Claude Code sign-in driving it, any mailbox. Nothing was
   trained, searched or sent.
+
+## Finish setup with Claude on the Mac
+Open Claude Code (or the Claude desktop app) in the Repo folder on the Mac and say **"finish setting up Sellbird"**. The `sellbird-setup` skill (`.claude/skills/sellbird-setup/`) checks what is done, runs the installer if needed, asks only for what you must supply (sending mailbox, postal address, Gmail sign-in, a verifier key), runs the checks and opens Sellbird's dashboard.
