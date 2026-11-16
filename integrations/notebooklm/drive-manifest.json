@@ -128,28 +128,28 @@
  "account": "steven.shearrill@gmail.com (claude.ai Google Drive connector + Composio googledocs)",
  "last_sync": {
   "notion_directory": {
-   "date": "2026-11-09",
+   "date": "2026-11-15",
    "page": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179"
   },
-  "date": "2026-11-09",
-  "at": "2026-11-09T15:40:00Z",
+  "date": "2026-11-15",
+  "at": "2026-11-16T05:20:00Z",
   "sha": {
-   "00-START-HERE.md": "d85d479105357e45",
-   "01-router-and-index.md": "d5a122b6405351ab",
-   "02-who-and-decisions.md": "8f1f65a2ec91887b",
-   "03-projects.md": "6620a4ba82f47a0b",
-   "04-wiki-ai-team.md": "dd9901ec0aebb3f7",
-   "05-wiki-mortgage-programs.md": "d9288872829621a0",
-   "06-wiki-real-estate-playbooks.md": "5047b308c56c2047",
-   "07-wiki-dashboard-ops.md": "4f7288d5d00edfa0",
-   "08-wiki-events-networking.md": "9ed6284663a0a7c7",
-   "09-references.md": "169defef6f671e6f",
-   "10-always-on-and-automation.md": "3a224e7a7186f15f",
-   "11-6d-brain-map.md": "42d579d323ab4368",
-   "12-integrations.md": "3a7bb9ef39259cb8"
+   "00-START-HERE.md": "c4a54246d0c0b308",
+   "01-router-and-index.md": "fe8dbb82e26e33b7",
+   "02-who-and-decisions.md": "bc0ba7bd0572477b",
+   "03-projects.md": "9b7e2bae5ed706e2",
+   "04-wiki-ai-team.md": "05fcf6bf5c61ff59",
+   "05-wiki-mortgage-programs.md": "554aa5e4d98c54db",
+   "06-wiki-real-estate-playbooks.md": "41f3052159a4765b",
+   "07-wiki-dashboard-ops.md": "471896d638330448",
+   "08-wiki-events-networking.md": "f9b9cb5966e12198",
+   "09-references.md": "8d1304766a3c66e6",
+   "10-always-on-and-automation.md": "c48cda4646fa8efa",
+   "11-6d-brain-map.md": "3c3b997dad133446",
+   "12-integrations.md": "87a5bde097bf4112"
   },
   "updated": 13,
   "failures": [],
-  "note": "weekly routine catch-up (the 2026-11-08 Sunday run was missed; run 2026-11-09 from a sub-agent worktree); 12 docs via GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN, 02-who-and-decisions via the chunked fallback after a WAF 403 (31 pieces; piece 25 split into 500-char sub-pieces after a 403, one sub-piece re-inserted in place with an inline proxy-status shell command reworded); 0 failures"
+  "note": "weekly routine (Sunday 2026-11-15 PT); 12 docs via GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN, 02-who-and-decisions via the chunked fallback after a WAF 403 (32 pieces, one inline proxy-status shell command reworded before sending; two stalled calls, the copy resumed from the piece verified present by reading the doc back); 0 failures"
  }
 }

@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 49 skills · 7 Claude mods (plugins) · 53 connectors (4 ok, 49 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 49 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -272,7 +272,7 @@ toolkit: 49 skills · 7 Claude mods (plugins) · 53 connectors (4 ok, 49 need at
 - `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
 - `Four http_api Sunday routines` — *attention*: still enabled
 - `GitHub repo visibility` — *attention*: public
-- `Fieldy → 2nd brain` — *ok*: connected — the daily "Fieldy → brain" task (6:50 AM PT, this session, Fieldy connector) writes memory/fieldy-meetings.md + the deck fieldyDesk doc and queues a recap item per meeting with action item
+- `Fieldy meetings layer (weekly layers sync, 2026-11-16 UTC)` — *attention*: stale: last digest 2026-11-12; the Fieldy connector asks for sign-in again, so the daily digest has not run since
 - `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
 - `Jarvis · Laya · Orca (Mac 1)` — *attention*: installed, tested, Orca on the Repo folder; phone pairing is Steven's
 - `Jarvis · Laya · Orca (Mac 2)` — *attention*: partially set — engine unproven; runner not yet imported
