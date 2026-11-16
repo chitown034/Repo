@@ -18,4 +18,4 @@ inside its cadence. `bin/brain layers` prints this; `bin/brain layers --write` r
 | Knowledge graph | entities and relationships | spec only (knowledge-graph/README.md) | — | — | 30 d | **spec only** |
 
 **Even:** no — stale: Fieldy meetings (recorded conversations).
-Generated 2026-11-16T04:11:55Z.
+Generated 2026-11-16T11:34:43Z.
