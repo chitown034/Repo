@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-16T14:11:39Z",
- "date": "2026-11-16",
+ "generated": "2026-11-17T14:10:44Z",
+ "date": "2026-11-17",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -112,7 +112,7 @@
    "category": "sync",
    "topic": "fieldy",
    "title": "Resync the Fieldy meetings (recorded conversations) layer",
-   "why": "last stamp 2026-11-12, 4 days old, cadence 1 d",
+   "why": "last stamp 2026-11-12, 5 days old, cadence 1 d",
    "owner": "Derek",
    "executor": "vanessa",
    "impact": 3,
@@ -449,7 +449,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-11-16",
+     "why": "bench 30/31 on 2026-11-17",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -522,7 +522,7 @@
      "category": "sync",
      "topic": "fieldy",
      "title": "Resync the Fieldy meetings (recorded conversations) layer",
-     "why": "last stamp 2026-11-12, 4 days old, cadence 1 d",
+     "why": "last stamp 2026-11-12, 5 days old, cadence 1 d",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -544,7 +544,7 @@
      "category": "ops",
      "topic": "",
      "title": "Clear Needs-Steven item 1 in today's brief (p1)",
-     "why": "cosBrief needsSteven, deadline overdue (39 days at Clear to Close)",
+     "why": "cosBrief needsSteven, deadline overdue (42+ days at Clear to Close; dec",
      "owner": "Vanessa",
      "executor": "steven",
      "impact": 3,
@@ -562,10 +562,10 @@
      "coa": "risk"
     },
     {
-     "id": "bm_e57d7303c0",
+     "id": "bm_36f158aec6",
      "category": "ops",
      "topic": "",
-     "title": "Clear Needs-Steven item 3 in today's brief (p1)",
+     "title": "Clear Needs-Steven item 2 in today's brief (p1)",
      "why": "cosBrief needsSteven, deadline overdue since 2026-11-09",
      "owner": "Vanessa",
      "executor": "steven",
@@ -584,11 +584,11 @@
      "coa": "risk"
     },
     {
-     "id": "bm_df7be88089",
+     "id": "bm_a0cbe5ca2b",
      "category": "ops",
      "topic": "",
-     "title": "Repair Mac task brain-learn-daily",
-     "why": "runnerStatus (2026-11-16) shows brain-learn-daily last run refused.",
+     "title": "Repair Mac task brain-weekly-verify",
+     "why": "runnerStatus (2026-11-16) shows brain-weekly-verify last run refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -597,7 +597,7 @@
      "plan": [
       "Read the task's log from the next connect-all REPORT",
       "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run brain-learn-daily`"
+      "Steven pastes `runnerctl run brain-weekly-verify`"
      ],
      "source": "deck runnerStatus",
      "coa": "risk",
@@ -724,7 +724,7 @@
   },
   {
    "q": "What should I do about: Resync the Fieldy meetings (recorded conversations) layer?",
-   "a": "last stamp 2026-11-12, 4 days old, cadence 1 d.",
+   "a": "last stamp 2026-11-12, 5 days old, cadence 1 d.",
    "action": "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
    "coa": "risk",
    "ref": "bm_18a228a6eb"
@@ -762,7 +762,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-11-16: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 2 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-17: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 2 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"
