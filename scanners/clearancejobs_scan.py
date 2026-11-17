@@ -30,6 +30,7 @@ import json
 import re
 import sys
 import time
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -44,6 +45,9 @@ DEFAULT_CATEGORIES = ["management", "finance", "logistics", "intelligence",
 # location; the other city pages are read once each.
 DEFAULT_LOCATIONS = ["san-diego-ca", "carlsbad-ca", "oceanside-ca", "poway-ca",
                      "chula-vista-ca", "coronado-ca", "temecula-ca"]
+# SIO (DoW Super Intelligence Office, formerly CDAO) program names searched every run.
+DEFAULT_KEYWORD_LANES = ("sio-cdao=Joint Fires Network|CJADC2|CDAO|Super Intelligence Office|"
+                         "Advana|Maven Smart System|War Data Platform")
 LOCAL = re.compile(r"san diego|chula vista|coronado|national city|point loma|poway|rancho bernardo|carlsbad|oceanside|escondido|san marcos|\bvista\b|encinitas|del mar|la jolla|sorrento|kearny mesa|el cajon|la mesa|santee|imperial beach|camp pendleton|miramar|north island|temecula|murrieta|fallbrook|solana beach|bonita|spring valley|lakeside|ramona|otay|mira mesa|scripps ranch|carmel valley|lemon grove|\b9(?:19|20|21)\d\d\b|\b925(?:6[23]|9[0-5])\b", re.I)  # place names or San Diego County / Temecula-Murrieta ZIPs
 COLUMNS = ["lane", "site", "title", "company", "location", "date_posted", "job_type",
            "is_remote", "interval", "min_amount", "max_amount", "job_url_direct",
@@ -172,6 +176,8 @@ def main() -> int:
     p.add_argument("--max-age-days", type=int, default=45)
     p.add_argument("--all", action="store_true", help="keep every listing, not only lane matches")
     p.add_argument("--any-location", action="store_true", help="keep postings outside the San Diego area")
+    p.add_argument("--keyword-lanes", default=DEFAULT_KEYWORD_LANES,
+                   help='lane=kw1|kw2;lane2=kw3 : keyword searches whose San Diego hits go to that lane')
     p.add_argument("-o", "--out", default=f"clearancejobs_{dt.date.today():%Y-%m-%d}.csv")
     args = p.parse_args()
 
@@ -201,6 +207,30 @@ def main() -> int:
             print(f"  {len(rows):>3}  {path}")
             time.sleep(1.2)
 
+    # Program keyword searches: every San Diego-area hit is assigned to its lane
+    # (e.g. SIO/CDAO programs -> sio-cdao), even when the title wouldn't match.
+    forced: dict[str, str] = {}
+    lane_ids = {l["id"] for l in lanes}
+    for spec in [x.strip() for x in args.keyword_lanes.split(";") if x.strip()]:
+        lid, _, words = spec.partition("=")
+        if lid not in lane_ids:
+            continue
+        for kw in [w.strip() for w in words.split("|") if w.strip()]:
+            path = f"jobs?keywords={urllib.parse.quote_plus(kw)}&location=San+Diego%2C+CA"
+            try:
+                rows = parse(fetch(path))
+                pages += 1
+            except Exception as e:
+                errors += 1
+                print(f"  ! {path}: {e.__class__.__name__}", file=sys.stderr)
+                continue
+            for r in rows:
+                seen.setdefault(r["jid"], r)
+                forced.setdefault(r["jid"], lid)
+            print(f"  {len(rows):>3}  keyword \"{kw}\" -> {lid}")
+            time.sleep(1.2)
+    lane_by_id = {l["id"]: l for l in lanes}
+
     out = []
     for r in seen.values():
         date = posted_date(r["posted"], today)
@@ -208,7 +238,14 @@ def main() -> int:
             continue
         if not args.any_location and not LOCAL.search(r["location"]):
             continue
-        lane = next((lid for lid, m in matchers if m(r["title"], r["snippet"], r["company"])), "")
+        lane = ""
+        fl = forced.get(r["jid"])
+        if fl:
+            excl = [x.lower() for x in lane_by_id[fl].get("excludedTitles", [])]
+            if not any(x in r["title"].lower() for x in excl):
+                lane = fl
+        if not lane:
+            lane = next((lid for lid, m in matchers if m(r["title"], r["snippet"], r["company"])), "")
         if not lane and not args.all:
             continue
         interval, lo, hi = salary(r["tags"])
