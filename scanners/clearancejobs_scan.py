@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Scan ClearanceJobs public search pages and write a CSV that RoleCompass imports.
+"""Scan ClearanceJobs public search pages (San Diego area) and write a CSV that RoleCompass imports.
 
 ClearanceJobs is the one job board this cloud environment can reach, so this
 scan runs anywhere (cloud session, scheduled task, or your Mac). No login,
@@ -40,7 +40,11 @@ BASE = "https://www.clearancejobs.com/"
 # finance, logistics and engineering-management postings.
 DEFAULT_CATEGORIES = ["management", "finance", "logistics", "intelligence",
                       "engineering-systems", "it-software", "security"]
-DEFAULT_LOCATIONS = ["san-diego-ca", "remote"]
+# San Diego area only (Steven, 2026-11-17). Categories are read for the first
+# location; the other city pages are read once each.
+DEFAULT_LOCATIONS = ["san-diego-ca", "carlsbad-ca", "oceanside-ca", "poway-ca",
+                     "chula-vista-ca", "coronado-ca", "temecula-ca"]
+LOCAL = re.compile(r"san diego|chula vista|coronado|national city|point loma|poway|rancho bernardo|carlsbad|oceanside|escondido|san marcos|\bvista\b|encinitas|del mar|la jolla|sorrento|kearny mesa|el cajon|la mesa|santee|imperial beach|camp pendleton|miramar|north island|temecula|murrieta|fallbrook|solana beach|bonita|spring valley|lakeside|ramona|otay|mira mesa|scripps ranch|carmel valley|lemon grove|\b9(?:19|20|21)\d\d\b|\b925(?:6[23]|9[0-5])\b", re.I)  # place names or San Diego County / Temecula-Murrieta ZIPs
 COLUMNS = ["lane", "site", "title", "company", "location", "date_posted", "job_type",
            "is_remote", "interval", "min_amount", "max_amount", "job_url_direct",
            "job_url", "description"]
@@ -167,6 +171,7 @@ def main() -> int:
     p.add_argument("--categories", default=",".join(DEFAULT_CATEGORIES))
     p.add_argument("--max-age-days", type=int, default=45)
     p.add_argument("--all", action="store_true", help="keep every listing, not only lane matches")
+    p.add_argument("--any-location", action="store_true", help="keep postings outside the San Diego area")
     p.add_argument("-o", "--out", default=f"clearancejobs_{dt.date.today():%Y-%m-%d}.csv")
     args = p.parse_args()
 
@@ -179,8 +184,10 @@ def main() -> int:
     today = dt.date.today()
     seen: dict[str, dict] = {}
     pages = errors = 0
-    for loc in [x.strip() for x in args.locations.split(",") if x.strip()]:
-        paths = [f"jobs/{loc}"] + [f"jobs/{c.strip()}/{loc}" for c in args.categories.split(",") if c.strip()]
+    locs = [x.strip() for x in args.locations.split(",") if x.strip()]
+    for n, loc in enumerate(locs):
+        cats = [c.strip() for c in args.categories.split(",") if c.strip()] if n == 0 else []
+        paths = [f"jobs/{loc}"] + [f"jobs/{c}/{loc}" for c in cats]
         for path in paths:
             try:
                 rows = parse(fetch(path))
@@ -198,6 +205,8 @@ def main() -> int:
     for r in seen.values():
         date = posted_date(r["posted"], today)
         if date and (today - dt.date.fromisoformat(date)).days > args.max_age_days:
+            continue
+        if not args.any_location and not LOCAL.search(r["location"]):
             continue
         lane = next((lid for lid, m in matchers if m(r["title"], r["snippet"], r["company"])), "")
         if not lane and not args.all:

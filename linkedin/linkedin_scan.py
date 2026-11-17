@@ -44,7 +44,10 @@ LOCATION_MAP = {
     "poway / rancho bernardo": "San Diego, California, United States",
     "orange county": "Irvine, California, United States",
     "coronado": "San Diego, California, United States",
+    "north county san diego": "Carlsbad, California, United States",
 }
+# San Diego area only (Steven, 2026-11-17): postings elsewhere are dropped.
+LOCAL = re.compile(r"san diego|chula vista|coronado|national city|point loma|poway|rancho bernardo|carlsbad|oceanside|escondido|san marcos|\bvista\b|encinitas|del mar|la jolla|sorrento|kearny mesa|el cajon|la mesa|santee|imperial beach|camp pendleton|miramar|north island|temecula|murrieta|fallbrook|solana beach|bonita|spring valley|lakeside|ramona|otay|mira mesa|scripps ranch|carmel valley|lemon grove|\b9(?:19|20|21)\d\d\b|\b925(?:6[23]|9[0-5])\b", re.I)  # place names or San Diego County / Temecula-Murrieta ZIPs
 
 
 def rel_date(s: str | None, today: dt.date) -> str:
@@ -118,6 +121,8 @@ async def run(args) -> int:
                         if not title or any(x in title.lower() for x in excl):
                             continue
                         loc = job.location or ""
+                        if not LOCAL.search(loc):
+                            continue
                         rows[url] = dict(
                             lane=lane["id"], site="linkedin", title=title, company=job.company or "",
                             location=loc, date_posted=rel_date(job.posted_date, today), job_type="",

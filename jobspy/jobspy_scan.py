@@ -46,7 +46,10 @@ LOCATION_MAP = {
     "poway / rancho bernardo": "Poway, CA",
     "orange county": "Irvine, CA",
     "coronado": "Coronado, CA",
+    "north county san diego": "Carlsbad, CA",
 }
+# San Diego area only (Steven, 2026-11-17): postings elsewhere are dropped.
+LOCAL = re.compile(r"san diego|chula vista|coronado|national city|point loma|poway|rancho bernardo|carlsbad|oceanside|escondido|san marcos|\bvista\b|encinitas|del mar|la jolla|sorrento|kearny mesa|el cajon|la mesa|santee|imperial beach|camp pendleton|miramar|north island|temecula|murrieta|fallbrook|solana beach|bonita|spring valley|lakeside|ramona|otay|mira mesa|scripps ranch|carmel valley|lemon grove|\b9(?:19|20|21)\d\d\b|\b925(?:6[23]|9[0-5])\b", re.I)  # place names or San Diego County / Temecula-Murrieta ZIPs
 
 
 def clean_title(t: str) -> str:
@@ -111,6 +114,7 @@ def main() -> int:
     p.add_argument("--fetch-description", action="store_true",
                    help="fetch full descriptions (slower; better scoring in RoleCompass)")
     p.add_argument("--proxies", help="comma-separated user:pass@host:port")
+    p.add_argument("--any-location", action="store_true", help="keep postings outside the San Diego area")
     p.add_argument("-o", "--out", default=f"jobspy_{date.today():%Y-%m-%d}.csv")
     args = p.parse_args()
 
@@ -148,6 +152,8 @@ def main() -> int:
         print("No postings found (or every board blocked the request).", file=sys.stderr)
         return 1
     out = pd.concat(frames, ignore_index=True)
+    if not args.any_location:
+        out = out[out["location"].fillna("").astype(str).str.contains(LOCAL)]
     out = out.drop_duplicates(subset=["job_url"]).drop_duplicates(subset=["company", "title", "location"])
     for c in COLUMNS:
         if c not in out.columns:

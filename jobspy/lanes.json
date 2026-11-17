@@ -24,8 +24,8 @@
       ],
       "locations": [
         "San Diego",
-        "Orange County",
-        "Remote US"
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": [
         "ML Engineer",
@@ -66,8 +66,8 @@
       ],
       "locations": [
         "San Diego",
-        "Temecula / SoCal hybrid",
-        "Remote US"
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": [
         "Intern",
@@ -114,7 +114,8 @@
       "locations": [
         "San Diego",
         "Poway / Rancho Bernardo",
-        "Remote US"
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": [
         "Program Analyst I",
@@ -144,7 +145,8 @@
       "locations": [
         "San Diego",
         "Coronado",
-        "Remote"
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": []
     },
@@ -173,8 +175,8 @@
       ],
       "locations": [
         "San Diego",
-        "Temecula / SoCal hybrid",
-        "Remote US"
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": [
         "Intern",
@@ -201,9 +203,9 @@
         "referral partners"
       ],
       "locations": [
-        "San Diego County",
-        "Temecula / Murrieta",
-        "Remote US"
+        "San Diego",
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": []
     },
@@ -239,8 +241,8 @@
       ],
       "locations": [
         "San Diego",
-        "Temecula / SoCal hybrid",
-        "Remote US"
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": [
         "Engineer",
@@ -267,8 +269,9 @@
         "implementation"
       ],
       "locations": [
-        "Remote US",
-        "SoCal"
+        "San Diego",
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": [
         "Loan Officer I"
@@ -304,7 +307,8 @@
       ],
       "locations": [
         "San Diego",
-        "Remote US"
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": [
         "Intern",
@@ -342,8 +346,8 @@
       ],
       "locations": [
         "San Diego",
-        "Southern California",
-        "Remote US"
+        "North County San Diego",
+        "Temecula / Murrieta"
       ],
       "excludedTitles": [
         "Intern",
