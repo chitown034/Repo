@@ -136,10 +136,14 @@ def lane_matcher(lane: dict):
             title_sets.append(ws)
     kws = [k.lower() for k in lane.get("keywords", []) if len(k) >= 4]
     excl = [x.lower() for x in lane.get("excludedTitles", [])]
+    # employerOnly lanes (e.g. consulting) keep only postings from the named firms
+    firms = [e.lower() for e in lane.get("employers", [])] if lane.get("employerOnly") else []
 
-    def match(title: str, snippet: str) -> bool:
+    def match(title: str, snippet: str, company: str = "") -> bool:
         tl = title.lower()
         if any(x in tl for x in excl) or NOISE.search(tl):
+            return False
+        if firms and not any(f in company.lower() for f in firms):
             return False
         tw = words(title)
         if any(ts <= tw for ts in title_sets):
@@ -195,7 +199,7 @@ def main() -> int:
         date = posted_date(r["posted"], today)
         if date and (today - dt.date.fromisoformat(date)).days > args.max_age_days:
             continue
-        lane = next((lid for lid, m in matchers if m(r["title"], r["snippet"])), "")
+        lane = next((lid for lid, m in matchers if m(r["title"], r["snippet"], r["company"])), "")
         if not lane and not args.all:
             continue
         interval, lo, hi = salary(r["tags"])

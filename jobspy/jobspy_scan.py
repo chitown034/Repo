@@ -137,6 +137,9 @@ def main() -> int:
                     continue
                 if excl:
                     df = df[~df["title"].fillna("").str.lower().apply(lambda t: any(e in t for e in excl))]
+                if lane.get("employerOnly"):  # e.g. consulting: only the named firms
+                    firms = [f.lower() for f in lane.get("employers", [])]
+                    df = df[df["company"].fillna("").str.lower().apply(lambda c: any(f in c for f in firms))]
                 df = df.assign(lane=lane["id"])
                 frames.append(df)
                 time.sleep(1)  # be polite; LinkedIn and Glassdoor rate-limit bursts

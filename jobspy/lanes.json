@@ -273,6 +273,101 @@
       "excludedTitles": [
         "Loan Officer I"
       ]
+    },
+    {
+      "id": "sio-cdao",
+      "name": "DoW Super Intelligence Office (SIO, formerly CDAO)",
+      "active": true,
+      "priority": "primary",
+      "titles": [
+        "AI Program Manager",
+        "Program Manager",
+        "Data & AI Program Manager",
+        "Digital Transformation Program Manager",
+        "AI Product Manager",
+        "Program Analyst",
+        "Acquisition Program Manager",
+        "Deputy Program Manager"
+      ],
+      "keywords": [
+        "Super Intelligence Office",
+        "CDAO",
+        "Chief Digital and Artificial Intelligence",
+        "Chief Digital and AI",
+        "SI.mil",
+        "Maven Smart System",
+        "War Data Platform",
+        "Joint Fires Network",
+        "Advana",
+        "AI & Data Accelerator",
+        "CJADC2"
+      ],
+      "locations": [
+        "San Diego",
+        "Remote US"
+      ],
+      "excludedTitles": [
+        "Intern",
+        "Junior",
+        "Software Engineer",
+        "Developer",
+        "Data Scientist"
+      ]
+    },
+    {
+      "id": "consulting",
+      "name": "Management & strategy consulting (BCG, McKinsey, Deloitte, Accenture Federal, Guidehouse, KPMG, PwC)",
+      "active": true,
+      "priority": "primary",
+      "titles": [
+        "Consultant",
+        "Senior Consultant",
+        "Manager",
+        "Senior Manager",
+        "Project Leader",
+        "Engagement Manager",
+        "Lead Associate",
+        "Principal",
+        "Program Manager"
+      ],
+      "keywords": [
+        "public sector",
+        "national security",
+        "defense",
+        "federal",
+        "Department of War",
+        "DoD",
+        "Navy",
+        "government"
+      ],
+      "locations": [
+        "San Diego",
+        "Southern California",
+        "Remote US"
+      ],
+      "excludedTitles": [
+        "Intern",
+        "Junior",
+        "Analyst I",
+        "Software Engineer",
+        "Developer",
+        "Tax",
+        "Audit"
+      ],
+      "employers": [
+        "Boston Consulting Group",
+        "BCG",
+        "McKinsey",
+        "Deloitte",
+        "Accenture Federal Services",
+        "Accenture",
+        "Guidehouse",
+        "KPMG",
+        "PwC",
+        "PricewaterhouseCoopers",
+        "Booz Allen Hamilton"
+      ],
+      "employerOnly": true
     }
   ]
 }
