@@ -205,8 +205,8 @@ click that submits, sends, pays or signs stops for Steven. `bin/brain route` bri
 
 Steven: "add to ai org chart and put in respective department to operate under vanessa opus 5.5 as cross functional
 teams". **The Agency** (msitarzewski/agency-agents, 283 specialist agents) is placed squad by squad: each department's
-executive leads its squad, every squad reports to Vanessa, all on Opus 5.5. 137 are active, 36 were already seats here
-(not duplicated), 110 are parked as off-lane. Squad lists: `wiki/ai-team/agency-teams.md`; install:
+executive leads its squad, every squad reports to Vanessa, all on Opus 5.5. 122 are active, 39 were already seats here
+(not duplicated), 122 are parked as off-lane. Squad lists: `wiki/ai-team/agency-teams.md`; install:
 `integrations/agency-agents/`. **OpenWorker** (Andrew Ng's AI coworker app) is a surface under Vanessa that Derek
 runs, Elena gates and Elon evaluates; its own coding and security workers stay inside the app. **image-blaster**
 (photo to 3D scene and sound) joins Sofia's Marketing squad with Elon; it needs two paid keys Steven adds himself.

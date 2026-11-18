@@ -19,8 +19,9 @@ clone_at() {   # clone_at <owner/repo> <commit> <dir>
   command -v git >/dev/null || { say "git is not installed."; exit 1; }
   if [ -d "$dir/.git" ]; then git -C "$dir" fetch -q origin 2>/dev/null || true
   elif [ -e "$dir" ]; then say "$dir exists and is not a git checkout; leaving it alone."; return 1
-  else git clone -q "https://github.com/$repo.git" "$dir"; fi
-  git -C "$dir" -c advice.detachedHead=false checkout -q "$pin" && say "$repo at $pin -> $dir"
+  elif ! git clone -q "https://github.com/$repo.git" "$dir"; then say "could not clone $repo"; return 1; fi
+  if ! git -C "$dir" -c advice.detachedHead=false checkout -q "$pin"; then say "could not check out $pin in $dir"; return 1; fi
+  say "$repo at $pin -> $dir"
 }
 
 case "${1:-status}" in
@@ -37,8 +38,10 @@ case "${1:-status}" in
     ;;
   shelf)
     mkdir -p "$HOME/reference"
-    clone_at cporter202/automate-faceless-content 89abd62 "$HOME/reference/automate-faceless-content" || true
-    clone_at cporter202/API-mega-list b7c914f "$HOME/reference/API-mega-list" || true
+    miss=0
+    clone_at cporter202/automate-faceless-content 89abd62 "$HOME/reference/automate-faceless-content" || miss=$((miss + 1))
+    clone_at cporter202/API-mega-list b7c914f "$HOME/reference/API-mega-list" || miss=$((miss + 1))
+    [ "$miss" = 0 ] || { say "$miss of 2 reference repos are not in place (see above)."; exit 1; }
     say "Reading only: no licence is stated on either, so nothing is copied into the repo. Both carry paid-product and"
     say "referral links; the API list points at paid scrapers (Alexandra checks a site's terms before any use)."
     ;;

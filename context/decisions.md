@@ -939,8 +939,8 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Decision.** Steven: "install agency-agents and openworker ... add to ai org chart and put in respective department
   to operate under vanessa opus 5.5 as cross functional teams", plus claude-video, agent-browser,
   automate-faceless-content, image-blaster and API-mega-list. The Agency's 283 agents are placed one squad per
-  department under its executive, all reporting to Vanessa on Opus 5.5: 137 active (installed as `agency-<slug>`
-  subagents), 36 not installed because a seat already does the job (the 2026-11-01 no-duplicates rule), 110 parked as
+  department under its executive, all reporting to Vanessa on Opus 5.5: 122 active (installed as `agency-<slug>`
+  subagents), 39 not installed because a seat already does the job (the 2026-11-01 no-duplicates rule), 122 parked as
   off-lane. Rules in `brain/agency.py`; `bin/brain agency` keeps the roster and `wiki/ai-team/agency-teams.md` current.
 - **The rest.** OpenWorker is an app surface under Vanessa (Derek runs, Elena gates, Elon evaluates); its model is
   held for Steven (Ollama free or an Anthropic key). image-blaster joins Sofia's squad; its World Labs and FAL keys are

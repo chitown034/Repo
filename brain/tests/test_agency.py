@@ -61,6 +61,28 @@ class Placement(unittest.TestCase):
         with self.assertRaises(agency.AgencyError):
             agency.place([_row("Frontend Developer"), _row("Frontend Developer")], self.seats)
 
+    def test_a_hand_edited_roster_is_caught(self):
+        import json, shutil, tempfile
+        from pathlib import Path
+        for field, value in (("model", "haiku"), ("installAs", "../../escaped"), ("lead", "Bob"),
+                             ("path", "README.md"), ("department", "Finance")):
+            with tempfile.TemporaryDirectory() as d:
+                d = Path(d)
+                for rel in (agency.MANIFEST, agency.PAGE, "integrations/agent-os/agents.json"):
+                    (d / rel).parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy(ROOT / rel, d / rel)
+                m = json.loads((d / agency.MANIFEST).read_text())
+                m["agents"][0][field] = value
+                (d / agency.MANIFEST).write_text(json.dumps(m))
+                self.assertFalse(agency.check(d)["ok"], field)
+
+    def test_refresh_refuses_a_clone_not_at_the_pinned_commit(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(agency.AgencyError):
+                agency.write(ROOT, Path(d))
+
     def test_summary_counts_add_up(self):
         s = agency.summary(ROOT)
         self.assertEqual(s["active"] + s["duplicate"] + s["parked"], s["total"])
