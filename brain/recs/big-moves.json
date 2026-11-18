@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-17T14:10:44Z",
- "date": "2026-11-17",
+ "generated": "2026-11-18T14:10:00Z",
+ "date": "2026-11-18",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -112,7 +112,7 @@
    "category": "sync",
    "topic": "fieldy",
    "title": "Resync the Fieldy meetings (recorded conversations) layer",
-   "why": "last stamp 2026-11-12, 5 days old, cadence 1 d",
+   "why": "last stamp 2026-11-12, 6 days old, cadence 1 d",
    "owner": "Derek",
    "executor": "vanessa",
    "impact": 3,
@@ -449,7 +449,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-11-17",
+     "why": "bench 30/31 on 2026-11-18",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -467,10 +467,10 @@
      "coa": "improve"
     },
     {
-     "id": "bm_9f735f22be",
+     "id": "bm_c72f9d664a",
      "category": "brain",
      "topic": "",
-     "title": "Guard wiki/ai-team/bot-crew.md with a gold question",
+     "title": "Guard wiki/ai-team/agency-teams.md with a gold question",
      "why": "no gold question tests this page, so a regression would go unseen",
      "owner": "Vanessa",
      "executor": "vanessa",
@@ -489,10 +489,10 @@
      "coa": "improve"
     },
     {
-     "id": "bm_1a2bdac263",
+     "id": "bm_9f735f22be",
      "category": "brain",
      "topic": "",
-     "title": "Guard wiki/ai-team/desk-seats.md with a gold question",
+     "title": "Guard wiki/ai-team/bot-crew.md with a gold question",
      "why": "no gold question tests this page, so a regression would go unseen",
      "owner": "Vanessa",
      "executor": "vanessa",
@@ -522,7 +522,7 @@
      "category": "sync",
      "topic": "fieldy",
      "title": "Resync the Fieldy meetings (recorded conversations) layer",
-     "why": "last stamp 2026-11-12, 5 days old, cadence 1 d",
+     "why": "last stamp 2026-11-12, 6 days old, cadence 1 d",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -544,7 +544,7 @@
      "category": "ops",
      "topic": "",
      "title": "Clear Needs-Steven item 1 in today's brief (p1)",
-     "why": "cosBrief needsSteven, deadline overdue (42+ days at Clear to Close; dec",
+     "why": "cosBrief needsSteven, deadline overdue (43+ days at Clear to Close; dec",
      "owner": "Vanessa",
      "executor": "steven",
      "impact": 3,
@@ -584,11 +584,11 @@
      "coa": "risk"
     },
     {
-     "id": "bm_a0cbe5ca2b",
+     "id": "bm_df7be88089",
      "category": "ops",
      "topic": "",
-     "title": "Repair Mac task brain-weekly-verify",
-     "why": "runnerStatus (2026-11-16) shows brain-weekly-verify last run refused.",
+     "title": "Repair Mac task brain-learn-daily",
+     "why": "runnerStatus (2026-11-18) shows brain-learn-daily last run refused.",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
@@ -597,7 +597,7 @@
      "plan": [
       "Read the task's log from the next connect-all REPORT",
       "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run brain-weekly-verify`"
+      "Steven pastes `runnerctl run brain-learn-daily`"
      ],
      "source": "deck runnerStatus",
      "coa": "risk",
@@ -724,7 +724,7 @@
   },
   {
    "q": "What should I do about: Resync the Fieldy meetings (recorded conversations) layer?",
-   "a": "last stamp 2026-11-12, 5 days old, cadence 1 d.",
+   "a": "last stamp 2026-11-12, 6 days old, cadence 1 d.",
    "action": "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
    "coa": "risk",
    "ref": "bm_18a228a6eb"
@@ -762,7 +762,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-11-17: bench 30/31, routes 23/23, 20 stale pages, 31 untested wiki pages, 2 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-18: bench 30/31, routes 23/23, 20 stale pages, 32 untested wiki pages, 2 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"
