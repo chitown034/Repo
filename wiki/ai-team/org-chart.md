@@ -201,6 +201,17 @@ click that submits, sends, pays or signs stops for Steven. `bin/brain route` bri
 - **Computer Hub** and the **Alienware local-AI tier** (Laya, Bonsai 2 27B) — `wiki/ai-team/computer-hub.md`.
 - **Third-party skill packs** — Sofia's content skills, `/watch`, vidIQ and more, installed by Steven on the Mac. `wiki/ai-team/third-party-packs.md`.
 
+## Added 2026-11-18: The Agency squads, OpenWorker, image-blaster
+
+Steven: "add to ai org chart and put in respective department to operate under vanessa opus 5.5 as cross functional
+teams". **The Agency** (msitarzewski/agency-agents, 283 specialist agents) is placed squad by squad: each department's
+executive leads its squad, every squad reports to Vanessa, all on Opus 5.5. 137 are active, 36 were already seats here
+(not duplicated), 110 are parked as off-lane. Squad lists: `wiki/ai-team/agency-teams.md`; install:
+`integrations/agency-agents/`. **OpenWorker** (Andrew Ng's AI coworker app) is a surface under Vanessa that Derek
+runs, Elena gates and Elon evaluates; its own coding and security workers stay inside the app. **image-blaster**
+(photo to 3D scene and sound) joins Sofia's Marketing squad with Elon; it needs two paid keys Steven adds himself.
+Decisions for all seven repos: `integrations/skill-packs/REGISTRY-2026-11-18.md`.
+
 ## Proposal-only seats
 
 Nadia (CAIO) and Elon (CTO Innovator) never ship a change themselves — Nadia scans outward and writes the weekly Disruption Brief (replace/upgrade/adopt, graded ADOPT/PILOT/WATCH/IGNORE); Elon vets every item for feasibility, integration cost and security risk before it can enter the test queue. Both report to Vanessa like every seat (2026-11-02); their proposals reach Steven through her. The LLM Council and the digital twin are proposal-only in the same sense — see `wiki/ai-team/tool-integration-status.md` for what that means for Orca, Laya, and 77skills specifically.

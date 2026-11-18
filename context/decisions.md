@@ -934,3 +934,20 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Verified.** Cloud sandbox: installer end to end, "sending PAUSED · approval on · LinkedIn off", dashboard serves on
   127.0.0.1:5555. **Owner.** Victor (use), Alexandra (compliance draft), Derek (install). **Status.** Steven runs the
   installer on the Mac.
+
+## 2026-11-18 — The Agency squads under Vanessa; OpenWorker, image-blaster, reading shelf
+- **Decision.** Steven: "install agency-agents and openworker ... add to ai org chart and put in respective department
+  to operate under vanessa opus 5.5 as cross functional teams", plus claude-video, agent-browser,
+  automate-faceless-content, image-blaster and API-mega-list. The Agency's 283 agents are placed one squad per
+  department under its executive, all reporting to Vanessa on Opus 5.5: 137 active (installed as `agency-<slug>`
+  subagents), 36 not installed because a seat already does the job (the 2026-11-01 no-duplicates rule), 110 parked as
+  off-lane. Rules in `brain/agency.py`; `bin/brain agency` keeps the roster and `wiki/ai-team/agency-teams.md` current.
+- **The rest.** OpenWorker is an app surface under Vanessa (Derek runs, Elena gates, Elon evaluates); its model is
+  held for Steven (Ollama free or an Anthropic key). image-blaster joins Sofia's squad; its World Labs and FAL keys are
+  pay-per-run and Steven's to add. claude-video and agent-browser were already installed at today's versions. The
+  faceless-content course moves from DECLINE (10-31) to reading shelf at Steven's request; API-mega-list stays there.
+  Neither has a licence, so neither is copied into the repo. Register: `integrations/skill-packs/REGISTRY-2026-11-18.md`.
+- **Owner.** Vanessa (squads), Derek (installs), Elena (OpenWorker connectors), Alexandra (advertising and scraper
+  terms). **Status.** Steven runs `bash integrations/agency-agents/install.sh` and
+  `bash integrations/skill-packs/install-2026-11-18.sh image-blaster|shelf|openworker` on the Mac.
+

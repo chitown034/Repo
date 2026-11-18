@@ -97,6 +97,9 @@ def _parser() -> argparse.ArgumentParser:
     mb = sub.add_parser("mausbot", help="MausBots (OpenMausBot): the AI org as teams, Chiefs, bots and benches; --write rebuilds integrations/openmausbot/team.yaml")
     mb.add_argument("--write", action="store_true", help="rewrite team.yaml and the Chiefs' souls from the roster")
     mb.add_argument("--json", action="store_true", help="the dashboard summary as JSON")
+    ag = sub.add_parser("agency", help="The Agency (msitarzewski/agency-agents) as cross-functional squads under Vanessa: check, --json, or --refresh CLONE")
+    ag.add_argument("--refresh", metavar="CLONE", help="a clone of agency-agents at the pinned commit: rebuild roster.json and the wiki page")
+    ag.add_argument("--json", action="store_true", help="the dashboard summary as JSON")
     og = sub.add_parser("org", help="the AI org chart as one JSON: seats, lanes, pods, tiers (what every dashboard should show)")
     ex = sub.add_parser("export", help="export the brain for another tool: `notebooklm` writes exports/notebooklm/*.md (no client pages, PII masked)")
     ex.add_argument("target", choices=["notebooklm"]); ex.add_argument("--out", default=None, help="folder (default exports/notebooklm)")
@@ -295,6 +298,18 @@ def main(argv: list[str] | None = None) -> int:
         except mausbot.MausbotError as e:
             print("mausbot: FAIL", e); return 1
         r = mausbot.check(root); print(mausbot.format_check(r)); return 0 if r["ok"] else 1
+    if args.cmd == "agency":
+        from . import agency
+        try:
+            if args.refresh:
+                r = agency.write(root, Path(args.refresh))
+                print(f"wrote {agency.MANIFEST} + {agency.PAGE}: {r['total']} agents -> {r['active']} active, {r['duplicate']} covered by existing seats, {r['parked']} parked")
+                return 0
+            if args.json:
+                print(json.dumps(agency.summary(root), ensure_ascii=False, indent=1)); return 0
+        except (agency.AgencyError, OSError) as e:
+            print("agency: FAIL", e); return 1
+        r = agency.check(root); print(agency.format_check(r)); return 0 if r["ok"] else 1
     if args.cmd == "org":
         from . import loop as loop_mod, mausbot as mausbot_mod, route as route_mod
         rules = route_mod.load_rules(root)
@@ -303,10 +318,16 @@ def main(argv: list[str] | None = None) -> int:
             maus = mausbot_mod.summary(root)
         except mausbot_mod.MausbotError as e:   # the org chart still goes out; the MausBots panel shows why it is empty
             maus = {"error": str(e)}
+        from . import agency as agency_mod
+        try:
+            squads = agency_mod.summary(root)
+        except (OSError, ValueError, KeyError) as e:
+            squads = {"error": str(e)}
         print(json.dumps({"generated": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "seats": seats,
                           "lanes": {k: v for k, v in rules["lanes"].items()}, "tiers": rules["tiers"],
                           "pods": [{"pod": n, "words": w, "seats": m, "delivers": d} for n, w, m, d in rules["pods"]],
                           "mausbot": maus,
+                          "agency": squads,
                           "source": "wiki/ai-team/org-chart.md + cross-functional.md (bin/brain org)"}, indent=1)); return 0
     if args.cmd == "deck-stamp":
         from . import layers

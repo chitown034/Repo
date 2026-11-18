@@ -20,7 +20,7 @@ LAYERS = {
     "controllers": ["brain/__main__.py", "bin/brain"],
     "services": ["brain/recall.py", "brain/ask.py", "brain/loop.py", "brain/learn.py", "brain/passages.py",
                  "brain/agentos.py", "brain/agentfiles.py", "brain/encyclopedia.py", "brain/tune.py",
-                 "brain/remember.py", "brain/graph.py", "brain/layout.py", "brain/mausbot.py"],
+                 "brain/remember.py", "brain/graph.py", "brain/layout.py", "brain/mausbot.py", "brain/agency.py"],
     "routes": ["CLAUDE.md", "INDEX.md"],
     "utils": ["brain/text.py", "brain/doctor.py"],
     "tests": ["brain/tests", "scripts/setup-health.sh"],
