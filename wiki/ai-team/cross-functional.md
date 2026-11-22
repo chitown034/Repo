@@ -77,6 +77,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Regina | new law, new laws, regulation, effective date, legislation, reference library, statute, ordinance, what changed | `wiki/ai-team/desk-seats.md` |
 | Bennett | daily flow, action inbox, what needs me, power hour, call list, who should i call, quick capture, lead router, route lead | `wiki/ai-team/desk-seats.md` |
 | Hollis | sellbird, partner prospecting, find attorneys, find builders, cold email partners, outreach engine, prospect list | `integrations/sellbird/` |
+| Atlas | harness, graph, loop engineering, loops, engineering core, trace, ai calls, broken links, orphans, relationship map, who is connected, is the system improving, feedback loop | `wiki/ai-team/engineering-core.md` |
 | Isabel | loan processing, processor, conditions, underwriting conditions, document checklist, voe, vod, application date, loan estimate, le deadline, appraisal order, intent to proceed | `wiki/mortgage-programs/` |
 | Reyes | closing disclosure, cd timing, trid, consummation, rate lock, lock expiration, funding, rescission, signing appointment, clear to close | `wiki/mortgage-programs/` |
 
