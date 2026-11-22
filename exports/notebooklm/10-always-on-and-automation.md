@@ -1,6 +1,6 @@
 # What runs when: schedule, automation map, routine budget, Steven's steps
 
-Second Brain export for NotebookLM · as of 2026-11-15 · bundle `10-always-on-and-automation`.
+Second Brain export for NotebookLM · as of 2026-11-22 · bundle `10-always-on-and-automation`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -1637,16 +1637,19 @@ The daily "Fieldy → brain" task writes a digest of each recorded meeting (firs
 <!-- source file: docs/inventory/claude-sessions.md -->
 # FILE: docs/inventory/claude-sessions.md
 
-# Claude Code sessions — ledger (generated 2026-11-15; newest first)
+# Claude Code sessions — ledger (generated 2026-11-22; newest first)
 
 Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
 instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
 brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain ingest claude-export` (STEVEN-STEPS 1h).
-194 sessions listed.
+197 sessions listed.
 `memory/claude-chats.md` has no claude.ai export ingested yet (placeholder stamped 2026-10-23) — Steven re-exports from claude.ai (Settings → Privacy → Export data; STEVEN-STEPS 1h).
 
 | Created | Title | Status | Session |
 |---|---|---|---|
+| 2026-11-15 | Download R Kelly Soulacoaster PDF | idle | `AzKee5Vb` |
+| 2026-11-15 | Shortcuts and automations AI dashboard | idle | `tBETfBsr` |
+| 2026-11-15 | 2027 encyclopedia and reference dashboard | idle | `jQ862VBe` |
 | 2026-11-13 | ListedKit MCP server connection | requires action | `X8REiyEr` |
 | 2026-11-13 | Mobile app redesign with site features | idle | `uBwEyrCp` |
 | 2026-11-10 | Nonprofit dashboard with grant integration | idle | `esYQNeek` |
@@ -1669,13 +1672,13 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-10-27 | Auto and aviation mechanics dashboard guide | idle | `wQTrpdji` |
 | 2026-10-27 | Personal health education dashboard | idle | `YXbakw8X` |
 | 2026-10-27 | Professional tax dashboard with AI integration | idle | `iX3dcukk` |
-| 2026-10-25 | Steven Shearrill handoff continuation | idle | `CMEbs3PD` |
+| 2026-10-25 | Steven Shearrill handoff continuation | running | `CMEbs3PD` |
 | 2026-10-23 | Famous Stoics dashboard and lessons | idle | `2Cfgo9SL` |
 | 2026-10-23 | Clean Your TV interface redesign | idle | `zn3eCGMw` |
 | 2026-10-23 | Comprehensive fitness dashboard | idle | `RFMT6WMX` |
-| 2026-10-22 | California real estate broker dashboard | idle | `Do7MPXYr` |
+| 2026-10-22 | California real estate broker dashboard | running | `Do7MPXYr` |
 | 2026-10-19 | Management presentation on process improvement | idle | `VajE2ten` |
-| 2026-10-18 | Loan Officer Dashboard | idle | `YdHZno2T` |
+| 2026-10-18 | Loan Officer Dashboard | running | `YdHZno2T` |
 | 2026-10-12 | Social media SEO/AEO/GEO optimization | idle | `uqrgDZTM` |
 | 2026-10-12 | Claude setup backup replica | idle | `3n4Uwq1B` |
 | 2026-10-12 | Time Machine backup setup | idle | `V3cao42X` |
@@ -1969,6 +1972,7 @@ SUCCEEDED, the freshness sweep flags it and the Big-moves task raises a "Repair"
 | 6D Brain | full rebuild from the repo (nodes, passages, layers, recs, Vanessa) | 3:30 | cloud `6D rebuild` |
 | 6D Brain | four-lane panel + questions republish | 6:05 | cloud `Big moves` |
 | 6D Brain | layers audit (`bin/brain layers`) | weekly Sun | cloud `layers` |
+| Repo + deck | weekly improvement review — harness, graph and loop engineering (`bin/brain weekly --write`, deck `weeklyImprovements`) | weekly Sun 2:45 PM PT | cloud `layers` (same task) |
 | Repo | sessions ledger, index, CI | daily / on push | cloud `sessions ledger`, GitHub Actions |
 
 Checked 2026-10-23: every cloud routine's last run SUCCEEDED (pages 1–7 of the trigger list). The Mac side is the weak link

@@ -1,4 +1,4 @@
-# Second Brain → NotebookLM — start here (as of 2026-11-15)
+# Second Brain → NotebookLM — start here (as of 2026-11-22)
 
 This folder is the Second Brain of Steven Shearrill (Broker Associate, LPT Realty · MLO, Patriot Pacific Financial, NMLS 1921615)
 exported as NotebookLM sources. Upload every `.md` file in this folder to ONE notebook. Ask the notebook as you would ask Vanessa.
@@ -14,19 +14,19 @@ exported as NotebookLM sources. Upload every `.md` file in this folder to ONE no
 | File | Size |
 |---|---|
 | 01-router-and-index.md | 69 k chars |
-| 02-who-and-decisions.md | 122 k chars |
+| 02-who-and-decisions.md | 125 k chars |
 | 03-projects.md | 18 k chars |
-| 04-wiki-ai-team.md | 182 k chars |
+| 04-wiki-ai-team.md | 201 k chars |
 | 05-wiki-mortgage-programs.md | 36 k chars |
 | 06-wiki-real-estate-playbooks.md | 59 k chars |
 | 07-wiki-dashboard-ops.md | 38 k chars |
 | 08-wiki-events-networking.md | 8 k chars |
-| 09-references.md | 98 k chars |
+| 09-references.md | 100 k chars |
 | 10-always-on-and-automation.md | 302 k chars |
-| 11-6d-brain-map.md | 126 k chars |
-| 12-integrations.md | 317 k chars |
+| 11-6d-brain-map.md | 209 k chars |
+| 12-integrations.md | 322 k chars |
 
-Pages included: 132 · left out on purpose: 40 · phone/e-mail masks applied: 22.
+Pages included: 135 · left out on purpose: 40 · phone/e-mail masks applied: 22.
 
 ## Left out (by rule)
 

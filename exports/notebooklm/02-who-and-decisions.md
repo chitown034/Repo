@@ -1,6 +1,6 @@
 # Who Steven is, standing decisions, remembered facts
 
-Second Brain export for NotebookLM · as of 2026-11-15 · bundle `02-who-and-decisions`.
+Second Brain export for NotebookLM · as of 2026-11-22 · bundle `02-who-and-decisions`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
@@ -1069,6 +1069,34 @@ through Apple Health and the same export file once Steven switches the nutrition
 - **Verified.** Cloud sandbox: installer end to end, "sending PAUSED · approval on · LinkedIn off", dashboard serves on
   127.0.0.1:5555. **Owner.** Victor (use), Alexandra (compliance draft), Derek (install). **Status.** Steven runs the
   installer on the Mac.
+
+## 2026-11-22 — Weekly improvements gain harness, graph and loop engineering lenses
+- **Decision.** Steven: "add Harness engineering, graph engineering and loop engineering to weekly improvements." The weekly
+  improvement review now looks through three lenses — harness (routines, Mac tasks, skills, hooks, router, connectors),
+  graph (6D Brain graph: orphans, islands, dead links, undated pages) and loop (run history, bench trend, regressions,
+  untested pages) — each scored 0–100 week over week.
+- **How.** `bin/brain weekly --write` (brain/weekly.py, tests in brain/tests/test_weekly.py) writes
+  docs/reports/WEEKLY-IMPROVEMENTS.md and brain/weekly.json; `bin/brain recs` turns each lens's top 3 proposals into
+  Self-improvement-lane moves. It runs Sundays 2:45 PM PT in the existing weekly layers-sync task in the orchestrator
+  session (renamed "Second Brain weekly — layers sync + improvement review"), because that task is the weekly one that
+  reliably succeeds; the older cloud "weekly improvement loop" routine has failed since 2026-09-20.
+- **Limits.** Plain code, no model call. Mechanical repo fixes only; a routine repair or prompt change stays a proposal.
+
+## 2026-11-18 — The Agency squads under Vanessa; OpenWorker, image-blaster, reading shelf
+- **Decision.** Steven: "install agency-agents and openworker ... add to ai org chart and put in respective department
+  to operate under vanessa opus 5.5 as cross functional teams", plus claude-video, agent-browser,
+  automate-faceless-content, image-blaster and API-mega-list. The Agency's 283 agents are placed one squad per
+  department under its executive, all reporting to Vanessa on Opus 5.5: 122 active (installed as `agency-<slug>`
+  subagents), 39 not installed because a seat already does the job (the 2026-11-01 no-duplicates rule), 122 parked as
+  off-lane. Rules in `brain/agency.py`; `bin/brain agency` keeps the roster and `wiki/ai-team/agency-teams.md` current.
+- **The rest.** OpenWorker is an app surface under Vanessa (Derek runs, Elena gates, Elon evaluates); its model is
+  held for Steven (Ollama free or an Anthropic key). image-blaster joins Sofia's squad; its World Labs and FAL keys are
+  pay-per-run and Steven's to add. claude-video and agent-browser were already installed at today's versions. The
+  faceless-content course moves from DECLINE (10-31) to reading shelf at Steven's request; API-mega-list stays there.
+  Neither has a licence, so neither is copied into the repo. Register: `integrations/skill-packs/REGISTRY-2026-11-18.md`.
+- **Owner.** Vanessa (squads), Derek (installs), Elena (OpenWorker connectors), Alexandra (advertising and scraper
+  terms). **Status.** Steven runs `bash integrations/agency-agents/install.sh` and
+  `bash integrations/skill-packs/install-2026-11-18.sh image-blaster|shelf|openworker` on the Mac.
 
 
 ---

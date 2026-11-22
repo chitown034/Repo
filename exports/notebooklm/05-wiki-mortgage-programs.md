@@ -1,6 +1,6 @@
 # Mortgage programs and guidelines (prep only, never a quote)
 
-Second Brain export for NotebookLM · as of 2026-11-15 · bundle `05-wiki-mortgage-programs`.
+Second Brain export for NotebookLM · as of 2026-11-22 · bundle `05-wiki-mortgage-programs`.
 Every section below begins with `# FILE: <path>` naming the page in the repo (chitown034/Repo, branch claude/stoic-cori-pvn3f8).
 Client pages are never exported; phone numbers and e-mails are masked. Facts carry the page's own dates, not today's.
 
