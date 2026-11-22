@@ -340,6 +340,37 @@
     "references/index.md"
    ],
    "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q34",
+   "kind": "leaf",
+   "question": "How many Agency squad agents are active under Vanessa?",
+   "expected_file": "wiki/ai-team/agency-teams.md",
+   "expected_phrase": "122 active",
+   "alt_files": [
+    "context/decisions.md"
+   ],
+   "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q35",
+   "kind": "leaf",
+   "question": "What MausBots groups are on the Bot Crew page?",
+   "expected_file": "wiki/ai-team/bot-crew.md",
+   "expected_phrase": "MausBots personal team",
+   "alt_files": [],
+   "router_leaf": "wiki/ai-team/index.md"
+  },
+  {
+   "id": "q36",
+   "kind": "leaf",
+   "question": "Who owns the Engineering Core harness graph and loops?",
+   "expected_file": "wiki/ai-team/engineering-core.md",
+   "expected_phrase": "Atlas",
+   "alt_files": [
+    "wiki/ai-team/desk-seats.md"
+   ],
+   "router_leaf": "wiki/ai-team/index.md"
   }
  ]
 }
