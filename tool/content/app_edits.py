@@ -16,6 +16,7 @@ ORG_LOCATION = [
     ("a 501(c)(3) nonprofit based in Temecula, California (EIN", "a 501(c)(3) nonprofit (EIN"),
     ("is a Temecula, California 501(c)(3) nonprofit", "is a Southern California 501(c)(3) nonprofit"),
     ("proud to be a Temecula, California 501(c)(3) nonprofit", "proud to be a Southern California 501(c)(3) nonprofit"),
+    ("based in Temecula, California", "based in Southern California"),
 ]
 ADDRESS = re.compile(r"41150 Crooked Stick|Temecula, CA 92591", re.I)
 DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]

@@ -8,7 +8,7 @@ WORK=$(mktemp -d)
 mkdir -p "$WORK/pages"
 curl -fsS "$SITE/sitemap.xml" | grep -o '<loc>[^<]*</loc>' | sed 's#<loc>##; s#</loc>##' > "$WORK/urls.txt"
 # Pages the app shows that the sitemap leaves out.
-printf '%s\n' "$SITE/terms-and-conditions" "$SITE/why-do-you-want-this-job" >> "$WORK/urls.txt"
+printf '%s\n' "$SITE/terms-and-conditions" "$SITE/why-do-you-want-this-job" "$SITE/veteran-services-by-state" >> "$WORK/urls.txt"
 sort -u "$WORK/urls.txt" | while read -r url; do
   slug=${url#"$SITE"}; slug=${slug#/}; slug=${slug%/}; [ -z "$slug" ] && slug=home
   curl -fsS "$url" -o "$WORK/pages/$slug.html"
