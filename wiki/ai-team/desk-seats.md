@@ -351,3 +351,26 @@ attorneys, builders and contractors in Temecula Valley and San Diego County, bus
 configuration and the Mac installer live in `integrations/sellbird/`. Every email waits in Sellbird's Outbox for
 Steven's approval. The weekly export imports into Alliances on Growth → Sellbird Outreach in the Broker Command
 Center; replies become intro-call tasks for Riley and show in the Daily Flow inbox. Vanessa tool: `sellbird`.
+
+## Atlas — Systems Engineer (harness, graph and loop engineering)
+
+Added 2026-11-22. Reports to Elon; member of the Automation & AI pod. Runs System → Engineering Core in the Broker
+Command Center. Three parts:
+
+- **Harness**: every AI call in the dashboard (19 call sites) goes through one channel. Each call is traced (page,
+  speed, result, size), retried once after a rate limit, and its text checked for a quoted rate or APR, a guarantee,
+  fair-housing language, a referral-fee offer (RESPA §8) and an outbound draft missing DRE/NMLS. A hit warns and is
+  logged; it never edits the text. Daily budget (default 300 calls, a warning, not a block). Built-in self-test:
+  12 cases.
+- **Graph**: people, deals, loans, partners, open tasks, AI seats and 411 areas as one graph. Broken links (no next
+  step, buyer without a loan file, under contract with no deal record, open escrow with no tasks, partner cold 60+
+  days) become owned tasks, at most 15 a day. Hubs and a two-hop relationship explorer.
+- **Loops**: ten loops with Goal → Loop → Routine (speed to lead, follow-up standard, overdue backlog, self-heal
+  backlog, ISA approval rate, Power Hour conversion, deck freshness, harness health, graph integrity, setup
+  completion). Measured daily. A miss creates a proposal task for the owner. Seven met days in a row earn L2: the
+  next miss applies one small pre-approved change (a sweep runs more often, a longer call list), tested for 7 days,
+  then promoted if the metric improved or reverted if not. Fourteen days earn L3. Same method as
+  `.claude/skills/loop-engineering/SKILL.md`.
+
+Orchestrator jobs: loop cycle every 6 h, graph sweep daily. Two health checks, an `engineering` block in the Command
+Deck metrics, and the Vanessa tool `engineering_core`.
