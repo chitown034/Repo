@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-18T14:10:00Z",
- "date": "2026-11-18",
+ "generated": "2026-11-22T20:20:25Z",
+ "date": "2026-11-22",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -108,18 +108,18 @@
    "rank": 5
   },
   {
-   "id": "bm_18a228a6eb",
+   "id": "bm_bb5ab0e256",
    "category": "sync",
-   "topic": "fieldy",
-   "title": "Resync the Fieldy meetings (recorded conversations) layer",
-   "why": "last stamp 2026-11-12, 6 days old, cadence 1 d",
+   "topic": "",
+   "title": "Resync the Command Deck DB layer",
+   "why": "last stamp 2026-11-18, 4 days old, cadence 1 d",
    "owner": "Derek",
    "executor": "vanessa",
    "impact": 3,
    "effort": 1,
    "confidence": 0.9,
    "plan": [
-    "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
+    "Run the layer's own sync (routines + Mac tasks write; page reads live)",
     "bin/brain layers --write; confirm 'even: yes'"
    ],
    "source": "layers",
@@ -423,6 +423,28 @@
    "about": "what the brain, the loops and the team change in themselves to get better",
    "items": [
     {
+     "id": "bm_295bee4eb4",
+     "category": "brain",
+     "topic": "",
+     "title": "Harness engineering: Reconnect 1 connector(s)",
+     "why": "needs sign-in: EVRoutes \u00b7 Turo connectors (weekly review 2026-11-22, lens score 59/100)",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 2,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Steven: claude.ai Settings \u2192 Connectors \u2192 reconnect",
+      "next 6D rebuild re-checks"
+     ],
+     "source": "weekly:harness",
+     "weight": 1.0,
+     "score": 1.6,
+     "value": "medium",
+     "rank": 1,
+     "coa": "improve"
+    },
+    {
      "id": "bm_c5020d75ae",
      "category": "brain",
      "topic": "",
@@ -441,7 +463,7 @@
      "weight": 1.0,
      "score": 1.6,
      "value": "medium",
-     "rank": 1,
+     "rank": 2,
      "coa": "improve"
     },
     {
@@ -463,50 +485,28 @@
      "weight": 1.0,
      "score": 1.35,
      "value": "medium",
-     "rank": 2,
-     "coa": "improve"
-    },
-    {
-     "id": "bm_c72f9d664a",
-     "category": "brain",
-     "topic": "",
-     "title": "Guard wiki/ai-team/agency-teams.md with a gold question",
-     "why": "no gold question tests this page, so a regression would go unseen",
-     "owner": "Vanessa",
-     "executor": "vanessa",
-     "impact": 1,
-     "effort": 1,
-     "confidence": 0.9,
-     "plan": [
-      "Add one question to brain/bench/questions.json with the expected phrase",
-      "bin/brain loop \u2192 count rises"
-     ],
-     "source": "loop:untested",
-     "weight": 1.0,
-     "score": 0.9,
-     "value": "low",
      "rank": 3,
      "coa": "improve"
     },
     {
-     "id": "bm_9f735f22be",
+     "id": "bm_e5b22cdc69",
      "category": "brain",
      "topic": "",
-     "title": "Guard wiki/ai-team/bot-crew.md with a gold question",
-     "why": "no gold question tests this page, so a regression would go unseen",
+     "title": "Graph engineering: Back up 1 single point(s) of failure in the map",
+     "why": "removing one cuts part of the map off: store:vanessa (cuts 8) (weekly review 2026-11-22, lens score 82/100)",
      "owner": "Vanessa",
      "executor": "vanessa",
-     "impact": 1,
-     "effort": 1,
-     "confidence": 0.9,
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
      "plan": [
-      "Add one question to brain/bench/questions.json with the expected phrase",
-      "bin/brain loop \u2192 count rises"
+      "give each a second path: a backup seat, a second connector, or a link from another hub",
+      "bin/brain weekly \u2192 count falls"
      ],
-     "source": "loop:untested",
+     "source": "weekly:graph",
      "weight": 1.0,
-     "score": 0.9,
-     "value": "low",
+     "score": 1.2,
+     "value": "medium",
      "rank": 4,
      "coa": "improve"
     }
@@ -518,18 +518,18 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
-     "id": "bm_18a228a6eb",
+     "id": "bm_bb5ab0e256",
      "category": "sync",
-     "topic": "fieldy",
-     "title": "Resync the Fieldy meetings (recorded conversations) layer",
-     "why": "last stamp 2026-11-12, 6 days old, cadence 1 d",
+     "topic": "",
+     "title": "Resync the Command Deck DB layer",
+     "why": "last stamp 2026-11-18, 4 days old, cadence 1 d",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
      "effort": 1,
      "confidence": 0.9,
      "plan": [
-      "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
+      "Run the layer's own sync (routines + Mac tasks write; page reads live)",
       "bin/brain layers --write; confirm 'even: yes'"
      ],
      "source": "layers",
@@ -544,7 +544,7 @@
      "category": "ops",
      "topic": "",
      "title": "Clear Needs-Steven item 1 in today's brief (p1)",
-     "why": "cosBrief needsSteven, deadline overdue (43+ days at Clear to Close; dec",
+     "why": "cosBrief needsSteven, deadline overdue (44+ days at Clear to Close; dec",
      "owner": "Vanessa",
      "executor": "steven",
      "impact": 3,
@@ -584,27 +584,27 @@
      "coa": "risk"
     },
     {
-     "id": "bm_df7be88089",
-     "category": "ops",
+     "id": "bm_5f86c473c1",
+     "category": "brain",
      "topic": "",
-     "title": "Repair Mac task brain-learn-daily",
-     "why": "runnerStatus (2026-11-18) shows brain-learn-daily last run refused.",
+     "title": "Harness engineering: Repair 10 cloud routine(s) whose last run failed",
+     "why": "failing: Books Reconciliation Reminder; Command Deck & ISA Portal Weekly Loop Engineering QA; Command Deck \u2014 Elite Affluent Tracker weekly refresh; Command Deck \u2014 Next Big Moves weekly review (weekly review 2026-11-22, lens score 59/100)",
      "owner": "Derek",
      "executor": "vanessa",
      "impact": 3,
      "effort": 2,
      "confidence": 0.8,
      "plan": [
-      "Read the task's log from the next connect-all REPORT",
-      "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run brain-learn-daily`"
+      "read each routine's last run (list_triggers)",
+      "fix the prompt's broken step or retire the routine",
+      "record it in docs/inventory/cloud-routines.md"
      ],
-     "source": "deck runnerStatus",
-     "coa": "risk",
+     "source": "weekly:harness",
      "weight": 1.0,
      "score": 1.2,
      "value": "medium",
-     "rank": 4
+     "rank": 4,
+     "coa": "risk"
     }
    ]
   },
@@ -716,18 +716,18 @@
    "ref": "bm_08ef5bf8ac"
   },
   {
-   "q": "What should I do about: Review 2 tune proposal(s) from the weekly loop?",
-   "a": "the loop proposed prompt/route changes nobody has judged.",
-   "action": "docs/reports/BRAIN-LOOP.md \u2192 Proposals",
+   "q": "What should I do about: Harness engineering: Reconnect 1 connector(s)?",
+   "a": "needs sign-in: EVRoutes \u00b7 Turo connectors (weekly review 2026-11-22, lens score 59/100).",
+   "action": "Steven: claude.ai Settings \u2192 Connectors \u2192 reconnect",
    "coa": "improve",
-   "ref": "bm_c5020d75ae"
+   "ref": "bm_295bee4eb4"
   },
   {
-   "q": "What should I do about: Resync the Fieldy meetings (recorded conversations) layer?",
-   "a": "last stamp 2026-11-12, 6 days old, cadence 1 d.",
-   "action": "Run the layer's own sync (Fieldy \u2192 brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)",
+   "q": "What should I do about: Resync the Command Deck DB layer?",
+   "a": "last stamp 2026-11-18, 4 days old, cadence 1 d.",
+   "action": "Run the layer's own sync (routines + Mac tasks write; page reads live)",
    "coa": "risk",
-   "ref": "bm_18a228a6eb"
+   "ref": "bm_bb5ab0e256"
   },
   {
    "q": "What should I do about: Drips and texts?",

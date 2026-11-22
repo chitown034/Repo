@@ -1,4 +1,4 @@
-# Big moves — Vanessa's top 10 for 2026-11-18
+# Big moves — Vanessa's top 10 for 2026-11-22
 
 Scored impact × confidence ÷ effort × a weight the brain learns from Steven's approvals and declines
 (`brain/recs/weights.json`, `brain/recs/ledger.jsonl`). Approve or decline on the 6D Brain or the Command Deck;
@@ -11,7 +11,7 @@ an approved item whose executor is Vanessa is queued and run by the 6:25 AM dail
 | 3 | 6.025 | high | Vanessa | steven | Link your iMessage line (fixes the missing morning text + voice note) | From your phone, text `connect @vanessa-shearrill` to **+1 650 484 9720**, once. Until then the brief comes by e-mail (steven.shearrill@gmail.com) and push, with the voice note attached to the e-mail. | From your phone, text `connect @vanessa-shearrill` to **+1 650 484 9720**, once. Until then the brief comes by e-mail (steven.shearrill@gmail.com) and push, with the voice note attached to the e-mail. → Say 'done a' and Vanessa closes it and runs what it unblocks |
 | 4 | 4.519 | high | Derek | steven | TidyCal token | TidyCal → Integrations → API → Manage API keys → Create token; paste 1 asks for it (step 7c). | TidyCal → Integrations → API → Manage API keys → Create token; paste 1 asks for it (step 7c). → Say 'done f' and Vanessa closes it and runs what it unblocks |
 | 5 | 3.012 | high | Derek | steven | Arive | Settings → Integrations → Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`. | Settings → Integrations → Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`. → Say 'done g' and Vanessa closes it and runs what it unblocks |
-| 6 | 2.7 | high | Derek | vanessa | Resync the Fieldy meetings (recorded conversations) layer | last stamp 2026-11-12, 6 days old, cadence 1 d | Run the layer's own sync (Fieldy → brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck) → bin/brain layers --write; confirm 'even: yes' |
+| 6 | 2.7 | high | Derek | vanessa | Resync the Command Deck DB layer | last stamp 2026-11-18, 4 days old, cadence 1 d | Run the layer's own sync (routines + Mac tasks write; page reads live) → bin/brain layers --write; confirm 'even: yes' |
 | 7 | 2.51 | high | Victor | steven | Drips and texts (approved) | Lofty 10DLC registration, then say "specs ready for review" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`). | Lofty 10DLC registration, then say "specs ready for review" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`). → Say 'done k' and Vanessa closes it and runs what it unblocks |
 | 8 | 2.4 | high | Derek | vanessa | Connect 6D Brain shows all of it | the layers panel reads brain/state/jarvis-status.json (persona, indexed pages) and the toolkit register reads this table; the daily 3:30 AM rebuild carries it | Owner Derek confirms the route in the register (integrations/CONNECTIONS.md) → — → Vanessa re-checks the status on the next connect report and closes the item |
 | 9 | 2.4 | high | Vanessa | vanessa | Connect Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa) | hourly at :17, 24/7 (was 6 AM–10 PM PT) | Owner Vanessa confirms the route in the register (integrations/CONNECTIONS.md) → done in this session → Vanessa re-checks the status on the next connect report and closes the item |
@@ -34,18 +34,18 @@ _the moves that bring money, clients or connections in — approve and Vanessa r
 ### Self-improvement (loop engineering)
 _what the brain, the loops and the team change in themselves to get better_
 
+- **Harness engineering: Reconnect 1 connector(s)** (medium value, score 1.6, vanessa) — needs sign-in: EVRoutes · Turo connectors (weekly review 2026-11-22, lens score 59/100). First step: Steven: claude.ai Settings → Connectors → reconnect
 - **Review 2 tune proposal(s) from the weekly loop** (medium value, score 1.6, vanessa) — the loop proposed prompt/route changes nobody has judged. First step: docs/reports/BRAIN-LOOP.md → Proposals
 - **Fix the 1 gold question(s) the brain gets wrong** (medium value, score 1.35, vanessa) — bench 30/31 on 2026-11-18. First step: bin/brain loop → the failing questions
-- **Guard wiki/ai-team/agency-teams.md with a gold question** (low value, score 0.9, vanessa) — no gold question tests this page, so a regression would go unseen. First step: Add one question to brain/bench/questions.json with the expected phrase
-- **Guard wiki/ai-team/bot-crew.md with a gold question** (low value, score 0.9, vanessa) — no gold question tests this page, so a regression would go unseen. First step: Add one question to brain/bench/questions.json with the expected phrase
+- **Graph engineering: Back up 1 single point(s) of failure in the map** (medium value, score 1.2, vanessa) — removing one cuts part of the map off: store:vanessa (cuts 8) (weekly review 2026-11-22, lens score 82/100). First step: give each a second path: a backup seat, a second connector, or a link from another hub
 
 ### Risks and actions to take
 _what is stale, failing or silent, and the action that heads it off_
 
-- **Resync the Fieldy meetings (recorded conversations) layer** (high value, score 2.7, vanessa) — last stamp 2026-11-12, 6 days old, cadence 1 d. First step: Run the layer's own sync (Fieldy → brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)
-- **Clear Needs-Steven item 1 in today's brief (p1)** (high value, score 2.4, steven) — cosBrief needsSteven, deadline overdue (43+ days at Clear to Close; dec. First step: Open the Command Deck cosBrief card
+- **Resync the Command Deck DB layer** (high value, score 2.7, vanessa) — last stamp 2026-11-18, 4 days old, cadence 1 d. First step: Run the layer's own sync (routines + Mac tasks write; page reads live)
+- **Clear Needs-Steven item 1 in today's brief (p1)** (high value, score 2.4, steven) — cosBrief needsSteven, deadline overdue (44+ days at Clear to Close; dec. First step: Open the Command Deck cosBrief card
 - **Clear Needs-Steven item 2 in today's brief (p1)** (high value, score 2.4, steven) — cosBrief needsSteven, deadline overdue since 2026-11-09. First step: Open the Command Deck cosBrief card
-- **Repair Mac task brain-learn-daily** (medium value, score 1.2, vanessa) — runnerStatus (2026-11-18) shows brain-learn-daily last run refused.. First step: Read the task's log from the next connect-all REPORT
+- **Harness engineering: Repair 10 cloud routine(s) whose last run failed** (medium value, score 1.2, vanessa) — failing: Books Reconciliation Reminder; Command Deck & ISA Portal Weekly Loop Engineering QA; Command Deck — Elite Affluent Tracker weekly refresh; Command Deck — Next Big Moves weekly review (weekly review 2026-11-22, lens score 59/100). First step: read each routine's last run (list_triggers)
 
 ### Opportunities to pursue
 _marketing, presence and new capabilities worth a move_
@@ -58,8 +58,8 @@ _marketing, presence and new capabilities worth a move_
 ## Questions you may have
 
 - **What should I do about: Lofty API key?** Lofty → Settings → Integrations → API → create; paste 1 asks for it (step 7b). → it is yours: do the step on the move, then say done
-- **What should I do about: Review 2 tune proposal(s) from the weekly loop?** the loop proposed prompt/route changes nobody has judged. → docs/reports/BRAIN-LOOP.md → Proposals
-- **What should I do about: Resync the Fieldy meetings (recorded conversations) layer?** last stamp 2026-11-12, 6 days old, cadence 1 d. → Run the layer's own sync (Fieldy → brain task, 6:50 AM PT, through the Fieldy connector; fieldyDesk doc on the deck)
+- **What should I do about: Harness engineering: Reconnect 1 connector(s)?** needs sign-in: EVRoutes · Turo connectors (weekly review 2026-11-22, lens score 59/100). → Steven: claude.ai Settings → Connectors → reconnect
+- **What should I do about: Resync the Command Deck DB layer?** last stamp 2026-11-18, 4 days old, cadence 1 d. → Run the layer's own sync (routines + Mac tasks write; page reads live)
 - **What should I do about: Drips and texts?** Lofty 10DLC registration, then say "specs ready for review" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`). → it is yours: do the step on the move, then say done
 - **What are the phone and Mac steps only I can do?** … Paste 3 — Alienware (Windows 11), PowerShell (not as administrator), one line: (Claude Code, AnyDesk, the Doctor, then Orca / Laya / Bonsai / Ollama — it asks y before each.) Then claude once to sign in. Then four clicks, in this order (say "done A" … "done D"): … → Open docs/STEVEN-STEPS.md § Older round (2026-10-23, round 2 — simplified the same evening) — three pastes, then four clicks
 - **What runs every morning, and when?** Steven, 2026-10-23: "ensure command deck, isa portal and 6d brain are updated daily." Every row below is a cloud routine on his Claude subscription (ids in cloud-routines-2026-10.md) unless marked Mac. Times are Pacific. → Open docs/inventory/daily-updates.md § Daily updates — what refreshes the three dashboards, and when (2026-10-23)
@@ -69,4 +69,4 @@ _marketing, presence and new capabilities worth a move_
 - **Where is the morning brief and why did it not arrive?** Steven, 2026-10-23: "vanessa did not send morning brief today with voice imessage fix this." Found: on 2026-10-23 the cloud brief was written (morningBrief v1), the push went, this task ran at 06:53 PT and reported ok, voice-reply-render rendered — and nothing reached his phone, because Vanessa's shared iMessage line… → Open integrations/mac-task-specs.md § 8c. vanessa-morning-brief-text — AMENDMENT: when iMessage is not linked, the brief goes by e-mail with the voice note attached (2026-10-23)
 
 Category weights: brain 1.00, compliance 1.00, connect 1.00, marketing 1.00, money 1.00, opportunity 1.21, ops 1.00, revenue 1.00, steven 1.77, sync 1.00
-Generated 2026-11-18T14:10:00Z.
+Generated 2026-11-22T20:20:25Z.
