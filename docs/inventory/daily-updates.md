@@ -22,6 +22,7 @@ SUCCEEDED, the freshness sweep flags it and the Big-moves task raises a "Repair"
 | 6D Brain | full rebuild from the repo (nodes, passages, layers, recs, Vanessa) | 3:30 | cloud `6D rebuild` |
 | 6D Brain | four-lane panel + questions republish | 6:05 | cloud `Big moves` |
 | 6D Brain | layers audit (`bin/brain layers`) | weekly Sun | cloud `layers` |
+| Repo + deck | weekly improvement review — harness, graph and loop engineering (`bin/brain weekly --write`, deck `weeklyImprovements`) | weekly Sun 2:45 PM PT | cloud `layers` (same task) |
 | Repo | sessions ledger, index, CI | daily / on push | cloud `sessions ledger`, GitHub Actions |
 
 Checked 2026-10-23: every cloud routine's last run SUCCEEDED (pages 1–7 of the trigger list). The Mac side is the weak link

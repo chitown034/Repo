@@ -97,6 +97,20 @@ def _parser() -> argparse.ArgumentParser:
     mb = sub.add_parser("mausbot", help="MausBots (OpenMausBot): the AI org as teams, Chiefs, bots and benches; --write rebuilds integrations/openmausbot/team.yaml")
     mb.add_argument("--write", action="store_true", help="rewrite team.yaml and the Chiefs' souls from the roster")
     mb.add_argument("--json", action="store_true", help="the dashboard summary as JSON")
+    hz = sub.add_parser("harness", help="Runtime layer around every agent/automation run: status, check NAME, trace NAME ok|fail, kill, reset, policy")
+    hz.add_argument("action", choices=["status", "check", "trace", "kill", "reset", "policy"])
+    hz.add_argument("name", nargs="?", help="automation or agent name (lowercase, e.g. 6d-rebuild)")
+    hz.add_argument("result", nargs="?", choices=["ok", "fail", "skip"], help="trace: the run's result")
+    hz.add_argument("--note", default="")
+    hz.add_argument("--ms", type=int)
+    hz.add_argument("--all", action="store_true", help="kill: every automation")
+    hz.add_argument("--release", action="store_true", help="kill: release instead of engage")
+    hz.add_argument("--reason", default="")
+    hz.add_argument("--by", default="Steven")
+    hz.add_argument("--json", action="store_true")
+    wk = sub.add_parser("weekly", help="Weekly improvement review: harness, graph and loop engineering lenses (--write for the report + recs feed)")
+    wk.add_argument("--write", action="store_true", help="write docs/reports/WEEKLY-IMPROVEMENTS.md, brain/weekly.json and brain/weekly-history.jsonl")
+    wk.add_argument("--json", action="store_true")
     ag = sub.add_parser("agency", help="The Agency (msitarzewski/agency-agents) as cross-functional squads under Vanessa: check, --json, or --refresh CLONE")
     ag.add_argument("--refresh", metavar="CLONE", help="a clone of agency-agents at the pinned commit: rebuild roster.json and the wiki page")
     ag.add_argument("--json", action="store_true", help="the dashboard summary as JSON")
@@ -298,6 +312,40 @@ def main(argv: list[str] | None = None) -> int:
         except mausbot.MausbotError as e:
             print("mausbot: FAIL", e); return 1
         r = mausbot.check(root); print(mausbot.format_check(r)); return 0 if r["ok"] else 1
+    if args.cmd == "harness":
+        from . import harness
+        try:
+            if args.action == "status":
+                s = harness.status(root)
+                print(json.dumps(s, ensure_ascii=False, indent=1) if args.json else harness.format_status(s)); return 0
+            if args.action == "policy":
+                print(json.dumps(harness.POLICY, indent=1)); return 0
+            if args.action == "kill":
+                if not args.all and not args.name:
+                    print("harness kill: give a NAME or --all"); return 2
+                k = harness.kill(root, None if args.all else args.name, args.reason, by=args.by, release=args.release)
+                print("kill switch:", json.dumps(k)); return 0
+            if not args.name:
+                print(f"harness {args.action}: NAME is required"); return 2
+            if args.action == "check":
+                code, msg = harness.check(root, args.name); print(msg); return code
+            if args.action == "reset":
+                harness.reset(root, args.name); print(f"breaker reset: {args.name}"); return 0
+            if args.action == "trace":
+                if not args.result:
+                    print("harness trace: NAME ok|fail|skip"); return 2
+                print(json.dumps(harness.trace(root, args.name, args.result, note=args.note, ms=args.ms))); return 0
+        except harness.HarnessError as e:
+            print("harness:", e); return 2
+    if args.cmd == "weekly":
+        from . import weekly
+        if args.write:
+            res, path = weekly.write(root)
+            print(f"wrote {weekly.REPORT}: " + weekly.summary_line(res)); return 0
+        res = weekly.review(root)
+        if args.json:
+            print(json.dumps(res, ensure_ascii=False, indent=1)); return 0
+        print(weekly.format_report(res, weekly.load(root))); return 0
     if args.cmd == "agency":
         from . import agency
         try:

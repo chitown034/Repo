@@ -1,0 +1,3 @@
+{"ts": "2026-11-22T20:19:28Z", "name": "sessions-ledger", "status": "ok"}
+{"ts": "2026-11-22T20:19:28Z", "name": "fieldy-digest", "status": "ok", "note": "0-conversations"}
+{"ts": "2026-11-22T20:20:00Z", "name": "health-sync", "status": "ok", "note": "catch-up 2026-11-17..21 exports"}

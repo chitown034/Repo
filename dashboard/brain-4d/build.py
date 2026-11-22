@@ -94,6 +94,12 @@ def agents_per_seat(root):
         lane = (a.get("laya") or {}).get("lane")
         if lane:
             counts[lane] = counts.get(lane, 0) + 1
+    try:  # the Agency squads (2026-11-22): active agents count under their department's executive
+        for a in json.loads((root / "integrations/agency-agents/roster.json").read_text(encoding="utf-8")).get("agents", []):
+            if a.get("status") == "active" and a.get("lead"):
+                counts[a["lead"]] = counts.get(a["lead"], 0) + 1
+    except (OSError, ValueError):
+        pass
     return counts
 
 
@@ -144,6 +150,10 @@ out = out.replace("/*BUILD*/null", json.dumps(date.today().isoformat()), 1)
 _ag = ROOT / "integrations/agent-os/agents.json"  # total AI agents on the team, shown first in the stats bar (Steven, 2026-11-09)
 try:
     _al = json.loads(_ag.read_text(encoding="utf-8")); _al = _al if isinstance(_al, list) else _al.get("agents", [])
+    try:  # plus the Agency's active agents (Opus 5.5), so the stats bar counts the whole team (2026-11-22)
+        _al = _al + [{"model": "Opus 5.5"} for a in json.loads((ROOT / "integrations/agency-agents/roster.json").read_text(encoding="utf-8")).get("agents", []) if a.get("status") == "active"]
+    except (OSError, ValueError):
+        pass
     from collections import Counter as _C
     _agents = {"total": len(_al), "byModel": dict(_C(a.get("model") or "?" for a in _al))}
 except (OSError, ValueError):

@@ -935,6 +935,18 @@ through Apple Health and the same export file once Steven switches the nutrition
   127.0.0.1:5555. **Owner.** Victor (use), Alexandra (compliance draft), Derek (install). **Status.** Steven runs the
   installer on the Mac.
 
+## 2026-11-22 — Weekly improvements gain harness, graph and loop engineering lenses
+- **Decision.** Steven: "add Harness engineering, graph engineering and loop engineering to weekly improvements." The weekly
+  improvement review now looks through three lenses — harness (routines, Mac tasks, skills, hooks, router, connectors),
+  graph (6D Brain graph: orphans, islands, dead links, undated pages) and loop (run history, bench trend, regressions,
+  untested pages) — each scored 0–100 week over week.
+- **How.** `bin/brain weekly --write` (brain/weekly.py, tests in brain/tests/test_weekly.py) writes
+  docs/reports/WEEKLY-IMPROVEMENTS.md and brain/weekly.json; `bin/brain recs` turns each lens's top 3 proposals into
+  Self-improvement-lane moves. It runs Sundays 2:45 PM PT in the existing weekly layers-sync task in the orchestrator
+  session (renamed "Second Brain weekly — layers sync + improvement review"), because that task is the weekly one that
+  reliably succeeds; the older cloud "weekly improvement loop" routine has failed since 2026-09-20.
+- **Limits.** Plain code, no model call. Mechanical repo fixes only; a routine repair or prompt change stays a proposal.
+
 ## 2026-11-18 — The Agency squads under Vanessa; OpenWorker, image-blaster, reading shelf
 - **Decision.** Steven: "install agency-agents and openworker ... add to ai org chart and put in respective department
   to operate under vanessa opus 5.5 as cross functional teams", plus claude-video, agent-browser,

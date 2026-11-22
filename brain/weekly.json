@@ -1,0 +1,243 @@
+{
+ "ts": "2026-11-22T20:20:00Z",
+ "date": "2026-11-22",
+ "lenses": [
+  {
+   "key": "harness",
+   "label": "Harness engineering",
+   "about": "the scaffolding agents run inside: routines, Mac tasks, skills, hooks, router, connectors",
+   "score": 59,
+   "metrics": {
+    "routines": 72,
+    "routines_failing": 10,
+    "mac_tasks": 60,
+    "mac_tasks_failing": 0,
+    "connectors": 64,
+    "connectors_reconnect": 1,
+    "connectors_attention": 47,
+    "skills": 49,
+    "skills_no_frontmatter": 0,
+    "hooks_missing": 0,
+    "router_ok": true,
+    "doctor_ok": true,
+    "kill_switch": "off",
+    "breakers_open": 0,
+    "traced_runs_7d": 3,
+    "traced_failures_7d": 0,
+    "retry_policy": "2 retries \u2192 re-route \u2192 Needs-Steven",
+    "budget": "\u22648 parallel \u00b7 cap 12 \u00b7 \u22644 web/wave",
+    "self_tests": "doctor PASS \u00b7 gold 30/31 \u00b7 routing 23/23"
+   },
+   "proposals": [
+    {
+     "kind": "routines_failing",
+     "title": "Repair 10 cloud routine(s) whose last run failed",
+     "why": "failing: Books Reconciliation Reminder; Command Deck & ISA Portal Weekly Loop Engineering QA; Command Deck \u2014 Elite Affluent Tracker weekly refresh; Command Deck \u2014 Next Big Moves weekly review",
+     "plan": [
+      "read each routine's last run (list_triggers)",
+      "fix the prompt's broken step or retire the routine",
+      "record it in docs/inventory/cloud-routines.md"
+     ],
+     "impact": 3,
+     "effort": 2
+    },
+    {
+     "kind": "connectors_reconnect",
+     "title": "Reconnect 1 connector(s)",
+     "why": "needs sign-in: EVRoutes \u00b7 Turo connectors",
+     "plan": [
+      "Steven: claude.ai Settings \u2192 Connectors \u2192 reconnect",
+      "next 6D rebuild re-checks"
+     ],
+     "impact": 2,
+     "effort": 1
+    }
+   ]
+  },
+  {
+   "key": "graph",
+   "label": "Graph engineering",
+   "about": "the shape of the knowledge: 6D Brain graph edges, islands, dead links, undated pages",
+   "score": 82,
+   "metrics": {
+    "nodes": 788,
+    "links": 1031,
+    "file_nodes": 164,
+    "orphans": 0,
+    "components": 1,
+    "largest_component": 164,
+    "dead_links": 0,
+    "undated_pages": 17,
+    "idle_agents": 159,
+    "agents_pending_install": 122,
+    "single_points_of_failure": 1
+   },
+   "proposals": [
+    {
+     "kind": "spof",
+     "title": "Back up 1 single point(s) of failure in the map",
+     "why": "removing one cuts part of the map off: store:vanessa (cuts 8)",
+     "plan": [
+      "give each a second path: a backup seat, a second connector, or a link from another hub",
+      "bin/brain weekly \u2192 count falls"
+     ],
+     "impact": 3,
+     "effort": 2
+    },
+    {
+     "kind": "idle_agents",
+     "title": "Put 159 idle agent(s) to work or park them",
+     "why": "no routine, Mac task, pod, skill or trace calls: a11y-architect, ad-compliance-reviewer, appraisal-manager, borrower-retention-agent, broker-coach-maxwell",
+     "plan": [
+      "give each a pod or a routine step, or mark it parked in its manifest",
+      "bin/brain weekly \u2192 idle falls"
+     ],
+     "impact": 2,
+     "effort": 2
+    },
+    {
+     "kind": "undated",
+     "title": "Date-stamp 17 wiki/project/context page(s)",
+     "why": "a page without a date cannot say how fresh it is: context/banned-words.md, wiki/clients/index.md, wiki/dashboard-ops/panel-map.md",
+     "plan": [
+      "add 'as of YYYY-MM-DD' to each page's header",
+      "bin/brain reindex"
+     ],
+     "impact": 1,
+     "effort": 1
+    }
+   ],
+   "idle": [
+    "a11y-architect",
+    "ad-compliance-reviewer",
+    "appraisal-manager",
+    "borrower-retention-agent",
+    "broker-coach-maxwell",
+    "build-error-resolver",
+    "buyers-agent-elite",
+    "ca-loan-processor",
+    "ca-transaction-coordinator",
+    "ca-underwriter",
+    "calendar-prep",
+    "capability-engineer",
+    "client-concierge",
+    "closing-coordinator",
+    "code-architect",
+    "code-explorer",
+    "code-simplifier",
+    "comment-analyzer",
+    "commission-tracker",
+    "competitive-intelligence-analyst",
+    "competitor-watch",
+    "content-writer",
+    "conversation-analyzer",
+    "cpp-build-resolver",
+    "cpp-reviewer",
+    "credit-analyst",
+    "csharp-reviewer",
+    "dart-build-resolver",
+    "data-steward",
+    "database-reviewer",
+    "deal-desk-analyst",
+    "disruption-scout",
+    "django-build-resolver",
+    "django-reviewer",
+    "doc-updater",
+    "docs-lookup",
+    "document-intake-clerk",
+    "document-intelligence-agent",
+    "e2e-runner",
+    "ecc-accessibility-lead"
+   ],
+   "spof": [
+    {
+     "node": "store:vanessa",
+     "cuts": 8
+    }
+   ]
+  },
+  {
+   "key": "loop",
+   "label": "Loop engineering",
+   "about": "whether the system gets better: loop run history, trend, regressions, untested pages",
+   "score": 50,
+   "metrics": {
+    "runs_last_7_days": 4,
+    "bench": "30/31",
+    "bench_trend_7d": 0,
+    "route": "23/23",
+    "tune_proposals": 2,
+    "untested_wiki_pages": 32,
+    "stale_pages": 20,
+    "gaps": 1,
+    "decisions_learned_30d": 8,
+    "rejections_30d": 0,
+    "weights_moved": 2,
+    "synonyms_learned": 0,
+    "edits_captured_30d": 0,
+    "automation_loops": 135,
+    "loops_ok": 46,
+    "loops_failing": 10,
+    "loops_unknown": 75
+   },
+   "proposals": [
+    {
+     "kind": "loops_unmonitored",
+     "title": "Monitor 75 automation loop(s) with no known last run",
+     "why": "a loop nobody can see is a loop that can fail silently",
+     "plan": [
+      "add bin/brain harness trace <name> ok|fail as the loop's last step",
+      "or record its last run in docs/inventory"
+     ],
+     "impact": 2,
+     "effort": 2
+    },
+    {
+     "kind": "edits_not_learned",
+     "title": "Teach the agents from Steven's edits",
+     "why": "rejections feed the recommendation weights, but edits to drafts are not captured yet",
+     "plan": [
+      "when Steven edits a draft, save the before/after as a lesson: bin/brain remember \"edit lesson: \u2026\"",
+      "bin/brain weekly \u2192 edits captured rises"
+     ],
+     "impact": 2,
+     "effort": 2
+    },
+    {
+     "kind": "bench_misses",
+     "title": "Fix the 1 gold question(s) the brain misses",
+     "why": "bench 30/31, trend +0 this week",
+     "plan": [
+      "bin/brain loop \u2192 the failing questions",
+      "write the answer into the routed page; reindex; re-run"
+     ],
+     "impact": 3,
+     "effort": 2
+    },
+    {
+     "kind": "tune_unjudged",
+     "title": "Judge 2 tune proposal(s) \u2014 promote or reject",
+     "why": "the loop proposes, nobody decides: proposals pile up",
+     "plan": [
+      "docs/reports/BRAIN-LOOP.md \u2192 Next fixes",
+      "promote the ones the holdout passes; log the rest as rejected"
+     ],
+     "impact": 2,
+     "effort": 1
+    },
+    {
+     "kind": "untested_pages",
+     "title": "Guard 32 wiki page(s) with gold questions",
+     "why": "untested: wiki/ai-team/toolkit.md, wiki/ai-team/agency-teams.md, wiki/ai-team/bot-crew.md",
+     "plan": [
+      "one question per page in brain/bench/questions.json",
+      "bin/brain loop \u2192 count rises"
+     ],
+     "impact": 2,
+     "effort": 2
+    }
+   ]
+  }
+ ],
+ "seconds": 0.8
+}

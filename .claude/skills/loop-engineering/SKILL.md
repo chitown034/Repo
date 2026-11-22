@@ -9,6 +9,22 @@ Seat: Vanessa (Claude Fable 5.2) chairs; Elon, the CTO Innovator (Opus 5.5), run
 `sandbox-qa` runs the isolated test-and-compare; the Engineering Team (Reliability, Efficiency,
 Capability, Integration, Stress Test) does the work; report seats run on Sonnet 5.
 
+## Three lenses — harness, graph and loop engineering (Steven, 2026-11-22)
+"add Harness engineering, graph engineering and loop engineering to weekly improvements." Every weekly cycle starts from
+`bin/brain weekly --write` (brain/weekly.py, plain code, no model call) → `docs/reports/WEEKLY-IMPROVEMENTS.md`:
+- **Harness engineering** (owner Derek) — the scaffolding the agents run inside: cloud routines and Mac tasks whose last
+  run failed, skills missing name/description frontmatter, session hooks pointing at missing scripts, router dead paths,
+  connectors needing sign-in. A good model in a broken harness still fails.
+- **Graph engineering** (owner Vanessa) — the shape of the knowledge: the 6D Brain graph (`brain/graph.py`) — orphan
+  pages, islands cut off from the main graph, Markdown links that point nowhere, pages with no date stamp.
+- **Loop engineering** (owner Elon) — whether the system gets better: loop runs in the last 7 days, bench trend, open
+  regressions, tune proposals nobody judged, wiki pages no gold question guards. This skill's propose → test → compare →
+  promote cycle stays the method; the lens is its scoreboard.
+Each lens scores 0–100 against last week (`brain/weekly-history.jsonl`). Its top 3 proposals feed `bin/brain recs` as
+Self-improvement-lane moves, so they reach the 6D Brain and the Command Deck for approve/decline. Runs every Sunday 2:45 PM
+PT inside "Second Brain weekly — layers sync + improvement review" (this session's scheduled task), which also does the
+mechanical repo fixes (dead links, frontmatter, gold questions, date stamps) and writes the deck doc `weeklyImprovements`.
+
 ## Trigger
 - **Weekly** — Mac task `loop-engineering-weekly`, cron `30 4 * * 6` = **Sat 4:30 AM PT**; enabled,
   **never run** as of 2026-09-22. The cloud twin "Weekly Loop Engineering QA" (`0 16 * * 0` UTC)

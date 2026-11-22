@@ -140,6 +140,83 @@ def build(root: Path, links_per_node: int = 3, today: date | None = None) -> dic
         if "wiki/ai-team/cross-functional.md" in ids:
             links.append({"s": nid, "t": "wiki/ai-team/cross-functional.md", "w": 0.8, "k": "pod"})
         links.append({"s": "store:vanessa", "t": nid, "w": 0.6, "k": "pod"})
+    # The Agency squads (2026-11-22, "update brain and ai org charts"): one node per department squad under its executive,
+    # linked to the squad page and to Vanessa, so the 6D org chart matches the deck's aiTeamOrg.agency.
+    try:
+        from . import agency as agency_mod
+        squads = agency_mod.summary(root).get("squads", [])
+    except Exception:  # noqa: BLE001 — a broken roster must not take the whole graph down
+        squads = []
+    for sq in squads:
+        nid = "squad:" + sq["department"]
+        if nid in ids or not sq.get("active"):
+            continue
+        ids.add(nid)
+        nodes.append({"id": nid, "t": f"{sq['department']} squad ({sq['active']} agents, lead {sq['lead']})", "g": "squad", "gl": "Agency squads",
+                      "d": (", ".join(sq.get("members", [])))[:180], "lv": 1, "s": 0, "a": None, "z": None, "seat": sq["lead"]})
+        if "wiki/ai-team/agency-teams.md" in ids:
+            links.append({"s": nid, "t": "wiki/ai-team/agency-teams.md", "w": 0.8, "k": "squad"})
+        links.append({"s": "store:vanessa", "t": nid, "w": 0.6, "k": "squad"})
+    # Every AI agent (2026-11-22, "ai agents update on 6d brain too"): one node per agent under its seat -- the 185 in the
+    # agent OS manifest by their Laya lane, the Agency's active agents under their department squad.
+    def seat_node(name: str) -> str:
+        sid = "seat:" + name
+        if sid not in ids:
+            ids.add(sid)
+            nodes.append({"id": sid, "t": name, "d": f"{name}'s seat: the agents that report to {name}", "g": "seat", "gl": "Seats",
+                          "lv": 1, "s": 0, "a": None, "z": None, "seat": name})
+            links.append({"s": "store:vanessa", "t": sid, "w": 0.7, "k": "seat"})
+        return sid
+    try:
+        manifest = json.loads((root / "integrations/agent-os/agents.json").read_text(encoding="utf-8")).get("agents", [])
+    except (OSError, ValueError, AttributeError):
+        manifest = []
+    for a in manifest if isinstance(manifest, list) else []:
+        slug, lane = str(a.get("slug") or ""), str((a.get("laya") or {}).get("lane") or "Vanessa")
+        nid = "agent:" + slug
+        if not slug or nid in ids:
+            continue
+        ids.add(nid)
+        nodes.append({"id": nid, "t": slug[:90], "d": f"{a.get('model', '')} · tier {a.get('tier', '')} · {a.get('role', '')}"[:180], "g": "agent",
+                      "gl": "AI agents", "lv": 2, "s": 0, "a": None, "z": None, "seat": lane})
+        links.append({"s": seat_node(lane), "t": nid, "w": 0.5, "k": "agent"})
+    try:
+        roster = json.loads((root / "integrations/agency-agents/roster.json").read_text(encoding="utf-8")).get("agents", [])
+    except (OSError, ValueError, AttributeError):
+        roster = []
+    for a in roster if isinstance(roster, list) else []:
+        if a.get("status") != "active" or not a.get("installAs"):
+            continue
+        nid = "agent:" + a["installAs"]
+        if nid in ids:
+            continue
+        ids.add(nid)
+        nodes.append({"id": nid, "t": str(a.get("name", a["installAs"]))[:90], "d": f"Opus 5.5 · {a.get('department', '')} squad · {a.get('description', '')}"[:180],
+                      "g": "agent", "gl": "AI agents", "lv": 2, "s": 0, "a": None, "z": None, "seat": a.get("lead", "")})
+        squad = "squad:" + str(a.get("department", ""))
+        links.append({"s": squad if squad in ids else seat_node(str(a.get("lead") or "Vanessa")), "t": nid, "w": 0.5, "k": "agent"})
+    for sq in squads:
+        if "squad:" + sq["department"] in ids:
+            links.append({"s": seat_node(sq["lead"]), "t": "squad:" + sq["department"], "w": 0.7, "k": "squad"})
+    # Harness, graph and loop engineering (2026-11-22): three nodes carrying this week's scores from brain/weekly.json.
+    try:
+        from . import weekly as weekly_mod
+        wk = weekly_mod.load(root) or {}
+    except Exception:  # noqa: BLE001
+        wk = {}
+    for lens in wk.get("lenses", []) if isinstance(wk, dict) and isinstance(wk.get("lenses"), list) else []:
+        if not isinstance(lens, dict) or not lens.get("key"):
+            continue
+        nid = "eng:" + str(lens["key"])
+        if nid in ids:
+            continue
+        ids.add(nid)
+        props = [p.get("title", "") for p in lens.get("proposals", []) if isinstance(p, dict)][:2]
+        nodes.append({"id": nid, "t": f"{lens.get('label')} — {lens.get('score')}/100", "g": "eng", "gl": "Engineering",
+                      "d": (f"{lens.get('about', '')} · week of {wk.get('date', '')} · next: " + "; ".join(props))[:180], "lv": 1, "s": 0, "a": None, "z": None})
+        links.append({"s": "store:vanessa", "t": nid, "w": 0.8, "k": "eng"})
+        if "docs/reports/WEEKLY-IMPROVEMENTS.md" in ids:
+            links.append({"s": nid, "t": "docs/reports/WEEKLY-IMPROVEMENTS.md", "w": 0.9, "k": "eng"})
     return {"generated": today.isoformat(), "files": len(files),
             "sections": sum(n["s"] for n in nodes), "nodes": nodes, "links": links}
 

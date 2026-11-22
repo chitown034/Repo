@@ -106,7 +106,7 @@ def coa_of(c: dict) -> str:
     src = str(c.get("source") or ""); cat = str(c.get("category") or ""); text = (c.get("title", "") + " " + c.get("why", ""))
     if src in ("loop:stale", "layers") or cat == "compliance" or (RISK_WORDS.search(text) and src != "steven-steps"):
         return "risk"
-    if src in ("loop:gaps", "loop:untested", "loop:history", "loop:ledger", "loop:tune") or cat == "brain":
+    if src in ("loop:gaps", "loop:untested", "loop:history", "loop:ledger", "loop:tune") or src.startswith("weekly:") or cat == "brain":
         return "improve"
     if cat == "marketing" or src.startswith("scout") or c.get("topic") in ("presence", "zillow", "drip"):
         return "opportunity"
@@ -259,11 +259,47 @@ def _signal_candidates(signals: list[dict]) -> list[dict]:
     return out
 
 
+def _weekly_candidates(root: Path, today: date | None = None) -> list[dict]:
+    """The weekly improvement review (brain/weekly.py): harness, graph and loop engineering proposals -> Self-improvement lane.
+    Ids come from lens + the proposal's stable kind, so a decline holds when the count in the title changes; a review
+    older than weekly.MAX_AGE_DAYS feeds nothing; a malformed file feeds nothing rather than taking the engine down."""
+    from . import weekly
+    today = today or date.today()
+    res = weekly.load(root)
+    if not isinstance(res, dict):
+        return []
+    try:
+        age = (today - date.fromisoformat(str(res.get("date", ""))[:10])).days
+        if age > weekly.MAX_AGE_DAYS or age < -1:
+            return []
+    except ValueError:
+        return []
+    owners = {"harness": "Derek", "graph": "Vanessa", "loop": "Elon"}
+    out = []
+    lenses = res.get("lenses")
+    for lens in lenses if isinstance(lenses, list) else []:
+        if not isinstance(lens, dict) or not isinstance(lens.get("proposals"), list):
+            continue
+        for p in lens["proposals"][:3]:
+            if not isinstance(p, dict) or not isinstance(p.get("title"), str) or not p["title"]:
+                continue
+            kind = str(p.get("kind") or p["title"][:40])
+            plan = [str(s) for s in p.get("plan", []) if isinstance(s, str)] if isinstance(p.get("plan"), list) else []
+            try:
+                out.append(rec("brain", f"weekly:{lens.get('key')}:{kind}", f"{lens.get('label')}: {p['title']}",
+                               f"{p.get('why', '')} (weekly review {res.get('date', '')}, lens score {lens.get('score')}/100)",
+                               owners.get(lens.get("key"), "Vanessa"), "vanessa", impact=p.get("impact", 2), effort=p.get("effort", 2),
+                               confidence=0.8, plan=plan, source=f"weekly:{lens.get('key')}"))
+            except (TypeError, ValueError):
+                continue
+    return out
+
+
 def candidates(root: Path, signals: list[dict] | None = None, today: date | None = None) -> list[dict]:
     today = today or date.today()
     seen: set[str] = set()
     out = []
-    for c in _signal_candidates(signals or []) + _steven_steps(root) + _toolkit_candidates(root) + _layer_candidates(root, today) + _loop_candidates(root, today) + _improve_candidates(root, today):
+    for c in _signal_candidates(signals or []) + _steven_steps(root) + _toolkit_candidates(root) + _layer_candidates(root, today) + _loop_candidates(root, today) + _improve_candidates(root, today) + _weekly_candidates(root, today):
         if c["id"] in seen:
             continue
         seen.add(c["id"])
