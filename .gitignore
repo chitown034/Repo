@@ -49,3 +49,6 @@ app.*.map.json
 /android/key.properties
 *.jks
 *.keystore
+
+# Built store files (large; shared directly, not committed)
+/dist/

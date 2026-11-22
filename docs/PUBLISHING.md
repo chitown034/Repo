@@ -182,6 +182,16 @@ flutter build appbundle --release
 This creates `build/app/outputs/bundle/release/app-release.aab`. The app targets Android 16
 (API level 36), which Google Play requires for updates.
 
+**Already have a ready-made unsigned bundle** (for example `hometown-hero-2.0.0-20-google-play-UNSIGNED.aab`)?
+Instead of building, sign it with your upload key in one command (Java's `jarsigner` comes with
+Android Studio), using your keystore path and key alias:
+
+```bash
+jarsigner -keystore /path/to/your-upload-keystore.jks -signedjar hometown-hero-2.0.0-20-google-play.aab hometown-hero-2.0.0-20-google-play-UNSIGNED.aab upload
+```
+
+It asks for the keystore password. Upload the signed `hometown-hero-2.0.0-20-google-play.aab`.
+
 ### 3c. Test first (recommended)
 Play Console › your app › **Test and release** › **Testing** › **Internal testing** › **Create new
 release**. Upload the `.aab`, add yourself as a tester, roll it out, and install it from the
