@@ -1,8 +1,8 @@
 # Encyclopedia of the second brain
 
-Generated 2026-11-18 by `bin/brain encyclopedia` from `brain/index.json` — 448 pages, 590 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-11-22 by `bin/brain encyclopedia` from `brain/index.json` — 778 pages, 918 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
-Jump: [#](#other) · [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [Z](#z)
+Jump: [#](#other) · [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [X](#x) · [Z](#z)
 
 ## Other
 
@@ -18,6 +18,11 @@ See also: `always-on/README.md`
 
 ## A
 
+### a11y-architect
+Opus 5.5 · tier 2 · Accessibility Architect specializing in WCAG 2.2 compliance for Web and Native platforms.  
+`agent:a11y-architect` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
 ### About Steven — L1 context
 One page. Facts only, all of them drawn from the Command Deck's own bio cards.  
 `context/about-me.md` · Who & why · newest date stamp 2026-10-09  
@@ -30,10 +35,20 @@ Elena · First business morning of the month: Elena's access-auditor reviews who
 `mactask:access-audit-monthly` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### access-auditor
+Opus 5.5 · tier 2 · Report under Elena (CISO): audits who and what can read or write each data store — dashboard db rules, connector grants, tokens in plaintext  
+`agent:access-auditor` · AI agents · newest date stamp undated  
+Linked from: `seat:Elena`  
+
 ### Account Health Check
 Derek · cron 0 17 * * 1 · on · SUCCEEDED @ 2026-09-21T17:09  
 `routine:Account Health Check` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
+
+### Account Strategist
+Opus 5.5 · Revenue squad · Expert post-sale account strategist specializing in land-and-expand execution, stakeholder mapping, QBR facilitation, and net revenue retention. Turns cl  
+`agent:agency-account-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
 
 ### Active Duty Veteran & Hometown Hero Homeowners Club, Inc.
 Steven's 501(c)(3). Mission: getting active-duty, veteran and hometown-hero families into homes.  
@@ -41,6 +56,21 @@ Steven's 501(c)(3). Mission: getting active-duty, veteran and hometown-hero fami
 Sections: Status (2026-09-22) — honest, from the deck's own counters; Grant pipeline (live doc: grantPipeline); Who works it; Open work; Where the live data lives  
 Linked from: `context/about-me.md`  
 See also: `integrations/anydesk/README.md`, `wiki/mortgage-programs/va-affordability.md`
+
+### Ad Creative Strategist
+Opus 5.5 · Marketing squad · Paid media creative specialist focused on ad copywriting, RSA optimization, asset group design, and creative testing frameworks across Google, Meta, Mi  
+`agent:agency-ad-creative-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### ad-compliance-reviewer
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): reviews marketing copy, social posts, emails, ad text and webinar registration pages for mortgage/real-  
+`agent:ad-compliance-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### AEO Foundations Architect
+Opus 5.5 · Marketing squad · Expert in AI Engine Optimization infrastructure — implements llms.txt, AI-aware robots.txt, token-budgeted content, structured Markdown availability, a  
+`agent:agency-aeo-foundations-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
 
 ### Agent OS — every agent through Laya, Jarvis and Orca
 How the org chart works as an operating system: Laya picks the lane, Jarvis recalls first, Orca runs the agents side…  
@@ -60,6 +90,21 @@ Derek · Browser automation CLI (Chrome via accessibility snapshots). Use to ope
 `skill:agent-browser` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### agent-evaluator
+Opus 5.5 · tier 2 · Evaluates agent output against a 5-axis quality rubric (accuracy, completeness, clarity, actionability, conciseness), then runs the reflection loop (from Paperc  
+`agent:agent-evaluator` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### Agentic Identity & Trust Architect
+Opus 5.5 · Security squad · Designs identity, authentication, and trust verification systems for autonomous AI agents operating in multi-agent environments. Ensures agents can prov  
+`agent:agency-agentic-identity-trust-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### Agentic Search Optimizer
+Opus 5.5 · Marketing squad · Expert in WebMCP readiness and agentic task completion — audits whether AI agents can actually accomplish tasks on your site (book, buy, register, subs  
+`agent:agency-agentic-search-optimizer` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
 ### AGENTS.md — Codex and other non-Claude agents
 Same brain, same rules. CLAUDE.md is the router and is authoritative; this file is its mirror for agents that do not…  
 `AGENTS.md` · Router · newest date stamp undated  
@@ -73,11 +118,27 @@ AI agent roster on the Mac (aiTeamRoster doc, generatedAt 2026-09-16T00:52:37+00
 Linked from: `projects/ai-team.md`, `wiki/ai-team/agency-teams.md`  
 See also: `integrations/APIS.md`
 
+### AI Data Remediation Engineer
+Opus 5.5 · Technology squad · Specialist in self-healing data pipelines — uses air-gapped local SLMs and semantic clustering to automatically detect, classify, and fix data anomali  
+`agent:agency-ai-data-remediation-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### AI Engineer
+Opus 5.5 · Technology squad · Expert AI/ML engineer specializing in machine learning model development, deployment, and integration into production systems. Focused on building int  
+`agent:agency-ai-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### AI Engineering from Scratch — learning curriculum
 Installed 2026-11-09 at Steven's request ("install https://github.com/rohitg00/ai-engineering-from-scratch.git").  
 `integrations/ai-engineering-from-scratch/README.md` · Integrations · newest date stamp 2026-11-09  
 Linked from: `docs/ENGINEERING-BRIEF.md`  
 See also: `integrations/browser-agents/README.md`, `integrations/pivo/README.md`
+
+### AI Strategy squad (6 agents, lead Nadia)
+Narratologist, Statistician, Trend Researcher, Automation Governance Architect, Model QA Specialist, ZK Steward  
+`squad:AI Strategy` · Agency squads · newest date stamp undated  
+Linked from: `seat:Nadia`  
+See also: `agent:agency-automation-governance-architect`, `agent:agency-model-qa-specialist`, `agent:agency-narratologist`, `agent:agency-statistician`, `agent:agency-trend-researcher`, `agent:agency-zk-steward`
 
 ### AI Team
 The org of AI seats that runs behind Vanessa: on the Mac, 172 agents (tier 1: 17, tier 2: 96, tier 3: 59), 15 MCP…  
@@ -96,7 +157,7 @@ See also: `wiki/ai-team/mentors-and-benches.md`, `wiki/ai-team/model-tiering-dis
 The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human…  
 `wiki/ai-team/org-chart.md` · AI team · newest date stamp 2026-11-18  
 Sections: The shape; Standing pods — cross-functional teams that work in parallel (2026-10-22); What the desks run on (2026-10-22, evening); Tools per seat (skills · plugins · connectors · routines · Mac tasks); Added 2026-11-01: Paperclip, fitted with no duplicates; 2026-11-02: every seat reports to Vanessa; The named seats worth knowing by name; What "bench" means  
-Linked from: `wiki/ai-team/cross-functional.md`  
+Linked from: `integrations/gondola/README.md`, `wiki/ai-team/cross-functional.md`  
 See also: `wiki/ai-team/desk-seats.md`, `wiki/ai-team/index.md`
 
 ### AI Team toolkit — skills, Claude mods, connectors, MCP servers, APIs, routines, Mac tasks
@@ -132,6 +193,11 @@ Dated facts about ai-team, one line each, appended by bin/brain remember --topic
 `memory/ai-team.md` · Memory · newest date stamp 2026-10-09  
 Sections: Entries  
 See also: `AGENTS.md`, `integrations/jarvis/README.md`, `wiki/ai-team/cross-functional.md`
+
+### Alexandra
+Alexandra's seat: the agents that report to Alexandra  
+`seat:Alexandra` · Seats · newest date stamp undated  
+See also: `agent:a11y-architect`, `agent:ad-compliance-reviewer`, `agent:appraisal-manager`, `agent:ca-loan-processor`, `agent:ca-underwriter`, `agent:cco-alexandra`
 
 ### ALIENWARE setup (Windows)
 One PowerShell script, alienware-setup.ps1, that checks and installs the AI tools on the ALIENWARE gaming PC: Orca…  
@@ -178,6 +244,16 @@ Sections: Steven: one command on the Mac; Rules for every agent that uses it
 Linked from: `integrations/MCP-SERVERS.md`, `references/index.md`  
 See also: `integrations/browser-use/README.md`
 
+### API Platform Engineer
+Opus 5.5 · Technology squad · Expert API platform engineer for public and partner APIs — contract-first design (OpenAPI/gRPC), versioning and deprecation policy, SDK generation, AP  
+`agent:agency-api-platform-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### API Tester
+Opus 5.5 · Technology squad · Expert API testing specialist focused on comprehensive API validation, performance testing, and quality assurance across all systems and third-party i  
+`agent:agency-api-tester` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### api-anything
 Derek · [ok] turns any documented REST API into tools · installed  
 `mcp:api-anything` · MCP servers · newest date stamp undated  
@@ -194,8 +270,7 @@ See also: `integrations/CONNECT-PLAN-2026-10-09.md`, `integrations/MCP-SERVERS.m
 2026-10-31 — what actually broke, and the fix.  
 `integrations/apple-health-dashboard.md` · Integrations · newest date stamp 2026-10-31  
 Sections: The path that is live (2026-10-23): Health Auto Export → Google Drive → cloud sync → appleHealth; What is live, precisely (2026-09-22); Source, honestly; Why we are replacing the pipeline, not repairing it; The chain; Notion "Health Log" database — schema read back from the real database, 2026-09-22; Mapping into the appleHealth doc (what the tiles actually read); Merge rule (the daemon's history must survive)  
-Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/open-design/README.md`, `references/google-drive.md`  
-See also: `wiki/ai-team/second-brain-layers.md`
+Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/open-design/README.md`, `references/google-drive.md`, `wiki/ai-team/second-brain-layers.md`  
 
 ### apple-design
 Derek · Apple's approach to interface design and fluid, physical motion, translated for the web. Use when building or reviewing gesture-driven UI, spring animations, drag/swipe/she  
@@ -206,6 +281,21 @@ See also: `wiki/ai-team/toolkit.md`
 Derek · Keep Steven's Command Deck Apple Health tiles alive through the phone instead of the dead Mac ingest daemon — Claude iOS reads Apple Health, writes a Notion Health Log row,  
 `skill:apple-health-notion` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### Application Security Engineer
+Opus 5.5 · Security squad · AppSec specialist who secures the software development lifecycle through threat modeling, secure code review, SAST/DAST integration, and developer secur  
+`agent:agency-application-security-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### appraisal-manager
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): manages the appraisal — ordering expectations under AMC rules, preparing the comparable support package  
+`agent:appraisal-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### architect
+Opus 5.5 · tier 2 · Software architecture specialist for system design, scalability, and technical decision-making.  
+`agent:architect` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ### Arive
 Vanessa · [attention] credentials prompt in the paste; no call yet  
@@ -227,6 +317,11 @@ See also: `integrations/APIS.md`
 Derek · cron CRON_TZ=America/Los_Angeles 40 6 * * 1-5 · on · SUCCEEDED @ 2026-10-20T13:40  
 `routine:Attraction Command Center: daily cloud run` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
+
+### Automation Governance Architect
+Opus 5.5 · AI Strategy squad · Governance-first architect for business automations (n8n-first) who audits value, risk, and maintainability before implementation.  
+`agent:agency-automation-governance-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:AI Strategy`  
 
 ### Automation map — who does what on the Command Deck (2026-10-20)
 Steven, 2026-10-20: "AI, automation workflows, systems, tools, resources, AI twin Steve, Vanessa and the human ISA/EA…  
@@ -252,12 +347,27 @@ Elon · Weekly seven-phase audit-and-remediate pass driven by the chief-automati
 `mactask:automation-audit-weekly` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### automation-engineer
+Opus 5.5 · tier 2 · Report under Derek (CTO): builds and repairs the automation layer — cloud routines (RemoteTrigger), desktop scheduled tasks, /loop prompts,  
+`agent:automation-engineer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### Autonomous Optimization Architect
+Opus 5.5 · Technology squad · Intelligent system governor that continuously shadow-tests APIs for performance while enforcing strict financial and security guardrails against runaw  
+`agent:agency-autonomous-optimization-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### Awesome VLM Architectures — reference shelf (recorded 2026-10-23)
 https://github.com/gokayfem/awesome-vlm-architectures (CC0 1.0; reviewed at commit 74897b3, 2026-08-01; maintained by…  
 `references/vlm-architectures.md` · Sources · newest date stamp 2026-10-23  
 Linked from: `references/motion-and-claude-repos.md`, `references/vibe-coding-learning.md`, `wiki/ai-team/third-party-packs.md`  
 
 ## B
+
+### Backend Architect
+Opus 5.5 · Technology squad · Senior backend architect specializing in scalable system design, database architecture, API development, and cloud infrastructure. Builds robust, secu  
+`agent:agency-backend-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
 
 ### Backend folder structure — the layered layout every new service follows
 Source: the "Backend folder structure & use" diagram Steven saved on 2026-10-12 (Instagram, @smart_coder_hacker; the…  
@@ -277,15 +387,35 @@ Owner: Sofia (CMO) · read by the hook-writer agent.
 Sections: Sounds AI-written; Advertising red flags (never, any topic); Steven's own (add below)  
 See also: `wiki/ai-team/five-agents.md`
 
+### Behavioral Nudge Engine
+Opus 5.5 · Innovation squad · Behavioral psychology specialist that adapts software interaction cadences and styles to maximize user motivation and success.  
+`agent:agency-behavioral-nudge-engine` · AI agents · newest date stamp undated  
+Linked from: `squad:Innovation`  
+
 ### Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop en
 Vanessa · cron CRON_TZ=America/Los_Angeles 5 6 * * * · on · —  
 `routine:Big moves — Vanessa's four courses of action (4 each: big moves · self-improvement/loop engineering ` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
 
+### Book Co-Author
+Opus 5.5 · Executive Office squad · Strategic thought-leadership book collaborator for founders, experts, and operators turning voice notes, fragments, and positioning into structu  
+`agent:agency-book-co-author` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### bookkeeper
+Opus 5.5 · tier 2 · Report under Marcus (CFO): categorizes transactions, drafts reconciliations, flags duplicates, subscriptions and anomalies, and prepares the  
+`agent:bookkeeper` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
+
 ### Books Reconciliation Reminder
 Derek · cron 0 22 * * 5 · on · FAILED @ 2026-09-18T22:01  
 `routine:Books Reconciliation Reminder` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
+
+### borrower-retention-agent
+Opus 5.5 · tier 2 · Report under Victor (CRO): owns the relationship after funding — the post-close touch calendar, annual mortgage reviews, equity and PMI-remo  
+`agent:borrower-retention-agent` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ### Both Macs — setup runbook
 Corrected 2026-09-24 (R6): this file used to bring a second Mac up as a permanent, lease-blocked standby — install…  
@@ -313,6 +443,11 @@ Derek · Sunday review list for Steven: what the brain learned this week (Notion
 `mactask:brain-weekly-verify` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### broker-coach-maxwell
+Opus 5.5 · tier 2 · Maxwell, Broker Mentor & Coach on Steven Shearrill's AI Team — a top-1%-in-the-nation California real estate broker, wholesale mortgage brok  
+`agent:broker-coach-maxwell` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
 ### Browser control and skill discovery (2026-10-10)
 Steven: "install vercel-labs/agent-skills, agenticskills.io/tools, vercel-labs/skills, vercel-labs/agent-browser and…  
 `integrations/browser-agents/README.md` · Integrations · newest date stamp 2026-11-15  
@@ -332,6 +467,16 @@ Sections: Steven: one command on the Mac; Rules for every agent that uses it
 Linked from: `integrations/api-anything/README.md`  
 See also: `integrations/browser-agents/README.md`, `integrations/open-design/README.md`
 
+### build-error-resolver
+Opus 5.5 · tier 3 · Build and TypeScript error resolution specialist.  
+`agent:build-error-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### Business Strategist
+Opus 5.5 · Executive Office squad · Senior management consulting specialist for competitive analysis, market entry strategy, business model design, growth planning, organizational   
+`agent:agency-business-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
 ### Buyer process
 The buyer-side path from lead intake through matching, showings, offer, earnest money, contingencies, and close — the…  
 `wiki/real-estate-playbooks/buyer-process.md` · Real-estate wiki · newest date stamp undated  
@@ -339,7 +484,32 @@ Sections: Lead intake and the First-10-Days Sprint; Consultation and matching; S
 Linked from: `wiki/ai-team/desk-seats.md`, `wiki/mortgage-programs/disclosure-timing.md`, `wiki/real-estate-playbooks/showing-operations.md`  
 See also: `wiki/real-estate-playbooks/index.md`, `wiki/real-estate-playbooks/listing-process.md`, `wiki/real-estate-playbooks/transaction-stages.md`
 
+### buyer-matching-engine
+Opus 5.5 · tier 2 · Report under Victor (CRO): runs the buyer side — the consultation that captures real criteria, the search strategy, property matching agains  
+`agent:buyer-matching-engine` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### buyers-agent-elite
+Opus 5.5 · tier 2 · Report under Victor (CRO): the buyer-side representation practitioner — preps Steven or his showing agent to walk into a consultation, a tou  
+`agent:buyers-agent-elite` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ## C
+
+### ca-loan-processor
+Opus 5.5 · tier 2 · Top-1%-caliber mortgage Loan Processor — runs the actual file assembly and condition-clearing, not the coaching conversation.  
+`agent:ca-loan-processor` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### ca-transaction-coordinator
+Opus 5.5 · tier 2 · Top-1%-caliber California real estate Transaction Coordinator — runs the operational file, not the coaching conversation.  
+`agent:ca-transaction-coordinator` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### ca-underwriter
+Opus 5.5 · tier 2 · Top-1%-caliber mortgage Underwriter's-eye analysis — reads a file the way DU/LPA and a manual underwriter actually would, and tells Steven e  
+`agent:ca-underwriter` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
 
 ### CAIO Disruption Scan & Disruptive Recommendation Brief — Week of 2026-09-22
 Nadia (CAIO, outward disruptor) · run by E9 · Baseline 2026-09-12 · verified 2026-09-22 Reports to: Steven · cc…  
@@ -347,16 +517,66 @@ Nadia (CAIO, outward disruptor) · run by E9 · Baseline 2026-09-12 · verified 
 Sections: 1. Disruption scanning; 2. Obsolescence flags against the current stack (BRIEF §2 + toolkitSnapshot 2026-09-22); 3. Competitive / capability gap analysis — solo VA-loan MLO + broker, Temecula/San Diego; 4. Weekly Disruptive Recommendation Brief (proposal-only, trust L1); 5. Summary — top three (≤300 words)  
 See also: `docs/inventory/claude-sessions.md`, `docs/inventory/cloud-routines.md`, `projects/usc-pjmt-530.md`
 
+### caio-nadia
+Opus 5.5 · tier 1 · Nadia, Chief AI Officer on Steven Shearrill's AI Team — separating where AI genuinely helps a mortgage / real-estate / trading / nonprofit o  
+`agent:caio-nadia` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
 ### calendar-daily-sync
 Derek · Pulls the next 7 days from Steven's business Google Calendars through the connector and writes the calendarSnapshot document, so the Command  
 `mactask:calendar-daily-sync` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
+
+### calendar-prep
+Opus 5.5 · tier 3 · One-page PREP brief per upcoming meeting: who the attendees are, past touchpoints and open promises (Gmail, Fieldy), the goal. Read-only. Hand-written: .claude/  
+`agent:calendar-prep` · AI agents · newest date stamp undated  
+Linked from: `seat:Voicemail & Inbox Triage`  
 
 ### Capability matrix — what each seat can reach (2026-10-11)
 Every seat reaches these through Vanessa's dispatch (bin/brain route), never by editing a live agent prompt (those…  
 `wiki/ai-team/capability-matrix.md` · AI team · newest date stamp 2026-10-11  
 Linked from: `wiki/ai-team/agent-os.md`, `wiki/real-estate-playbooks/ai-search-visibility.md`  
 See also: `routines/events-weekly.md`, `wiki/ai-team/index.md`
+
+### capability-engineer
+Opus 5.5 · tier 1 · Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: extends what the agents and skills can actually DO once their core rel  
+`agent:capability-engineer` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### Carousel Growth Engine
+Opus 5.5 · Marketing squad · Autonomous TikTok and Instagram carousel generation specialist. Analyzes any website URL with Playwright, generates viral 6-slide carousels via Gemini   
+`agent:agency-carousel-growth-engine` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### cco-alexandra
+Opus 5.5 · tier 1 · Alexandra, Chief Compliance Officer on Steven Shearrill's AI Team — TRID (LE 3 business days, CD 3 business days), RESPA §8, Reg Z LO comp a  
+`agent:cco-alexandra` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### cfo-marcus
+Opus 5.5 · tier 1 · Marcus, Chief Financial Officer on Steven Shearrill's AI Team — cash position, P&L, net worth, budget, liabilities, Road to a Million, deal  
+`agent:cfo-marcus` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
+
+### Change Management Consultant
+Opus 5.5 · Executive Office squad · Expert change management specialist using ADKAR, Kotter, and Prosci frameworks to guide organizations through technology implementations, restru  
+`agent:agency-change-management-consultant` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### chief-automation-strategist
+Opus 5.5 · tier 1 · Steven Shearrill's Chief Automation Strategist and AI Agent Orchestration Architect.  
+`agent:chief-automation-strategist` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### chief-of-staff
+Opus 5.5 · tier 2 · Boss agent and Steven's one front door (2026-10-31): splits a plain request into jobs, runs inbox-triage, calendar-prep, competitor-watch, hook-writer and any r  
+`agent:chief-of-staff` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### ciso-elena
+Opus 5.5 · tier 1 · Elena, Chief Information Security Officer on Steven Shearrill's AI Team — data and cyber risk sized for a solo operator handling client PII  
+`agent:ciso-elena` · AI agents · newest date stamp undated  
+Linked from: `seat:Elena`  
 
 ### Claude (sample capability)
 Vanessa · [ok] the Ask Vanessa chat on the 6D Brain · connected (v41+)  
@@ -368,9 +588,9 @@ Not ingested yet (2026-10-23). This file is written by bin/brain ingest claude-e
 `memory/claude-chats.md` · Memory · newest date stamp 2026-10-23  
 See also: `integrations/MCP-SERVERS.md`, `integrations/pivo/README.md`, `wiki/real-estate-playbooks/showing-operations.md`
 
-### Claude Code sessions — ledger (generated 2026-11-17; newest first)
+### Claude Code sessions — ledger (generated 2026-11-22; newest first)
 Every Claude Code session on Steven's account: title, when, status.  
-`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-11-17  
+`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-11-22  
 Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `memory.md`  
 See also: `docs/inventory/cloud-routines.md`
 
@@ -399,12 +619,21 @@ Sofia, Sphere Nurture Coordinator, Open House Captain, Wren, Victor, Alexandra �
 `pod:Client Care Pod` · Pods · newest date stamp undated  
 See also: `wiki/ai-team/cross-functional.md`
 
+### client-concierge
+Opus 5.5 · tier 2 · Report under Victor (CRO): runs the white-glove layer around a transaction — move coordination, utility and address-change checklists, home  
+`agent:client-concierge` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ### Clients — FULL CONTEXT
 Every page in this directory is FULL CONTEXT.  
 `wiki/clients/index.md` · Dashboard ops · newest date stamp undated  
 Sections: The rules, before anything else; Page shape (on the Mac only); What still belongs in the deck instead; If you are asked for client information  
-Linked from: `wiki/ai-team/second-brain-layers.md`  
-See also: `knowledge-graph/schema.md`, `wiki/index.md`
+See also: `knowledge-graph/schema.md`, `wiki/ai-team/second-brain-layers.md`, `wiki/index.md`
+
+### closing-coordinator
+Opus 5.5 · tier 2 · Report under Victor (CRO): runs the file from clear-to-close to funded — CD timing, final figures reconciliation, signing logistics includin  
+`agent:closing-coordinator` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ### Cloud routine repairs — what was changed, and what proves it
 Written 2026-09-23 by R1 (Reliability). Every routine state quoted here was read live from list_triggers at 2026-09-23…  
@@ -422,7 +651,7 @@ Linked from: `always-on/README.md`, `docs/AUTOMATION-MAP-2026-10-26.md`, `docs/R
 ### Cloud routines (claude.ai/code/routines) — live listing pulled 2026-09-22 08:09 UTC
 Cloud routines (claude.ai/code/routines) — live listing pulled 2026-09-22 08:09 UTC  
 `docs/inventory/cloud-routines.md` · Loop & findings · newest date stamp 2026-09-22  
-Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `docs/inventory/claude-sessions.md`, `docs/inventory/daily-updates.md`, `docs/inventory/mac-runner-status.md`, `wiki/ai-team/toolkit.md`  
+Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `docs/inventory/claude-sessions.md`, `docs/inventory/mac-runner-status.md`, `wiki/ai-team/toolkit.md`  
 See also: `docs/inventory/cloud-routines-2026-10.md`
 
 ### Cloud routines added or rewritten in October 2026 (agent-created, meta_mcp; editable by ag
@@ -438,25 +667,70 @@ Sections: What was assumed; What was measured; What changes; What does not chang
 Linked from: `projects/isa-portal.md`, `routines/pipeline-sync-live.md`, `wiki/dashboard-ops/routine-catalog.md`  
 See also: `integrations/anydesk/README.md`
 
+### Cloud Security Architect
+Opus 5.5 · Security squad · Cloud-native security specialist designing zero trust architectures, implementing defense-in-depth across AWS, Azure, and GCP, and securing infrastructu  
+`agent:agency-cloud-security-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
 ### Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)
 Vanessa · [attention] hourly at :17, 24/7 (was 6 AM–10 PM PT)  
 `connector:Cloud sweep (iMessage text + voice queue, deck chat box, Discord #vanessa)` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
+
+### cmo-sofia
+Opus 5.5 · tier 1 · Sofia, Chief Marketing Officer on Steven Shearrill's AI Team — brand voice, campaigns, content calendar, webinars (VA Loan Mastermind Live,  
+`agent:cmo-sofia` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
 
 ### coach-weekly-recs
 Maxwell · Monday 7 AM: Maxwell, the broker mentor & coach, reviews the week's pipeline, showings, lead triage, ISA scorecard, kanban and licenses, and  
 `mactask:coach-weekly-recs` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### code-architect
+Opus 5.5 · tier 3 · Designs feature architectures by analyzing existing codebase patterns and conventions, then providing implementation blueprints with concret  
+`agent:code-architect` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### code-explorer
+Opus 5.5 · tier 2 · Deeply analyzes existing codebase features by tracing execution paths, mapping architecture layers, and documenting dependencies to inform n  
+`agent:code-explorer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ### code-review-and-quality
 Derek · Conducts multi-axis code review. Use before merging any change. Use when reviewing code written by yourself, another agent, or a human. Use when you need to assess code qua  
 `skill:code-review-and-quality` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### code-reviewer
+Opus 5.5 · tier 3 · Expert code review specialist.  
+`agent:code-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### code-simplifier
+Opus 5.5 · tier 3 · Simplifies and refines code for clarity, consistency, and maintainability while preserving behavior.  
+`agent:code-simplifier` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ### code-validation-gate
 Derek · The rule that code is not done until a different agent has validated it — deterministic checks (scripts/validate-code.sh) plus the VibeBreaker 20-pass adversarial review by  
 `skill:code-validation-gate` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### code-validator
+Opus 5.5 · tier 2 · Report under Derek (CTO): the code-validation gate — validates every code change a human or agent makes before it is called done: scripts/validate-code.sh, then  
+`agent:code-validator` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### Codebase Archaeologist
+Opus 5.5 · Technology squad · Multi-session, multi-tool drift detection specialist who audits codebases touched by several AI coding tools (Claude, Cursor, Copilot, Windsurf, etc.)  
+`agent:agency-codebase-archaeologist` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### Codebase Onboarding Engineer
+Opus 5.5 · Technology squad · Expert developer onboarding specialist who helps new engineers understand unfamiliar codebases fast by reading source code, tracing code paths, and st  
+`agent:agency-codebase-onboarding-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
 
 ### Command Deck
 Steven's single-file personal/business dashboard, published as a claude.ai artifact. ~4 MB, ~25.6k lines, one HTML…  
@@ -689,6 +963,16 @@ trig_01M5zR1Po44gnHvTwA9ogZaB · cron 0 4,10,16,22 * * * (UTC) · created 2026-0
 Sections: Why this routine was created; What this one does; How to tell it is working  
 See also: `always-on/README.md`, `docs/CLOUD-WRITE-ARCHITECTURE.md`, `routines/mac-task-repairs.md`
 
+### comment-analyzer
+Opus 5.5 · tier 3 · Analyze code comments for accuracy, completeness, maintainability, and comment rot risk.  
+`agent:comment-analyzer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### commission-tracker
+Opus 5.5 · tier 2 · Report under Marcus (CFO): tracks every dollar Steven is owed — real-estate commissions through the LPT split and cap, MLO compensation, ref  
+`agent:commission-tracker` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
+
 ### Company Brain Blueprint (AI Horizon / @gobi_automates) — mapped onto Steven's second brain
 Company_Brain_Blueprint_AI_Horizon.docx in Steven's Google Drive (read through the Drive connector 2026-10-12; a…  
 `references/company-brain-blueprint.md` · Sources · newest date stamp 2026-10-12  
@@ -696,10 +980,25 @@ Sections: Layer by layer — what the blueprint asks for and what this brain alr
 Linked from: `recall-cache.md`  
 See also: `integrations/agency-agents/README.md`, `knowledge-graph/README.md`
 
+### competitive-intelligence-analyst
+Opus 5.5 · tier 2 · Report under Victor (CRO): benchmarks Steven against the agents, brokerages and lenders actually competing for his buyers — MLS production s  
+`agent:competitive-intelligence-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### competitor-watch
+Opus 5.5 · tier 3 · Weekly public-page check of the rivals in context/competitors.md; dated snapshot; reports only what changed. Hand-written: .claude/agents/competitor-watch.md (2  
+`agent:competitor-watch` · AI agents · newest date stamp undated  
+Linked from: `seat:Regina`  
+
 ### Competitors — the list competitor-watch checks every Monday
 Owner: Victor (CRO) · competitive-intelligence-analyst · read by the competitor-watch agent.  
 `context/competitors.md` · Who & why · newest date stamp 2026-10-31  
 See also: `always-on/README.md`, `wiki/ai-team/five-agents.md`, `wiki/mortgage-programs/refi-review-prep.md`
+
+### Compliance Auditor
+Opus 5.5 · Security squad · Expert technical compliance auditor specializing in SOC 2, ISO 27001, HIPAA, and PCI-DSS audits — from readiness assessment through evidence collection   
+`agent:agency-compliance-auditor` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
 
 ### Composio (cloud)
 Marcus · [attention] Zoho CRM, Google Docs, GitHub tool calls through Composio · connected — Zoho 403 until the API box is ticked  
@@ -746,10 +1045,25 @@ Sofia · cron 0 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:06
 `routine:Content Calendar Review` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
 
+### content-writer
+Opus 5.5 · tier 2 · Report under Sofia (CMO): writes finished posts, newsletters, follow-up sequences and listing one-pagers in Steven's brand voice for militar  
+`agent:content-writer` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
 ### continuous-process-improvement
 Elon · The CPI engine (v2): a cheap daily OBSERVE/IDENTIFY scan and a weekly deep RECOMMEND/IMPLANT/MEASURE pass that turns observed friction in Steven's operation into logged, mea  
 `skill:continuous-process-improvement` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### conversation-analyzer
+Opus 5.5 · tier 3 · Use this agent when analyzing conversation transcripts to find behaviors worth preventing with hooks.  
+`agent:conversation-analyzer` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### Corporate Training Designer
+Opus 5.5 · Executive Office squad · Expert in enterprise training system design and curriculum development — proficient in training needs analysis, instructional design methodology  
+`agent:agency-corporate-training-designer` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
 
 ### cos-daily-cycle
 Vanessa · Vanessa's Chief-of-Staff daily cycle, run on demand in an attended session (the cloud routine runs it weekdays 6:25 AM PT): read the backlog, sort every item into Automat  
@@ -761,12 +1075,57 @@ Elon · Cheap daily OBSERVE + IDENTIFY pass — no subagents. Logs new, specific
 `mactask:cpi-daily-scan` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### cpp-build-resolver
+Opus 5.5 · tier 3 · C++ build, CMake, and compilation error resolution specialist.  
+`agent:cpp-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### cpp-reviewer
+Opus 5.5 · tier 3 · Expert C++ code reviewer specializing in memory safety, modern C++ idioms, concurrency, and performance.  
+`agent:cpp-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### credit-analyst
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): reads a credit report for mortgage purposes — tradeline analysis, score-band strategy, rapid-rescore ca  
+`agent:credit-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### cro-victor
+Opus 5.5 · tier 1 · Victor, Chief Revenue Officer on Steven Shearrill's AI Team — pipeline math, speed-to-lead, conversion, follow-up cadence, agent and ISA per  
+`agent:cro-victor` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ### Cross-functional dispatch — who joins whom, and when to stop
 bin/brain route "" reads this page and the lane table in wiki/ai-team/index.md and prints a dispatch plan: the lead…  
 `wiki/ai-team/cross-functional.md` · AI team · newest date stamp 2026-10-23  
 Sections: Lane keywords — which seat owns a request; Pods — standing cross-functional teams that work in parallel; Joins — a seat that must come along; Gates — run after the wave, never in parallel with it; HALT words — stop and write a Needs-Steven packet; See also  
 Linked from: `memory/ai-team.md`, `pod:Client Care Pod`, `pod:Deal Pod`, `pod:Growth Pod`, `pod:Lead Pod`, `pod:Listing Pod`  
 See also: `wiki/ai-team/org-chart.md`, `wiki/real-estate-playbooks/drip-and-text-follow-up.md`, `wiki/real-estate-playbooks/listing-process.md`
+
+### csharp-reviewer
+Opus 5.5 · tier 3 · Expert C# code reviewer specializing in .NET conventions, async patterns, security, nullable reference types, and performance.  
+`agent:csharp-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### cto-derek
+Opus 5.5 · tier 1 · Derek, Chief Technology Officer on Steven Shearrill's AI Team — automation health, cloud routines and desktop scheduled tasks, connectors (C  
+`agent:cto-derek` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### cto-innovator
+Opus 5.5 · tier 1 · Elon, the CTO Innovator on Steven Shearrill's AI Team — the inward architect and technical gatekeeper.  
+`agent:cto-innovator` · AI agents · newest date stamp undated  
+Linked from: `seat:Elon`  
+
+### Customer Service
+Opus 5.5 · Revenue squad · Friendly, professional customer service specialist for any industry — handling inquiries, complaints, account support, FAQs, and seamless escalation with  
+`agent:agency-customer-service` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
+
+### Customer Success Manager
+Opus 5.5 · Revenue squad · Strategic customer success specialist for onboarding, health scoring, QBR facilitation, churn prevention, expansion identification, and renewal managemen  
+`agent:agency-customer-success-manager` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
 
 ## D
 
@@ -775,7 +1134,12 @@ Steven, 2026-10-23: "ensure command deck, isa portal and 6d brain are updated da
 `docs/inventory/daily-updates.md` · Loop & findings · newest date stamp 2026-11-09  
 Sections: Cloud routines not green on 2026-10-23 (read from the trigger list, all pages); Process coverage (2026-10-26)  
 Linked from: `wiki/ai-team/second-brain-layers.md`, `wiki/dashboard-ops/process-coverage.md`  
-See also: `docs/inventory/cloud-routines.md`
+See also: `docs/OPEN-FINDINGS.md`
+
+### dart-build-resolver
+Opus 5.5 · tier 3 · Dart/Flutter build, analysis, and dependency error resolution specialist.  
+`agent:dart-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ### Dashboard ops
 How the Command Deck, its documents and its automations actually behave.  
@@ -783,10 +1147,50 @@ How the Command Deck, its documents and its automations actually behave.
 Sections: The one rule; Where a status comes from; Standing facts (2026-09-22); Pages  
 See also: `docs/inventory/db-docs.md`, `docs/inventory/routine-health.md`, `wiki/dashboard-ops/task-catalog.md`
 
+### Data Engineer
+Opus 5.5 · Technology squad · Expert data engineer specializing in building reliable data pipelines, lakehouse architectures, and scalable data infrastructure. Masters ETL/ELT, Apa  
+`agent:agency-data-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### Data Privacy Officer
+Opus 5.5 · Security squad · Corporate data privacy specialist and DPO who builds GDPR, CCPA, and global privacy compliance programs — covering data mapping, privacy impact assessme  
+`agent:agency-data-privacy-officer` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### Data Visualization Engineer
+Opus 5.5 · Technology squad · Expert data visualization engineer — chart-type selection by data and question, perceptually honest encodings, colorblind-safe data palettes, accessib  
+`agent:agency-data-visualization-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### data-steward
+Opus 5.5 · tier 2 · Report under Derek (CTO): keeps the dashboards' data honest — feed freshness (which feeds are Due, what source refreshes each), drift betwee  
+`agent:data-steward` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### Database Reliability Engineer
+Opus 5.5 · Technology squad · Expert database reliability engineer (DBRE) — high availability and replication, automated failover, backup and point-in-time recovery, zero-downtime   
+`agent:agency-database-reliability-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### database-reviewer
+Opus 5.5 · tier 3 · PostgreSQL database specialist for query optimization, schema design, security, and performance.  
+`agent:database-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ### Deal Pod
 Victor, Carmen, Showing Coordinator, Harrison, Document Intake Clerk, Alexandra · Timeline, due-in-7 list, document checklist, contract and disclosure dates into `tcDeals` with mis  
 `pod:Deal Pod` · Pods · newest date stamp undated  
 See also: `wiki/ai-team/cross-functional.md`
+
+### Deal Strategist
+Opus 5.5 · Revenue squad · Senior deal strategist specializing in MEDDPICC qualification, competitive positioning, and win planning for complex B2B sales cycles. Scores opportuniti  
+`agent:agency-deal-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
+
+### deal-desk-analyst
+Opus 5.5 · tier 2 · Report under Victor (CRO): prepares the negotiation memo for a real-estate offer or listing — comps context handed in, seller-credit room by  
+`agent:deal-desk-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ### debugging-and-error-recovery
 Derek · Guides systematic root-cause debugging. Use when tests fail, builds break, something that worked yesterday broke, behavior doesn't match expectations, or you encounter any   
@@ -795,16 +1199,31 @@ See also: `wiki/ai-team/toolkit.md`
 
 ### Decisions — append-only, dated
 One entry per decision. Append, never edit and never delete.  
-`context/decisions.md` · Who & why · newest date stamp 2026-11-18  
+`context/decisions.md` · Who & why · newest date stamp 2026-11-22  
 Sections: 2026-09-22 — Lofty is the real-estate CRM; 2026-09-22 — Zoho CRM API access is Steven's to grant; 2026-09-22 — Model tiering; 2026-09-22 — Backup specification; 2026-09-22 — Apple Health moves to the Notion recipe; 2026-09-22 — You.com is retired; 2026-09-22 — Mentor naming drift: open, Steven's call; 2026-09-22 — Correction: the Lofty entry above was edited in place, and it overstated  
 See also: `knowledge-graph/schema.md`, `memory.md`, `wiki/dashboard-ops/process-coverage.md`
 
+### Derek
+Derek's seat: the agents that report to Derek  
+`seat:Derek` · Seats · newest date stamp undated  
+See also: `agent:architect`, `agent:automation-engineer`, `agent:build-error-resolver`, `agent:code-architect`, `agent:code-explorer`, `agent:code-reviewer`
+
 ### Desk seats — seven report seats added 2026-10-22 (Opus 5.5 since 2026-11-08)
 Seven report-tier seats that prepare lists and drafts for Steven, the ISA and the executives.  
-`wiki/ai-team/desk-seats.md` · AI team · newest date stamp 2026-11-15  
+`wiki/ai-team/desk-seats.md` · AI team · newest date stamp 2026-11-22  
 Sections: Refi Watch Analyst; Sphere Nurture Coordinator; Voicemail & Inbox Triage; Document Intake Clerk; Open House Captain; Travel Desk; Meeting Scribe; Booking Concierge  
 Linked from: `wiki/ai-team/org-chart.md`  
 See also: `wiki/ai-team/index.md`, `wiki/real-estate-playbooks/buyer-process.md`, `wiki/real-estate-playbooks/post-close-care.md`
+
+### Developer Tooling Engineer
+Opus 5.5 · Technology squad · Expert developer-tooling and CLI engineer — building command-line tools and internal developer platforms with great DX: intuitive command design, help  
+`agent:agency-developer-tooling-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### DevOps Automator
+Opus 5.5 · Technology squad · Expert DevOps engineer specializing in infrastructure automation, CI/CD pipeline development, and cloud operations  
+`agent:agency-devops-automator` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
 
 ### Disclosure timing — TRID, RESPA, Reg Z
 The TRID/RESPA/Reg Z timing gates that govern every mortgage file, plus the parallel California real-estate disclosure…  
@@ -816,6 +1235,51 @@ See also: `wiki/mortgage-programs/index.md`, `wiki/real-estate-playbooks/buyer-p
 Vanessa · [attention] bot token prompt in the paste; bot not yet created  
 `connector:Discord #vanessa` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
+
+### Discovery Coach
+Opus 5.5 · Revenue squad · Coaches sales teams on elite discovery methodology — question design, current-state mapping, gap quantification, and call structure that surfaces real bu  
+`agent:agency-discovery-coach` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
+
+### disruption-scout
+Opus 5.5 · tier 1 · Reports to Nadia (CAIO): the outward scanning sub-agent that tracks the external AI landscape week by week — new models, agent frameworks, o  
+`agent:disruption-scout` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### django-build-resolver
+Opus 5.5 · tier 3 · Django/Python build, migration, and dependency error resolution specialist.  
+`agent:django-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### django-reviewer
+Opus 5.5 · tier 3 · Expert Django code reviewer specializing in ORM correctness, DRF patterns, migration safety, security misconfigurations, and production-grad  
+`agent:django-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### doc-updater
+Opus 5.5 · tier 3 · Documentation and codemap specialist.  
+`agent:doc-updater` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### docs-lookup
+Opus 5.5 · tier 2 · When the user asks how to use a library, framework, or API or needs up-to-date code examples, use Context7 MCP to fetch current documentatio  
+`agent:docs-lookup` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### Document Generator
+Opus 5.5 · Executive Office squad · Expert document creation specialist who generates professional PDF, PPTX, DOCX, and XLSX files using code-based approaches with proper formattin  
+`agent:agency-document-generator` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### document-intake-clerk
+Opus 5.5 · tier 2 · Report under Carmen (CA TC, Victor's line): reads each new contract and disclosure package and enters its dates into tcDeals; flags every missing or conflicting  
+`agent:document-intake-clerk` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### document-intelligence-agent
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): reads a loan file's documents — classifies, extracts the figures that matter, cross-checks them against  
+`agent:document-intelligence-agent` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
 
 ### documentation-and-adrs
 Derek · Records decisions and documentation. Use when you need to document an architecture decision (ADR) or the reasoning behind a design choice, when changing public APIs, shippi  
@@ -843,16 +1307,108 @@ See also: `README.md`, `docs/NEEDS-STEVEN-R4.append.md`
 
 ## E
 
+### e2e-runner
+Opus 5.5 · tier 3 · End-to-end testing specialist using Vercel Agent Browser (preferred) with Playwright fallback.  
+`agent:e2e-runner` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### ecc-accessibility-lead
+Opus 5.5 · tier 2 · ECC AI employee reporting to Derek (CTO).  
+`agent:ecc-accessibility-lead` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### ecc-agent-safety-officer
+Opus 5.5 · tier 2 · ECC AI employee reporting to Nadia (CAIO).  
+`agent:ecc-agent-safety-officer` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### ecc-dependency-steward
+Opus 5.5 · tier 2 · ECC AI employee reporting to Elena (CISO).  
+`agent:ecc-dependency-steward` · AI agents · newest date stamp undated  
+Linked from: `seat:Elena`  
+
+### ecc-observability-lead
+Opus 5.5 · tier 2 · ECC AI employee reporting to Derek (CTO).  
+`agent:ecc-observability-lead` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### ecc-security-steward
+Opus 5.5 · tier 2 · ECC AI employee reporting to Elena (CISO).  
+`agent:ecc-security-steward` · AI agents · newest date stamp undated  
+Linked from: `seat:Elena`  
+
+### ecc-standards-officer
+Opus 5.5 · tier 2 · Reports under Derek (CTO): the authority on the ECC engineering standards installed at ~/.claude/rules/ecc/.  
+`agent:ecc-standards-officer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### ecc-test-architect
+Opus 5.5 · tier 2 · ECC AI employee reporting to Derek (CTO).  
+`agent:ecc-test-architect` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### efficiency-engineer
+Opus 5.5 · tier 1 · Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: re-engineers workflows, skills, routines and dashboard code for speed  
+`agent:efficiency-engineer` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### Elena
+Elena's seat: the agents that report to Elena  
+`seat:Elena` · Seats · newest date stamp undated  
+See also: `agent:access-auditor`, `agent:ciso-elena`, `agent:ecc-dependency-steward`, `agent:ecc-security-steward`, `agent:opensource-sanitizer`, `agent:phishing-triage`
+
+### Elon
+Elon's seat: the agents that report to Elon  
+`seat:Elon` · Seats · newest date stamp undated  
+See also: `agent:cto-innovator`, `agent:gan-generator`, `agent:gan-planner`, `agent:opensource-forker`, `agent:opensource-packager`, `squad:Innovation`
+
+### Email Intelligence Engineer
+Opus 5.5 · Technology squad · Expert in extracting structured, reasoning-ready data from raw email threads for AI agents and automation systems  
+`agent:agency-email-intelligence-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### Engineering Core — harness, graph and loop engineering
+Owner: Atlas (Systems Engineer, reports to Elon).  
+`wiki/ai-team/engineering-core.md` · AI team · newest date stamp undated  
+Sections: Harness; Graph; Loops  
+See also: `docs/SETUP-RUNBOOK.md`, `integrations/CONNECTIONS.md`, `wiki/mortgage-programs/refi-review-prep.md`
+
+### escalation-recovery-agent
+Opus 5.5 · tier 2 · Reports to Vanessa: handles the file that has gone wrong — a blown closing date, a denied loan, a failed appraisal, an angry client or partn  
+`agent:escalation-recovery-agent` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
 ### Events and Networking
 Written 2026-10-11.  
 `wiki/events-networking/index.md` · Dashboard ops · newest date stamp 2026-10-11  
 Sections: How the weekly run works; City map; Reading the report; Rules; Sources  
 See also: `docs/INSTALL-COVERAGE.md`, `integrations/ticor/README.md`, `routines/events-weekly.md`
 
+### Evidence Collector
+Opus 5.5 · Technology squad · Screenshot-obsessed, fantasy-allergic QA specialist - Reports reproducible issues with evidence and marks untested scope honestly  
+`agent:agency-evidence-collector` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### EVRoutes · Turo connectors
 Derek · [reconnect] "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)  
 `connector:EVRoutes · Turo connectors` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
+
+### Executive Office squad (18 agents, lead Vanessa)
+Book Co-Author, Experiment Tracker, Project Shepherd, Studio Operations, Studio Producer, Senior Project Manager, Business Strategist, Change Management Consultant, Corporate Train  
+`squad:Executive Office` · Agency squads · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+See also: `agent:agency-book-co-author`, `agent:agency-business-strategist`, `agent:agency-change-management-consultant`, `agent:agency-corporate-training-designer`, `agent:agency-document-generator`, `agent:agency-executive-summary-generator`
+
+### Executive Summary Generator
+Opus 5.5 · Executive Office squad · Consultant-grade AI specialist trained to think and communicate like a senior strategy consultant. Transforms complex business inputs into conci  
+`agent:agency-executive-summary-generator` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### Experiment Tracker
+Opus 5.5 · Executive Office squad · Expert project manager specializing in experiment design, execution tracking, and data-driven decision making. Focused on managing A/B tests, fe  
+`agent:agency-experiment-tracker` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
 
 ## F
 
@@ -860,6 +1416,21 @@ See also: `integrations/CONNECTIONS.md`
 Derek · Keeps the Command Deck's knowledge-fabric tiles live — counts every store (Second Brain rows, vault notes, Jarvis documents, graph nodes, Ru  
 `mactask:fabric-deck-sync` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
+
+### fastapi-reviewer
+Opus 5.5 · tier 2 · Reviews FastAPI applications for async correctness, dependency injection, Pydantic schemas, security, OpenAPI quality, testing, and producti  
+`agent:fastapi-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### FedRAMP & RMF Compliance Engineer
+Opus 5.5 · Security squad · Expert FedRAMP and NIST Risk Management Framework compliance engineer specializing in both FedRAMP authorization pathways — the traditional Rev5 path (N  
+`agent:agency-fedramp-rmf-compliance-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### Feedback Synthesizer
+Opus 5.5 · Innovation squad · Expert in collecting, analyzing, and synthesizing user feedback from multiple channels to extract actionable product insights. Transforms qualitative   
+`agent:agency-feedback-synthesizer` · AI agents · newest date stamp undated  
+Linked from: `squad:Innovation`  
 
 ### feeds-market-close
 Derek · Weekday post-close refresh of the market feed and a second read on VA rates, using Perplexity. No API key.  
@@ -889,8 +1460,8 @@ Derek · [attention] stale: last digest 2026-11-12; the Fieldy connector asks fo
 See also: `integrations/CONNECTIONS.md`
 
 ### Fieldy meetings — digest (written daily by the "Fieldy → brain" task)
-Last checked: 2026-11-12  
-`memory/fieldy-meetings.md` · Memory · newest date stamp 2026-11-12  
+Last checked: 2026-11-22  
+`memory/fieldy-meetings.md` · Memory · newest date stamp 2026-11-22  
 Sections: 2026-10-31  
 See also: `routines/fub-removal-2026-09-24.md`, `wiki/mortgage-programs/loan-task-agents.md`, `wiki/mortgage-programs/va-eligibility.md`
 
@@ -904,6 +1475,17 @@ Derek · cron CRON_TZ=America/Los_Angeles 50 6 * * * · on · ran 2026-10-23 (0 
 `routine:Fieldy → brain (daily meeting digest; first names only)` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
 
+### Finance squad (3 agents, lead Marcus)
+Financial Analyst, FP&A Analyst, Pricing Analyst  
+`squad:Finance` · Agency squads · newest date stamp undated  
+Linked from: `seat:Marcus`  
+See also: `agent:agency-financial-analyst`, `agent:agency-fp-a-analyst`, `agent:agency-pricing-analyst`, `wiki/ai-team/agency-teams.md`
+
+### Financial Analyst
+Opus 5.5 · Finance squad · Expert financial analyst specializing in financial modeling, forecasting, scenario analysis, and data-driven decision support. Transforms raw financial d  
+`agent:agency-financial-analyst` · AI agents · newest date stamp undated  
+Linked from: `squad:Finance`  
+
 ### Financial Summary
 Derek · cron 0 16 1 * * · on · @  
 `routine:Financial Summary` · Cloud routines · newest date stamp undated  
@@ -913,6 +1495,21 @@ See also: `always-on/README.md`
 Vanessa · Helps users discover and install agent skills when they ask questions like "how do I do X", "find a skill for X", "is there a skill that can...", or express interest in e  
 `skill:find-skills` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### FinOps Engineer
+Opus 5.5 · Technology squad · Expert cloud cost engineer for AWS/GCP/Azure — cost allocation and tagging, rightsizing, commitment planning (reserved instances/savings plans), egres  
+`agent:agency-finops-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### fitness-trainer
+Opus 5.5 · tier 2 · Strength and conditioning coach on Steven's Apple Health section — builds his progressive weekly training plan from his workout history, hea  
+`agent:fitness-trainer` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### flutter-reviewer
+Opus 5.5 · tier 3 · Flutter and Dart code reviewer.  
+`agent:flutter-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ### Follow Up Boss removed — what was done, and the three edits only Steven can make
 Steven: "remove FUB aka Follow Up Boss from all routines, and everything.  
@@ -926,7 +1523,52 @@ Derek · [attention] still enabled
 `connector:Four http_api Sunday routines` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
+### FP&A Analyst
+Opus 5.5 · Finance squad · Expert Financial Planning & Analysis (FP&A) analyst specializing in budgeting, variance analysis, financial planning, rolling forecasts, and strategic de  
+`agent:agency-fp-a-analyst` · AI agents · newest date stamp undated  
+Linked from: `squad:Finance`  
+
+### Frontend Developer
+Opus 5.5 · Technology squad · Expert frontend developer specializing in modern web technologies, React/Vue/Angular frameworks, UI implementation, and performance optimization  
+`agent:agency-frontend-developer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### fsharp-reviewer
+Opus 5.5 · tier 3 · Expert F# code reviewer specializing in functional idioms, type safety, pattern matching, computation expressions, and performance.  
+`agent:fsharp-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### fundamental-analyst
+Opus 5.5 · tier 2 · Step 3 of the AI Hedge Fund Team research committee.  
+`agent:fundamental-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
 ## G
+
+### gan-evaluator
+Opus 5.5 · tier 3 · GAN Harness — Evaluator agent.  
+`agent:gan-evaluator` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### gan-generator
+Opus 5.5 · tier 3 · GAN Harness — Generator agent.  
+`agent:gan-generator` · AI agents · newest date stamp undated  
+Linked from: `seat:Elon`  
+
+### gan-planner
+Opus 5.5 · tier 3 · GAN Harness — Planner agent.  
+`agent:gan-planner` · AI agents · newest date stamp undated  
+Linked from: `seat:Elon`  
+
+### geo-aeo-optimizer
+Opus 5.5 · tier 2 · Report under Sofia (CMO): optimises Steven's visibility inside AI answers — ChatGPT, Claude, Perplexity, Google AI Overviews and AI Mode — t  
+`agent:geo-aeo-optimizer` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### Git Workflow Master
+Opus 5.5 · Technology squad · Expert in Git workflows, branching strategies, and version control best practices including conventional commits, rebasing, worktrees, and CI-friendly  
+`agent:agency-git-workflow-master` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
 
 ### git-workflow-and-versioning
 Derek · Structures git workflow practices. Use when making any code change. Use when committing, branching, resolving conflicts, splitting uncommitted work in a messy working tree   
@@ -948,6 +1590,21 @@ Derek · [attention] public
 `connector:GitHub repo visibility` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
+### Global Podcast Strategist
+Opus 5.5 · Marketing squad · Expert podcast growth specialist focused on show positioning, audience development, content strategy, and monetisation. Transforms raw ideas into autho  
+`agent:agency-global-podcast-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### go-build-resolver
+Opus 5.5 · tier 3 · Go build, vet, and compilation error resolution specialist.  
+`agent:go-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### go-reviewer
+Opus 5.5 · tier 3 · Expert Go code reviewer specializing in idiomatic Go, concurrency patterns, error handling, and performance.  
+`agent:go-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ### gondola
 Vanessa · [ok] travel: hotels, flights, points vs cash, trips · registered on the Macs; claude.ai connector is Steven's click  
 `mcp:gondola` · MCP servers · newest date stamp undated  
@@ -961,8 +1618,7 @@ See also: `integrations/CONNECTIONS.md`
 ### Gondola — travel updates (hotel, flight, car; points vs cash) (2026-10-22)
 Steven, 2026-10-22: "connect gondola ai for travel updates." Gondola publishes an official MCP server…  
 `integrations/gondola/README.md` · Integrations · newest date stamp 2026-10-22  
-Linked from: `routines/events-weekly.md`  
-See also: `integrations/CONNECTIONS.md`, `integrations/MCP-SERVERS.md`
+See also: `integrations/CONNECTIONS.md`, `routines/events-weekly.md`, `wiki/ai-team/org-chart.md`
 
 ### Google Drive (SECOND BRAIN/)
 Vanessa · [ok] rewrite the 13 SB Docs weekly · connected  
@@ -982,6 +1638,15 @@ Sections: Why this file exists; The decision Steven owes, before any of this is 
 Linked from: `references/google-drive.md`, `wiki/real-estate-playbooks/ai-search-visibility.md`  
 See also: `docs/SETUP-RUNBOOK.md`, `integrations/notebooklm/README.md`
 
+### Graph engineering — 82/100
+the shape of the knowledge: 6D Brain graph edges, islands, dead links, undated pages · week of 2026-11-22 · next: Back up 1 single point(s) of failure in the map; Put 159 idle agen  
+`eng:graph` · Engineering · newest date stamp undated  
+
+### Growth Hacker
+Opus 5.5 · Marketing squad · Expert growth strategist specializing in rapid user acquisition through data-driven experimentation. Develops viral loops, optimizes conversion funnels  
+`agent:agency-growth-hacker` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
 ### Growth Pod
 Sofia, Victor, Marcus, Alexandra · Content week, campaign drafts, cost and revenue read, compliance  
 `pod:Growth Pod` · Pods · newest date stamp undated  
@@ -998,10 +1663,29 @@ Paste everything below the line into a NEW Claude Code (cloud) session on repo c
 `docs/HANDOFF-2026-10-25.md` · Loop & findings · newest date stamp 2026-10-25  
 See also: `docs/HANDOFF-NEW-CHAT.md`, `integrations/mac-sync/README.md`, `integrations/remote-control/README.md`
 
+### harmonyos-app-resolver
+Opus 5.5 · tier 3 · HarmonyOS application development expert specializing in ArkTS and ArkUI.  
+`agent:harmonyos-app-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### Harness engineering — 59/100
+the scaffolding agents run inside: routines, Mac tasks, skills, hooks, router, connectors · week of 2026-11-22 · next: Repair 10 cloud routine(s) whose last run failed; Reconnect 1  
+`eng:harness` · Engineering · newest date stamp undated  
+
+### harness-optimizer
+Opus 5.5 · tier 2 · Analyze and improve the local agent harness configuration for reliability, cost, and throughput.  
+`agent:harness-optimizer` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
 ### Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`
 Derek · cron CRON_TZ=America/Los_Angeles 15 6 * * * · on · first run by hand 2026-10-23  
 `routine:Health daily sync — Apple Health (Drive export) + Strava → deck (6:15 AM PT; `appleHealth`, `stravaS` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
+
+### health-coach-analyst
+Opus 5.5 · tier 2 · Health coach and analyst on Steven's Apple Health section — reads his metrics, trends, workouts and sleep from the apple-health MCP and his  
+`agent:health-coach-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
 
 ### health-coaching-weekly
 Derek · Sundays 6:30 AM - dispatches health-coach-analyst, fitness-trainer and meal-planner together against Steven's Apple Health data and his heal  
@@ -1013,10 +1697,30 @@ Derek · Daily after the 5:10 AM sync: deep analysis of Steven's Apple Health da
 `mactask:health-full-analysis` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### healthcare-reviewer
+Opus 5.5 · tier 3 · Reviews healthcare application code for clinical safety, CDSS accuracy, PHI compliance, and medical data integrity.  
+`agent:healthcare-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### homelab-architect
+Opus 5.5 · tier 3 · Designs home and small-lab network plans from hardware inventory, goals, and operator experience level, with safe staged changes and rollbac  
+`agent:homelab-architect` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ### homes.com · ShowingTime · Showami
 Victor · [attention] wrappers installed; sign-ins (MFA) in the agent Chrome are Steven's  
 `connector:homes.com · ShowingTime · Showami` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
+
+### hook-writer
+Opus 5.5 · tier 3 · 3 hooks, 3 titles and a caption per post in Steven's voice, banned-word list and ad rules applied; drafts only. Hand-written: .claude/agents/hook-writer.md (202  
+`agent:hook-writer` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### HR Onboarding
+Opus 5.5 · Executive Office squad · Comprehensive HR onboarding specialist for employee orientation, documentation management, compliance tracking, benefits enrollment, culture int  
+`agent:agency-hr-onboarding` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
 
 ### Hume AI
 Vanessa · [attention] not connected; Vanessa's voice is the recorded Magica set. A key can be stored (paste step 4) for a later EVI proposal; it spends money per call → HALT until   
@@ -1025,20 +1729,81 @@ See also: `integrations/CONNECTIONS.md`
 
 ## I
 
+### Identity & Access Engineer
+Opus 5.5 · Security squad · Expert identity engineer for OAuth 2.0/OIDC flows, enterprise SSO (SAML/OIDC) and SCIM provisioning, passkeys/WebAuthn, session architecture, and multi-  
+`agent:agency-identity-access-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### Identity Graph Operator
+Opus 5.5 · Technology squad · Operates a shared identity graph that multiple AI agents resolve against. Ensures every agent in a multi-agent system gets the same canonical answer f  
+`agent:agency-identity-graph-operator` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### Image Prompt Engineer
+Opus 5.5 · Marketing squad · Expert photography prompt engineer specializing in crafting detailed, evocative prompts for AI image generation. Masters the art of translating visual   
+`agent:agency-image-prompt-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
 ### iMessage line (Vanessa text replies)
 Vanessa · [ok] linked and live since 2026-10-23 23:54 UTC — Steven's thread aa1a9d19…8510; the Mac poller answered a non-answer at 00:05, the cloud sweep answered rates + schedule   
 `connector:iMessage line (Vanessa text replies)` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
+
+### inbox-triage
+Opus 5.5 · tier 3 · Sorts unread Gmail into URGENT / REPLY / READ LATER / IGNORE and drafts replies in Steven's voice; never sends. Hand-written: .claude/agents/inbox-triage.md (20  
+`agent:inbox-triage` · AI agents · newest date stamp undated  
+Linked from: `seat:Voicemail & Inbox Triage`  
 
 ### incentives-daily-scan
 Derek · Daily search for new and changed incentives, rebates, grants, credits, veteran benefits and promotions (Temecula/SW Riverside, San Diego Cou  
 `mactask:incentives-daily-scan` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### incentives-programs-scout
+Opus 5.5 · tier 2 · Report under Marcus (CFO): finds and verifies incentives, rebates, grants, tax credits, down-payment assistance, veteran benefits and promot  
+`agent:incentives-programs-scout` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
+
+### Incident Responder
+Opus 5.5 · Security squad · Digital forensics and incident response specialist who leads breach investigations, contains active threats, coordinates crisis response, and writes pos  
+`agent:agency-incident-responder` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### Incident Response Commander
+Opus 5.5 · Technology squad · Expert incident commander specializing in production incident management, structured response coordination, post-mortem facilitation, SLO/SLI tracking  
+`agent:agency-incident-response-commander` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### Inclusive Visuals Specialist
+Opus 5.5 · Marketing squad · Representation expert who defeats systemic AI biases to generate culturally accurate, affirming, and non-stereotypical images and video.  
+`agent:agency-inclusive-visuals-specialist` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### Infrastructure Maintainer
+Opus 5.5 · Technology squad · Expert infrastructure specialist focused on system reliability, performance optimization, and technical operations management. Maintains robust, scala  
+`agent:agency-infrastructure-maintainer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### Inkbox (iMessage, e-mail, voice)
 Vanessa · [ok] send Vanessa's texts and voice notes to Steven only · connected  
 `api:Inkbox (iMessage, e-mail, voice)` · APIs · newest date stamp undated  
 See also: `integrations/APIS.md`
+
+### Innovation squad (5 agents, lead Elon)
+Behavioral Nudge Engine, Feedback Synthesizer, Product Manager, Sprint Prioritizer, Tool Evaluator  
+`squad:Innovation` · Agency squads · newest date stamp undated  
+Linked from: `seat:Elon`  
+See also: `agent:agency-behavioral-nudge-engine`, `agent:agency-feedback-synthesizer`, `agent:agency-product-manager`, `agent:agency-sprint-prioritizer`, `agent:agency-tool-evaluator`, `wiki/ai-team/agency-teams.md`
+
+### inspection-repair-negotiator
+Opus 5.5 · tier 2 · Report under Victor (CRO): runs the inspection period — coordinating inspections, reading reports for what is material versus cosmetic, buil  
+`agent:inspection-repair-negotiator` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### Instagram Curator
+Opus 5.5 · Marketing squad · Expert Instagram marketing specialist focused on visual storytelling, community building, and multi-format content optimization. Masters aesthetic deve  
+`agent:agency-instagram-curator` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
 
 ### INSTALL-COVERAGE — every tool Steven asked for, as a list, checked as a list
 Built 2026-09-22 by P6 (Install Coverage).  
@@ -1046,6 +1811,11 @@ Built 2026-09-22 by P6 (Install Coverage).
 Sections: Counts; The matrix — worst status first; Two gaps that are not any single item's fault; Method, and what I did not do  
 Linked from: `MAC-INSTALL.md`, `wiki/events-networking/index.md`  
 See also: `docs/NEEDS-STEVEN-R3.append.md`, `integrations/open-design/README.md`
+
+### integration-engineer
+Opus 5.5 · tier 1 · Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: owns the stability of every plugin, connector, MCP server, bridge and  
+`agent:integration-engineer` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
 
 ### Integrator pass — items routed to me by the engineers
 Applied after all branches merge, before the splice and republish.  
@@ -1058,6 +1828,11 @@ See also: `integrations/trading-desk/README.md`, `memory.md`
 Vanessa · The relentless 'Grill Me' interview: pulls what only Steven knows about one named topic out of his head and files it as structured knowledge — a vault 60-Knowledge note p  
 `skill:interview-me` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### investor-client-manager
+Opus 5.5 · tier 2 · Report under Victor (CRO): serves investor clients — rental analysis with real cap rate, cash-on-cash and DSCR math, 1031 exchange timelines  
+`agent:investor-client-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ### Is a connector, CRM or integration actually working
 Is a connector, CRM or integration actually working right now, and what does Steven still need to do about it.  
@@ -1088,6 +1863,11 @@ See also: `always-on/README.md`
 Victor · Merges the shared message thread both ways. Narrowed from 24 hours to 7 AM–9 PM: the ISA works 12–4 PM, so overnight runs moved no messages   
 `mactask:isa-comms-bridge-local` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
+
+### IT Service Manager
+Opus 5.5 · Technology squad · Expert IT service management specialist using ITIL 4 framework for service catalog design, incident and problem management, change control, SLA govern  
+`agent:agency-it-service-manager` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
 
 ## J
 
@@ -1122,6 +1902,16 @@ Jarvis (OpenJarvis memory.db), the real Laya model and Vanessa's recorded voice 
 Sections: Run on the Mac (from the Repo folder); Laya; Vanessa's voice; Vanessa's persona and the brain in Jarvis (2026-10-23); What this never does  
 Linked from: `docs/NEEDS-STEVEN-R4.append.md`, `integrations/openmausbot/README.md`, `memory/ai-team.md`  
 See also: `integrations/vanessa-voice-everywhere.md`
+
+### java-build-resolver
+Opus 5.5 · tier 3 · Java/Maven/Gradle build, compilation, and dependency error resolution specialist.  
+`agent:java-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### java-reviewer
+Opus 5.5 · tier 3 · Expert Java code reviewer for Spring Boot and Quarkus projects.  
+`agent:java-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ## K
 
@@ -1166,11 +1956,26 @@ Kevin · Kevin, Steven's standalone Standards Mentor persona (personal developme
 `skill:kevin-mentor` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### Knowledge Graph Engineer
+Opus 5.5 · Technology squad · Structures information and capabilities into interconnected nodes (entities) and edges (relationships) — enabling dynamic context navigation, modular   
+`agent:agency-knowledge-graph-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### Knowledge graph — schema
 Small, closed vocabularies. A graph with an open vocabulary is a graph nobody can query.  
 `knowledge-graph/schema.md` · Knowledge graph · newest date stamp 2026-09-22  
 Sections: Entity types; Relationship vocabulary; Node shape; Rules  
 Linked from: `context/decisions.md`, `knowledge-graph/README.md`, `references/vibe-coding-learning.md`, `wiki/clients/index.md`  
+
+### kotlin-build-resolver
+Opus 5.5 · tier 3 · Kotlin/Gradle build, compilation, and dependency error resolution specialist.  
+`agent:kotlin-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### kotlin-reviewer
+Opus 5.5 · tier 3 · Kotlin and Android/KMP code reviewer.  
+`agent:kotlin-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ## L
 
@@ -1202,6 +2007,11 @@ Sections: The brain's own tasks; The self-improvement pair; Proposed additions t
 Linked from: `context/competitors.md`, `docs/ISA-SEAT-DECISION.md`, `routine:6D Brain — daily rebuild and republish (3:30 AM PT, this session)`, `routine:AI twin autopilot (posts only approved items)`, `routine:Account Health Check`, `routine:Attraction Command Center: daily cloud run`  
 See also: `docs/ROUTINE-SCHEDULE-FIX.md`, `routines/cloud-routine-repairs.md`, `routines/mac-task-repairs.md`
 
+### Language Translator
+Opus 5.5 · Executive Office squad · Real-time Spanish ↔ English translation specialist with cultural context, regional dialect awareness, travel phrase guidance, and tone-appropria  
+`agent:agency-language-translator` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
 ### laya
 Vanessa · [ok] zero-token local router in front of Vanessa (lane, tier, HALT words) · registered — real engine answering on Mac 1 (2026-10-23)  
 `mcp:laya` · MCP servers · newest date stamp undated  
@@ -1224,6 +2034,11 @@ Victor, Gwen, Sofia, Voicemail & Inbox Triage, Alexandra · Call list for the IS
 `pod:Lead Pod` · Pods · newest date stamp undated  
 See also: `wiki/ai-team/cross-functional.md`
 
+### lead-triage-analyst
+Opus 5.5 · tier 2 · Report under Victor (CRO): triages Lofty leads — new leads since a given time, first-response gaps against the 5-minute SLA, missin  
+`agent:lead-triage-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ### lead-triage-daily
 Victor · Must read **Lofty** for the last 24 hours of leads, measure first-response gaps against the 5-minute standard, and list leads needing a next task. **Not connected yet** —   
 `mactask:lead-triage-daily` · Mac tasks · newest date stamp undated  
@@ -1236,6 +2051,11 @@ Sections: Agency wholesale generalists; Non-QM specialists; Investor / DSCR / ha
 Linked from: `wiki/mortgage-programs/fha-usda.md`  
 See also: `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/program-selection.md`
 
+### LinkedIn Content Creator
+Opus 5.5 · Marketing squad · Expert LinkedIn content strategist focused on thought leadership, personal brand building, and high-engagement professional content. Masters LinkedIn's  
+`agent:agency-linkedin-content-creator` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
 ### Listing Pod
 Marguerite, Sofia, Bianca, Alexandra · CMA prep, launch checklist, MLS remarks and marketing drafts, seller weekly report  
 `pod:Listing Pod` · Pods · newest date stamp undated  
@@ -1247,6 +2067,11 @@ The seller-side path from intake through pricing, prep, launch, offer management
 Sections: Intake and consultation flow; What the pre-listing package and presentation cover; Launch; Offer management; Client experience commitments (seller side); Post-close; See also  
 Linked from: `wiki/ai-team/cross-functional.md`, `wiki/real-estate-playbooks/buyer-process.md`, `wiki/real-estate-playbooks/transaction-stages.md`  
 See also: `wiki/real-estate-playbooks/open-house.md`
+
+### listing-agent-elite
+Opus 5.5 · tier 2 · Report under Victor (CRO): the seller-side representation practitioner — preps Steven to win the listing appointment and then run the listin  
+`agent:listing-agent-elite` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ### listing-launch
 Sofia · Prepare a listing launch for a seller Steven has signed: the launch checklist, MLS public and private remarks drafts, Canva flyer and social-post drafts, and the seller wee  
@@ -1278,6 +2103,11 @@ Derek · Loan scenario and pricing PREP: builds the worksheet from facts Steven 
 `skill:loan-pricing-agent` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### loan-servicing-transfer
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): handles the post-funding period — servicing transfer notices and the 60-day grace period, first payment  
+`agent:loan-servicing-transfer` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
 ### local-bridge-queue
 Derek · Reads the Command Deck's localBridgeQueue and runs each queued verb through ~/Applications/local-bridge/run.sh, which enforces a read-only a  
 `mactask:local-bridge-queue` · Mac tasks · newest date stamp undated  
@@ -1298,6 +2128,10 @@ Victor · Sync Lofty (formerly Chime), Steven's real-estate CRM since 2026-09-22
 `skill:lofty-crm-sync` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### Loop engineering — 50/100
+whether the system gets better: loop run history, trend, regressions, untested pages · week of 2026-11-22 · next: Monitor 75 automation loop(s) with no known last run; Teach the ag  
+`eng:loop` · Engineering · newest date stamp undated  
+
 ### loop-engineering
 Vanessa · The weekly self-improvement cycle (v2): every agent, skill and routine gets a Goal, a Loop and a Routine; changes are proposed, tested against an untouched holdout, compa  
 `skill:loop-engineering` · Skills · newest date stamp undated  
@@ -1307,6 +2141,21 @@ See also: `wiki/ai-team/toolkit.md`
 Vanessa · The full self-improvement cycle: nine parallel audit passes, Nadia's disruption brief, the CTO Innovator's feasibility gate, the CPI and Sca  
 `mactask:loop-engineering-weekly` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
+
+### loop-operator
+Opus 5.5 · tier 2 · Operate autonomous agent loops, monitor progress, and intervene safely when loops stall.  
+`agent:loop-operator` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### lpt-recruiting-downline
+Opus 5.5 · tier 2 · Report under Victor (CRO): builds Steven's LPT Realty attraction and revenue-share organisation — recruiting pipeline, the value case for ag  
+`agent:lpt-recruiting-downline` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### luxury-market-specialist
+Opus 5.5 · tier 2 · Report under Victor (CRO): handles the upper-tier property — pricing where comparables are thin, discreet and off-market marketing, jumbo an  
+`agent:luxury-market-specialist` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ## M
 
@@ -1375,7 +2224,7 @@ See also: `MAC-INSTALL-comms-data.md`, `integrations/browser-agents/README.md`, 
 Steven, verbatim: "Ensure both of my MacBooks can access the same information and equally have control of this…  
 `integrations/mac-sync/README.md` · Integrations · newest date stamp 2026-09-24  
 Sections: The four subcommands; Runner task definitions (prompts) — manual, and why; Vault sync (~/Shearrill-Vault) — read-only detection, never note content; LaunchAgent templates — pull every 30 min, export daily; Safety, restated  
-Linked from: `docs/HANDOFF-2026-10-25.md`, `wiki/ai-team/push-button-system.md`  
+Linked from: `docs/HANDOFF-2026-10-25.md`  
 See also: `docs/SECOND-MAC-SETUP.md`, `docs/STEVEN-STEPS.md`, `integrations/mac-everything-2026-10-09.md`
 
 ### Mac: everything pending, in one paste (2026-10-09)
@@ -1411,12 +2260,38 @@ Steven, 2026-10-05: "remove everything running on Perplexity and replace with Cl
 Sections: The paste-in; What each step replaces  
 See also: `integrations/mac-everything-2026-10-09.md`, `integrations/omniroute-failover/README.md`, `integrations/omniroute/README.md`
 
+### Marcus
+Marcus's seat: the agents that report to Marcus  
+`seat:Marcus` · Seats · newest date stamp undated  
+See also: `agent:bookkeeper`, `agent:cfo-marcus`, `agent:commission-tracker`, `agent:incentives-programs-scout`, `agent:mbs-market-intelligence`, `agent:mortgage-analytics-lead`
+
+### market-scout
+Opus 5.5 · tier 2 · First stop on the AI Hedge Fund Team research committee.  
+`agent:market-scout` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### Marketing squad (27 agents, lead Sofia)
+Image Prompt Engineer, Inclusive Visuals Specialist, Persona Walkthrough Specialist, UI Finish-Gate Reviewer, UX Architect, UX Researcher, Visual Storyteller, Whimsy Injector, AEO   
+`squad:Marketing` · Agency squads · newest date stamp undated  
+Linked from: `seat:Sofia`  
+See also: `agent:agency-ad-creative-strategist`, `agent:agency-aeo-foundations-architect`, `agent:agency-agentic-search-optimizer`, `agent:agency-carousel-growth-engine`, `agent:agency-global-podcast-strategist`, `agent:agency-growth-hacker`
+
+### marketing-agent
+Opus 5.5 · tier 3 · Marketing strategist and copywriter for campaign planning, audience research, positioning, copy creation, and content review.  
+`agent:marketing-agent` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
 ### Master Findings Table — Cycle 6
 2026-09-12 04:47 UTC · Audited and remediated: 2026-09-22 · Findings: 285 (cycle 6) + 313 (2026-09-22 engineering…  
 `docs/MASTER-FINDINGS.md` · Loop & findings · newest date stamp 2026-10-02  
 Sections: Totals (cycle 6 rows); Halted — waiting on Steven (47); Every finding; Before and after, for every remediated row; By category; 2026-09-22 — "Fix everything" engineering pass (folded in by X2)  
 Linked from: `AGENTS.md`, `projects/command-deck.md`  
 See also: `docs/STRESS-TEST-REPORT.md`
+
+### Master Plan Architect
+Opus 5.5 · Executive Office squad · Master planning architect, technical educator, and ruthless plan critic who specializes in deep architectural teaching, Red Teaming / risk criti  
+`agent:agency-master-plan-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
 
 ### MBS Highway Home Report
 Derek · [none] enrol past clients (Steven's click) · no API (integrations/mbs-highway/README.md)  
@@ -1434,17 +2309,37 @@ an automated monthly past-client report (equity growth, estimated value, regiona
 Linked from: `integrations/APIS.md`, `wiki/real-estate-playbooks/drip-and-text-follow-up.md`  
 See also: `integrations/ticor/README.md`
 
+### mbs-market-intelligence
+Opus 5.5 · tier 2 · Report under Marcus (CFO): tracks what actually moves mortgage rates — MBS coupon pricing, the 10-year, Fed policy and the economic calendar  
+`agent:mbs-market-intelligence` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
+
+### MCP Builder
+Opus 5.5 · Technology squad · Expert Model Context Protocol developer who designs, builds, and tests MCP servers that extend AI agent capabilities with custom tools, resources, and  
+`agent:agency-mcp-builder` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### MCP servers — every Model Context Protocol server the brain reaches (as of 2026-10-23)
 One row per server. bin/brain toolkit reads this table (the last "## MCP servers" section) and the 6D Brain draws one…  
 `integrations/MCP-SERVERS.md` · Integrations · newest date stamp 2026-10-23  
 Sections: MCP servers  
-Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/APIS.md`, `integrations/gondola/README.md`, `mcp:Composio (cloud)`, `mcp:Fieldy · Gmail · Google Calendar · Google Drive · Notion · Slack · Zoom · WhisperAI · Inkb`, `mcp:api-anything`  
+Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/APIS.md`, `integrations/notebooklm/README.md`, `mcp:Composio (cloud)`, `mcp:Fieldy · Gmail · Google Calendar · Google Drive · Notion · Slack · Zoom · WhisperAI · Inkb`, `mcp:api-anything`  
 See also: `integrations/api-anything/README.md`, `wiki/ai-team/tool-integration-status.md`
+
+### meal-planner
+Opus 5.5 · tier 2 · Nutrition planner on Steven's Apple Health section — builds his weekly meal plan and grocery list from deck doc healthGoals and what his dat  
+`agent:meal-planner` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
 
 ### meeting-recap-to-crm
 Victor · Turn a recorded client or partner meeting (Fieldy pendant, Zoom for Claude) into a recap — decisions, action items, a follow-up Gmail draft and a CRM note queued on the de  
 `skill:meeting-recap-to-crm` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### meeting-scribe
+Opus 5.5 · tier 2 · Report under Vanessa: recaps Fieldy conversations and Zoom meetings — decisions, action items, open questions — and hands action items to vanessaQueue. Never se  
+`agent:meeting-scribe` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
 
 ### Memory projects — what's proven, what to steal, what to skip
 Principle 2 of Steven's guide: stand on proven shoulders before inventing a mechanism this repo already needs.  
@@ -1478,11 +2373,111 @@ Sections: The seat that owns this; The VA house-hack mechanism (why PCS and VA e
 Linked from: `wiki/mortgage-programs/va-eligibility.md`  
 See also: `context/about-me.md`, `wiki/mortgage-programs/va-affordability.md`
 
+### military-licensing-partnerships
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): tracks NMLS licensing and CE across Steven's states, researches requirements for target military market  
+`agent:military-licensing-partnerships` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### military-relocation-specialist
+Opus 5.5 · tier 2 · Report under Victor (CRO): owns the relocation client — PCS timelines and orders, BAH-versus-ownership analysis, base-area intelligence for  
+`agent:military-relocation-specialist` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### Minimal Change Engineer
+Opus 5.5 · Technology squad · Engineering specialist focused on minimum-viable diffs — fixes only what was asked, refuses scope creep, prefers three similar lines over a premature   
+`agent:agency-minimal-change-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### mktg-affiliate-partnerships
+Opus 5.5 · tier 2 · Report under Sofia (CMO): hunts residual and affiliate income — products, tools, platforms and sponsorships Steven can credibly endorse to h  
+`agent:mktg-affiliate-partnerships` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-analytics-lead
+Opus 5.5 · tier 2 · Report under Sofia (CMO): measures what marketing actually produced — source attribution across Lofty and Zoho, cost per lead, cost  
+`agent:mktg-analytics-lead` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-brand-strategist
+Opus 5.5 · tier 2 · Report under Sofia (CMO): owns positioning, brand architecture and the message hierarchy across Steven's four brands — Patriot Pacific MLO,  
+`agent:mktg-brand-strategist` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-creative-designer
+Opus 5.5 · tier 2 · Report under Sofia (CMO): owns visual identity and creative direction across every asset — brand kit, templates, ad creative, listing collat  
+`agent:mktg-creative-designer` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-direct-mail-farming
+Opus 5.5 · tier 2 · Report under Sofia (CMO): runs geographic farming and direct mail — farm selection on turnover and absorption math, mail piece copy and cade  
+`agent:mktg-direct-mail-farming` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-email-campaign-manager
+Opus 5.5 · tier 2 · Report under Sofia (CMO): owns email and SMS lifecycle — nurture sequences, database reactivation, newsletters, post-close campaigns and eve  
+`agent:mktg-email-campaign-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-listing-marketing-specialist
+Opus 5.5 · tier 2 · Report under Sofia (CMO): builds the full marketing package for a listing or buyer campaign — MLS remarks, property one-pager, just-listed/j  
+`agent:mktg-listing-marketing-specialist` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-paid-ads-manager
+Opus 5.5 · tier 2 · Report under Sofia (CMO): plans, drafts and analyses paid campaigns — Google Search/PMax, Meta, YouTube, LinkedIn — plus the nonprofit's Goo  
+`agent:mktg-paid-ads-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-pr-media-relations
+Opus 5.5 · tier 2 · Report under Sofia (CMO): earns media — podcast guesting, local press, HARO/Qwoted-style source requests, award and ranking submissions, spe  
+`agent:mktg-pr-media-relations` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-reputation-manager
+Opus 5.5 · tier 2 · Report under Sofia (CMO): runs reviews and reputation — Google Business Profile, Zillow, Experience.com, Facebook — the ask cadence at the r  
+`agent:mktg-reputation-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-social-media-manager
+Opus 5.5 · tier 2 · Report under Sofia (CMO): runs the platform-native social calendar (LinkedIn, Facebook, Instagram, YouTube, TikTok, Nextdoor) for military/v  
+`agent:mktg-social-media-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mktg-video-producer
+Opus 5.5 · tier 2 · Report under Sofia (CMO): scripts and plans video — short-form (Reels/Shorts/TikTok), YouTube long-form, listing tours, client testimonials  
+`agent:mktg-video-producer` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### mle-reviewer
+Opus 5.5 · tier 3 · Production machine-learning engineering reviewer for data contracts, feature pipelines, training reproducibility, offline/online evaluation,  
+`agent:mle-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### Mobile App Builder
+Opus 5.5 · Technology squad · Specialized mobile application developer with expertise in native iOS/Android development and cross-platform frameworks  
+`agent:agency-mobile-app-builder` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### Mobile Release Engineer
+Opus 5.5 · Technology squad · Expert mobile release and distribution engineer for iOS and Android — code signing, provisioning, fastlane pipelines, App Store Connect and Play Conso  
+`agent:agency-mobile-release-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### Model QA Specialist
+Opus 5.5 · AI Strategy squad · Independent model QA expert who audits ML and statistical models end-to-end - from documentation review and data reconstruction to replication, calib  
+`agent:agency-model-qa-specialist` · AI agents · newest date stamp undated  
+Linked from: `squad:AI Strategy`  
+
 ### Model tiering and dispatch
 Which model each seat runs on, and the rules that bound how many run at once — Steven's decision, recorded 2026-09-22.  
 `wiki/ai-team/model-tiering-dispatch.md` · AI team · newest date stamp 2026-11-08  
 Sections: The tiering; Dispatch rules; Proposal-only seats; The engineering gate — ECC; Trust levels; See also  
 Linked from: `CLAUDE.md`, `OPTIMIZATION.md`, `wiki/ai-team/agent-os.md`, `wiki/ai-team/index.md`  
+
+### modelmatch-partner-network
+Opus 5.5 · tier 2 · Report under Victor (CRO): works the Model Match database (modelmatch.com) to find, rank and network with producing real estate agents — usi  
+`agent:modelmatch-partner-network` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ### Money Pod
 Marcus, Nathan, Anita, James · Numbers with sources, deadlines, cash and commission view  
@@ -1511,10 +2506,40 @@ Sections: Pages; What belongs here; What does not; Full-context rule
 Linked from: `vector-index/README.md`, `wiki/mortgage-programs/disclosure-timing.md`, `wiki/mortgage-programs/fha-usda.md`, `wiki/mortgage-programs/lender-directory-notes.md`, `wiki/real-estate-playbooks/referral-reciprocity.md`  
 See also: `wiki/mortgage-programs/program-selection.md`
 
+### mortgage-analytics-lead
+Opus 5.5 · tier 2 · Report under Marcus (CFO): the numbers behind the lending business — pipeline by stage with real pull-through, cycle time by milestone, lead  
+`agent:mortgage-analytics-lead` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
+
+### mortgage-broker-elite
+Opus 5.5 · tier 2 · Report under Victor (CRO): the senior mortgage authority on Steven's AI Team — a top-1%, 30-year wholesale/retail broker and former underwri  
+`agent:mortgage-broker-elite` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ### mortgage-desk-weekly
 Derek · Sunday: Harrison runs the mortgage desk with his declared hand-off partners in parallel, and every hand-off is recorded to the Command Deck   
 `mactask:mortgage-desk-weekly` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
+
+### mortgage-guideline-agent
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): answers 'does this scenario fit, and under which rule' with the actual citation — agency guidelines (Fa  
+`agent:mortgage-guideline-agent` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### mortgage-intake-agent
+Opus 5.5 · tier 2 · Report under Victor (CRO): takes a qualified lead to a complete, submission-ready application — the structured intake interview, the documen  
+`agent:mortgage-intake-agent` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### mortgage-isa-ai
+Opus 5.5 · tier 2 · Report under Victor (CRO): owns the first five minutes — drafts the instant response, the qualification script, VA eligibility pre-screening  
+`agent:mortgage-isa-ai` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### mortgage-qa-auditor
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): pre- and post-close file audits — disclosure completeness and timing, fee tolerance and cures, signatur  
+`agent:mortgage-qa-auditor` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
 
 ### mortgage-rates-daily
 Derek · Weekdays 06:40 and 13:40, publishes the free daily mortgage-rate feed (Optimal Blue lock-based indices for conforming 30 and 15, FHA, VA, US  
@@ -1527,6 +2552,11 @@ Nothing here is installed globally. Libraries are added inside a web or video pr
 Sections: Motion libraries (npm, add inside a project); Claude reading; API and data lists (cporter202)  
 Linked from: `integrations/openmontage/README.md`  
 See also: `integrations/APIS.md`, `references/vibe-coding-learning.md`, `references/vlm-architectures.md`
+
+### Multi-Agent Systems Architect
+Opus 5.5 · Technology squad · Systems architect specializing in the design, coordination, and governance of multi-agent AI pipelines — covering topology selection, context manageme  
+`agent:agency-multi-agent-systems-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
 
 ### MyFitnessPal · Strava · BodyPark
 Derek · [attention] all three flow through Apple Health → Health Auto Export → the cloud Health daily sync (Strava also by connector)  
@@ -1541,10 +2571,20 @@ a connector for Zoho, Lofty, Showami, ShowingTime, homes.com, CRMLS, zipForms, S
 Sections: Tested here (R9, 2026-09-28, cloud sandbox — nothing below ran on a Mac); Install on Steven's Mac  
 See also: `integrations/CONNECTIONS.md`, `integrations/agency-agents/README.md`, `integrations/openwa/README.md`
 
+### Nadia
+Nadia's seat: the agents that report to Nadia  
+`seat:Nadia` · Seats · newest date stamp undated  
+See also: `agent:agent-evaluator`, `agent:caio-nadia`, `agent:conversation-analyzer`, `agent:docs-lookup`, `agent:ecc-agent-safety-officer`, `agent:gan-evaluator`
+
 ### nadia-scout-run
 Nadia · Nadia's one seat tool: run the weekly scout (integrations/scout/scout.py) for what is new in AI tooling that could help Steven's operation — MCP servers, Claude Code plugin  
 `skill:nadia-scout-run` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### Narratologist
+Opus 5.5 · AI Strategy squad · Expert in narrative theory, story structure, character arcs, and literary analysis — grounds advice in established frameworks from Propp to Campbell   
+`agent:agency-narratologist` · AI agents · newest date stamp undated  
+Linked from: `squad:AI Strategy`  
 
 ### Needs Steven — R1 append (cloud routines, 2026-09-23 ~03:05 UTC)
 From the R1 reliability pass over the failing cloud routines.  
@@ -1580,6 +2620,31 @@ Sections: R4-1 — Email can carry her actual voice, and it is one missing task 
 Linked from: `integrations/sellbird/README.md`, `references/drive-second-brain-notes.md`  
 See also: `integrations/jarvis/README.md`, `integrations/mac-task-specs.md`, `integrations/vanessa-voice-everywhere.md`
 
+### network-architect
+Opus 5.5 · tier 3 · Designs enterprise or multi-site network architecture from requirements, using existing network skills for focused routing, validation, auto  
+`agent:network-architect` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### network-config-reviewer
+Opus 5.5 · tier 3 · Reviews router and switch configurations for security, correctness, stale references, risky change-window commands, and missing operational  
+`agent:network-config-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### network-troubleshooter
+Opus 5.5 · tier 3 · Diagnoses network connectivity, routing, DNS, interface, and policy symptoms with a read-only OSI-layer workflow and evidence-backed root ca  
+`agent:network-troubleshooter` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### new-construction-specialist
+Opus 5.5 · tier 2 · Report under Victor (CRO): owns new-construction representation in Temecula, Murrieta, Menifee and Southwest Riverside County — builder ince  
+`agent:new-construction-specialist` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### news-analyst
+Opus 5.5 · tier 2 · Step 4 of the AI Hedge Fund Team research committee.  
+`agent:news-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
 ### Night-time answer latency
 Derek · [attention] up to 60 minutes until the Mac window is widened, then 10 minutes  
 `connector:Night-time answer latency` · Connectors · newest date stamp undated  
@@ -1589,6 +2654,16 @@ See also: `integrations/CONNECTIONS.md`
 Derek · Cheap functional and integration check across every skill, task, agent and connector. Self-heals the routine breakage, sends real regression  
 `mactask:nightly-self-test` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
+
+### nonprofit-grant-writer
+Opus 5.5 · tier 2 · Reports under nonprofit-grants-lead (Marcus/CFO line): writes the actual grant applications for Steven's 501(c)(3) — needs statement, progra  
+`agent:nonprofit-grant-writer` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### nonprofit-grants-lead
+Opus 5.5 · tier 2 · Reports under Marcus (CFO): runs the Active Duty Veteran & Hometown Hero Homeowners Club, Inc.  
+`agent:nonprofit-grants-lead` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
 
 ### notebooklm
 Vanessa · [ok] NotebookLM notebooks and sources (community tool, opt-in) · connected — signed in 2026-10-23, 5 notebooks  
@@ -1605,6 +2680,7 @@ Status 2026-10-23 06:10 UTC — connected and syncing.
 `integrations/notebooklm/README.md` · Integrations · newest date stamp 2026-11-02  
 Sections: Steven's steps (5 minutes, once); Direct connector (opt-in taken 2026-10-23: "setup and connect everything for me"); Phone numbers in the Docs (Steven, 2026-11-02)  
 Linked from: `integrations/google-drive-brain.md`, `references/google-drive.md`, `wiki/ai-team/second-brain-layers.md`  
+See also: `integrations/MCP-SERVERS.md`
 
 ### Notion (Second Brain DB)
 Vanessa · [ok] rows + the layer directory page · connected  
@@ -1617,6 +2693,11 @@ Derek · [attention] resume with Mac 1's runner (signed in 2026-10-23); director
 See also: `integrations/CONNECTIONS.md`
 
 ## O
+
+### Offer & Lead Gen Strategist
+Opus 5.5 · Revenue squad · Top-of-funnel architect who designs irresistible offers and lead magnets that attract qualified buyers at scale. Specializes in value-equation offer cons  
+`agent:agency-offer-lead-gen-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
 
 ### OmniRoute as the brain's model router — local tier (Bonsai 27B); research left it 2026-10-
 Written 2026-09-28 · design + scripts, proved against stubs in this sandbox · not yet installed on the Mac.  
@@ -1635,15 +2716,20 @@ See also: `integrations/omniroute/README.md`
 Produced 2026-09-23 by the Findings Closer.  
 `docs/OPEN-FINDINGS.md` · Loop & findings · newest date stamp 2026-09-30  
 Sections: The headline; 1. Steven — nothing else moves until he does; 2. A Mac session — his hands, but not his judgement; 3. Another seat in this repo — exact replacements are written and waiting; 4. Upstream — a local patch would be the wrong fix; 5. Nobody yet — no reachable owner can close it today; 6. Findings that were themselves wrong; 7. What was fixed in this pass  
-Linked from: `docs/HANDOFF-NEW-CHAT.md`, `docs/NEEDS-STEVEN-R2.append.md`  
+Linked from: `docs/HANDOFF-NEW-CHAT.md`, `docs/NEEDS-STEVEN-R2.append.md`, `docs/inventory/daily-updates.md`  
 See also: `docs/STRESS-TEST-REPORT.md`
 
 ### Open house — before, during, after
 How an open house is run on Steven's listing side and what happens to every visitor afterwards: the sign-in capture…  
 `wiki/real-estate-playbooks/open-house.md` · Real-estate wiki · newest date stamp 2026-10-22  
 Sections: Who owns what; Before; During; After — the Open House Captain's output (skill open-house-follow-up); Pabbly workflow 9 — the unattended version; ISA vs Steven; Fair-housing notes (reminders, not a ruling); HALT  
-Linked from: `integrations/loan-stack/README.md`, `wiki/real-estate-playbooks/index.md`, `wiki/real-estate-playbooks/listing-process.md`  
+Linked from: `integrations/loan-stack/README.md`, `wiki/real-estate-playbooks/index.md`, `wiki/real-estate-playbooks/listing-process.md`, `wiki/real-estate-playbooks/sphere-nurture.md`  
 See also: `wiki/real-estate-playbooks/showing-operations.md`
+
+### open-house-captain
+Opus 5.5 · tier 2 · Report under Marguerite / Gwen (Victor's line): turns the open-house sign-in sheet into leads, thank-you drafts and an ISA call list. Drafts only — never sends   
+`agent:open-house-captain` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ### open-house-follow-up
 Victor · After an open house: read the sign-in sheet (Google Forms export or a Drive sheet), build the lead list with first names and interest level, draft the thank-you emails as   
@@ -1699,10 +2785,30 @@ Derek · Daily-tier feeds (headlines, Bears, VA rates) refreshed via Perplexity 
 `mactask:openrouter-feeds-refresh` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### opensource-forker
+Opus 5.5 · tier 3 · Fork any project for open-sourcing.  
+`agent:opensource-forker` · AI agents · newest date stamp undated  
+Linked from: `seat:Elon`  
+
+### opensource-packager
+Opus 5.5 · tier 3 · Generate complete open-source packaging for a sanitized project.  
+`agent:opensource-packager` · AI agents · newest date stamp undated  
+Linked from: `seat:Elon`  
+
+### opensource-sanitizer
+Opus 5.5 · tier 3 · Verify an open-source fork is fully sanitized before release.  
+`agent:opensource-sanitizer` · AI agents · newest date stamp undated  
+Linked from: `seat:Elena`  
+
 ### openterminal-remote-queue
 Derek · Reads the Command Deck's openTerminalQueue document and runs each queued market lookup against the local OpenTerminal API through a strict a  
 `mactask:openterminal-remote-queue` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
+
+### Operations Manager
+Opus 5.5 · Executive Office squad · Business operations specialist who applies Lean, Six Sigma, and systems thinking to process mapping, capacity planning, KPI governance, vendor m  
+`agent:agency-operations-manager` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
 
 ### Ops Issue Review
 Derek · cron 0 20 * * 5 · on · FAILED @ 2026-09-18T20:08  
@@ -1740,6 +2846,16 @@ Derek · [pending] not started — integrations/alienware/alienware-setup.ps1 ne
 `connector:Orca · Laya · Bonsai (Alienware)` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
 
+### Organizational Psychologist
+Opus 5.5 · Executive Office squad · Applied organizational psychologist who diagnoses team dynamics, psychological safety, burnout risk, and culture health — using evidence-based f  
+`agent:agency-organizational-psychologist` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### Outbound Strategist
+Opus 5.5 · Revenue squad · Signal-based outbound specialist who designs multi-channel prospecting sequences, defines ICPs, and builds pipeline through research-driven personalizati  
+`agent:agency-outbound-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
+
 ## P
 
 ### Pabbly Connect
@@ -1757,12 +2873,22 @@ Victor · Build and run Pabbly Connect automations for Steven's operation: the s
 `skill:pabbly-workflows` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### Paid Media Auditor
+Opus 5.5 · Marketing squad · Comprehensive paid media auditor who systematically evaluates Google Ads, Microsoft Ads, and Meta accounts across 200+ checkpoints spanning account str  
+`agent:agency-paid-media-auditor` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### Paid Social Strategist
+Opus 5.5 · Marketing squad · Cross-platform paid social advertising specialist covering Meta (Facebook/Instagram), LinkedIn, TikTok, Pinterest, X, and Snapchat. Designs full-funnel  
+`agent:agency-paid-social-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
 ### Panel map
 The Command Deck's fifteen tabs, what each one shows, and which documents feed it — use this to find where a live…  
 `wiki/dashboard-ops/panel-map.md` · Dashboard ops · newest date stamp undated  
 Sections: The fifteen tabs (page ids); Panels relevant to this repo's four wikis; How to trace a panel to its data when this table doesn't have it; What this page cannot tell you; See also  
 Linked from: `wiki/ai-team/bot-crew.md`  
-See also: `docs/inventory/process-coverage.md`, `wiki/dashboard-ops/task-catalog.md`
+See also: `routines/events-weekly.md`, `wiki/dashboard-ops/task-catalog.md`
 
 ### Parallel C-Suite Task Cycle
 Drives the vanessa-orchestrator skill: intake → decompose → delegate → concurrent execution (≤8) → conflict resolution…  
@@ -1792,11 +2918,46 @@ See also: `docs/STEVEN-STEPS.md`, `integrations/agent-os/README.md`, `integratio
 Derek · /paste shows the one Terminal line that reconnects this Mac and the short list only Steven can do, straight from docs/STEVEN-STEPS.md.  
 `plugin:paste-desk` · Claude mods · newest date stamp undated  
 
+### PDF Engine Architect
+Opus 5.5 · Technology squad · Architect and specialist in deterministic HTML-to-PDF document compilation, Playwright browser context pools, dynamic Euclidean page sizing, LayoutNG   
+`agent:agency-pdf-engine-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### performance-optimizer
+Opus 5.5 · tier 3 · Performance analysis and optimization specialist.  
+`agent:performance-optimizer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ### Perplexica (Vane) — private AI search on the Mac
 Installed 2026-11-09 at Steven's request ("install https://github.com/BunsDev/perplexica-search-engine-ai.git").  
 `integrations/perplexica/README.md` · Integrations · newest date stamp 2026-11-09  
 Linked from: `integrations/mac-brain-2026-10-08.md`  
 See also: `integrations/alienware/README.md`, `integrations/openwa/README.md`
+
+### Persona Walkthrough Specialist
+Opus 5.5 · Marketing squad · Simulate cognitive walkthroughs of web pages from a defined persona's psychological perspective — captures emotional reactions and rational thought at   
+`agent:agency-persona-walkthrough-specialist` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### Personal Growth Mentor
+Opus 5.5 · Executive Office squad · Cross-domain personal development mentor for goal clarity, habit design, strategic decisions, and accountability without motivational fluff.  
+`agent:agency-personal-growth-mentor` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### phishing-triage
+Opus 5.5 · tier 2 · Report under Elena (CISO): triages a suspicious email, text or call — wire-instruction changes, closing-fund requests, 'urgent' lender/escro  
+`agent:phishing-triage` · AI agents · newest date stamp undated  
+Linked from: `seat:Elena`  
+
+### php-reviewer
+Opus 5.5 · tier 3 · Expert PHP code reviewer specializing in PSR-12 compliance, PHP type system, Eloquent ORM patterns, security, and performance.  
+`agent:php-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### Pipeline Analyst
+Opus 5.5 · Revenue squad · Revenue operations analyst specializing in pipeline health diagnostics, deal velocity analysis, forecast accuracy, and data-driven sales coaching. Turns   
+`agent:agency-pipeline-analyst` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
 
 ### Pivo
 Derek · [attention] no API — tour link / video file only (integrations/pivo/README.md)  
@@ -1813,10 +2974,25 @@ Sofia · [none] tour links / CSV exports · no API
 `api:Pivo · Ticor Title` · APIs · newest date stamp undated  
 See also: `integrations/APIS.md`
 
+### planner
+Opus 5.5 · tier 2 · Expert planning specialist for complex features and refactoring.  
+`agent:planner` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### Platform Engineer
+Opus 5.5 · Technology squad · Expert internal developer platform (IDP) engineer specializing in golden paths, paved roads, and self-serve infrastructure that multiplies engineering  
+`agent:agency-platform-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### playwright
 Derek · [ok] browser automation for sites with no API · installed  
 `mcp:playwright` · MCP servers · newest date stamp undated  
 See also: `integrations/MCP-SERVERS.md`
+
+### portfolio-manager
+Opus 5.5 · tier 2 · Final step (7) of the AI Hedge Fund Team research committee.  
+`agent:portfolio-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
 
 ### Post-close care — day 1, day 10, day 30, then the year
 What happens after a real-estate close (Lofty stage → Closed) or a mortgage funding (Zoho deal → Funded): the…  
@@ -1830,16 +3006,41 @@ Derek · WHAT: Draws a code change or part of a codebase as an animated architec
 `skill:pr-lens` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### pr-test-analyzer
+Opus 5.5 · tier 3 · Review pull request test coverage quality and completeness, with emphasis on behavioral coverage and real bug prevention.  
+`agent:pr-test-analyzer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### predictive-lead-mining
+Opus 5.5 · tier 2 · Report under Victor (CRO): identifies likely future sellers from LAWFULLY available signals — public records (probate, trustee's deeds, tax  
+`agent:predictive-lead-mining` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### premium-lead-partnerships
+Opus 5.5 · tier 2 · Report under Victor (CRO): manages paid and referral lead sources — Zillow Flex, Opendoor, Realtor.com, OpenDoor/offerpad cash-offer alterna  
+`agent:premium-lead-partnerships` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ### Presence audit — AI search visibility (monthly, Sofia)
 Sofia · cron CRON_TZ=America/Los_Angeles 10 7 1 * * · on · —  
 `routine:Presence audit — AI search visibility (monthly, Sofia)` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
 
+### Pricing Analyst
+Opus 5.5 · Finance squad · Specialized pricing analyst who develops optimal pricing models through market research, competitor analysis, cost structure evaluation, and margin optim  
+`agent:agency-pricing-analyst` · AI agents · newest date stamp undated  
+Linked from: `squad:Finance`  
+
+### Privacy Engineer
+Opus 5.5 · Security squad · Expert privacy engineer who implements privacy in code — PII discovery and classification, data minimization, consent enforcement at the API layer, auto  
+`agent:agency-privacy-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
 ### Process coverage — every Command Deck document, its writer, its owner, and whether it move
 Generated by bin/brain coverage --write (plain code, no model call).  
 `docs/inventory/process-coverage.md` · Loop & findings · newest date stamp 2026-11-11  
 Sections: Gaps — automated documents that did not move, have no writer, or whose writer is retired (26); Every document, by tab  
-Linked from: `docs/ROUTINE-BUDGET-2026-10-09.md`, `wiki/dashboard-ops/panel-map.md`  
+Linked from: `docs/ROUTINE-BUDGET-2026-10-09.md`  
 See also: `docs/AUTOMATION-MAP-2026-10-20.md`, `docs/inventory/db-docs.md`
 
 ### Process coverage — who keeps every Command Deck document alive, and whether it did
@@ -1849,31 +3050,73 @@ Sections: The rule; Where it lives; Counts on 2026-10-26 (database export at 18:
 Linked from: `context/decisions.md`  
 See also: `docs/AUTOMATION-MAP-2026-10-26.md`, `docs/inventory/daily-updates.md`
 
+### Product Manager
+Opus 5.5 · Innovation squad · Holistic product leader who owns the full product lifecycle — from discovery and strategy through roadmap, stakeholder alignment, go-to-market, and ou  
+`agent:agency-product-manager` · AI agents · newest date stamp undated  
+Linked from: `squad:Innovation`  
+
 ### Program selection
 The decision tree across the deck's loan-program cards, grouped by category, so a scenario routes to the right program…  
 `wiki/mortgage-programs/program-selection.md` · Mortgage wiki · newest date stamp undated  
 Sections: Start here: the default path; Government programs — by borrower situation; Credit-and-income-shaped routes (Non-QM); Property-and-purpose-shaped routes; See also  
 Linked from: `wiki/mortgage-programs/fha-usda.md`, `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/lender-directory-notes.md`  
 
+### Programmatic & Display Buyer
+Opus 5.5 · Marketing squad · Display advertising and programmatic media buying specialist covering managed placements, Google Display Network, DV360, trade desk platforms, partner   
+`agent:agency-programmatic-display-buyer` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
 ### Project Risk Review
 Derek · cron 0 21 * * 5 · on · FAILED @ 2026-09-18T21:07  
 `routine:Project Risk Review` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
+
+### Project Shepherd
+Opus 5.5 · Executive Office squad · Expert project manager specializing in cross-functional project coordination, timeline management, and stakeholder alignment. Focused on shepher  
+`agent:agency-project-shepherd` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### Prompt Engineer
+Opus 5.5 · Technology squad · Specialist in crafting, testing, and systematically optimizing prompts for LLMs — turning vague instructions into reliable, production-grade AI behavi  
+`agent:agency-prompt-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
 
 ### prompt-master
 Vanessa · Once per loop cycle, reviews the orchestrator's and the executives' system prompts against measured outcomes — runs, failures, rework, escalations — and proposes at most   
 `skill:prompt-master` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### Proposal Strategist
+Opus 5.5 · Revenue squad · Strategic proposal architect who transforms RFPs and sales opportunities into compelling win narratives. Specializes in win theme development, competitiv  
+`agent:agency-proposal-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
+
 ### Push-button system — one queue, one daily schedule, one-word buttons (as of 2026-10-22)
 The architecture Steven asked for on 2026-10-22 ("the best automated push button system"): every surface hands work to…  
 `wiki/ai-team/push-button-system.md` · AI team · newest date stamp 2026-10-22  
 Sections: What vanessaQueue is — the one queue; The daily schedule (Pacific time; always-on/README.md); The Command Deck push-buttons; Pods and gates (wiki/ai-team/cross-functional.md); The mods — one word each (integrations/mods/RECOMMENDATIONS.md, added 2026-10-22); Pabbly workflows 1–11 (integrations/pabbly/WORKFLOWS.md); The Mac paste (docs/STEVEN-STEPS.md "Start here (2026-10-22, evening)"); HALT (mirrors CLAUDE.md)  
-See also: `docs/AUTOMATION-MAP-2026-10-20.md`, `integrations/mac-sync/README.md`, `wiki/dashboard-ops/db-docs.md`
+See also: `docs/AUTOMATION-MAP-2026-10-20.md`, `wiki/dashboard-ops/db-docs.md`, `wiki/real-estate-playbooks/sphere-nurture.md`
 
 ### push-buttons
 Vanessa · One-word slash commands (/cycle /inbox /meetings /sync /connect /tc /queue /today /help-buttons) that send the full, correct prompt for each workflow, HALT rules included  
 `plugin:push-buttons` · Claude mods · newest date stamp undated  
+
+### python-reviewer
+Opus 5.5 · tier 3 · Expert Python code reviewer specializing in PEP 8 compliance, Pythonic idioms, type hints, security, and performance.  
+`agent:python-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### pytorch-build-resolver
+Opus 5.5 · tier 3 · PyTorch runtime, CUDA, and training error resolution specialist.  
+`agent:pytorch-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+## Q
+
+### quant-analyst
+Opus 5.5 · tier 2 · Step 5 of the AI Hedge Fund Team research committee.  
+`agent:quant-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
 
 ## R
 
@@ -1972,6 +3215,41 @@ Derek · Re-runs the research passes for every dashboard feed marked Due and rep
 `mactask:r9-feed-freshness-sweep` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### RAG Pipeline Engineer
+Opus 5.5 · Technology squad · Production RAG specialist focused on chunking strategy, retrieval quality, hybrid search, re-ranking, and eval-driven iteration. Builds pipelines that  
+`agent:agency-rag-pipeline-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### rag-pipeline-reviewer
+Opus 5.5 · tier 3 · Reviews RAG (Retrieval-Augmented Generation) pipelines for retrieval quality, chunking strategy, embedding choices, and evaluation coverage.  
+`agent:rag-pipeline-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### Rapid Prototyper
+Opus 5.5 · Technology squad · Specialized in ultra-fast proof-of-concept development and MVP creation using efficient tools and frameworks  
+`agent:agency-rapid-prototyper` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### rate-pricing-optimizer
+Opus 5.5 · tier 2 · Report under Victor (CRO): best-execution analysis across wholesale lenders — comparing rate sheets, LLPAs, lender credits and buydown struc  
+`agent:rate-pricing-optimizer` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### re-market-analytics
+Opus 5.5 · tier 2 · Report under Marcus (CFO): produces the market intelligence behind pricing and listing presentations — absorption and months of inventory, m  
+`agent:re-market-analytics` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
+
+### react-build-resolver
+Opus 5.5 · tier 3 · Diagnose and fix React build failures across Vite, webpack, Next.js, CRA, Parcel, esbuild, and Bun.  
+`agent:react-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### react-reviewer
+Opus 5.5 · tier 3 · Expert React/JSX code reviewer specializing in hook correctness, render performance, server/client component boundaries, accessibility, and  
+`agent:react-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ### Real estate playbooks
 Listing, buyer, transaction and showing process.  
 `wiki/real-estate-playbooks/index.md` · Real-estate wiki · newest date stamp 2026-10-23  
@@ -1984,11 +3262,26 @@ Derek · cron 0 15 * * 1 · on · ABANDONED @ 2026-09-21T15:08
 `routine:Real Estate Weekly Brief` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
 
+### realtor-reciprocity-agent
+Opus 5.5 · tier 2 · Report under Victor (CRO): tracks referrals sent and received with each realtor partner, scores the reciprocity balance, flags partners owed  
+`agent:realtor-reciprocity-agent` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ### Recall cache — TTL rules
 The cache is the cheapest part of the brain.  
 `recall-cache.md` · Router · newest date stamp 2026-09-23  
 Sections: The entry; TTL; The rules; Staleness thresholds worth alerting on  
 See also: `OPTIMIZATION.md`, `docs/inventory/db-docs.md`, `references/company-brain-blueprint.md`
+
+### Reddit Community Builder
+Opus 5.5 · Marketing squad · Expert Reddit marketing specialist focused on authentic community engagement, value-driven content creation, and long-term relationship building. Maste  
+`agent:agency-reddit-community-builder` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### refactor-cleaner
+Opus 5.5 · tier 3 · Dead code cleanup and consolidation specialist.  
+`agent:refactor-cleaner` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ### References — the register of source documents
 This is a register, not a library. It records what a source is, where it lives and how current it is.  
@@ -2007,7 +3300,7 @@ See also: `projects/isa-portal.md`, `wiki/mortgage-programs/index.md`
 How the Refi Watch works: the list Steven keeps, the market average it is compared with, the spread thresholds, the…  
 `wiki/mortgage-programs/refi-review-prep.md` · Mortgage wiki · newest date stamp 2026-10-26  
 Sections: Who does what; Who could refi — the question this page answers; The list — refiWatchList on the Command Deck; The comparison; VA IRRRL — Harrison's lane, pointer only; The Monday routine — trig_014ipr6x9z35psmtHJCPVqj1; Steven's licensed step; HALT  
-Linked from: `context/competitors.md`, `integrations/loan-stack/README.md`, `wiki/dashboard-ops/freshness-routines.md`  
+Linked from: `context/competitors.md`, `integrations/loan-stack/README.md`, `wiki/ai-team/engineering-core.md`, `wiki/dashboard-ops/freshness-routines.md`  
 See also: `wiki/real-estate-playbooks/sphere-nurture.md`
 
 ### Refi watch — weekly prep list (Mon 7:20 AM PT, drafts only)
@@ -2020,6 +3313,26 @@ Victor · Compare the market-average rate in ratesSnapshot with the note rates o
 `skill:refi-watch` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### refi-watch-analyst
+Opus 5.5 · tier 2 · Report under Harrison (Victor's line): weekly rate-vs-note-rate prep list of past clients and borrowers above the market average — market average, not a quote.   
+`agent:refi-watch-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### refinance-hunter
+Opus 5.5 · tier 2 · Report under Victor (CRO): scans the past-client database and pipeline for refinance opportunities — rate-and-term savings, PMI removal at 8  
+`agent:refinance-hunter` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
+### Regina
+Regina's seat: the agents that report to Regina  
+`seat:Regina` · Seats · newest date stamp undated  
+See also: `agent:competitor-watch`
+
+### reliability-engineer
+Opus 5.5 · tier 1 · Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: owns uptime and error-rate reduction across the agents, skills, routin  
+`agent:reliability-engineer` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
 ### Remote access — every live path
 How Steven reaches the brain, and how the brain reaches him, from anywhere, on either Mac.  
 `REMOTE-ACCESS.md` · Other · newest date stamp 2026-10-14  
@@ -2031,6 +3344,22 @@ See also: `docs/SECOND-MAC-SETUP.md`, `docs/inventory/mac-task-descriptions.md`,
 `integrations/remote-control/README.md` · Integrations · newest date stamp undated  
 Sections: Security note; To verify on the Mac (not checkable from the cloud container); Orca security note; To verify on the Macs (Orca CLI help read in the cloud container, v1.4.214; not run against real Macs)  
 Linked from: `docs/HANDOFF-2026-10-25.md`, `wiki/ai-team/computer-hub.md`, `wiki/ai-team/tool-integration-status.md`  
+
+### research-analyst
+Opus 5.5 · tier 2 · Report under Nadia (CAIO): multi-source research with graded sources (primary > official > reputable press > blogs), contradiction notes and  
+`agent:research-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Nadia`  
+
+### Resume Tailor
+Opus 5.5 · Executive Office squad · Candidate-side resume optimization specialist who analyzes job descriptions, maps real experience to role requirements, improves ATS keyword ali  
+`agent:agency-resume-tailor` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### Revenue squad (12 agents, lead Victor)
+Account Strategist, Sales Coach, Deal Strategist, Discovery Coach, Offer & Lead Gen Strategist, Outbound Strategist, Pipeline Analyst, Proposal Strategist, Customer Service, Custom  
+`squad:Revenue` · Agency squads · newest date stamp undated  
+Linked from: `seat:Victor`  
+See also: `agent:agency-account-strategist`, `agent:agency-customer-service`, `agent:agency-customer-success-manager`, `agent:agency-deal-strategist`, `agent:agency-discovery-coach`, `agent:agency-offer-lead-gen-strategist`
 
 ### revenue-scan-weekly
 Marcus · Sunday: runs the four opportunity agents in parallel — refinance hunter, realtor reciprocity, predictive seller intelligence and borrower re  
@@ -2046,6 +3375,11 @@ See also: `wiki/ai-team/toolkit.md`
 Victor · After a Lofty close or a Zoho funding: draft the three post-close emails — day-1 thank-you, day-10 review request with Google and Zillow link placeholders, day-30 check-in  
 `skill:review-request` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### risk-manager
+Opus 5.5 · tier 2 · Step 6 of the AI Hedge Fund Team research committee — the devil's advocate.  
+`agent:risk-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
 
 ### RoleCompass daily job hunt (v4)
 Derek · cron CRON_TZ=America/Los_Angeles 40 6 * * * · on · SUCCEEDED @ 2026-10-20T13:40  
@@ -2087,7 +3421,32 @@ Derek · One harmless Command Deck write that proves a headless runner task can 
 `mactask:runner-probe` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### rust-build-resolver
+Opus 5.5 · tier 3 · Rust build, compilation, and dependency error resolution specialist.  
+`agent:rust-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### rust-reviewer
+Opus 5.5 · tier 3 · Expert Rust code reviewer specializing in ownership, lifetimes, error handling, unsafe usage, and idiomatic patterns.  
+`agent:rust-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ## S
+
+### Sales Coach
+Opus 5.5 · Revenue squad · Expert sales coaching specialist focused on rep development, pipeline review facilitation, call coaching, deal strategy, and forecast accuracy. Makes eve  
+`agent:agency-sales-coach` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
+
+### Sales Outreach
+Opus 5.5 · Revenue squad · Consultative B2B sales outreach specialist for cold prospecting, lead follow-up, objection handling, proposal writing, and pipeline management — combinin  
+`agent:agency-sales-outreach` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
+
+### sandbox-qa
+Opus 5.5 · tier 1 · Reports to Elon, the CTO Innovator: runs the isolated test-and-compare step of the weekly self-improvement loop.  
+`agent:sandbox-qa` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
 
 ### scale-growth-engine
 Elon · Weekly ADR pass — Automate, Delegate, Replicate — that finds what is capping Steven's capacity and converts it into logged, measured capacity: automate anything that must su  
@@ -2098,6 +3457,16 @@ See also: `wiki/ai-team/toolkit.md`
 Derek · cron CRON_TZ=America/Los_Angeles 7 9 * * * · on · SUCCEEDED @ 2026-10-19T16:08  
 `routine:Scrape queue runner` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
+
+### Search Query Analyst
+Opus 5.5 · Marketing squad · Specialist in search term analysis, negative keyword architecture, and query-to-intent mapping. Turns raw search query data into actionable optimizatio  
+`agent:agency-search-query-analyst` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### Search Relevance Engineer
+Opus 5.5 · Technology squad · Expert search engineer for Elasticsearch and OpenSearch — index and analyzer design, BM25 query tuning, hybrid lexical+vector retrieval, and judgment-  
+`agent:agency-search-relevance-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
 
 ### Second Brain layers weekly sync (export → Drive SB Docs → Notion directory → layers report
 Derek · cron CRON_TZ=America/Los_Angeles 45 14 * * 0 · on · —  
@@ -2111,10 +3480,31 @@ Sections: Routing table — load exactly ONE leaf, then answer; Recall order —
 Linked from: `AGENTS.md`  
 See also: `OPTIMIZATION.md`, `wiki/ai-team/model-tiering-dispatch.md`, `wiki/index.md`
 
+### Secrets & Credential Hygiene Engineer
+Opus 5.5 · Security squad · Owns the full lifecycle of secrets and credentials — detection, prevention, vaulting, rotation, and leak response — so an application runs on short-live  
+`agent:agency-secrets-credential-hygiene-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### Security Architect
+Opus 5.5 · Security squad · Expert security architect specializing in threat modeling, secure-by-design architecture, trust-boundary analysis, defense-in-depth, and risk-based secu  
+`agent:agency-security-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### Security squad (14 agents, lead Elena)
+Identity & Access Engineer, Privacy Engineer, Application Security Engineer, Security Architect, Cloud Security Architect, Compliance Auditor, Incident Responder, Secrets & Credent  
+`squad:Security` · Agency squads · newest date stamp undated  
+Linked from: `seat:Elena`  
+See also: `agent:agency-agentic-identity-trust-architect`, `agent:agency-application-security-engineer`, `agent:agency-cloud-security-architect`, `agent:agency-compliance-auditor`, `agent:agency-data-privacy-officer`, `agent:agency-fedramp-rmf-compliance-engineer`
+
 ### security-and-hardening
 Elena · Hardens code against vulnerabilities. Use when auditing an input handler for vulnerabilities, when handling user input, authentication, data storage, or external integratio  
 `skill:security-and-hardening` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### security-reviewer
+Opus 5.5 · tier 3 · Security vulnerability detection and remediation specialist.  
+`agent:security-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Elena`  
 
 ### Self-Improving Trading Research Desk (PAPER MODE ONLY)
 A small, dependency-free Python package plus seven agent prompts for researching trading ideas the disciplined way…  
@@ -2135,17 +3525,37 @@ Derek · Finish installing Sellbird (github.com/ethanplusai/sellbird) on Steven'
 `skill:sellbird-setup` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### Senior Project Manager
+Opus 5.5 · Executive Office squad · Converts specs to tasks and remembers previous projects. Focused on realistic scope, no background processes, exact spec requirements  
+`agent:agency-senior-project-manager` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### Senior SecOps Engineer
+Opus 5.5 · Security squad · Defensive application security specialist who scans every code submission for secrets and sensitive data exposure before anything else, then implements   
+`agent:agency-senior-secops-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
 ### SEO Content Gap Audit
 Sofia · cron 0 17 1 * * · on · @  
 `routine:SEO Content Gap Audit` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
 
+### seo-specialist
+Opus 5.5 · tier 3 · SEO specialist for technical SEO audits, on-page optimization, structured data, Core Web Vitals, and content/keyword mapping.  
+`agent:seo-specialist` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
 ### SETUP-RUNBOOK — what only Steven can do
 The browsable version, with tick-boxes that sync across your devices, is the artifact…  
 `docs/SETUP-RUNBOOK.md` · Loop & findings · newest date stamp 2026-10-09  
 Sections: Before you start — four things you should know; A — Get the Mac to a known state; B — The two credentials that unblock the most; C — Finish WhatsApp; D — CLI-Anything, the browser targets; E — The ECC gate: SkySlope and zipForms; F — Tell the dashboard the truth; G — Vanessa speaks when she writes  
-Linked from: `MAC-INSTALL-comms-data.md`, `integrations/google-drive-brain.md`  
+Linked from: `MAC-INSTALL-comms-data.md`, `integrations/google-drive-brain.md`, `wiki/ai-team/engineering-core.md`  
 See also: `integrations/CONNECTIONS.md`, `integrations/mac-task-specs.md`
+
+### Short-Video Editing Coach
+Opus 5.5 · Marketing squad · Hands-on short-video editing coach covering the full post-production pipeline, with mastery of CapCut Pro, Premiere Pro, DaVinci Resolve, and Final Cut  
+`agent:agency-short-video-editing-coach` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
 
 ### Showing operations
 How a showing actually gets booked: itinerary building, the ShowingTime-vs-Showami choice, and feedback capture — plus…  
@@ -2153,6 +3563,11 @@ How a showing actually gets booked: itinerary building, the ShowingTime-vs-Showa
 Sections: The itinerary and route planner; ShowingTime vs. Showami; The one rule that never moves; Automation status — read this before assuming something is live; Feedback capture; See also  
 Linked from: `memory/claude-chats.md`, `wiki/real-estate-playbooks/open-house.md`  
 See also: `references/drive-second-brain-notes.md`, `wiki/real-estate-playbooks/buyer-process.md`
+
+### showing-coordinator
+Opus 5.5 · tier 2 · Report under Victor (CRO): turns a client's showing plan from the Command Deck Showings tab (or a pasted list) into the complete coordinatio  
+`agent:showing-coordinator` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
 
 ### showing-sync
 Victor · Works the Command Deck showing sync queue three times a day: creates calendar events and **Lofty** appointments for confirmed showings. **Not connected yet** — needs `LOFT  
@@ -2163,6 +3578,11 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 Victor · [attention] read-only CLI-Anything wrappers scripted (connect-all 7d)  
 `connector:ShowingTime · Showami · homes.com` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
+
+### silent-failure-hunter
+Opus 5.5 · tier 3 · Review code for silent failures, swallowed errors, bad fallbacks, and missing error propagation.  
+`agent:silent-failure-hunter` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ### Skill-pack imports (77skills.ai and similar)
 77skills.ai sells a $77 pack of 77 business-skill SKILL.md folders.  
@@ -2196,10 +3616,20 @@ Sofia · cron 30 15 * * 1 · on · SUCCEEDED @ 2026-09-21T15:31
 `routine:Social Calendar Planning` · Cloud routines · newest date stamp undated  
 See also: `always-on/README.md`
 
+### Sofia
+Sofia's seat: the agents that report to Sofia  
+`seat:Sofia` · Seats · newest date stamp undated  
+See also: `agent:cmo-sofia`, `agent:content-writer`, `agent:geo-aeo-optimizer`, `agent:hook-writer`, `agent:marketing-agent`, `agent:mktg-affiliate-partnerships`
+
 ### source-driven-development
 Derek · Grounds every implementation decision in official documentation. Use when you want to verify an approach against the official docs before implementing it, or when you want   
 `skill:source-driven-development` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### spec-miner
+Opus 5.5 · tier 3 · Extracts behavioral specs from existing codebases for OpenSpec.  
+`agent:spec-miner` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ### Sphere & past-client touches — monthly drafts (day 11, 7:40 AM PT, drafts only)
 Derek · cron CRON_TZ=America/Los_Angeles 40 7 11 * * · on · —  
@@ -2210,8 +3640,23 @@ See also: `always-on/README.md`
 How past clients and the wider sphere are kept warm without anything being sent by a machine: what the sphere list…  
 `wiki/real-estate-playbooks/sphere-nurture.md` · Real-estate wiki · newest date stamp 2026-11-11  
 Sections: Who does what; The sphere list — sphereList on the Command Deck; The monthly touches (skill past-client-nurture); The 11th-of-month routine — trig_01Pn8xLNKTVVFYjYTj8d8JTd; Pabbly workflow 8 — the dated touches, unattended; What Steven does; HALT; See also  
-Linked from: `wiki/mortgage-programs/refi-review-prep.md`, `wiki/real-estate-playbooks/post-close-care.md`  
-See also: `wiki/real-estate-playbooks/index.md`
+Linked from: `wiki/ai-team/push-button-system.md`, `wiki/mortgage-programs/refi-review-prep.md`, `wiki/real-estate-playbooks/post-close-care.md`  
+See also: `wiki/real-estate-playbooks/index.md`, `wiki/real-estate-playbooks/open-house.md`
+
+### sphere-nurture-coordinator
+Opus 5.5 · tier 2 · Report under Sofia (CMO), with Wren: monthly past-client and sphere touch drafts — birthdays, home anniversaries, check-ins. Drafts only — never sends or writes  
+`agent:sphere-nurture-coordinator` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
+
+### Sprint Prioritizer
+Opus 5.5 · Innovation squad · Expert product manager specializing in agile sprint planning, feature prioritization, and resource allocation. Focused on maximizing team velocity and  
+`agent:agency-sprint-prioritizer` · AI agents · newest date stamp undated  
+Linked from: `squad:Innovation`  
+
+### Statistician
+Opus 5.5 · AI Strategy squad · Expert in quantitative research methodology, experimental design, and statistical inference — pressure-tests claims, designs sound studies, and separ  
+`agent:agency-statistician` · AI agents · newest date stamp undated  
+Linked from: `squad:AI Strategy`  
 
 ### steve-twin-sweep
 Steve · Runs Steven's digital twin locally three times each weekday: works the Command Deck twin queue by tier, does the standing prep/content work,  
@@ -2230,10 +3675,40 @@ Derek · Pulls recent Strava activities through the connector and writes the str
 `mactask:strava-daily-sync` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### stress-test-engineer
+Opus 5.5 · tier 1 · Reports to Elon, the CTO Innovator, on the AI Agent Engineering Team: designs and runs structured load, edge-case, failure-injection, concur  
+`agent:stress-test-engineer` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
 ### stress-test-sweep
 Elon · Structured stress sweep of the Command Deck and the automation layer — Volume, Edge, FailureInjection, Concurrency and BackupRecovery — that finds where things break under l  
 `skill:stress-test-sweep` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### Studio Operations
+Opus 5.5 · Executive Office squad · Expert operations manager specializing in day-to-day studio efficiency, process optimization, and resource coordination. Focused on ensuring smo  
+`agent:agency-studio-operations` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### Studio Producer
+Opus 5.5 · Executive Office squad · Senior strategic leader specializing in high-level creative and technical project orchestration, resource allocation, and multi-project portfoli  
+`agent:agency-studio-producer` · AI agents · newest date stamp undated  
+Linked from: `squad:Executive Office`  
+
+### Support Responder
+Opus 5.5 · Revenue squad · Expert customer support specialist delivering exceptional customer service, issue resolution, and user experience optimization. Specializes in multi-chan  
+`agent:agency-support-responder` · AI agents · newest date stamp undated  
+Linked from: `squad:Revenue`  
+
+### swift-build-resolver
+Opus 5.5 · tier 3 · Swift/Xcode build, compilation, and dependency error resolution specialist.  
+`agent:swift-build-resolver` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### swift-reviewer
+Opus 5.5 · tier 3 · Expert Swift code reviewer specializing in protocol-oriented design, value semantics, ARC memory management, Swift Concurrency, and idiomati  
+`agent:swift-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ## T
 
@@ -2248,15 +3723,37 @@ Marcus · Property tax lookup for San Diego and Riverside County: reads PUBLIC a
 `skill:tax-assessor-agent` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### tax-deadline-analyst
+Opus 5.5 · tier 2 · Report under Marcus (CFO): maintains the tax calendar (federal/CA estimated payments, entity filings, Statement of Information, BOI, 1099 se  
+`agent:tax-deadline-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Marcus`  
+
 ### tc-doc-intake
 Victor · Read a purchase contract, counter, addendum or disclosure package (Google Drive file or Gmail attachment) and pull the dates into the deal's tcDeals entry for the Transact  
 `skill:tc-doc-intake` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### tdd-guide
+Opus 5.5 · tier 3 · Test-Driven Development specialist enforcing write-tests-first methodology.  
+`agent:tdd-guide` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### technical-analyst
+Opus 5.5 · tier 2 · Step 2 of the AI Hedge Fund Team research committee.  
+`agent:technical-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### Technology squad (37 agents, lead Derek)
+AI Data Remediation Engineer, AI Engineer, API Platform Engineer, Autonomous Optimization Architect, Backend Architect, Codebase Onboarding Engineer, Data Engineer, Data Visualizat  
+`squad:Technology` · Agency squads · newest date stamp undated  
+Linked from: `seat:Derek`  
+See also: `agent:agency-ai-data-remediation-engineer`, `agent:agency-ai-engineer`, `agent:agency-api-platform-engineer`, `agent:agency-api-tester`, `agent:agency-autonomous-optimization-architect`, `agent:agency-backend-architect`
+
 ### The Agency squads — cross-functional teams under Vanessa
 Source: msitarzewski/agency-agents (MIT), commit 8ae6164, 283 agents in 18 divisions.  
 `wiki/ai-team/agency-teams.md` · AI team · newest date stamp 2026-11-18  
 Sections: Revenue squad — Victor; Marketing squad — Sofia; Executive Office squad — Vanessa; Finance squad — Marcus; Compliance squad — Alexandra; Technology squad — Derek; Security squad — Elena; AI Strategy squad — Nadia  
+Linked from: `squad:AI Strategy`, `squad:Executive Office`, `squad:Finance`, `squad:Innovation`, `squad:Marketing`, `squad:Revenue`  
 See also: `docs/inventory/agent-roster.md`, `integrations/agency-agents/README.md`, `integrations/arive/README.md`
 
 ### The Agency — 283 specialist agents as squads under Vanessa
@@ -2282,14 +3779,24 @@ See also: `projects/usc-pjmt-530.md`
 Steven's rule (2026-10-23): "ensure all data syncs evenly across all layers — Notion, Google Drive, NotebookLM and…  
 `wiki/ai-team/second-brain-layers.md` · AI team · newest date stamp 2026-10-23  
 Sections: One job per layer; Capabilities (2026-10-23); Rules; What "the most powerful second brain" means here, and what is next (2026-10-23)  
-Linked from: `integrations/apple-health-dashboard.md`  
-See also: `docs/inventory/daily-updates.md`, `integrations/notebooklm/README.md`, `wiki/clients/index.md`
+Linked from: `wiki/clients/index.md`  
+See also: `docs/inventory/daily-updates.md`, `integrations/apple-health-dashboard.md`, `integrations/notebooklm/README.md`
 
 ### Third-party skills and tools — what was installed, held or declined (2026-10-11)
 Steven asked for 18 repositories. Each was read before anything was installed; nothing was run from the cloud sandbox.  
 `wiki/ai-team/third-party-packs.md` · AI team · newest date stamp 2026-10-31  
 Sections: The 16-item list (2026-10-12); The 32-item image (2026-10-12); The four repos (2026-10-23); The three images and 17 links (2026-10-31)  
 See also: `integrations/skill-packs/README.md`, `references/vlm-architectures.md`, `wiki/mortgage-programs/loan-task-agents.md`
+
+### Threat Detection Engineer
+Opus 5.5 · Security squad · Expert detection engineer specializing in SIEM rule development, MITRE ATT&CK coverage mapping, threat hunting, alert tuning, and detection-as-code pipe  
+`agent:agency-threat-detection-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
+
+### Threat Intelligence Analyst
+Opus 5.5 · Security squad · Cyber threat intelligence specialist who tracks adversary groups, maps attack campaigns to MITRE ATT&CK, produces actionable intelligence reports, and b  
+`agent:agency-threat-intelligence-analyst` · AI agents · newest date stamp undated  
+Linked from: `squad:Security`  
 
 ### Ticor Title property search
 Derek · [attention] no API (integrations/ticor/README.md); county records already feed the deck  
@@ -2317,10 +3824,20 @@ TidyCal's official REST API (docs at tidycal.com/developer/docs), personal acces
 Linked from: `integrations/arive/README.md`  
 See also: `integrations/APIS.md`, `wiki/ai-team/bot-crew.md`
 
+### TikTok Strategist
+Opus 5.5 · Marketing squad · Expert TikTok marketing specialist focused on viral content creation, algorithm optimization, and community building. Masters TikTok's unique culture a  
+`agent:agency-tiktok-strategist` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
 ### TikTok · GoHighLevel · Discord bot · HeyGen
 Sofia · [attention] not connected (Composio links last 10 minutes)  
 `connector:TikTok · GoHighLevel · Discord bot · HeyGen` · Connectors · newest date stamp undated  
 See also: `integrations/CONNECTIONS.md`
+
+### title-report-analyst
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): reads a preliminary title report or commitment and turns it into a plain-language issue list — vesting,  
+`agent:title-report-analyst` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
 
 ### Tool & integration status
 What is actually connected, installed, or merely proposed — read this before assuming a seat can do something because…  
@@ -2329,10 +3846,20 @@ Sections: Connectors (claude.ai); Local MCP / bridges (Mac); Mac scheduled tasks
 Linked from: `integrations/MCP-SERVERS.md`, `integrations/browser-agents/README.md`, `memory.md`  
 See also: `integrations/remote-control/README.md`, `wiki/ai-team/computer-hub.md`
 
+### Tool Evaluator
+Opus 5.5 · Innovation squad · Expert technology assessment specialist focused on evaluating, testing, and recommending tools, software, and platforms for business use and productiv  
+`agent:agency-tool-evaluator` · AI agents · newest date stamp undated  
+Linked from: `squad:Innovation`  
+
 ### toolkit-deck-sync
 Derek · Twice daily: builds the toolkitSnapshot document (tools, agents, skills, scheduled tasks, MCP servers) from what is installed on the Mac and  
 `mactask:toolkit-deck-sync` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
+
+### Tracking & Measurement Specialist
+Opus 5.5 · Marketing squad · Expert in conversion tracking architecture, tag management, and attribution modeling across Google Tag Manager, GA4, Google Ads, Meta CAPI, LinkedIn In  
+`agent:agency-tracking-measurement-specialist` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
 
 ### Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle
 Victor · cron CRON_TZ=America/Los_Angeles 5 6 * * 1-5 · on · SUCCEEDED @ 2026-10-22T14:10  
@@ -2346,7 +3873,42 @@ Sections: The six-phase Transaction Coordinator checklist; Real-estate stage-by-
 Linked from: `wiki/real-estate-playbooks/buyer-process.md`, `wiki/real-estate-playbooks/index.md`  
 See also: `wiki/real-estate-playbooks/listing-process.md`
 
+### travel-desk
+Opus 5.5 · tier 2 · Report under Vanessa, with Marcus: Gondola MCP travel desk — points vs cash, trip options, price watches on flights and hotels. Booking is Steven's — never book  
+`agent:travel-desk` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### Trend Researcher
+Opus 5.5 · AI Strategy squad · Expert market intelligence analyst specializing in identifying emerging trends, competitive analysis, and opportunity assessment. Focused on providin  
+`agent:agency-trend-researcher` · AI agents · newest date stamp undated  
+Linked from: `squad:AI Strategy`  
+
+### trid-timeline-checker
+Opus 5.5 · tier 2 · Report under Alexandra (Compliance): checks a mortgage file's disclosure timeline — 6-piece application trigger, LE within 3 business days,  
+`agent:trid-timeline-checker` · AI agents · newest date stamp undated  
+Linked from: `seat:Alexandra`  
+
+### Twitter Engager
+Opus 5.5 · Marketing squad · Expert Twitter marketing specialist focused on real-time engagement, thought leadership building, and community-driven growth. Builds brand authority t  
+`agent:agency-twitter-engager` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### type-design-analyzer
+Opus 5.5 · tier 3 · Analyze type design for encapsulation, invariant expression, usefulness, and enforcement.  
+`agent:type-design-analyzer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
+### typescript-reviewer
+Opus 5.5 · tier 3 · Expert TypeScript/JavaScript code reviewer specializing in type safety, async correctness, Node/web security, and idiomatic patterns.  
+`agent:typescript-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
+
 ## U
+
+### UI Finish-Gate Reviewer
+Opus 5.5 · Marketing squad · Product-interface reviewer who catches generic, interchangeable UI before it ships by grounding critique in real product evidence, a written design con  
+`agent:agency-ui-finish-gate-reviewer` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
 
 ### USC, PJMT 530
 Steven's current course in the USC MS Project Management program.  
@@ -2354,6 +3916,21 @@ Steven's current course in the USC MS Project Management program.
 Sections: Deadlines (live doc: uscDeadlines); Why it is in the brain; Where the live data lives  
 Linked from: `MAC-INSTALL.md`, `context/about-me.md`, `docs/CAIO-DISRUPTION-BRIEF.md`, `wiki/ai-team/five-agents.md`  
 See also: `docs/ROUTINE-BUDGET-2026-10-09.md`
+
+### UX Architect
+Opus 5.5 · Marketing squad · Technical architecture and UX specialist who provides developers with solid foundations, CSS systems, and clear implementation guidance  
+`agent:agency-ux-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### UX Researcher
+Opus 5.5 · Marketing squad · Expert user experience researcher specializing in user behavior analysis, usability testing, and data-driven design insights. Provides actionable resea  
+`agent:agency-ux-researcher` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### ux-designer
+Opus 5.5 · tier 2 · Report under Derek (CTO), added 2026-11-01 from Paperclip's UX Designer template: owns how Steven's own screens work: the Command Deck, the 6D Brain, the ISA Po  
+`agent:ux-designer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ## V
 
@@ -2375,6 +3952,11 @@ VA entitlement, COE mechanics, restoration, second-tier (two-VA-loan) use, and f
 Sections: Pulling the Certificate of Eligibility; Funding fee tiers; Second-tier entitlement (two active VA loans); Restoration and assumption; See also  
 Linked from: `memory/fieldy-meetings.md`, `wiki/mortgage-programs/loan-task-agents.md`, `wiki/mortgage-programs/va-affordability.md`  
 See also: `wiki/real-estate-playbooks/military-relocation.md`
+
+### Vanessa
+Vanessa's seat: the agents that report to Vanessa  
+`seat:Vanessa` · Seats · newest date stamp undated  
+See also: `agent:broker-coach-maxwell`, `agent:capability-engineer`, `agent:chief-automation-strategist`, `agent:chief-of-staff`, `agent:disruption-scout`, `agent:efficiency-engineer`
 
 ### Vanessa inbox sweep (cloud) — hourly fallback behind the Mac pollers, day and night since
 Vanessa · cron CRON_TZ=America/Los_Angeles 17 * * * * · on · ran 2026-10-24 01:17 UTC  
@@ -2423,6 +4005,11 @@ Vanessa · Fridays: Vanessa orchestrates Victor, Marcus, Derek and Elena in para
 See also: `wiki/dashboard-ops/task-catalog.md`
 
 ### vanessa-orchestrator
+Fable 5.2 · tier 1 · Vanessa as AI-agent ORCHESTRATOR for Steven Shearrill's AI Team.  
+`agent:vanessa-orchestrator` · AI agents · newest date stamp undated  
+Linked from: `seat:Vanessa`  
+
+### vanessa-orchestrator
 Vanessa · Vanessa as orchestrator (v2): C-Suite delegation and parallel execution — intake, decompose, delegate, run up to 8 agents concurrently, resolve conflicts, QA, consolidate  
 `skill:vanessa-orchestrator` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
@@ -2442,6 +4029,11 @@ Vanessa · Vanessa's local queue sweep, three times a day, weekdays — the same
 `mactask:vanessa-sweep` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### vendor-network-manager
+Opus 5.5 · tier 2 · Report under Victor (CRO): maintains the vendor bench — inspectors, contractors, stagers, photographers, cleaners, movers, warranty and insu  
+`agent:vendor-network-manager` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ### Vibe-coding learning shelf — awesome-vibe-coding and Easy-Vibe (recorded 2026-10-12)
 Two reading resources Steven asked to install on 2026-10-12.  
 `references/vibe-coding-learning.md` · Sources · newest date stamp 2026-10-12  
@@ -2449,15 +4041,50 @@ Sections: awesome-vibe-coding (awesome-vibe-coding/awesome-vibe-coding, CC0, com
 Linked from: `references/backend-folder-structure.md`, `references/motion-and-claude-repos.md`  
 See also: `knowledge-graph/schema.md`, `references/vlm-architectures.md`
 
+### Victor
+Victor's seat: the agents that report to Victor  
+`seat:Victor` · Seats · newest date stamp undated  
+See also: `agent:borrower-retention-agent`, `agent:buyer-matching-engine`, `agent:buyers-agent-elite`, `agent:ca-transaction-coordinator`, `agent:client-concierge`, `agent:closing-coordinator`
+
+### Video Optimization Specialist
+Opus 5.5 · Marketing squad · Video marketing strategist specializing in YouTube algorithm optimization, audience retention, chaptering, thumbnail concepts, and cross-platform video  
+`agent:agency-video-optimization-specialist` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### Visual Storyteller
+Opus 5.5 · Marketing squad · Expert visual communication specialist focused on creating compelling visual narratives, multimedia content, and brand storytelling through design. Spe  
+`agent:agency-visual-storyteller` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### Voice AI Integration Engineer
+Opus 5.5 · Technology squad · Expert in building end-to-end speech transcription pipelines using Whisper-style models and cloud ASR services — from raw audio ingestion through prep  
+`agent:agency-voice-ai-integration-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### voice-reply-render
 Vanessa · Reads the Command Deck's voiceReplyQueue, renders each new Vanessa or Steve chat reply in that persona's own voice with Magica Seed Audio (f  
 `mactask:voice-reply-render` · Mac tasks · newest date stamp undated  
 See also: `wiki/dashboard-ops/task-catalog.md`
 
+### Voicemail & Inbox Triage
+Voicemail & Inbox Triage's seat: the agents that report to Voicemail & Inbox Triage  
+`seat:Voicemail & Inbox Triage` · Seats · newest date stamp undated  
+See also: `agent:calendar-prep`, `agent:inbox-triage`
+
+### voicemail-inbox-triage
+Opus 5.5 · tier 2 · Report under Victor (CRO, ISA line): triages WhisperAI voicemails and the Gmail inbox into vanessaQueue with a next action per item; fraud flags go to Elena fir  
+`agent:voicemail-inbox-triage` · AI agents · newest date stamp undated  
+Linked from: `seat:Victor`  
+
 ### voicemail-to-lead
 Victor · Transcribe a voicemail (a recording link Steven or the carrier email provides) with WhisperAI transcribe_url, summarise who called about what, and queue a lead-triage item  
 `skill:voicemail-to-lead` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### vue-reviewer
+Opus 5.5 · tier 3 · Expert Vue.js code reviewer specializing in Composition API correctness, reactivity pitfalls, component architecture, template security, and  
+`agent:vue-reviewer` · AI agents · newest date stamp undated  
+Linked from: `seat:Derek`  
 
 ## W
 
@@ -2470,6 +4097,11 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 Alexandra · Review UI code for Web Interface Guidelines compliance. Use when asked to "review my UI", "check accessibility", "audit design", "review UX", or "check my site against   
 `skill:web-design-guidelines` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
+
+### webinar-producer
+Opus 5.5 · tier 2 · Report under Sofia (CMO): produces webinar assets for the VA Loan Mastermind Live, Hometown Hero Home Buying and Retirement Equity Strategy  
+`agent:webinar-producer` · AI agents · newest date stamp undated  
+Linked from: `seat:Sofia`  
 
 ### Weekly 1/5/10-Year Plan Review Reminder
 Derek · cron 0 14 * * 1 · on · SUCCEEDED @ 2026-09-21T14:10  
@@ -2490,8 +4122,8 @@ See also: `always-on/README.md`
 Nothing runs this yet. A Mac runner task is a live task, so installing it is Steven's yes (HALT).  
 `routines/events-weekly.md` · Always-on · newest date stamp 2026-10-11  
 Sections: What it does; Schedule and model; Success condition  
-Linked from: `wiki/ai-team/capability-matrix.md`, `wiki/events-networking/index.md`  
-See also: `docs/ROUTINE-SCHEDULE-FIX.md`, `integrations/gondola/README.md`
+Linked from: `integrations/gondola/README.md`, `wiki/ai-team/capability-matrix.md`, `wiki/dashboard-ops/panel-map.md`, `wiki/events-networking/index.md`  
+See also: `docs/ROUTINE-SCHEDULE-FIX.md`
 
 ### Weekly Loop (loop-engineering v2)
 Cloud loop routine moved 2026-10-09 (Steven): Sundays 1:05 PM Pacific (CRON_TZ=America/Los_Angeles 5 13 * * 0, trigger…  
@@ -2534,12 +4166,39 @@ Vanessa · Read and answer WhatsApp through Kapso (WhatsApp Business Cloud API; 
 `skill:whatsapp-kapso` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+### Whimsy Injector
+Opus 5.5 · Marketing squad · Expert creative specialist focused on adding personality, delight, and playful elements to brand experiences. Creates memorable, joyful interactions th  
+`agent:agency-whimsy-injector` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
+### WordPress Performance Engineer
+Opus 5.5 · Technology squad · Expert WordPress performance engineer specializing in Core Web Vitals, object caching (Redis/Memcached), page caching, database and WP_Query optimizat  
+`agent:agency-wordpress-performance-engineer` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
+### Workflow Architect
+Opus 5.5 · Technology squad · Workflow design specialist who maps complete workflow trees for every system, user journey, and agent interaction — covering happy paths, all branch c  
+`agent:agency-workflow-architect` · AI agents · newest date stamp undated  
+Linked from: `squad:Technology`  
+
 ### writing-guidelines
 Alexandra · Review docs/prose for Writing Guidelines compliance. Use when asked to "review my docs", "check writing style", "audit prose", "review docs voice and tone", or "check t  
 `skill:writing-guidelines` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
+## X
+
+### X/Twitter Intelligence Analyst
+Opus 5.5 · Marketing squad · Social intelligence specialist for X/Twitter research, trend detection, account monitoring, and evidence-backed audience insights using public signals   
+`agent:agency-x-twitter-intelligence-analyst` · AI agents · newest date stamp undated  
+Linked from: `squad:Marketing`  
+
 ## Z
+
+### ZK Steward
+Opus 5.5 · AI Strategy squad · Knowledge-base steward in the spirit of Niklas Luhmann's Zettelkasten. Default perspective: Luhmann; switches to domain experts (Feynman, Munger, Ogi  
+`agent:agency-zk-steward` · AI agents · newest date stamp undated  
+Linked from: `squad:AI Strategy`  
 
 ### Zoho CRM
 Vanessa · [attention] self-client keys prompt in the paste; API 403 until the profile tick  
