@@ -3,3 +3,4 @@
 {"ts": "2026-11-22T20:20:00Z", "name": "health-sync", "status": "ok", "note": "catch-up 2026-11-17..21 exports"}
 {"ts": "2026-11-22T20:21:11Z", "name": "6d-rebuild", "status": "ok", "note": "v130 1795378864-d8c5"}
 {"ts": "2026-11-22T20:21:11Z", "name": "big-moves", "status": "ok", "note": "bigMoves v27"}
+{"ts": "2026-11-23T11:35:14Z", "name": "6d-rebuild", "status": "ok", "note": "v131 1795433693-fb56"}

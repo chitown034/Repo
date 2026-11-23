@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-11-22 by `bin/brain encyclopedia` from `brain/index.json` — 778 pages, 918 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-11-23 by `bin/brain encyclopedia` from `brain/index.json` — 790 pages, 931 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [#](#other) · [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [X](#x) · [Z](#z)
 
@@ -155,9 +155,9 @@ See also: `wiki/ai-team/mentors-and-benches.md`, `wiki/ai-team/model-tiering-dis
 
 ### AI Team org chart
 The full seat map behind Vanessa: Steven at the top, then Steve (digital twin) / Vanessa (Chief of Staff) / the human…  
-`wiki/ai-team/org-chart.md` · AI team · newest date stamp 2026-11-18  
+`wiki/ai-team/org-chart.md` · AI team · newest date stamp 2026-11-23  
 Sections: The shape; Standing pods — cross-functional teams that work in parallel (2026-10-22); What the desks run on (2026-10-22, evening); Tools per seat (skills · plugins · connectors · routines · Mac tasks); Added 2026-11-01: Paperclip, fitted with no duplicates; 2026-11-02: every seat reports to Vanessa; The named seats worth knowing by name; What "bench" means  
-Linked from: `integrations/gondola/README.md`, `wiki/ai-team/cross-functional.md`  
+Linked from: `wiki/ai-team/cross-functional.md`  
 See also: `wiki/ai-team/desk-seats.md`, `wiki/ai-team/index.md`
 
 ### AI Team toolkit — skills, Claude mods, connectors, MCP servers, APIs, routines, Mac tasks
@@ -1199,7 +1199,7 @@ See also: `wiki/ai-team/toolkit.md`
 
 ### Decisions — append-only, dated
 One entry per decision. Append, never edit and never delete.  
-`context/decisions.md` · Who & why · newest date stamp 2026-11-22  
+`context/decisions.md` · Who & why · newest date stamp 2026-11-23  
 Sections: 2026-09-22 — Lofty is the real-estate CRM; 2026-09-22 — Zoho CRM API access is Steven's to grant; 2026-09-22 — Model tiering; 2026-09-22 — Backup specification; 2026-09-22 — Apple Health moves to the Notion recipe; 2026-09-22 — You.com is retired; 2026-09-22 — Mentor naming drift: open, Steven's call; 2026-09-22 — Correction: the Lofty entry above was edited in place, and it overstated  
 See also: `knowledge-graph/schema.md`, `memory.md`, `wiki/dashboard-ops/process-coverage.md`
 
@@ -1446,8 +1446,8 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 Where FHA and USDA beat VA for a given borrower, and the specific mechanics that make each one work.  
 `wiki/mortgage-programs/fha-usda.md` · Mortgage wiki · newest date stamp undated  
 Sections: FHA; USDA; When each beats VA; See also  
-Linked from: `wiki/mortgage-programs/va-affordability.md`  
-See also: `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/lender-directory-notes.md`, `wiki/mortgage-programs/program-selection.md`
+Linked from: `wiki/mortgage-programs/lender-directory-notes.md`  
+See also: `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/program-selection.md`, `wiki/mortgage-programs/va-affordability.md`
 
 ### Fieldy
 Vanessa · [ok] read recordings, summaries · connected — no recordings yet  
@@ -1618,7 +1618,8 @@ See also: `integrations/CONNECTIONS.md`
 ### Gondola — travel updates (hotel, flight, car; points vs cash) (2026-10-22)
 Steven, 2026-10-22: "connect gondola ai for travel updates." Gondola publishes an official MCP server…  
 `integrations/gondola/README.md` · Integrations · newest date stamp 2026-10-22  
-See also: `integrations/CONNECTIONS.md`, `routines/events-weekly.md`, `wiki/ai-team/org-chart.md`
+Linked from: `routines/events-weekly.md`  
+See also: `integrations/CONNECTIONS.md`, `integrations/MCP-SERVERS.md`
 
 ### Google Drive (SECOND BRAIN/)
 Vanessa · [ok] rewrite the 13 SB Docs weekly · connected  
@@ -2048,8 +2049,7 @@ See also: `wiki/dashboard-ops/task-catalog.md`
 How the deck's lender directory groups in practice — by what each lender actually does well — plus the verification…  
 `wiki/mortgage-programs/lender-directory-notes.md` · Mortgage wiki · newest date stamp undated  
 Sections: Agency wholesale generalists; Non-QM specialists; Investor / DSCR / hard money; Equity, reverse, and niche; Verification flags carried from the deck — repeat these, do not drop them; What "overlay" means here; See also  
-Linked from: `wiki/mortgage-programs/fha-usda.md`  
-See also: `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/program-selection.md`
+See also: `wiki/mortgage-programs/fha-usda.md`, `wiki/mortgage-programs/index.md`, `wiki/mortgage-programs/program-selection.md`
 
 ### LinkedIn Content Creator
 Opus 5.5 · Marketing squad · Expert LinkedIn content strategist focused on thought leadership, personal brand building, and high-engagement professional content. Masters LinkedIn's  
@@ -2128,7 +2128,7 @@ Victor · Sync Lofty (formerly Chime), Steven's real-estate CRM since 2026-09-22
 `skill:lofty-crm-sync` · Skills · newest date stamp undated  
 See also: `wiki/ai-team/toolkit.md`
 
-### Loop engineering — 50/100
+### Loop engineering — 52/100
 whether the system gets better: loop run history, trend, regressions, untested pages · week of 2026-11-22 · next: Monitor 75 automation loop(s) with no known last run; Teach the ag  
 `eng:loop` · Engineering · newest date stamp undated  
 
@@ -2167,7 +2167,7 @@ See also: `integrations/CONNECTIONS.md`
 ### Mac claude-runner task status (runnerStatus doc, syncedAt 2026-09-22T04:05:04Z, loggedIn=T
 Mac claude-runner task status (runnerStatus doc, syncedAt 2026-09-22T04:05:04Z, loggedIn=True, running=['fabric-deck-sync'], waiting=[])  
 `docs/inventory/mac-runner-status.md` · Loop & findings · newest date stamp undated  
-Linked from: `docs/inventory/cloud-routines-2026-10.md`  
+Linked from: `docs/inventory/cloud-routines-2026-10.md`, `integrations/trader-skill/README.md`  
 See also: `docs/inventory/cloud-routines.md`, `docs/inventory/routine-health.md`
 
 ### Mac pollers overnight (vanessa-imessage-inbox, vanessa-discord-inbox, voice-reply-render,
@@ -2323,7 +2323,7 @@ Linked from: `squad:Technology`
 One row per server. bin/brain toolkit reads this table (the last "## MCP servers" section) and the 6D Brain draws one…  
 `integrations/MCP-SERVERS.md` · Integrations · newest date stamp 2026-10-23  
 Sections: MCP servers  
-Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/APIS.md`, `integrations/notebooklm/README.md`, `mcp:Composio (cloud)`, `mcp:Fieldy · Gmail · Google Calendar · Google Drive · Notion · Slack · Zoom · WhisperAI · Inkb`, `mcp:api-anything`  
+Linked from: `docs/inventory/mac-task-descriptions.md`, `integrations/APIS.md`, `integrations/gondola/README.md`, `integrations/notebooklm/README.md`, `mcp:Composio (cloud)`, `mcp:Fieldy · Gmail · Google Calendar · Google Drive · Notion · Slack · Zoom · WhisperAI · Inkb`  
 See also: `integrations/api-anything/README.md`, `wiki/ai-team/tool-integration-status.md`
 
 ### meal-planner
@@ -2888,7 +2888,7 @@ The Command Deck's fifteen tabs, what each one shows, and which documents feed i
 `wiki/dashboard-ops/panel-map.md` · Dashboard ops · newest date stamp undated  
 Sections: The fifteen tabs (page ids); Panels relevant to this repo's four wikis; How to trace a panel to its data when this table doesn't have it; What this page cannot tell you; See also  
 Linked from: `wiki/ai-team/bot-crew.md`  
-See also: `routines/events-weekly.md`, `wiki/dashboard-ops/task-catalog.md`
+See also: `docs/inventory/process-coverage.md`, `wiki/dashboard-ops/task-catalog.md`
 
 ### Parallel C-Suite Task Cycle
 Drives the vanessa-orchestrator skill: intake → decompose → delegate → concurrent execution (≤8) → conflict resolution…  
@@ -3040,7 +3040,7 @@ Linked from: `squad:Security`
 Generated by bin/brain coverage --write (plain code, no model call).  
 `docs/inventory/process-coverage.md` · Loop & findings · newest date stamp 2026-11-11  
 Sections: Gaps — automated documents that did not move, have no writer, or whose writer is retired (26); Every document, by tab  
-Linked from: `docs/ROUTINE-BUDGET-2026-10-09.md`  
+Linked from: `docs/ROUTINE-BUDGET-2026-10-09.md`, `wiki/dashboard-ops/panel-map.md`  
 See also: `docs/AUTOMATION-MAP-2026-10-20.md`, `docs/inventory/db-docs.md`
 
 ### Process coverage — who keeps every Command Deck document alive, and whether it did
@@ -3285,7 +3285,7 @@ Linked from: `seat:Derek`
 
 ### References — the register of source documents
 This is a register, not a library. It records what a source is, where it lives and how current it is.  
-`references/index.md` · Sources · newest date stamp 2026-11-18  
+`references/index.md` · Sources · newest date stamp 2026-11-23  
 Sections: Playbooks (digitised, 2026.1 editions, ~1,700 pages combined); Live systems (pointers, not stores); External directories (pointers only); Tools and candidates (2026-09-28); Research notes (internal); Registering a source; Rules; Engineering conventions  
 See also: `integrations/agency-agents/README.md`, `integrations/api-anything/README.md`, `integrations/sellbird/README.md`
 
@@ -3414,7 +3414,7 @@ See also: `docs/CLOUD-WRITE-ARCHITECTURE.md`, `wiki/dashboard-ops/task-catalog.m
 ### Runner health — runnerctl status as pasted by Steven, 2026-10-23 12:33 PT (Mac 1)
 Headline: the runner is healthy and was never silent.  
 `docs/inventory/routine-health.md` · Loop & findings · newest date stamp 2026-10-23  
-Linked from: `docs/inventory/db-docs.md`, `docs/inventory/mac-runner-status.md`, `routines/parallel-csuite-task-cycle.md`, `routines/weekly-loop.md`, `wiki/dashboard-ops/index.md`  
+Linked from: `docs/inventory/db-docs.md`, `docs/inventory/mac-runner-status.md`, `integrations/trader-skill/README.md`, `routines/parallel-csuite-task-cycle.md`, `routines/weekly-loop.md`, `wiki/dashboard-ops/index.md`  
 
 ### runner-probe
 Derek · One harmless Command Deck write that proves a headless runner task can reach the deck database through the approver.  
@@ -3782,6 +3782,11 @@ Sections: One job per layer; Capabilities (2026-10-23); Rules; What "the most po
 Linked from: `wiki/clients/index.md`  
 See also: `docs/inventory/daily-updates.md`, `integrations/apple-health-dashboard.md`, `integrations/notebooklm/README.md`
 
+### The Trader skill pack (installed 2026-11-23)
+Source: https://github.com/Jakeschincariol/trader-skill (MIT, LICENSE here), pinned at commit 5189e79 (v1.0…  
+`integrations/trader-skill/README.md` · Integrations · newest date stamp 2026-11-23  
+See also: `docs/inventory/mac-runner-status.md`, `docs/inventory/routine-health.md`
+
 ### Third-party skills and tools — what was installed, held or declined (2026-10-11)
 Steven asked for 18 repositories. Each was read before anything was installed; nothing was run from the cloud sandbox.  
 `wiki/ai-team/third-party-packs.md` · AI team · newest date stamp 2026-10-31  
@@ -3861,6 +3866,61 @@ Opus 5.5 · Marketing squad · Expert in conversion tracking architecture, tag m
 `agent:agency-tracking-measurement-specialist` · AI agents · newest date stamp undated  
 Linked from: `squad:Marketing`  
 
+### trader-alerts
+Derek · >-  
+`skill:trader-alerts` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-analyst
+Derek · >-  
+`skill:trader-analyst` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-broker
+Derek · >-  
+`skill:trader-broker` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-budget
+Marcus · >-  
+`skill:trader-budget` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-copycat
+Derek · >-  
+`skill:trader-copycat` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-news
+Derek · >-  
+`skill:trader-news` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-pelosi
+Derek · >-  
+`skill:trader-pelosi` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-rebalance
+Derek · >-  
+`skill:trader-rebalance` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-risk
+Derek · >-  
+`skill:trader-risk` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-screener
+Derek · >-  
+`skill:trader-screener` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
+### trader-tax
+Marcus · >-  
+`skill:trader-tax` · Skills · newest date stamp undated  
+See also: `wiki/ai-team/toolkit.md`
+
 ### Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle
 Victor · cron CRON_TZ=America/Los_Angeles 5 6 * * 1-5 · on · SUCCEEDED @ 2026-10-22T14:10  
 `routine:Transaction & Showing desk — TC + showing assistant (weekdays 6:05 AM PT, before the cycle)` · Cloud routines · newest date stamp undated  
@@ -3938,8 +3998,8 @@ Linked from: `seat:Derek`
 How a VA file actually qualifies on residual income rather than DTI alone: the Six-Step Pre-Approval Analysis, BAH/BAS…  
 `wiki/mortgage-programs/va-affordability.md` · Mortgage wiki · newest date stamp undated  
 Sections: The Six-Step Pre-Approval Analysis; Residual income mechanics; Seller concessions and closing costs; Duty-station and BAH considerations; See also  
-Linked from: `projects/nonprofit.md`, `wiki/real-estate-playbooks/military-relocation.md`  
-See also: `wiki/mortgage-programs/fha-usda.md`, `wiki/mortgage-programs/va-eligibility.md`
+Linked from: `projects/nonprofit.md`, `wiki/mortgage-programs/fha-usda.md`, `wiki/real-estate-playbooks/military-relocation.md`  
+See also: `wiki/mortgage-programs/va-eligibility.md`
 
 ### VA Command Center — weekly avatar content drafts
 Sofia · cron CRON_TZ=America/Los_Angeles 58 14 * * 0 · on · SUCCEEDED @ 2026-10-18T21:58  
@@ -4122,8 +4182,8 @@ See also: `always-on/README.md`
 Nothing runs this yet. A Mac runner task is a live task, so installing it is Steven's yes (HALT).  
 `routines/events-weekly.md` · Always-on · newest date stamp 2026-10-11  
 Sections: What it does; Schedule and model; Success condition  
-Linked from: `integrations/gondola/README.md`, `wiki/ai-team/capability-matrix.md`, `wiki/dashboard-ops/panel-map.md`, `wiki/events-networking/index.md`  
-See also: `docs/ROUTINE-SCHEDULE-FIX.md`
+Linked from: `wiki/ai-team/capability-matrix.md`, `wiki/events-networking/index.md`  
+See also: `docs/ROUTINE-SCHEDULE-FIX.md`, `integrations/gondola/README.md`
 
 ### Weekly Loop (loop-engineering v2)
 Cloud loop routine moved 2026-10-09 (Steven): Sundays 1:05 PM Pacific (CRON_TZ=America/Los_Angeles 5 13 * * 0, trigger…  

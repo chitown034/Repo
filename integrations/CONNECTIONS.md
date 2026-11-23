@@ -669,3 +669,14 @@ Read from the Command Deck documents (runnerStatus, whatsappKapso) and ListConne
 | Kapso WhatsApp | number connected; deck doc last synced 2026-10-31 23:55 UTC; Pabbly triggers wait on the Kapso webhook paste; Mac sign-in and Keychain keys pending | STEVEN-STEPS step 5; `claude` → `/mcp` → kapso | Steven |
 | claude.ai connectors (ListConnectors) | connected: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, Strava, Composio, Inkbox, Candid, Canva, Zoom, Pabbly, WhisperAI, You.com, Context7. Needs reconnect: TidyCal, Turo. Connect incomplete: Lofty, Microsoft 365, BlackRock, Health Data Avatar, Plaid, PlayMCP, Similarweb. Not connected: Higgsfield | reconnect TidyCal and Lofty in claude.ai Settings → Connectors | Steven |
 | Fieldy meetings layer (weekly layers sync, 2026-11-16 UTC) | stale: last digest 2026-11-12; the Fieldy connector asks for sign-in again, so the daily digest has not run since | Steven reconnects Fieldy in claude.ai connector settings; the next daily run catches up | Steven |
+
+## Connection status — daily rebuild, 2026-11-23 11:40 UTC (6D Brain routine, 7-day re-check)
+
+Read from the Command Deck documents (runnerStatus, whatsappKapso) and ListConnectors. No keys, no numbers.
+
+| Connection | Status today | Fix | Who |
+|---|---|---|---|
+| Mac runner | last synced 2026-11-18T05:07Z (5 days, no newer report). Last-run refused/error: brain-learn-daily (refused), brain-weekly-verify (refused), feeds-market-close (refused), nightly-self-test (error), r9-feed-freshness-sweep (error), revenue-scan-weekly (refused), weekly-self-update (error) | run the connect-all paste on the Mac so the runner reports again | Steven |
+| WhatsApp (Kapso) | line connected; Pabbly app built and tested 2026-10-31; webhook paste and Mac sign-in still pending (doc dated 2026-10-31) | STEVEN-STEPS step 5 | Steven |
+| claude.ai connectors (ListConnectors) | connected: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox, Canva, Zoom, Pabbly, WhisperAI, You.com, Context7 and the authless travel/shopping tools. Needs reconnect: Candid, Turo. Connect incomplete: Lofty, Microsoft 365, BlackRock, Health Data Avatar, Plaid, PlayMCP, Similarweb, Distribb. Not connected: Higgsfield | reconnect Candid in claude.ai Settings → Connectors (Turo is optional) | Steven |
+| Fieldy meetings layer | reconnected; daily digest ran 2026-11-22 (0 new meetings) | — | — |

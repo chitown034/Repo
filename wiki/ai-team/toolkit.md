@@ -29,11 +29,10 @@ toolkit: 60 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 - `Zoho CRM` — *attention*: self-client keys prompt in the paste; API 403 until the profile tick
 - `TidyCal` — *attention*: token prompt in the paste + read-only proof call
 - `Arive` — *attention*: credentials prompt in the paste; no call yet
-- `Mac runner` — *attention*: synced 2026-11-12T01:07:13Z, logged in. Last-run refused/error: brain-weekly-verify (refused), fabric-deck-sync (refused), loop-engineering-weekly (error), mortgage-desk-weekly (refused), ops-knowledg
 - `Kapso WhatsApp` — *pending*: number connected; deck doc last synced 2026-10-31 23:55 UTC; Pabbly triggers wait on the Kapso webhook paste; Mac sign-in and Keychain keys pending
 - `Jarvis = Vanessa` — *attention*: scripted (engine, recorded voice, persona, brain in memory) in fix-mine 3b + connect-all 6a/6b
 - `Jarvis knows the Second Brain` — *attention*: ready — the same script indexes the brain's pages (no client pages, no meeting digests, no findings) into Jarvis memory; the 6D layers row shows "speaks as Vanessa" + the page count once run
-- `WhatsApp (Kapso)` — *pending*: number …5223 assigned; nothing reads it — runner tasks kapso-inbox-sync / vanessa-whatsapp-inbox not registered; Kapso MCP sign-in pending; keys in the Keychain (connect report #3)
+- `WhatsApp (Kapso)` — *pending*: line connected; Pabbly app built and tested 2026-10-31; webhook paste and Mac sign-in still pending (doc dated 2026-10-31)
 - `Discord #vanessa` — *attention*: bot token prompt in the paste; bot not yet created
 - `Vanessa's voice note after each text` — *attention*: not yet delivering — voiceReplyQueue held only the Sep 12 test item until the cloud sweep queued the first real one (00:28 UTC); the Mac's voice-reply-render runs ok every 10 min but needs the Inkbox 
 - `SkySlope` — *attention*: four keys prompt in the paste + GET /api/users/me proof
@@ -138,7 +137,7 @@ toolkit: 60 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 - `trader-tax`: >-
 
 **Connectors**
-- `claude.ai connectors (ListConnectors)` — *ok*: connected: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, Strava, Composio, Inkbox, Candid, Canva, Zoom, Pabbly, WhisperAI, You.com, Context7. Needs reconnect: TidyCal,
+- `claude.ai connectors (ListConnectors)` — *ok*: connected: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, TidyCal, Strava, Composio, Inkbox, Canva, Zoom, Pabbly, WhisperAI, You.com, Context7 and the authless travel/s
 
 **MCP servers**
 - `Composio (cloud)` — *attention*: Zoho CRM, Google Docs, GitHub tool calls through Composio · connected — Zoho 403 until the API box is ticked
@@ -283,7 +282,7 @@ toolkit: 60 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 - `EVRoutes · Turo connectors` — *reconnect*: "needs reconnect" on claude.ai (EVRoutes also failed to connect in this session)
 - `Four http_api Sunday routines` — *attention*: still enabled
 - `GitHub repo visibility` — *attention*: public
-- `Fieldy meetings layer (weekly layers sync, 2026-11-16 UTC)` — *attention*: stale: last digest 2026-11-12; the Fieldy connector asks for sign-in again, so the daily digest has not run since
+- `Fieldy meetings layer` — *reconnect*: reconnected; daily digest ran 2026-11-22 (0 new meetings)
 - `Notion `brain-learn-daily` rows` — *attention*: resume with Mac 1's runner (signed in 2026-10-23); directory page written 2026-10-23
 - `Jarvis · Laya · Orca (Mac 1)` — *attention*: installed, tested, Orca on the Repo folder; phone pairing is Steven's
 - `Jarvis · Laya · Orca (Mac 2)` — *attention*: partially set — engine unproven; runner not yet imported
@@ -295,6 +294,7 @@ toolkit: 60 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 - `Ticor Title property search` — *attention*: no API (integrations/ticor/README.md); county records already feed the deck
 - `OpenFlowKit MCP + skill · pr-lens skill · archify skill (the four repos, 2026-10-23)` — *pending*: installed in the repo (skills) / pending on the Macs (MCP by connect-all 6g, archify by install-mac.sh); integrations/skill-packs/REGISTRY-2026-10-23.md
 - `AI-search presence (AEO/GEO/SEO)` — *attention*: planned — playbook written (wiki/real-estate-playbooks/ai-search-visibility.md); monthly presence audit task live (1st, 7:10 AM PT)
+- `Mac runner` — *attention*: last synced 2026-11-18T05:07Z (5 days, no newer report). Last-run refused/error: brain-learn-daily (refused), brain-weekly-verify (refused), feeds-market-close (refused), nightly-self-test (error), r9
 - `AnyDesk (Mac 1)` — *attention*: installed; ID 1514099895; Screen Recording + Accessibility + unattended password are Steven's
 - `Pabbly ↔ Kapso webhooks, six workflows` — *attention*: Kapso login proven; webhook URLs and the six workflows are clicks at connect.pabbly.com
 - `Laya routes, Orca launches the AI team` — *attention*: installed on Mac 1 (connect report #3); connect-orca-laya.sh --apply + agent-os/install-mac.sh --apply re-run by the paste; brain os check is the proof
