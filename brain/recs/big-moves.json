@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-22T20:20:25Z",
- "date": "2026-11-22",
+ "generated": "2026-11-23T14:11:34Z",
+ "date": "2026-11-23",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -108,27 +108,6 @@
    "rank": 5
   },
   {
-   "id": "bm_bb5ab0e256",
-   "category": "sync",
-   "topic": "",
-   "title": "Resync the Command Deck DB layer",
-   "why": "last stamp 2026-11-18, 4 days old, cadence 1 d",
-   "owner": "Derek",
-   "executor": "vanessa",
-   "impact": 3,
-   "effort": 1,
-   "confidence": 0.9,
-   "plan": [
-    "Run the layer's own sync (routines + Mac tasks write; page reads live)",
-    "bin/brain layers --write; confirm 'even: yes'"
-   ],
-   "source": "layers",
-   "weight": 1.0,
-   "score": 2.7,
-   "value": "high",
-   "rank": 6
-  },
-  {
    "id": "bm_c8dd0e3f61",
    "category": "steven",
    "topic": "drip",
@@ -149,7 +128,7 @@
    "weight": 1.772,
    "score": 2.51,
    "value": "high",
-   "rank": 7
+   "rank": 6
   },
   {
    "id": "bm_6b1e5bf84e",
@@ -171,7 +150,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 8
+   "rank": 7
   },
   {
    "id": "bm_52e0d6276e",
@@ -193,7 +172,7 @@
    "weight": 1.0,
    "score": 2.4,
    "value": "high",
-   "rank": 9
+   "rank": 8
   },
   {
    "id": "bm_da69253e89",
@@ -209,6 +188,28 @@
    "plan": [
     "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
     "nothing to install; the cloud sweep now answers any question left unanswered for 10 minutes into the same thread",
+    "Vanessa re-checks the status on the next connect report and closes the item"
+   ],
+   "source": "toolkit:connector",
+   "weight": 1.0,
+   "score": 2.4,
+   "value": "high",
+   "rank": 9
+  },
+  {
+   "id": "bm_5e56da7165",
+   "category": "connect",
+   "topic": "fieldy",
+   "title": "Connect Fieldy meetings layer",
+   "why": "reconnected; daily digest ran 2026-11-22 (0 new meetings)",
+   "owner": "Derek",
+   "executor": "vanessa",
+   "impact": 3,
+   "effort": 1,
+   "confidence": 0.8,
+   "plan": [
+    "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+    "\u2014",
     "Vanessa re-checks the status on the next connect report and closes the item"
    ],
    "source": "toolkit:connector",
@@ -414,6 +415,29 @@
      "value": "high",
      "rank": 8,
      "coa": "big-move"
+    },
+    {
+     "id": "bm_5e56da7165",
+     "category": "connect",
+     "topic": "fieldy",
+     "title": "Connect Fieldy meetings layer",
+     "why": "reconnected; daily digest ran 2026-11-22 (0 new meetings)",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Owner Derek confirms the route in the register (integrations/CONNECTIONS.md)",
+      "\u2014",
+      "Vanessa re-checks the status on the next connect report and closes the item"
+     ],
+     "source": "toolkit:connector",
+     "weight": 1.0,
+     "score": 2.4,
+     "value": "high",
+     "rank": 9,
+     "coa": "big-move"
     }
    ]
   },
@@ -471,7 +495,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 30/31 on 2026-11-18",
+     "why": "bench 33/34 on 2026-11-23",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -518,28 +542,6 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
-     "id": "bm_bb5ab0e256",
-     "category": "sync",
-     "topic": "",
-     "title": "Resync the Command Deck DB layer",
-     "why": "last stamp 2026-11-18, 4 days old, cadence 1 d",
-     "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.9,
-     "plan": [
-      "Run the layer's own sync (routines + Mac tasks write; page reads live)",
-      "bin/brain layers --write; confirm 'even: yes'"
-     ],
-     "source": "layers",
-     "weight": 1.0,
-     "score": 2.7,
-     "value": "high",
-     "rank": 1,
-     "coa": "risk"
-    },
-    {
      "id": "bm_4d61c46e96",
      "category": "ops",
      "topic": "",
@@ -558,7 +560,7 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 2,
+     "rank": 1,
      "coa": "risk"
     },
     {
@@ -580,7 +582,7 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 3,
+     "rank": 2,
      "coa": "risk"
     },
     {
@@ -603,8 +605,31 @@
      "weight": 1.0,
      "score": 1.2,
      "value": "medium",
-     "rank": 4,
+     "rank": 3,
      "coa": "risk"
+    },
+    {
+     "id": "bm_df7be88089",
+     "category": "ops",
+     "topic": "",
+     "title": "Repair Mac task brain-learn-daily",
+     "why": "runnerStatus (2026-11-18) shows brain-learn-daily last run refused.",
+     "owner": "Derek",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Read the task's log from the next connect-all REPORT",
+      "Fix the spec in integrations/mac-task-specs.md",
+      "Steven pastes `runnerctl run brain-learn-daily`"
+     ],
+     "source": "deck runnerStatus",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
+     "rank": 4
     }
    ]
   },
@@ -723,11 +748,11 @@
    "ref": "bm_295bee4eb4"
   },
   {
-   "q": "What should I do about: Resync the Command Deck DB layer?",
-   "a": "last stamp 2026-11-18, 4 days old, cadence 1 d.",
-   "action": "Run the layer's own sync (routines + Mac tasks write; page reads live)",
+   "q": "What should I do about: Clear Needs-Steven item 1 in today's brief (p1)?",
+   "a": "cosBrief needsSteven, deadline overdue (44+ days at Clear to Close; dec.",
+   "action": "Open the Command Deck cosBrief card",
    "coa": "risk",
-   "ref": "bm_bb5ab0e256"
+   "ref": "bm_4d61c46e96"
   },
   {
    "q": "What should I do about: Drips and texts?",
@@ -742,7 +767,7 @@
    "action": "Open docs/STEVEN-STEPS.md \u00a7 Older round (2026-10-23, round 2 \u2014 simplified the same evening) \u2014 three pastes, then four clicks",
    "coa": "question",
    "ref": "docs/STEVEN-STEPS.md",
-   "confidence": 0.46
+   "confidence": 0.47
   },
   {
    "q": "What runs every morning, and when?",
@@ -762,7 +787,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-11-18: bench 30/31, routes 23/23, 20 stale pages, 32 untested wiki pages, 2 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-23: bench 33/34, routes 23/23, 20 stale pages, 29 untested wiki pages, 2 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"

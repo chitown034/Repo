@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-22T20:20:26Z",
+ "generated": "2026-11-23T14:11:35Z",
  "seats": [
   {
    "name": "Steve",
@@ -209,6 +209,11 @@
   {
    "name": "Reverse-engineering gate",
    "role": "REA, under Elon with Elena and Alexandra",
+   "kind": "named"
+  },
+  {
+   "name": "Trader skill pack",
+   "role": "under James for equities, Apex for discipline; paper only, added 2026-11-23",
    "kind": "named"
   }
  ],
