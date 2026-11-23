@@ -374,3 +374,11 @@ Command Center. Three parts:
 
 Orchestrator jobs: loop cycle every 6 h, graph sweep daily. Two health checks, an `engineering` block in the Command
 Deck metrics, and the Vanessa tool `engineering_core`.
+
+## Remy — Digital Operations Lead (tech stack and agent autopilots)
+
+Added 2026-11-23. Reports to Derek; member of the Automation & AI and Growth & Marketing pods. Runs Growth → Tech Stack
+10 + Agent Autopilots in the Broker Command Center, built from a Club Wealth mastermind list of ten tools and a
+member's GBots examples (buyer rep in zipForm → signatures → SkySlope; daily content into Skool; personal replies to
+new followers; a talk turned into a shopping list). See `wiki/ai-team/tech-stack.md`. Nothing is sent, signed or
+posted without Steven's click. Vanessa tool: `tech_stack`.

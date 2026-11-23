@@ -78,6 +78,7 @@ Words in the request pull in the seat. The seat with the most matching words lea
 | Bennett | daily flow, action inbox, what needs me, power hour, call list, who should i call, quick capture, lead router, route lead | `wiki/ai-team/desk-seats.md` |
 | Hollis | sellbird, partner prospecting, find attorneys, find builders, cold email partners, outreach engine, prospect list | `integrations/sellbird/` |
 | Atlas | harness, graph, loop engineering, loops, engineering core, trace, ai calls, broken links, orphans, relationship map, who is connected, is the system improving, feedback loop | `wiki/ai-team/engineering-core.md` |
+| Remy | tech stack, virtual tour, 3d tour, matterport, chatbot, inquiry, e-sign, esign, signature, docusign, skyslope upload, zipform, brbc, skool, social schedule, content calendar, new followers, welcome dm, client portal, status page, drive folder, doc vault, predictive, readiness, project board, kanban, shopping list, make a list, autopilot chain, gbots | `wiki/ai-team/tech-stack.md` |
 | Isabel | loan processing, processor, conditions, underwriting conditions, document checklist, voe, vod, application date, loan estimate, le deadline, appraisal order, intent to proceed | `wiki/mortgage-programs/` |
 | Reyes | closing disclosure, cd timing, trid, consummation, rate lock, lock expiration, funding, rescission, signing appointment, clear to close | `wiki/mortgage-programs/` |
 
