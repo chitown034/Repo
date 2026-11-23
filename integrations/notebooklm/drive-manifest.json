@@ -127,29 +127,28 @@
  "sync": "weekly (Sun 2:45 PM PT) scheduled task in the Claude Code session: bin/brain export notebooklm -> commit/push -> Composio workbench rewrites each doc (GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN by doc_id); NotebookLM auto-syncs Google Docs sources",
  "account": "steven.shearrill@gmail.com (claude.ai Google Drive connector + Composio googledocs)",
  "last_sync": {
-  "notion_directory": {
-   "date": "2026-11-15",
-   "page": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179"
-  },
-  "date": "2026-11-15",
-  "at": "2026-11-16T05:20:00Z",
+  "date": "2026-11-23",
   "sha": {
-   "00-START-HERE.md": "c4a54246d0c0b308",
-   "01-router-and-index.md": "fe8dbb82e26e33b7",
-   "02-who-and-decisions.md": "bc0ba7bd0572477b",
-   "03-projects.md": "9b7e2bae5ed706e2",
-   "04-wiki-ai-team.md": "05fcf6bf5c61ff59",
-   "05-wiki-mortgage-programs.md": "554aa5e4d98c54db",
-   "06-wiki-real-estate-playbooks.md": "41f3052159a4765b",
-   "07-wiki-dashboard-ops.md": "471896d638330448",
-   "08-wiki-events-networking.md": "f9b9cb5966e12198",
-   "09-references.md": "8d1304766a3c66e6",
-   "10-always-on-and-automation.md": "c48cda4646fa8efa",
-   "11-6d-brain-map.md": "3c3b997dad133446",
-   "12-integrations.md": "87a5bde097bf4112"
+   "00-START-HERE.md": "423960945f774b8304f282d9d7c213da26d2811eedcff252f5aca2f4bdfd39f9",
+   "01-router-and-index.md": "8f301fb6bd0c9857abdbbd6869f5d83e3d3d7ae4bf601795fd072834f8f75398",
+   "02-who-and-decisions.md": "cdcbd357e59562339c82880c27df608494735a3779bd13f08671b74e766fdf85",
+   "03-projects.md": "1250ce1496337413de4d3006b99abe4694b61455c44f8f367d1fe7fea27dbb08",
+   "04-wiki-ai-team.md": "726e7c2ab906ecda397a538216487a903d30676e936738e13fe191d3e8487b0d",
+   "05-wiki-mortgage-programs.md": "78025a814705bd82d7719fcc3bfd58eff5b7c7e34153b16b3b4f3beab90e8420",
+   "06-wiki-real-estate-playbooks.md": "6d8b41e0b5f321c1a6f58f3d1a257a1e7517c8d54833ab092431fd870e60488b",
+   "07-wiki-dashboard-ops.md": "18045d8c96cff341e0902cd01c7f37d22f68995cbe5341b407b32550b111011d",
+   "08-wiki-events-networking.md": "7240d5fcf5b893299428b2ee69401ca670f42344fddef9d6d0e07086b3fc6b0e",
+   "09-references.md": "3dd96b48c7afa314aac64abe6997989039c989227e57b5909cd70d0e8bbcde20",
+   "10-always-on-and-automation.md": "d7bf09f47df7f88fc56167d1c97d3bf8623f4c941cade0c77ddfeb394369c338",
+   "11-6d-brain-map.md": "9944c54488ad333c67a82e603e673014d08cf8ea979c60803c54b65bddeeea9c",
+   "12-integrations.md": "0f9bc1c4fd264ea43246c69212d9408e40da0aa3ac60e6ea51efd0b2c3066ecb"
   },
   "updated": 13,
-  "failures": [],
-  "note": "weekly routine (Sunday 2026-11-15 PT); 12 docs via GOOGLEDOCS_UPDATE_DOCUMENT_MARKDOWN, 02-who-and-decisions via the chunked fallback after a WAF 403 (32 pieces, one inline proxy-status shell command reworded before sending; two stalled calls, the copy resumed from the piece verified present by reading the doc back); 0 failures"
+  "failures": 0,
+  "note": "weekly run of 2026-11-22 finished 2026-11-23; 02-who-and-decisions written in 33 pieces (WAF fallback), all others whole",
+  "notion_directory": {
+   "date": "2026-11-23",
+   "page": "https://app.notion.com/p/402c1760a749811eaea5d07005df0179"
+  }
  }
 }
