@@ -20,6 +20,7 @@ const STUB=`(()=>{window.__prompts=[];window.__mode="ok";window.__n=0;pbCall=asy
  await p.goto(URL);await p.waitForTimeout(2500);
  /* pages render */
  for(const h of["today","licmap","worksheets","skilltree","aiorg","leadflow","sellbird","agenteng","callcenter","market"]){await p.evaluate(h=>location.hash="#"+h,h);await p.waitForTimeout(500);ok(await p.evaluate(()=>document.body.innerText.length>800),"page renders: "+h)}
+ ok(await p.evaluate(()=>!!(cwAsk.__cc&&lrfRefresh.__cc&&nwFetch.__cc&&trSweep.__cc)),"Claude Code feed wraps research, rates, news and the reg sweep");
  await p.evaluate(STUB);
  /* harness */
  const H=await p.evaluate(async()=>{const st=hxSelfTest();const r={st:st.filter(x=>!x.ok).map(x=>x.n+": "+x.why)};
@@ -56,7 +57,21 @@ const STUB=`(()=>{window.__prompts=[];window.__mode="ok";window.__n=0;pbCall=asy
  ok(LD.lines>=30&&LD.fees>=25&&LD.qm===12000,"LE/CD line library ("+LD.lines+" lines, "+LD.fees+" fees) and QM 3% limit");
  for(const t of["le","cd","fees","points","conc","dec","tol"]){await p.evaluate(t=>{location.hash="#lecd";ldTab=t},t);await p.evaluate(()=>route());await p.waitForTimeout(250);ok(await p.evaluate(()=>document.body.innerText.length>1500),"LE & CD tab renders: "+t)}
  await p.evaluate(()=>{ldTab="le";route()});await p.waitForTimeout(300);await p.click('.ld_l[data-id="A-points"]');ok(/Break-even|break-even/.test(await p.textContent("#ld_det")),"tapping a line on the LE shows its explanation");
+ /* Claude Code feed (db stub) */
+ const CC=await p.evaluate(async()=>{const docs={},subs={},added=[];const mk=path=>({onSnapshot:(fn)=>{(subs[path]=subs[path]||[]).push(fn);if(docs[path])fn({exists:true,data:()=>docs[path]});return()=>{}},get:async()=>({exists:!!docs[path],data:()=>docs[path]})});
+  const ls=[];const snap=()=>({docs:added.map((d,i)=>({id:"r"+(i+1),data:()=>d}))});const fakeDb={doc:mk,collection:(c)=>({add:async(d)=>{added.push(d);ls.forEach(f=>f(snap()));return{id:"r"+added.length}},orderBy:()=>({limit:()=>({onSnapshot:(fn)=>{ls.push(fn);fn(snap());return()=>{}}})})})};
+  const prevUse=window.claude&&window.claude.use;window.claude={use:async(n)=>n==="db"?fakeDb:(prevUse?prevUse(n):null)};ccDb=null;ccSubs=false;
+  const now=Date.now();docs["ccfeed/rates"]={at:now,umbs:100.5,ticks:-4,coupon:"UMBS 5.5",y10:4.11,y10bp:2,pmms:6.21,pmmsWeek:"2026-11-20",vapar:5.9,asof:"2026-11-23 10:00 ET",sources:["https://example.com/a"]};
+  docs["ccfeed/news"]={at:now,items:[{topic:"rates",h:"Test headline",why:"x",date:"2026-11-22",url:"https://example.com/n",source:"Ex"}]};
+  docs["ccfeed/regs"]={at:now,items:[{d:"2026-11-20",t:"Test rule ZZ unique",who:"CFPB",lvl:"federal",status:"final",what:"w",impact:"i",action:"a",url:"https://example.com/r"}]};
+  store.set("cc_regs_at",0);await ccSubscribe();await new Promise(r=>setTimeout(r,50));
+  const q=store.get("lrf_quote",{});const nw=store.get("nw_cache",{});const reg=store.get("reg_live",[]);
+  const lr=await lrfRefresh(false);
+  const qa=await ccAsk("What is the FHA MIP?",false);
+  return{rates:/^Claude Code/.test(q.src)&&q.umbs===100.5,news:nw.via==="Claude Code"&&nw.items.length===1,regs:reg.some(r=>r.t==="Test rule ZZ unique"),lr:!!lr&&/^Claude Code/.test(lr.src),queued:!!qa.id&&added.length===1&&added[0].status==="pending",tools:PB_TOOLS().filter(t=>/^claude_code/.test(t.name)).length}});
+ ok(CC.rates&&CC.lr,"rates ticker reads the Claude Code feed");ok(CC.news,"Headline News reads the Claude Code feed");ok(CC.regs,"regulatory tracker merges Claude Code items");ok(CC.queued,"research questions queue for Claude Code when set to Claude Code");ok(CC.tools===2,"Claude Code agent tools registered");
+ await p.evaluate(()=>{location.hash="#ccresearch"});await p.waitForTimeout(400);ok(await p.evaluate(()=>document.body.innerText.includes("Research inbox")&&document.body.innerText.includes("What is the FHA MIP?")),"Claude Code Research page shows the queued question");
  /* layout */
- await p.setViewportSize({width:390,height:800});for(const h of["leadflow","agenteng","sellbird","lecd"]){await p.evaluate(h=>location.hash="#"+h,h);await p.waitForTimeout(500);ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"no sideways scroll on a phone: "+h)}
+ await p.setViewportSize({width:390,height:800});for(const h of["leadflow","agenteng","sellbird","lecd","ccresearch"]){await p.evaluate(h=>location.hash="#"+h,h);await p.waitForTimeout(500);ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"no sideways scroll on a phone: "+h)}
  ok(!errs.length,"no page or console errors"+(errs.length?" — "+errs.slice(0,3).join(" | "):""));
  console.log(`\n${pass} passed, ${fail} failed`);await b.close();process.exit(fail?1:0)})();

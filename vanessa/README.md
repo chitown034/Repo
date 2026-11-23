@@ -254,6 +254,14 @@ Operate → ⭐ 7-Star Client Journey: every client tracked Lead → Consult →
 - **Loan Limits page** (app56). **Loan Step Automation Engine + Daily Automation Stack** (app62): 40 steps each with trigger/automation/owner/gate/SLA; file tracker fires automations; one-button daily stack.
 - Seats +16, runbooks +15, playbooks +6, agent tools +20. Coverage grid: 89 processes, 100% owned.
 
+## v138 — 2026-11-23
+- **Claude Code feed** (app87, #ccresearch): live data and research now run on Steven's Claude Code subscription, using its built-in WebSearch, instead of paid search credits. Two scheduled Claude Code tasks write into VANESSA's artifact database:
+  - *Rates feed + research inbox*: weekdays every 2 hours, 6:23 am–4:23 pm PT → `ccfeed/rates` and answers in `ccreq`.
+  - *Daily news + regulatory sweep*: 5:37 am PT → `ccfeed/news`, `ccfeed/regs`.
+  The page reads them: header ticker, Market page, Headline News, the Mortgage Academy regulatory tracker, and a Research Inbox where queued questions get answered. Fresh Claude Code data wins; the old Composio route stays as a fallback; when Composio has no credits, research questions queue for Claude Code automatically. Tools: claude_code_research, claude_code_feed_status. Seat: Claude Code Research Runner.
+- **LE & CD Decoder:** the QM points-and-fees and HOEPA tiers are now the verified 2026 figures (Federal Register Dec 15 2025, FR Doc 2025-22773; matched by Fannie and Freddie 2026 edits).
+- Test suite: 56 checks.
+
 ## v137 — 2026-11-23
 - **LE & CD Decoder** (app86, #lecd in Loan Intelligence): the Loan Estimate (3 pages) and Closing Disclosure (5 pages) laid out like the real forms. Every line is clickable and shows what it is, who is paid, whether it's shoppable, its TRID tolerance bucket, whether it's an APR finance charge, the typical range and red flags. Also on the page:
   - A 27-fee encyclopedia, filterable by program.
