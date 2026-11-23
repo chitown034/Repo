@@ -935,6 +935,14 @@ through Apple Health and the same export file once Steven switches the nutrition
   127.0.0.1:5555. **Owner.** Victor (use), Alexandra (compliance draft), Derek (install). **Status.** Steven runs the
   installer on the Mac.
 
+## 2026-11-23 — AirLLM added to the local tier (Mac, off until proven)
+- **Decision.** Steven: "install https://github.com/lyogavin/airllm.git". AirLLM (Apache-2.0, `airllm==4.0.0`, commit
+  `7f7b518`) runs large open models layer by layer from disk. It joins Bonsai 27B as a local-tier engine on the Mac.
+- **How.** `integrations/airllm/install.sh` (Apple silicon only; venv `~/airllm/.venv`; `smoke` uses TinyLlama 1.1B) and
+  `ask.py`. Nothing was run from the cloud (no GPU or Apple silicon there).
+- **Guardrails.** Off until a proven Mac run is recorded; the PII gate does not route to it before then; no cloud
+  fallback; drafts only. Owner Derek, model choice Nadia.
+
 ## 2026-11-23 — The Trader skill pack installed (paper only, under James and Apex)
 - **Decision.** Steven: "install this skill https://github.com/Jakeschincariol/trader-skill.git". Its 11 skills
   (copycat, news, budget, pelosi, analyst, screener, risk, broker, tax, alerts, rebalance) are in

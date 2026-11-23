@@ -196,3 +196,6 @@ dashboard at `:20128`, launch Claude Code through OmniRoute (the guide's `settin
 discovery on), and `curl :20128/v1/models` to prove it. Its safety box matches ours: own password, loopback only,
 guard the key, skip providers flagged "avoid", free limits move, keep client work on providers you trust (that is
 the PII gate in `claude-auto.sh`). `omniroute doctor` is the first thing to run when it misbehaves.
+
+**Second local engine (2026-11-23).** AirLLM (`integrations/airllm/README.md`) can run larger Llama-style models on the
+Mac layer by layer — slow, for batch drafts. Same rule as Bonsai: off until proven; not a PII route before then.

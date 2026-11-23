@@ -80,6 +80,7 @@ cannot write the last one in a clause, it does not need registering.
 | `../integrations/code-validation/vibebreaker/` | VibeBreaker 20-pass adversarial audit protocol (MIT, vendored 2026-10-12) — the code-validator agent's method |
 | `backend-folder-structure.md` | The eight-layer backend layout (config, models, middlewares, controllers, services, routes, utils, tests) every service follows; `bin/brain layout` checks the brain against it |
 | `../integrations/openmontage/README.md` | OpenMontage, the agentic video studio installed on the Mac 2026-10-12 (skill `openmontage-video`) |
+| AirLLM | `integrations/airllm/README.md` | big open models on the Mac layer by layer (local tier, off until proven), added 2026-11-23 |
 | Trader skill pack | `integrations/trader-skill/README.md` | 11 paper-only investing skills (13F copycat, Congress trades, news, sizing, risk, tickets, tax, alerts, rebalance), installed 2026-11-23 |
 | NotebookLM source pack | `integrations/notebooklm/README.md` | the brain as 13 uploadable sources; `bin/brain export notebooklm` |
 - `vlm-architectures.md` — Awesome VLM Architectures (CC0): 155+ vision-language model architectures with primary sources; Nadia's shelf for document/photo/screen model choices (recorded 2026-10-23)
