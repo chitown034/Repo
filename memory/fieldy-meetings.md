@@ -1,6 +1,6 @@
 # Fieldy meetings — digest (written daily by the "Fieldy → brain" task)
 
-Last checked: 2026-11-22
+Last checked: 2026-11-23
 
 ## 2026-10-31
 
