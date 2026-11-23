@@ -935,6 +935,14 @@ through Apple Health and the same export file once Steven switches the nutrition
   127.0.0.1:5555. **Owner.** Victor (use), Alexandra (compliance draft), Derek (install). **Status.** Steven runs the
   installer on the Mac.
 
+## 2026-11-23 — The Trader skill pack installed (paper only, under James and Apex)
+- **Decision.** Steven: "install this skill https://github.com/Jakeschincariol/trader-skill.git". Its 11 skills
+  (copycat, news, budget, pelosi, analyst, screener, risk, broker, tax, alerts, rebalance) are in
+  `.claude/skills/trader-*`, pinned at `5189e79`; the pack's 175 tests passed before install.
+- **Guardrails.** Paper only; no broker connector is connected by an agent; `trader-broker` gains a standing-rules block
+  (tickets and a recorded yes, never an order) and no routine calls it. Steven adds his own SEC user agent on the Mac.
+- **Where.** `integrations/trader-skill/README.md`; seats James (equities) and Apex (discipline) under Vanessa.
+
 ## 2026-11-22 — Weekly improvements gain harness, graph and loop engineering lenses
 - **Decision.** Steven: "add Harness engineering, graph engineering and loop engineering to weekly improvements." The weekly
   improvement review now looks through three lenses — harness (routines, Mac tasks, skills, hooks, router, connectors),

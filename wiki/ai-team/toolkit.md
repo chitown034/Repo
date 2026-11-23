@@ -6,7 +6,7 @@ claims it; the status words come from `integrations/CONNECTIONS.md` (connectors)
 
 ## Counts
 
-toolkit: 49 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
+toolkit: 60 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need attention) · 11 MCP servers · 14 APIs · 72 cloud routines · 60 Mac tasks
 
 ## Vanessa — Chief of Staff / orchestrator
 
@@ -134,6 +134,8 @@ toolkit: 49 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 
 **Skills**
 - `tax-assessor-agent`: Property tax lookup for San Diego and Riverside County: reads PUBLIC assessor and tax-collector pages with read-only browser tools and writes a one-page Property Tax Sheet (APN, assessed values, exemptions to verify, Pro
+- `trader-budget`: >-
+- `trader-tax`: >-
 
 **Connectors**
 - `claude.ai connectors (ListConnectors)` — *ok*: connected: Gmail, Calendar, Drive, Docs, Sheets, Slides, Notion, Slack, Zoho CRM, Fieldy, Strava, Composio, Inkbox, Candid, Canva, Zoom, Pabbly, WhisperAI, You.com, Context7. Needs reconnect: TidyCal,
@@ -254,6 +256,15 @@ toolkit: 49 skills · 7 Claude mods (plugins) · 53 connectors (3 ok, 50 need at
 - `reverse-engineering`: Reverse-engineering capability (REA) — gated. Describes morluto/rea (MIT, MCP server via npx rea-agents setup, 6.x) and the rules for when Steven's agents may use it and when not. Use when a seat proposes analysing a bin
 - `sellbird-setup`: Finish installing Sellbird (github.com/ethanplusai/sellbird) on Steven's Mac for partner prospecting, using the configuration in integrations/sellbird/. Use when Steven says 'finish setting up Sellbird', 'set up Sellbird
 - `source-driven-development`: Grounds every implementation decision in official documentation. Use when you want to verify an approach against the official docs before implementing it, or when you want authoritative, source-cited code free from outda
+- `trader-alerts`: >-
+- `trader-analyst`: >-
+- `trader-broker`: >-
+- `trader-copycat`: >-
+- `trader-news`: >-
+- `trader-pelosi`: >-
+- `trader-rebalance`: >-
+- `trader-risk`: >-
+- `trader-screener`: >-
 
 **Claude mods (plugins)**
 - `brain-reflect`: /remember saves a standing rule into the second brain (bin/brain remember), refusing contact details and numbers.

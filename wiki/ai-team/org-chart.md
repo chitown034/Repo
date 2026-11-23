@@ -230,6 +230,7 @@ shows the same.
 
 - `wiki/ai-team/model-tiering-dispatch.md` — which model each layer of this chart runs on, and the parallel-dispatch limits.
 - `wiki/ai-team/tool-integration-status.md` — connector, skill, and proposed-tool status by seat.
+- **Trader skill pack** (under James for equities, Apex for discipline; paper only, added 2026-11-23) — 11 skills: 13F copycat, Congress trades, news, budget sizing, screener, risk, broker tickets (never an order), tax lots, alerts, rebalance. `integrations/trader-skill/`.
 - `wiki/ai-team/mentors-and-benches.md` — Maxwell, Apex, James, Kevin and what a "bench" actually is.
 - `wiki/ai-team/bot-crew.md` — The Bot Crew: every seat above as a chat card, pods as runnable workflows.
 
