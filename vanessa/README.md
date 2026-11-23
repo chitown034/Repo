@@ -254,6 +254,17 @@ Operate → ⭐ 7-Star Client Journey: every client tracked Lead → Consult →
 - **Loan Limits page** (app56). **Loan Step Automation Engine + Daily Automation Stack** (app62): 40 steps each with trigger/automation/owner/gate/SLA; file tracker fires automations; one-button daily stack.
 - Seats +16, runbooks +15, playbooks +6, agent tools +20. Coverage grid: 89 processes, 100% owned.
 
+## v137 — 2026-11-23
+- **LE & CD Decoder** (app86, #lecd in Loan Intelligence): the Loan Estimate (3 pages) and Closing Disclosure (5 pages) laid out like the real forms. Every line is clickable and shows what it is, who is paid, whether it's shoppable, its TRID tolerance bucket, whether it's an APR finance charge, the typical range and red flags. Also on the page:
+  - A 27-fee encyclopedia, filterable by program.
+  - Origination charges vs. discount points, with a QM points-and-fees calculator (2025 tiers; confirm the 2026 figures) and HOEPA triggers.
+  - Program rules: Conventional, FHA, VA (1% flat fee, 4% concessions), USDA, Jumbo/Non-QM, HECM origination cap, Texas 50(a)(6) 2%.
+  - A concession calculator.
+  - A decoder preloaded with two anonymized real estimates. It checks the section math, cash to close, UFMIP, the prepaid-interest per diem (it detects a 360-day year), P&I, points, section A % and the seller-credit limit.
+  - A Claude explanation button and a client summary.
+  - An LE→CD tolerance cure checker.
+  - New seat: Disclosure Decoder Coach. Tools: le_decode, lecd_explain_line. The test suite now has 48 checks.
+
 ## v135 — 2026-11-22
 - **Agent Engineering** (app85, #agenteng in AI Team & Bridges):
   - **Harness:** every Claude call runs through one runtime. Each call is traced (emails and phones masked), queued under a concurrency limit and counted against a daily budget. Transient errors are retried with backoff, and calls that used tools are never retried. A per-agent circuit breaker pauses a failing agent and posts a board card, and there's a kill switch. 22 deterministic guardrail self-tests (compliance check, email verification, out-of-state routing, send windows, Sellbird config, tool, scheduler and nav registries, drafts-only) run daily at 7:00, and new failures go to the board. Agent tool definitions are normalized: 5 no-input tools were missing input schemas.

@@ -43,7 +43,20 @@ const STUB=`(()=>{window.__prompts=[];window.__mode="ok";window.__n=0;pbCall=asy
  await p.evaluate(()=>{location.hash="#agenteng";hxTab="graph"});await p.waitForTimeout(400);await p.evaluate(()=>route());await p.waitForTimeout(1500);ok(await p.evaluate(()=>!!hxG&&hxG.P.length>10),"graph canvas animates");
  /* sellbird */
  const SB=await p.evaluate(()=>{const y=sbYaml();return{appr:/require_approval:\s*true/.test(y),book:/partner-intro/.test(y),prompt:/-b claude\/focused-bardeen-klwryi/.test(SB_MAC_PROMPT)}});ok(SB.appr&&SB.book,"Sellbird config keeps approval on and has the partner booking link");ok(SB.prompt,"Mac setup prompt clones the right branch");
+ /* LE & CD decoder */
+ const LD=await p.evaluate(()=>{const a=ldAnalyze(LD_SAMPLES.a),b=ldAnalyze(LD_SAMPLES.b);const fl=x=>x.flags.map(f=>f[0]+":"+f[1]).join(" | ");
+  return{aJ:Math.round(a.J),aC:Math.round(a.ctc),bC:Math.round(b.ctc*100)/100,bPI:Math.round(b.piCalc*100)/100,aFl:fl(a),bFl:fl(b),lines:LD_LE.length+LD_CD.length,fees:LD_FEES.length,qm:ldQmLimit(400000)}});
+ ok(LD.aJ===19120&&LD.aC===16357,"Sample A (FHA LE) totals match the document: J $19,120, cash to close $16,357");
+ ok(LD.bC===120056.18,"Sample B (conventional worksheet) cash to close matches $120,056.18 ("+LD.bC+")");
+ ok(LD.bPI===2590.66,"Sample B P&I recalculates to $2,590.66 ("+LD.bPI+")");
+ ok(/UFMIP/.test(LD.aFl)&&/ok:FHA UFMIP/.test(LD.aFl),"FHA UFMIP checked at 1.75% of base loan");
+ ok(/ok:Prepaid interest/.test(LD.aFl)&&/360-day year/.test(LD.bFl),"prepaid interest recomputed (Sample A 365-day; Sample B detected as a 360-day year)");
+ ok(/warn:Discount points/.test(LD.bFl)&&/fee worksheet, not a Loan Estimate/.test(LD.bFl),"Sample B flags 1.833 points and 'worksheet is not an LE'");
+ ok(/ok:Seller credit/.test(LD.bFl),"seller credit checked against the conventional LTV limit");
+ ok(LD.lines>=30&&LD.fees>=25&&LD.qm===12000,"LE/CD line library ("+LD.lines+" lines, "+LD.fees+" fees) and QM 3% limit");
+ for(const t of["le","cd","fees","points","conc","dec","tol"]){await p.evaluate(t=>{location.hash="#lecd";ldTab=t},t);await p.evaluate(()=>route());await p.waitForTimeout(250);ok(await p.evaluate(()=>document.body.innerText.length>1500),"LE & CD tab renders: "+t)}
+ await p.evaluate(()=>{ldTab="le";route()});await p.waitForTimeout(300);await p.click('.ld_l[data-id="A-points"]');ok(/Break-even|break-even/.test(await p.textContent("#ld_det")),"tapping a line on the LE shows its explanation");
  /* layout */
- await p.setViewportSize({width:390,height:800});for(const h of["leadflow","agenteng","sellbird"]){await p.evaluate(h=>location.hash="#"+h,h);await p.waitForTimeout(500);ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"no sideways scroll on a phone: "+h)}
+ await p.setViewportSize({width:390,height:800});for(const h of["leadflow","agenteng","sellbird","lecd"]){await p.evaluate(h=>location.hash="#"+h,h);await p.waitForTimeout(500);ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"no sideways scroll on a phone: "+h)}
  ok(!errs.length,"no page or console errors"+(errs.length?" — "+errs.slice(0,3).join(" | "):""));
  console.log(`\n${pass} passed, ${fail} failed`);await b.close();process.exit(fail?1:0)})();
