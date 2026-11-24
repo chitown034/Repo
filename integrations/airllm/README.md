@@ -31,6 +31,8 @@ again (8B ≈ 16 GB, 70B ≈ 140 GB). `install.sh status` shows it; delete a mod
 `airllm 4.0.0` in a venv, TinyLlama 1.1B downloaded and split, and asked in TinyLlama's chat format — it answered
 "The capital of the United States is Washington, D.C." Two things learned there: `ask.py --device auto` now falls back
 to CPU (float32) when no GPU exists, and in that cloud environment Hugging Face downloads need `HF_HUB_DISABLE_XET=1`
-(the newer transfer host is not on its allowlist). The Mac run is still to be proven.
+(the newer transfer host is not on its allowlist). Re-installed from the repo source (commit `7f7b518`) the same day; `pip check` clean; upstream tests that apply to a
+CPU machine pass (18 passed, 3 Mac-only skipped; `test_automodel`/`test_compression` need CUDA and import a name the
+package no longer exports). The Mac run is still to be proven.
 
 **Guardrails (CLAUDE.md HALT).** Answers are drafts; never a rate quote, an eligibility call or a client send.

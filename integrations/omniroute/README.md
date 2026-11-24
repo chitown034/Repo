@@ -207,4 +207,7 @@ built from source for CPU — GitHub release downloads are blocked in the cloud 
 about 2.2 tokens/s on 4 CPUs with no GPU. This proves the runtime and the model file, not the Mac and not the
 OmniRoute `local` combo's fail-closed test; the PII route still waits for the Mac proof in §"Prove it on the Mac". The
 cloud install lives in the session's scratch space and goes away when the cloud machine is reclaimed.
+Verified the same day: SHA-256 `3907dc1658db1f78a9826bf8d5bcb8dc65db0d466388937af57f2294fae62ec1` matches Hugging Face's
+listing, and PrismML's own `scripts/smoke_local_api.py` (text + native tool loop, reasoning medium, 20K context) passed
+both cases.
 
