@@ -199,3 +199,12 @@ the PII gate in `claude-auto.sh`). `omniroute doctor` is the first thing to run 
 
 **Second local engine (2026-11-23).** AirLLM (`integrations/airllm/README.md`) can run larger Llama-style models on the
 Mac layer by layer — slow, for batch drafts. Same rule as Bonsai: off until proven; not a PII route before then.
+
+**Bonsai 2 27B proven on the cloud machine (2026-11-24).** PrismML's llama.cpp fork (`PrismML-Eng/llama.cpp` @ `d12ca13`,
+built from source for CPU — GitHub release downloads are blocked in the cloud environment) served
+`Ternary-Bonsai-2-27B-PQ2_0.gguf` (7,206,168,928 bytes, matching Hugging Face's listed size) on `127.0.0.1:8080` only
+(checked in `/proc/net/tcp`). Test question answered: "The capital of the United States is Washington, D.C." at
+about 2.2 tokens/s on 4 CPUs with no GPU. This proves the runtime and the model file, not the Mac and not the
+OmniRoute `local` combo's fail-closed test; the PII route still waits for the Mac proof in §"Prove it on the Mac". The
+cloud install lives in the session's scratch space and goes away when the cloud machine is reclaimed.
+

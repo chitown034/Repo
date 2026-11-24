@@ -935,6 +935,15 @@ through Apple Health and the same export file once Steven switches the nutrition
   127.0.0.1:5555. **Owner.** Victor (use), Alexandra (compliance draft), Derek (install). **Status.** Steven runs the
   installer on the Mac.
 
+## 2026-11-24 — AirLLM and Bonsai installed and answering on the cloud machine
+- **Decision.** Steven: "install AIRLLM to this computer and bonsal", then "install on this machine". Both were installed
+  on the orchestrator's cloud machine: AirLLM 4.0.0 (TinyLlama test answered) and Bonsai 2 27B on PrismML's llama.cpp
+  fork built from source (answered at ~2.2 tokens/s, loopback only).
+- **Network.** Steven's cloud environment now allows Hugging Face (huggingface.co and its download hosts) and GitHub/astral
+  hosts for these installs; GitHub release downloads stayed blocked, so the fork was built from source.
+- **Limits.** Cloud proof only: the Mac install and the PII route's fail-closed test are still to be done. The cloud
+  install is in scratch space and does not survive the machine being reclaimed.
+
 ## 2026-11-23 — AirLLM added to the local tier (Mac, off until proven)
 - **Decision.** Steven: "install https://github.com/lyogavin/airllm.git". AirLLM (Apache-2.0, `airllm==4.0.0`, commit
   `7f7b518`) runs large open models layer by layer from disk. It joins Bonsai 27B as a local-tier engine on the Mac.
