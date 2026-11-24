@@ -36,3 +36,7 @@ CPU machine pass (18 passed, 3 Mac-only skipped; `test_automodel`/`test_compress
 package no longer exports). The Mac run is still to be proven.
 
 **Guardrails (CLAUDE.md HALT).** Answers are drafts; never a rate quote, an eligibility call or a client send.
+
+## On the Command Deck (2026-11-24)
+
+The **Local models — Bonsai and AirLLM** card (Orchestration, above the engineering card) shows both engines: cloud vs Mac install status, the proof facts, the Mac install paste and the PII rule. It reads the deck doc `state/localModels`; update that doc (not the page) when the Mac install lands or the fail-closed test passes (`piiRoute`).

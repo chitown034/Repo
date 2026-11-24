@@ -211,3 +211,7 @@ Verified the same day: SHA-256 `3907dc1658db1f78a9826bf8d5bcb8dc65db0d466388937a
 listing, and PrismML's own `scripts/smoke_local_api.py` (text + native tool loop, reasoning medium, 20K context) passed
 both cases.
 
+
+## On the Command Deck (2026-11-24)
+
+The **Local models — Bonsai and AirLLM** card (Orchestration, above the engineering card) shows both engines: cloud vs Mac install status, the proof facts, the Mac install paste and the PII rule. It reads the deck doc `state/localModels`; update that doc (not the page) when the Mac install lands or the fail-closed test passes (`piiRoute`).
