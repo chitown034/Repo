@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-23T14:11:34Z",
- "date": "2026-11-23",
+ "generated": "2026-11-24T14:09:48Z",
+ "date": "2026-11-24",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -66,6 +66,29 @@
    "rank": 3
   },
   {
+   "id": "bm_198db6df26",
+   "category": "ops",
+   "topic": "",
+   "title": "Wake the Mac runner (down ~6 days): run connect-all.sh",
+   "why": "Every Mac-fed deck doc (leads, calendar, ISA line, pipeline, brief, inbox) is frozen at 11/18; 7 Mac tasks show error/refused",
+   "owner": "Derek",
+   "executor": "steven",
+   "impact": 5,
+   "effort": 1,
+   "confidence": 0.95,
+   "plan": [
+    "Wake the Mac, open Terminal in the Repo folder",
+    "bash connect-all.sh",
+    "Paste the REPORT to Claude"
+   ],
+   "source": "cosBrief",
+   "coa": "risk",
+   "weight": 1.0,
+   "score": 4.75,
+   "value": "high",
+   "rank": 4
+  },
+  {
    "id": "bm_8ffe22339d",
    "category": "steven",
    "topic": "tidycal",
@@ -84,49 +107,28 @@
    "weight": 1.772,
    "score": 4.519,
    "value": "high",
-   "rank": 4
-  },
-  {
-   "id": "bm_f4dd4986b9",
-   "category": "steven",
-   "topic": "arive",
-   "title": "Arive",
-   "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
-   "owner": "Derek",
-   "executor": "steven",
-   "impact": 4,
-   "effort": 2,
-   "confidence": 0.85,
-   "plan": [
-    "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
-    "Say 'done g' and Vanessa closes it and runs what it unblocks"
-   ],
-   "source": "steven-steps",
-   "weight": 1.772,
-   "score": 3.012,
-   "value": "high",
    "rank": 5
   },
   {
-   "id": "bm_c8dd0e3f61",
-   "category": "steven",
-   "topic": "drip",
-   "title": "Drips and texts",
-   "why": "Lofty 10DLC registration, then say \"specs ready for review\" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).",
-   "owner": "Victor",
+   "id": "bm_c46fa76c49",
+   "category": "revenue",
+   "topic": "",
+   "title": "Decide on the clear-to-close file with no update for 49 days",
+   "why": "cosBrief p1: a loan has read Clear to Close since early October with no logged update; decision card overdue",
+   "owner": "Harrison",
    "executor": "steven",
-   "impact": 5,
-   "effort": 3,
-   "confidence": 0.85,
+   "impact": 4,
+   "effort": 1,
+   "confidence": 0.8,
    "plan": [
-    "Lofty 10DLC registration, then say \"specs ready for review\" (`wiki/real-estate-playbooks/drip-and-text-follow-up.md`).",
-    "Say 'done k' and Vanessa closes it and runs what it unblocks"
+    "Open the file in the pipeline",
+    "Log the real status or close it out",
+    "No borrower contact sent for you"
    ],
-   "source": "steven-steps",
-   "decision": "approved",
-   "decided_at": "2026-11-09T14:57:00Z",
-   "weight": 1.772,
-   "score": 2.51,
+   "source": "cosBrief",
+   "coa": "risk",
+   "weight": 1.0,
+   "score": 3.2,
    "value": "high",
    "rank": 6
   },
@@ -326,28 +328,6 @@
      "coa": "big-move"
     },
     {
-     "id": "bm_f4dd4986b9",
-     "category": "steven",
-     "topic": "arive",
-     "title": "Arive",
-     "why": "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
-     "owner": "Derek",
-     "executor": "steven",
-     "impact": 4,
-     "effort": 2,
-     "confidence": 0.85,
-     "plan": [
-      "Settings \u2192 Integrations \u2192 Generate (Client ID, Secret, API Key; Pro plan); paste 1 asks for them (step 7e). `integrations/arive/README.md`.",
-      "Say 'done g' and Vanessa closes it and runs what it unblocks"
-     ],
-     "source": "steven-steps",
-     "weight": 1.772,
-     "score": 3.012,
-     "value": "high",
-     "rank": 5,
-     "coa": "big-move"
-    },
-    {
      "id": "bm_6b1e5bf84e",
      "category": "connect",
      "topic": "jarvis",
@@ -367,7 +347,7 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 6,
+     "rank": 5,
      "coa": "big-move"
     },
     {
@@ -390,7 +370,7 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 7,
+     "rank": 6,
      "coa": "big-move"
     },
     {
@@ -413,7 +393,7 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 8,
+     "rank": 7,
      "coa": "big-move"
     },
     {
@@ -436,7 +416,7 @@
      "weight": 1.0,
      "score": 2.4,
      "value": "high",
-     "rank": 9,
+     "rank": 8,
      "coa": "big-move"
     }
    ]
@@ -469,33 +449,11 @@
      "coa": "improve"
     },
     {
-     "id": "bm_c5020d75ae",
-     "category": "brain",
-     "topic": "",
-     "title": "Review 2 tune proposal(s) from the weekly loop",
-     "why": "the loop proposed prompt/route changes nobody has judged",
-     "owner": "Vanessa",
-     "executor": "vanessa",
-     "impact": 2,
-     "effort": 1,
-     "confidence": 0.8,
-     "plan": [
-      "docs/reports/BRAIN-LOOP.md \u2192 Proposals",
-      "promote the ones that pass the holdout; log the rest as rejected"
-     ],
-     "source": "loop:tune",
-     "weight": 1.0,
-     "score": 1.6,
-     "value": "medium",
-     "rank": 2,
-     "coa": "improve"
-    },
-    {
      "id": "bm_d72970e1e7",
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 33/34 on 2026-11-23",
+     "why": "bench 33/34 on 2026-11-24",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -509,7 +467,7 @@
      "weight": 1.0,
      "score": 1.35,
      "value": "medium",
-     "rank": 3,
+     "rank": 2,
      "coa": "improve"
     },
     {
@@ -531,6 +489,28 @@
      "weight": 1.0,
      "score": 1.2,
      "value": "medium",
+     "rank": 3,
+     "coa": "improve"
+    },
+    {
+     "id": "bm_32c0db163a",
+     "category": "brain",
+     "topic": "",
+     "title": "Loop engineering: Fix the 1 gold question(s) the brain misses",
+     "why": "bench 33/34, trend +3 this week (weekly review 2026-11-22, lens score 52/100)",
+     "owner": "Elon",
+     "executor": "vanessa",
+     "impact": 3,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "bin/brain loop \u2192 the failing questions",
+      "write the answer into the routed page; reindex; re-run"
+     ],
+     "source": "weekly:loop",
+     "weight": 1.0,
+     "score": 1.2,
+     "value": "medium",
      "rank": 4,
      "coa": "improve"
     }
@@ -542,92 +522,94 @@
    "about": "what is stale, failing or silent, and the action that heads it off",
    "items": [
     {
-     "id": "bm_4d61c46e96",
+     "id": "bm_198db6df26",
      "category": "ops",
      "topic": "",
-     "title": "Clear Needs-Steven item 1 in today's brief (p1)",
-     "why": "cosBrief needsSteven, deadline overdue (44+ days at Clear to Close; dec",
-     "owner": "Vanessa",
-     "executor": "steven",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.8,
-     "plan": [
-      "Open the Command Deck cosBrief card",
-      "Act on the packet named there"
-     ],
-     "source": "deck cosBrief",
-     "weight": 1.0,
-     "score": 2.4,
-     "value": "high",
-     "rank": 1,
-     "coa": "risk"
-    },
-    {
-     "id": "bm_36f158aec6",
-     "category": "ops",
-     "topic": "",
-     "title": "Clear Needs-Steven item 2 in today's brief (p1)",
-     "why": "cosBrief needsSteven, deadline overdue since 2026-11-09",
-     "owner": "Vanessa",
-     "executor": "steven",
-     "impact": 3,
-     "effort": 1,
-     "confidence": 0.8,
-     "plan": [
-      "Open the Command Deck cosBrief card",
-      "Act on the packet named there"
-     ],
-     "source": "deck cosBrief",
-     "weight": 1.0,
-     "score": 2.4,
-     "value": "high",
-     "rank": 2,
-     "coa": "risk"
-    },
-    {
-     "id": "bm_5f86c473c1",
-     "category": "brain",
-     "topic": "",
-     "title": "Harness engineering: Repair 10 cloud routine(s) whose last run failed",
-     "why": "failing: Books Reconciliation Reminder; Command Deck & ISA Portal Weekly Loop Engineering QA; Command Deck \u2014 Elite Affluent Tracker weekly refresh; Command Deck \u2014 Next Big Moves weekly review (weekly review 2026-11-22, lens score 59/100)",
+     "title": "Wake the Mac runner (down ~6 days): run connect-all.sh",
+     "why": "Every Mac-fed deck doc (leads, calendar, ISA line, pipeline, brief, inbox) is frozen at 11/18; 7 Mac tasks show error/refused",
      "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 2,
-     "confidence": 0.8,
+     "executor": "steven",
+     "impact": 5,
+     "effort": 1,
+     "confidence": 0.95,
      "plan": [
-      "read each routine's last run (list_triggers)",
-      "fix the prompt's broken step or retire the routine",
-      "record it in docs/inventory/cloud-routines.md"
+      "Wake the Mac, open Terminal in the Repo folder",
+      "bash connect-all.sh",
+      "Paste the REPORT to Claude"
      ],
-     "source": "weekly:harness",
-     "weight": 1.0,
-     "score": 1.2,
-     "value": "medium",
-     "rank": 3,
-     "coa": "risk"
-    },
-    {
-     "id": "bm_df7be88089",
-     "category": "ops",
-     "topic": "",
-     "title": "Repair Mac task brain-learn-daily",
-     "why": "runnerStatus (2026-11-18) shows brain-learn-daily last run refused.",
-     "owner": "Derek",
-     "executor": "vanessa",
-     "impact": 3,
-     "effort": 2,
-     "confidence": 0.8,
-     "plan": [
-      "Read the task's log from the next connect-all REPORT",
-      "Fix the spec in integrations/mac-task-specs.md",
-      "Steven pastes `runnerctl run brain-learn-daily`"
-     ],
-     "source": "deck runnerStatus",
+     "source": "cosBrief",
      "coa": "risk",
      "weight": 1.0,
-     "score": 1.2,
+     "score": 4.75,
+     "value": "high",
+     "rank": 1
+    },
+    {
+     "id": "bm_c46fa76c49",
+     "category": "revenue",
+     "topic": "",
+     "title": "Decide on the clear-to-close file with no update for 49 days",
+     "why": "cosBrief p1: a loan has read Clear to Close since early October with no logged update; decision card overdue",
+     "owner": "Harrison",
+     "executor": "steven",
+     "impact": 4,
+     "effort": 1,
+     "confidence": 0.8,
+     "plan": [
+      "Open the file in the pipeline",
+      "Log the real status or close it out",
+      "No borrower contact sent for you"
+     ],
+     "source": "cosBrief",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 3.2,
+     "value": "high",
+     "rank": 2
+    },
+    {
+     "id": "bm_b0b53be605",
+     "category": "compliance",
+     "topic": "",
+     "title": "Move borrower documents off DMs to the secure portal",
+     "why": "cosBrief p1: borrower documents for a file were reported moving through direct messages",
+     "owner": "Alexandra",
+     "executor": "steven",
+     "impact": 5,
+     "effort": 2,
+     "confidence": 0.85,
+     "plan": [
+      "Ask the sender to use the secure upload link",
+      "Delete the DM copies after they are filed",
+      "Alexandra drafts the note; Steven decides"
+     ],
+     "source": "cosBrief",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 2.125,
+     "value": "medium",
+     "rank": 3
+    },
+    {
+     "id": "bm_97631fe06a",
+     "category": "revenue",
+     "topic": "",
+     "title": "Restart the ISA line",
+     "why": "isaLine has had no message since 2026-11-18 (over 36 h)",
+     "owner": "Vanessa",
+     "executor": "vanessa",
+     "impact": 4,
+     "effort": 2,
+     "confidence": 0.8,
+     "plan": [
+      "Check the relay after the Mac runner is back",
+      "Post today's ISA instructions",
+      "Confirm the ISA reads them"
+     ],
+     "source": "isaLine",
+     "coa": "risk",
+     "weight": 1.0,
+     "score": 1.6,
      "value": "medium",
      "rank": 4
     }
@@ -707,22 +689,22 @@
      "rank": 3
     },
     {
-     "id": "bm_3a168cc2d0",
+     "id": "bm_43bb204f56",
      "category": "marketing",
      "topic": "presence",
      "title": "Claim the profiles Sofia listed",
-     "why": "presenceAudit score 0 (0 of 16 searches mention Steven)",
+     "why": "presenceAudit score is 0 (below 0.2)",
      "owner": "Sofia",
      "executor": "steven",
      "impact": 4,
      "effort": 2,
      "confidence": 0.8,
      "plan": [
-      "Claim + verify Google Business Profile and Bing Places (Steven signs in; Sofia drafts description, posts, Q&A)",
-      "Claim identical portal profiles: Zillow agent+lender, Realtor.com, Homes.com, Yelp, LinkedIn; confirm NMLS Consumer Access shows Patriot Pacific Financial",
-      "Build the /about entity page (Person + RealEstateAgent + MortgageBroker JSON-LD) and llms.txt once Steven sends the DRE number and site host path"
+      "Open the presence audit card",
+      "Claim each listed profile",
+      "Sofia fills the bios"
      ],
-     "source": "deck presenceAudit",
+     "source": "presenceAudit",
      "coa": "opportunity",
      "weight": 1.0,
      "score": 1.6,
@@ -748,11 +730,11 @@
    "ref": "bm_295bee4eb4"
   },
   {
-   "q": "What should I do about: Clear Needs-Steven item 1 in today's brief (p1)?",
-   "a": "cosBrief needsSteven, deadline overdue (44+ days at Clear to Close; dec.",
-   "action": "Open the Command Deck cosBrief card",
+   "q": "What should I do about: Wake the Mac runner (down ~6 days): run connect-all.sh?",
+   "a": "Every Mac-fed deck doc (leads, calendar, ISA line, pipeline, brief, inbox) is frozen at 11/18; 7 Mac tasks show error/refused.",
+   "action": "Wake the Mac, open Terminal in the Repo folder",
    "coa": "risk",
-   "ref": "bm_4d61c46e96"
+   "ref": "bm_198db6df26"
   },
   {
    "q": "What should I do about: Drips and texts?",
@@ -787,7 +769,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-11-23: bench 33/34, routes 23/23, 20 stale pages, 29 untested wiki pages, 2 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-24: bench 33/34, routes 23/23, 20 stale pages, 30 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"
