@@ -15,6 +15,7 @@ def main(argv=None):
     ap.add_argument("--model", default=os.environ.get("AIRLLM_MODEL", "TinyLlama/TinyLlama-1.1B-Chat-v1.0"))
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--max-length", type=int, default=512)
+    ap.add_argument("--device", default=os.environ.get("AIRLLM_DEVICE", "auto"), help="auto, cpu or cuda:N (ignored on the Mac)")
     ap.add_argument("--layers-dir", default=os.path.expanduser(os.environ.get("AIRLLM_LAYERS", "~/airllm/layers")))
     a = ap.parse_args(argv)
     try:
@@ -23,7 +24,15 @@ def main(argv=None):
         print("ask.py: airllm is not installed here — run: bash integrations/airllm/install.sh", file=sys.stderr)
         return 1
     os.makedirs(a.layers_dir, exist_ok=True)
-    model = AutoModel.from_pretrained(a.model, layer_shards_saving_path=a.layers_dir)
+    kw = {"layer_shards_saving_path": a.layers_dir}
+    if sys.platform != "darwin":  # the Mac path picks its own MLX backend; elsewhere fall back to CPU without a GPU
+        import torch
+        if a.device == "auto":
+            a.device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        kw["device"] = a.device
+        if a.device == "cpu":
+            kw["dtype"] = torch.float32  # half precision is slow or unsupported on CPU
+    model = AutoModel.from_pretrained(a.model, **kw)
     toks = model.tokenizer([a.prompt], return_tensors="pt", return_attention_mask=False,
                            truncation=True, max_length=a.max_length, padding=False)
     out = model.generate(toks["input_ids"].to(model.device), max_new_tokens=a.max_new_tokens,

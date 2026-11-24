@@ -27,8 +27,10 @@ Gated models (Meta Llama, some Mistral) need your own `huggingface-cli login` fi
 **Disk.** The first run splits the model into per-layer files under `~/airllm/layers`, roughly the model's own size
 again (8B ≈ 16 GB, 70B ≈ 140 GB). `install.sh status` shows it; delete a model's folder there to reclaim it.
 
-**Not done from the cloud.** The cloud session has no GPU and no Apple silicon, and a model download of tens of GB
-would not finish there, so nothing was run from the cloud: the installer and `ask.py` were syntax-checked, and
-`ask.py` was checked to fail cleanly when AirLLM is absent.
+**Proven in the cloud session (2026-11-24).** Installed in the orchestrator's cloud machine (4 CPUs, no GPU):
+`airllm 4.0.0` in a venv, TinyLlama 1.1B downloaded and split, and asked in TinyLlama's chat format — it answered
+"The capital of the United States is Washington, D.C." Two things learned there: `ask.py --device auto` now falls back
+to CPU (float32) when no GPU exists, and in that cloud environment Hugging Face downloads need `HF_HUB_DISABLE_XET=1`
+(the newer transfer host is not on its allowlist). The Mac run is still to be proven.
 
 **Guardrails (CLAUDE.md HALT).** Answers are drafts; never a rate quote, an eligibility call or a client send.
