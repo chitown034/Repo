@@ -1,13 +1,14 @@
-# Claude Code sessions — ledger (generated 2026-11-23; newest first)
+# Claude Code sessions — ledger (generated 2026-11-24; newest first)
 
 Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
 instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
 brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain ingest claude-export` (STEVEN-STEPS 1h).
-197 sessions listed.
+198 sessions listed.
 `memory/claude-chats.md` has no claude.ai export ingested yet (placeholder stamped 2026-10-23) — Steven re-exports from claude.ai (Settings → Privacy → Export data; STEVEN-STEPS 1h).
 
 | Created | Title | Status | Session |
 |---|---|---|---|
+| 2026-11-24 | AirLLM and Bonsai installation | idle | `KijzUPHm` |
 | 2026-11-15 | Download R Kelly Soulacoaster PDF | idle | `AzKee5Vb` |
 | 2026-11-15 | Shortcuts and automations AI dashboard | idle | `tBETfBsr` |
 | 2026-11-15 | 2027 encyclopedia and reference dashboard | idle | `jQ862VBe` |
