@@ -393,3 +393,15 @@ compensation asked, close, rent-back, COP, escalation, expiration and red flags.
 on file (address, list price, commission). Seller outputs: a print-ready comparison file (print or save as PDF), a Gmail
 draft to the seller, or copied text. Every extracted number is checked against the signed offer before advising. Vanessa
 tool: `offer_comparison`.
+
+## Broker Command Center — Apple-style shell and everyday tools (2026-11-25)
+
+Owner: Derek (dashboard), with Marcus for the Mileage Log. The dashboard now follows Apple platform conventions:
+system font, grouped sidebar with collapsible sections, Favorites and Recent, large page titles, translucent bars,
+segmented tabs, capsule buttons, true-black dark mode, and an iOS-style tab bar on phones (Today, Clients, Tasks,
+Search, More). New everyday tools: ⌘K or / searches pages, clients, listings, deals, tasks and actions; N opens Quick
+Add (lead, task, note filed by Vanessa, mileage trip); A opens Alerts (signals plus the Daily Flow inbox); G then
+H/F/C/T/O/M jumps to Today, Daily Flow, Clients, Tasks, Offers, Mileage; ? lists the shortcuts. Home opens on a Today
+summary (greeting, the next four things that need Steven, overdue/due-today/new-lead/open-escrow counts). Mileage Log
+(Broker section) records business trips at the IRS standard rate, 72.5¢/mi for 2026 (Notice 2026-10), with CSV export
+and the Vanessa tool `mileage_log`.
