@@ -457,6 +457,7 @@ function defaults(){return{
  ...EXTRA_DEFAULTS3(),
  ...EXTRA_DEFAULTS4(),
  ...EXTRA_DEFAULTS5(),
+ ...EXTRA_DEFAULTS7(),
  calc:{price:1800000,sde:520000,down:10,seller:10,rate:10.5,years:10,srate:6,syears:7,mgr:90000,closing:3}
 };}
 function load(){try{const r=localStorage.getItem(LS);if(r){return Object.assign(defaults(),JSON.parse(r));}}catch(e){}return defaults();}
@@ -533,6 +534,8 @@ VIEWS.overview=()=>{
  (S.rocks||[]).forEach(x=>x.due&&x.status!=="Done"&&dl.push([x.due,"Rock",x.rock,x.venture]));
  (S.incentives||[]).forEach(x=>x.date&&!["Not a fit","Claimed"].includes(x.status)&&dl.push([x.date,"Incentive",x.program,x.status]));
  (S.tasks||[]).forEach(x=>x.due&&x.status!=="Done"&&dl.push([x.due,"Task",x.title,x.venture]));
+ (S.capital||[]).forEach(x=>x.next&&!["Funded","Declined"].includes(x.status)&&dl.push([x.next,"Capital",x.method+": "+(x.provider||""),x.venture]));
+ (S.teaming||[]).forEach(x=>x.next&&dl.push([x.next,"Partner",x.partner,x.type]));
  (S.certs||[]).forEach(x=>x.expires&&dl.push([x.expires,"Cert expires",x.cert,x.entity]));
  dl.sort((a,b)=>a[0].localeCompare(b[0]));
  const upcoming=dl.filter(d=>{const n=daysUntil(d[0]);return n!==null&&n>=-7&&n<=60;}).slice(0,10);
@@ -2067,6 +2070,365 @@ document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)r
  if(b.id==="agStop"){AGCTL&&AGCTL.abort();return;}
  if(b.id==="agStandup"){teamStandup();return;}});
 (function(){if(!Array.isArray(S.agentLog))S.agentLog=[];})();
+
+/* =========================================================
+   ROUND 8: SCALE & CAPITAL, PROGRAMS MAX, ELITE PLAYBOOKS, 100 INDUSTRIES
+   ========================================================= */
+function EXTRA_DEFAULTS7(){return{
+ teaming:[
+  {ex:true,partner:"Mid-size IT prime (8 years on VA contracts)",type:"Mentor-Protégé JV",role:"Mentor",naics:"541512",workshare:40,status:"Exploring",next:addD(null,10)},
+  {ex:true,partner:"Local HVAC firm owner retiring in 3 years",type:"Buy-in / acquisition",role:"Seller becomes minority partner",naics:"238220",workshare:0,status:"First meeting",next:addD(null,6)}],
+ capital:[
+  {ex:true,method:"Lease financing",venture:"Buy a Business",provider:"Equipment lessor",amount:180000,terms:"60 mo, $1 buyout",status:"Quoted",next:addD(null,8)},
+  {ex:true,method:"Revenue-based financing",venture:"AI Company",provider:"RBF fund",amount:150000,terms:"6% of revenue, 1.4x cap",status:"Researching",next:addD(null,20)}]
+};}
+Object.assign(BLANK,{teaming:{partner:"",type:"Teaming agreement",role:"",naics:"",workshare:0,status:"Exploring",next:""},capital:{method:"Organic growth",venture:"All",provider:"",amount:0,terms:"",status:"Researching",next:""}});
+Object.assign(CALCS,{
+ rbf:{title:"Revenue-based financing cost",fields:[["adv","Advance amount",1000],["cap","Repayment cap (x advance)",.05],["pct","% of monthly revenue paid",.5],["rev","Monthly revenue now",1000],["g","Monthly revenue growth %",.5]],
+  out:c=>{const total=c.adv*c.cap;let paid=0,m=0,rev=c.rev;while(paid<total&&m<120){paid+=rev*c.pct/100;rev*=1+c.g/100;m++;}const cost=total-c.adv;const apr=m?((cost/c.adv)/(m/12))*100*1.8:0;
+   return out([["Total repaid",fullMoney(total)],["Cost of capital",fullMoney(cost),1],["Months to repay",m>=120?"10+ years":m+" months",1],["First monthly payment",fullMoney(c.rev*c.pct/100)],["Rough APR equivalent",apr.toFixed(0)+"%"]])+`<p class="small muted">The APR figure is a rough equivalent (cost spread over the average balance). Faster growth repays sooner and raises the effective APR. Compare with an SBA or bank quote before signing.</p>`;}},
+ lease:{title:"Lease vs. buy (equipment)",fields:[["cost","Equipment price",1000],["pay","Lease payment / mo",50],["term","Lease term (months)",1],["buyout","End-of-lease buyout",100],["rate","Loan rate if buying %",.05],["down","Down payment if buying %",1],["tax","Tax rate %",1]],
+  out:c=>{const leaseTotal=c.pay*c.term+c.buyout;const loan=c.cost*(1-c.down/100);const lp=pmt(loan,c.rate,c.term/12);const buyTotal=c.cost*c.down/100+lp*c.term;const implied=(()=>{let lo=0,hi=60;for(let i=0;i<60;i++){const mid=(lo+hi)/2;const p=pmt(c.cost-c.buyout/Math.pow(1+mid/1200,c.term),mid,c.term/12);if(p>c.pay)hi=mid;else lo=mid;}return (lo+hi)/2;})();
+   return out([["Total lease cost (incl. buyout)",fullMoney(leaseTotal)],["Total loan cost (incl. down payment)",fullMoney(buyTotal)],["Difference",fullMoney(leaseTotal-buyTotal),1],["Implied lease interest rate",implied.toFixed(1)+"%",1],["Cash needed today: lease vs. buy",fullMoney(c.pay)+" vs. "+fullMoney(c.cost*c.down/100)],["Section 179 year-1 tax saving if bought or $1-buyout lease",fullMoney(c.cost*c.tax/100)]])+`<p class="small muted">A $1-buyout (capital) lease is usually treated as a purchase, so Section 179 can apply. A fair-market-value lease is usually deducted as rent instead. Confirm with your CPA.</p>`;}},
+ wf:{title:"Partnership / syndication waterfall",fields:[["cap","Investor capital",1000],["you","Your capital",1000],["profit","Annual distributable cash",1000],["pref","Preferred return to investors %",.5],["split","Investors' share above pref %",1],["years","Years held",1],["exitgain","Profit at sale",1000]],
+  out:c=>{const pref=c.cap*c.pref/100;const yrPrefPaid=Math.min(c.profit,pref);const above=Math.max(0,c.profit-pref);const invY=yrPrefPaid+above*c.split/100;const youY=above*(1-c.split/100);const invExit=c.exitgain*c.split/100,youExit=c.exitgain-invExit;const invTot=invY*c.years+invExit,youTot=youY*c.years+youExit;
+   return out([["Investors per year",fullMoney(invY)],["You (sponsor) per year",fullMoney(youY)],["Investors' cash-on-cash",(c.cap?invY/c.cap*100:0).toFixed(1)+"%"],["Investors total incl. sale",fullMoney(invTot),1],["You total incl. sale",fullMoney(youTot),1],["Your return on your own cash",c.you?((youTot/c.you)*100).toFixed(0)+"%":"Sweat equity"]])+`<p class="small muted">Simplified: pref is not cumulative here, and capital is not returned before the split. Raising money from investors is a securities offering (usually Reg D). Use a securities attorney.</p>`;}}
+});
+(function(){const d={rbf:{adv:150000,cap:1.4,pct:6,rev:40000,g:4},lease:{cost:180000,pay:3650,term:60,buyout:1,rate:10,down:10,tax:30},wf:{cap:900000,you:100000,profit:160000,pref:8,split:70,years:5,exitgain:800000}};for(const k in d){if(!S.calcs[k])S.calcs[k]=d[k];}const _ed=EXTRA_DEFAULTS;EXTRA_DEFAULTS=function(){const x=_ed();Object.assign(x.calcs,d);return x;};})();
+
+/* ---------- 4 scaling methods ---------- */
+const METHODS=[
+ {id:"organic",name:"Organic growth",tag:"Grow from your own cash flow and your customers' money",
+  what:"Reinvest profits and use customer money (deposits, prepayments, retainers, milestone billing) to fund growth instead of outside capital.",
+  how:["Set a fixed reinvestment rate (e.g., 30–50% of profit) for each venture","Collect cash before you deliver: deposits, annual prepay with a discount, retainers, membership plans","Bill government work by milestone or use progress payments where the contract allows","Stretch supplier terms (net 30–60) while collecting faster from customers (shrinks your cash conversion cycle)","Raise prices on the bottom 20% of customers and add maintenance plans for recurring revenue","Referral and repeat engine: past clients and partners before paid ads"],
+  pros:["You keep 100% ownership and control","No debt service or personal guarantee","Builds discipline and real unit economics","Every dollar of growth is proven demand"],
+  cons:["Slowest path; growth is capped by cash flow","Can miss time-sensitive deals (acquisitions, contracts)","Founder often stays the bottleneck","Competitors with capital can outspend you"],
+  fit:"All ventures, especially the family office (subscription fees), mortgage (no capital needed) and AI company (annual prepay).",
+  terms:"Cash conversion cycle = days to collect + days of inventory − days you take to pay. Aim to shrink it every quarter.",
+  res:[["SBA: manage your finances","https://www.sba.gov/business-guide/manage-your-business/manage-your-finances"],["SCORE mentors","https://www.score.org"]]},
+ {id:"lease",name:"Lease financing",tag:"Use the asset now, pay for it from the cash it produces",
+  what:"Lease equipment, vehicles, technology or buildings instead of buying them. Includes $1-buyout (capital) leases, fair-market-value leases, vendor financing, and sale-leasebacks of assets you already own.",
+  how:["List every asset you need in the next 12 months (trucks, HVAC vans, laundromat machines, servers, medical equipment)","Get 3 quotes: an equipment lessor, the manufacturer's finance arm, and your bank","Choose the lease type: $1 buyout if you'll keep it (Section 179 can apply), fair-market-value if it goes obsolete fast (tech)","Negotiate the money factor or rate, buyout, early payoff, maintenance and upgrade rights","For real estate you own, consider a sale-leaseback to free equity for the next acquisition","Track every lease in the capital tracker below"],
+  pros:["Little or no down payment; preserves cash for growth","Faster approval than bank loans; the asset is the collateral","Payments match the revenue the asset generates","Easy upgrades for fast-aging technology","Possible Section 179 / bonus depreciation on $1-buyout leases"],
+  cons:["Higher total cost than a bank or SBA loan","Personal guarantees are common","Early termination penalties","Leases still count as liabilities on your balance sheet (ASC 842) and affect lender ratios","Sale-leasebacks give up appreciation and lock in rent"],
+  fit:"Buy a Business (equipment-heavy targets), Real Estate (sale-leaseback), AI Company (hardware), GovCon (vehicles and gear for new contracts).",
+  terms:"Typical: 24–72 months; $1-buyout vs. 10% purchase-option vs. fair-market-value; watch the implied rate (use the calculator).",
+  res:[["Equipment Leasing and Finance Association","https://www.elfaonline.org"],["IRS Publication 946 (Section 179)","https://www.irs.gov/publications/p946"],["SBA 504 loans (alternative for long-life equipment)","https://www.sba.gov/funding-programs/loans/504-loans"]]},
+ {id:"rbf",name:"Revenue-based financing",tag:"Repay as a percentage of revenue, keep your equity",
+  what:"A funder advances cash and you repay a fixed percentage of monthly revenue until a set total (the cap) is reached. Payments rise and fall with revenue. No equity is sold.",
+  how:["Qualify with steady recurring revenue (often $15k–$50k+ a month and 6–12 months of history)","Connect bank, billing and accounting data for underwriting","Compare cap (1.2x–2.0x), revenue percentage (2–10%), any minimum payment, and fees","Use the money for growth with a fast payback: sales hires, marketing with proven CAC, inventory for signed orders","Model the true cost with the calculator before signing","Avoid merchant cash advances with daily debits and stacking clauses"],
+  pros:["Fast (days to weeks); no equity dilution","Payments flex with revenue","Usually no personal real estate collateral","Good bridge between bootstrapping and a priced equity round"],
+  cons:["Expensive: effective APRs often far above bank or SBA debt","Needs predictable recurring revenue","Takes a slice of revenue right when you're trying to grow","Some products are merchant cash advances in disguise (daily debits, confessions of judgment)"],
+  fit:"AI Company (MRR), Military Family Office (recurring fees), service businesses with maintenance contracts.",
+  terms:"Advance $50k–$3M; cap 1.2–2.0x; 2–10% of revenue; term 12–36 months. Read: default triggers, minimum payment, prepayment discount, UCC lien scope.",
+  res:[["SBA Lender Match (compare to RBF)","https://www.sba.gov/funding-programs/loans/lender-match"],["FTC: small business financing scams","https://www.ftc.gov/business-guidance/small-businesses"]]},
+ {id:"group",name:"Group leverage",tag:"Pool other people's capital, credit, buying power and past performance",
+  what:"Combine resources with others so you can take on bigger deals than you could alone: investor syndications, co-investors on acquisitions, joint ventures and teaming on contracts, mentor-protégé programs, buying groups, angel networks and crowdfunding.",
+  how:["Pick the lever: capital (investors), credibility (mentor or teaming partner), buying power (co-ops, purchasing groups), or capacity (JV)","For capital: structure a deal (e.g., 8% preferred return, then 70/30 split) under Reg D or Reg CF with a securities attorney","For contracts: SBA Mentor-Protégé joint venture or teaming agreement with a prime (see Programs Max)","For acquisitions: co-invest with other veterans or a family office; you run it and own the GP or operating share","Join buying groups for your trades businesses (equipment, insurance, fuel cards)","Document everything: operating agreement, waterfall, voting, buy-sell, capital calls, exit"],
+  pros:["Bigger deals sooner with less of your own cash","Shared risk and shared expertise","A partner's past performance and capacity win contracts you couldn't alone","Buying groups lower costs immediately"],
+  cons:["Dilution and shared control","Securities law exposure when raising from investors","Partner conflict; needs strong agreements","For SDVOSB: a partner with too much control can cost you your certification (see Programs Max)"],
+  fit:"Buy a Business (co-investors), GovCon (JV and mentor-protégé), Real Estate (syndication), Foundation (co-funding with other funders).",
+  terms:"Common syndication terms: 6–8% preferred return, 70/30 to 80/20 splits above it, 1–2% acquisition fee, 2–5 year hold. JV terms: profit split tied to workshare, managing partner, deadlock and exit clauses.",
+  res:[["SEC: exempt offerings (Reg D, Reg CF)","https://www.sec.gov/resources-small-businesses/exempt-offerings"],["SBA Mentor-Protégé Program","https://www.sba.gov/federal-contracting/contracting-assistance-programs/sba-mentor-protege-program"],["Hivers & Strivers (veteran angels)","https://www.hiversandstrivers.com"]]}];
+
+const ADV=[
+ ["Seller financing + SBA stack","Buyer 10%, seller note on standby, SBA 7(a) for the rest","Buy a Business","Seller must accept standby (no payments) for the note to count toward equity"],
+ ["Earn-out","Part of the price paid only if the business hits targets after closing","Buy a Business","Define metrics, accounting and control tightly to avoid disputes"],
+ ["Sale-leaseback","Sell real estate or equipment you own and lease it back to free cash","Real Estate, acquired businesses","Locks in rent; you give up appreciation"],
+ ["Commercial PACE","Energy and resilience upgrades financed through a property tax assessment, often 20+ years","Real Estate","Not available everywhere; lender consent needed"],
+ ["Tax increment financing (TIF)","Future property tax growth from your project repays infrastructure or development costs","Real Estate, larger acquisitions","Negotiated with the city; often 20+ year districts"],
+ ["PILOT / long-term tax abatement","Payment in lieu of taxes agreement that phases in property tax over 10–20+ years","Real Estate, facilities","Usually tied to jobs and investment with clawbacks"],
+ ["Industrial revenue bonds","Tax-exempt bonds for manufacturing facilities through a local authority","Manufacturing / defense machining","Size limits; bond counsel required"],
+ ["New Markets / historic tax credits","Equity from credit investors for projects in low-income or historic areas","Real Estate","Costly to close; better for larger projects"],
+ ["Opportunity Zone capital","Investors with capital gains invest through a fund into your OZ business or property","Real Estate, operating businesses in OZs","You must meet qualified OZ business tests"],
+ ["Receivables factoring / PO financing","Sell or borrow against government invoices or purchase orders","GovCon","Expensive; use only to bridge slow payment"],
+ ["SBA CAPLines","Revolving lines for contracts, seasonal and working capital","GovCon, trades","Lender must offer it"],
+ ["SBIR/STTR and Army xTech prizes","Non-dilutive R&D money and cash prizes","AI Company, Research","Competitive; plan proposals early"],
+ ["Reg CF / Reg A+ crowdfunding","Raise from the public (Reg CF up to $5M a year)","AI Company, consumer-facing ventures","Disclosure and ongoing reporting"],
+ ["Family office co-investment","Wealthy families invest alongside you in deals","Buy a Business, Real Estate","Bring a strong deal and track record"],
+ ["Securities-based lending","Borrow against an investment portfolio instead of selling (the 'buy, borrow, die' approach)","Founder / HoldCo","Margin-call risk if markets fall"],
+ ["Licensing and franchising your model","Others pay to use your brand or system; capital-light expansion","Mortgage training, family office, any proven service","Franchise law disclosure (FDD) requirements"],
+ ["Management contracts","Run assets others own for a fee plus a performance share","Real Estate, facilities, GovCon","Less upside than ownership"],
+ ["Roll-up multiple arbitrage","Buy small companies at 3–4x, combine, and sell the platform at a higher multiple","Buy a Business","Integration risk; needs strong operators"],
+ ["Cost segregation + bonus depreciation","Accelerate depreciation on property to shelter income","Real Estate","Recapture on sale; CPA required"],
+ ["1031 exchange","Defer gains by trading up into larger properties","Real Estate","Strict 45/180-day timelines"],
+ ["ROBS (rollover for business startup)","Use retirement funds to buy a business without early withdrawal tax","Buy a Business","High IRS scrutiny; you can lose retirement savings. Get specialist advice"],
+ ["Customer-funded contracts","Prepaid annual contracts, deposits and milestone billing fund delivery","All","Delivery risk if you over-commit"]];
+
+const NEGOT=[
+ ["Abatement length and phase-in","Ask for 10–20 years with a step-down (e.g., 100% years 1–5, 75% years 6–10, 50% years 11–15)","Shorter, front-loaded terms"],
+ ["Job commitments","Count full-time-equivalents, include contractors where allowed, average over a period","Head count on one date"],
+ ["Wage floor","Tie to county median at signing, not a rising future number","Wage floors indexed upward each year"],
+ ["Measurement dates and ramp","2–3 year ramp before the first test; annual averaging","Year-one compliance"],
+ ["Clawback","Pro-rata repayment only for the shortfall; no interest; cap at benefits received","All-or-nothing clawback with penalties"],
+ ["Cure period","90–180 days to cure a shortfall before clawback","Immediate default"],
+ ["Force majeure","Explicitly covers pandemics, government shutdowns, supply-chain disruption and natural disasters","Narrow or missing clause (learned the hard way in 2020)"],
+ ["Assignment","Incentive transfers to a buyer of the business or property","Personal to the original company"],
+ ["Local hiring and veterans","Count veteran hires and apprentices toward goals; tie in workforce grants","Separate, unfunded hiring mandates"],
+ ["Infrastructure","City or utility pays for roads, utility extensions, permitting fees","You fund public improvements"],
+ ["Sales tax on construction and equipment","Exemption on materials and equipment purchases","Paying full sales tax up front"],
+ ["Utility rate discount","Economic development electric/gas rate for 3–5 years","Standard tariff"],
+ ["Training funds","State training grant or community college customized training, reimbursed per trainee","No training support"],
+ ["Land","$1 ground lease, land write-down, or land contributed by a partner","Buying land at market"],
+ ["Permitting","Expedited review with a named city contact","Standard queue"],
+ ["Reporting","Annual, simple self-certification","Quarterly audits at your cost"]];
+
+const CREDITS=[
+ ["R&D credit (Section 41)","Up to roughly 14% of qualified research spending above a base (simplified method)","AI Company","Startups can apply up to $500k a year against payroll taxes"],
+ ["R&D expensing (Section 174A)","Deduct domestic R&D costs immediately (from 2025)","AI Company","Restored by the 2025 tax law"],
+ ["Section 179 / 100% bonus depreciation","Write off equipment in year one","Acquisitions, trades, AI hardware","$2.5M Section 179 limit; bonus permanent for property acquired after Jan 19, 2025"],
+ ["Work Opportunity Tax Credit","Credit for hiring veterans and other target groups (up to $9,600 for some disabled veterans)","Any venture hiring","Lapsed Dec 31, 2025; a bill would restore it retroactively. Keep filing Form 8850 within 28 days of hire"],
+ ["Employer childcare credit (45F)","Credit for childcare you provide or pay for employees; expanded for 2026 and later","Ventures with staff","Expanded by the 2025 tax law"],
+ ["Paid family & medical leave credit (45S)","Credit for paid leave you provide","Ventures with staff","Made permanent by the 2025 tax law"],
+ ["Retirement plan startup credit (45E)","Covers much of the cost of starting a 401(k) for small employers, for 3 years","HoldCo and each employer entity","Plus an auto-enrollment credit"],
+ ["Military spouse retirement eligibility credit (45AA)","Credit for making military spouses eligible for your retirement plan quickly","Any employer","Small per-spouse credit; easy to claim"],
+ ["Disabled access credit (Section 44)","50% of accessibility spending between $250 and $10,250 (max $5,000)","Real Estate, offices, clinics","Small businesses only"],
+ ["Historic rehabilitation credit (Section 47)","20% of qualified rehab costs on certified historic buildings","Real Estate","Plus state historic credits in many states"],
+ ["New Markets Tax Credit","39% credit to investors; flows to you as low-cost capital","Real Estate, community facilities","Permanent from 2026"],
+ ["Low-Income Housing Tax Credit","Credits that fund affordable housing development","Real Estate","Competitive state allocation"],
+ ["Opportunity Zones","Defer and reduce capital gains invested in OZ businesses or property","Real Estate, operating businesses","Made permanent with new rolling designations"],
+ ["QSBS (Section 1202)","Exclude up to $15M+ of gain on C-corp stock","AI Company","50/75/100% at 3/4/5 years for stock issued after July 4, 2025"],
+ ["State R&D, job, training and investment credits","Varies (e.g., California Competes, Georgia job credits, Texas R&D franchise credit)","All","Apply before you hire or invest"]];
+
+VIEWS.scale=()=>`
+ <div class="sec"><div class="eyebrow">Scale fast, keep control</div><h2>Scale & capital</h2><p class="lede">The four scaling methods from the reel you shared (organic growth, lease financing, revenue-based financing and group leverage), with pros, cons, terms, resources and calculators. Below them are advanced funding strategies, incentive negotiation terms and the tax credits that stack on top.</p></div>
+ <div class="callout navy">I couldn't open the Instagram reel itself (Instagram blocks automated access), so these explanations are built from the four method names. Paste the caption or main points and I'll match it exactly.</div>
+ <div class="sec"><h3>Capital ladder: what to use when</h3>${staticTable(["Stage","Best capital","Avoid"],[["Pre-revenue / launch","Organic growth, customer deposits, VR&E self-employment support, SBA Microloan, grants (nonprofit), SBIR","Expensive debt, merchant cash advances"],["Early revenue ($10k–$100k/mo)","SBA Express (veteran fee relief), equipment leases, revenue-based financing for recurring revenue","Giving up equity cheaply"],["Acquisition","SBA 7(a) + seller note + co-investors (group leverage)","Overpaying to win the deal"],["Growth ($1M+ revenue)","Bank lines, CAPLines, leases, mentor-protégé JVs, state incentives","Personal credit cards"],["Platform ($5M+ EBITDA)","Private credit, family offices, private equity minority stakes, bonds (facilities)","Losing control without a plan"]],true)}</div>
+ ${METHODS.map(m=>`<div class="sec method"><div class="sec-head"><h3>${h(m.name)}</h3><span class="small muted">${h(m.tag)}</span></div><p>${h(m.what)}</p>
+ <div class="cols"><div class="panel sec"><h3 style="font-size:1rem">How to do it</h3>${phaseList("m-"+m.id,m.how)}</div>
+  <div class="panel sec"><div class="cols" style="gap:10px"><div><h3 style="font-size:1rem;color:var(--good)">Pros</h3>${ul(m.pros)}</div><div><h3 style="font-size:1rem;color:var(--bad)">Cons</h3>${ul(m.cons)}</div></div>
+  <p class="small"><b>Best fit:</b> ${h(m.fit)}</p><p class="small"><b>Terms to know:</b> ${h(m.terms)}</p><p class="small"><b>Resources:</b> ${m.res.map(r=>`<a href="${h(r[1])}" target="_blank" rel="noopener">${h(r[0])}</a>`).join(" · ")}</p></div></div></div>`).join("")}
+ <div class="cols">${calcBlock("rbf")}${calcBlock("lease")}</div>
+ <div class="cols">${calcBlock("wf")}<div class="panel sec"><h3>Your capital tracker</h3><p class="small muted">Every lease, RBF offer, investor and partner capital source in one place.</p></div></div>
+ <div class="sec">${table("capital",[{k:"method",label:"Method",type:"select",opts:["Organic growth","Lease financing","Sale-leaseback","Revenue-based financing","Group leverage: investors","Group leverage: JV / teaming","SBA loan","Grant","Incentive","Other"]},{k:"venture",label:"Venture",type:"select",opts:VNAMES},{k:"provider",label:"Provider / partner",wide:true},{k:"amount",label:"Amount",type:"num"},{k:"terms",label:"Key terms",wide:true},{k:"status",label:"Status",type:"select",opts:["Researching","Quoted","Negotiating","Approved","Funded","Declined"]},{k:"next",label:"Next step",type:"date"}],{sum:()=>{const C=S.capital;const t=f=>C.filter(f).reduce((s,r)=>s+(+r.amount||0),0);return sumStrip([["In play",money(t(r=>!["Funded","Declined"].includes(r.status)))],["Funded",money(t(r=>r.status==="Funded"))],["Sources",C.length]]);}})}</div>
+ <div class="sec"><h3>Advanced funding strategies business owners use</h3>${staticTable(["Strategy","How it works","Where it fits for you","Watch out for"],ADV,true)}</div>
+ <div class="sec"><h3>Negotiating incentives: terms to ask for</h3><p class="small muted">Incentives are negotiated. Bring competing site options and a one-page project profile, and negotiate these terms before you sign.</p>${staticTable(["Term","Ask for","Avoid"],NEGOT,true)}
+ <div class="cols" style="margin-top:10px">
+  <div class="panel sec"><h3>Where 10–20+ year abatements come from</h3>${ul(["PILOT agreements through industrial development agencies (common in New York; often 10–20+ years)","Tax increment financing districts (often 20+ years; Illinois TIF districts run up to 23 years)","Cook County, IL Class 6b, 7 and 8 property incentives (reduced assessment for 10–12 years, renewable for 6b)","Texas Chapter 312 abatements and JETI agreements (up to 10 years)","Michigan Renaissance Zones (up to 15 years) and PA 198 abatements","Ohio Community Reinvestment Areas and Enterprise Zones (up to 15 years, longer for some residential)","State enterprise zones and opportunity zone programs","Always confirm current law and the exact schedule; programs change by session"])}</div>
+  <div class="panel sec"><h3>Workforce grants to employers</h3>${ul(["VA Special Employer Incentive: VA reimburses up to 50% of an eligible veteran's salary for up to 6 months (through VR&E)","DoD SkillBridge: transitioning service members work for you during their last months while DoD pays them","WIOA On-the-Job Training: workforce boards reimburse a share of new-hire wages during training (often 50%, more in some areas)","WIOA incumbent worker training: upskill current staff","Registered Apprenticeship grants and state apprenticeship tax credits","State customized training: California Employment Training Panel, Georgia Quick Start, Louisiana FastStart, Texas Skills Development Fund","Community college contract training at reduced cost","WOTC for qualifying hires once Congress restores it (keep filing Form 8850)"])}</div>
+ </div></div>
+ <div class="sec"><h3>Tax credits that stack</h3>${staticTable(["Credit","What it's worth","Best fit","2026 status / note"],CREDITS,true)}<p class="small muted">Planning list only. Your CPA confirms eligibility, amounts and timing.</p></div>
+ <div class="sec"><h3>Your next 12 months: scale sequence</h3>
+ <div class="cols">${[["Q1: Cash engines",["Price increases and maintenance plans in existing ventures (organic)","Prepaid annual plans for family office and AI clients","VetCert approved; SAM.gov active","Two teaming conversations with primes"]],["Q2: Leverage",["First acquisition under LOI with SBA 7(a) + seller note","Lease equipment instead of buying it","Revenue-based financing only if the AI company has steady monthly revenue","Apply for state incentives before any expansion"]],["Q3: Partners",["Mentor-protégé or JV agreement signed","Co-investor group for acquisition #2","Workforce grants on new hires (SEI, OJT, SkillBridge)","R&D credit study for the AI company"]],["Q4: Platform",["Integrate shared services across ventures","Refinance expensive capital (RBF, leases) with bank or SBA debt","Abatement or TIF negotiation for owned real estate","Board of advisors and next-year capital plan"]]].map(([t,a],i)=>`<div class="panel phase"><div class="eyebrow">${t}</div>${phaseList("seq"+i,a)}</div>`).join("")}</div></div>`;
+
+/* ---------- PROGRAMS MAX ---------- */
+const MAXSTEPS=[
+ ["Foundation",["Get or update your VA disability rating; download the rating decision letter and DD-214 (any service-connected rating qualifies for SDVOSB; '51%' is the ownership test, not a rating)","Form the operating company with you owning 51%+ directly (not through the HoldCo) and controlling day-to-day and long-term decisions","Operating agreement reviewed by a government contracts attorney: no minority vetoes over ordinary business, you as manager","EIN, business bank account, accounting system that can support government audits"]],
+ ["Register",["SAM.gov entity registration (UEI and CAGE)","Choose primary and secondary NAICS codes; check SBA size standards","SBA Small Business Search profile with keywords and capability narrative","Agency and prime supplier portals (VA, DLA, your target primes)"]],
+ ["Certify",["VetCert SDVOSB (veterans.certify.sba.gov)","State disabled veteran certification (e.g., California DVBE, New York SDVOB, Texas HUB; check rating thresholds by state)","HUBZone if your office address qualifies (SBA HUBZone map)","8(a) only with a strong documented individual-disadvantage case under the 2026 rules","Corporate certifications (NVBDC, Disability:IN) for large-company supply chains","DOT DBE only if you'll pursue transportation-funded work (rules changed in 2025; individualized showing now required)"]],
+ ["Position",["One-page capability statement listing every certification","Past performance library (include commercial and teammate work)","Pricing model (wrap rates) and a GSA-ready rate sheet","Website page for government buyers"]],
+ ["Find buyers",["USAspending: top agencies and primes in your NAICS","Agency forecasts (Acquisition Gateway, VA OSDBU)","SBA SubNet and prime supplier portals for subcontracts","Contracts ending in 12–18 months (recompetes)"]],
+ ["Partner",["3–5 prime teaming conversations per month","SBA Mentor-Protégé application with a fitting mentor","Joint venture agreement that meets 13 CFR 128.402 if bidding SDVOSB set-asides together","Track partners in the teaming tracker below"]],
+ ["Win",["Answer every relevant Sources Sought to push set-asides","Bid sole-source-eligible SDVOSB work where thresholds allow","Request debriefs on every loss","Log wins in CPARS-ready past performance"]],
+ ["Finance and stack",["SBA Express (veteran fee relief) or CAPLines for working capital","Workforce grants on new hires (VA SEI, OJT, SkillBridge)","State incentives before expanding facilities","Renewal calendar for every certification"]]];
+VIEWS.programs=()=>{let n=0,tot=0;MAXSTEPS.forEach(([p,a],i)=>a.forEach((_,j)=>{tot++;if(S.checks[`max:${i}:${j}`])n++;}));
+ return `<div class="sec"><div class="eyebrow">Use every advantage you've earned</div><h2>Programs max</h2><p class="lede">A step-by-step plan to stack service-disabled veteran status, 8(a), HUBZone, minority and state certifications, Opportunity Zones, grants and veteran loan programs, plus a subcontracting playbook and the right ways to partner with an existing business.</p></div>
+ <div class="callout"><b>About "51%".</b> SDVOSB status requires that service-disabled veterans own at least <b>51%</b> of the company and control it. The disability rating itself can be any service-connected rating (even 0%). Some state programs and VA benefits use rating thresholds; those are noted where they matter.</div>
+ ${sumStrip([["Steps complete",`${n} / ${tot}`],["Partners tracked",(S.teaming||[]).length],["Certifications tracked",(S.certs||[]).length]])}
+ <div class="sec"><h3>Master checklist: maximize every program</h3><div class="cols">${MAXSTEPS.map(([p,a],i)=>{const k=a.filter((_,j)=>S.checks[`max:${i}:${j}`]).length;return `<div class="panel phase"><div class="phase-h"><h3 style="font-size:1.05rem"><span class="muted num" style="font-size:.8rem">Step ${i+1} ·</span> ${h(p)}</h3><span class="pill ${k===a.length?"good":""}">${k}/${a.length}</span></div>${phaseList(`max:${i}`,a)}</div>`;}).join("")}</div></div>
+ <div class="sec"><h3>Program-by-program: what it gets you</h3>${staticTable(["Program","Who qualifies","Advantage","How to apply"],[
+  ["SDVOSB (VetCert)","51%+ owned and controlled by service-disabled veterans","Set-asides and sole-source awards at every agency; 5% government-wide prime goal and 3% subcontracting goal; top priority at VA","veterans.certify.sba.gov (free, 3 years)"],
+  ["VOSB (VetCert)","51%+ veteran-owned and controlled","VA Vets First set-asides; prime subcontracting credit","veterans.certify.sba.gov"],
+  ["8(a)","Socially and economically disadvantaged individual (documented individual showing; disability can support it); net worth under $850k","Set-asides, sole source, 9-year development program, mentor-protégé","certify.sba.gov; program changed and audited in 2026"],
+  ["HUBZone","Principal office in a HUBZone; 35% of employees live in one","Set-asides and 10% price preference in full and open competitions","certify.sba.gov; check the map"],
+  ["Minority Business Enterprise (MBE)","51%+ owned by minority individuals","Corporate supplier diversity programs (private, not federal set-asides)","National Minority Supplier Development Council and its regional councils"],
+  ["DOT DBE","Disadvantaged owners on federally funded transportation projects","State DOT and transit subcontracting goals","State DOT; 2025 interim rule requires individualized disadvantage showing"],
+  ["State disabled veteran programs","Usually state residency plus a VA disability rating (thresholds vary)","State contract goals (e.g., California DVBE 3% goal; California utility supplier diversity under GO 156 counts DVBEs)","Your state procurement office"],
+  ["Opportunity Zones","Not a certification: a location-based investor tax break","If your business or property is in an OZ, investors with capital gains get tax benefits for funding you","Check the CDFI Fund / Treasury OZ map; work with a QOF"],
+  ["SBA Mentor-Protégé","Any small business with a willing mentor","JV can bid on your set-asides with the mentor's size exempt; mentor training and capital","certify.sba.gov"],
+  ["DoD Mentor-Protégé Program","Eligible small businesses including SDVOSBs","Large defense contractors invest in your capability; DoD may reimburse them","DoD Office of Small Business Programs"],
+  ["Veteran SBA loan benefits","51%+ veteran-owned","Reduced or waived upfront SBA fees on some loans; Military Reservist EIDL","Any SBA lender; VBOC can help"],
+  ["Grants","Varies","SBIR/STTR, Army xTech prizes, state economic development grants, workforce training funds, private veteran grants","See Grants and Certifications tabs"]],true)}</div>
+ <div class="cols">
+  <div class="panel sec"><h3>Subcontracting playbook (SDVOSB)</h3>${stepList(["Why primes need you: large contracts require subcontracting plans with SDVOSB goals, and primes are scored on hitting them","Build a target list of 20 primes from USAspending in your NAICS, sorted by agencies that use SDVOSBs","Find each prime's small business liaison officer (SBLO) and register in their supplier portal","Send a tailored capability statement naming the specific contract you can support","Offer a specific scope (a labor category, a site, a service line), not 'anything you need'","Sign a teaming agreement: workshare %, exclusivity, data rights, pricing, what happens if the prime wins","Deliver the first small task orders flawlessly; ask the prime for a CPARS-style past performance letter","Move to joint ventures, then to prime on set-asides with the prime as your sub","Track limitations on subcontracting on every award you prime (50% for services)","Never act as a pass-through: you must really perform the work"])}</div>
+  <div class="panel sec"><h3>Partnering with an existing business</h3>${staticTable(["Option","How it works","Keeps your SDVOSB status?"],[
+   ["Teaming agreement","You prime, they sub (or the reverse)","Yes, if you perform the required share and control the work"],
+   ["SBA Mentor-Protégé JV","Formal SBA-approved mentor; JV bids your set-asides","Yes, with an SBA-compliant JV agreement"],
+   ["SDVOSB joint venture","JV agreement under 13 CFR 128.402: you're the managing venturer and your firm performs at least 40% of the JV's work","Yes, if the agreement meets every required element"],
+   ["Buy into or acquire the business","You buy 51%+ directly; the seller stays as a minority owner or employee","Only if you truly control it: no minority vetoes over ordinary decisions, you run day to day, licenses aren't held hostage by the seller"],
+   ["Strategic subcontract","They're your sub on contracts you win","Yes, within limitations on subcontracting"]],true)}
+   <div class="callout bad" style="margin-top:10px"><b>Avoid "rent-a-vet" setups.</b> If a non-veteran partner really controls the company or does the work while you front the status, that's fraud: False Claims Act liability, debarment and possible prosecution. Get a government contracts attorney to review every partnership agreement.</div></div>
+ </div>
+ <div class="sec"><h3>Teaming & partner tracker</h3>${table("teaming",[{k:"partner",label:"Partner",wide:true},{k:"type",label:"Type",type:"select",opts:["Teaming agreement","Mentor-Protégé JV","SDVOSB JV","Buy-in / acquisition","Subcontract","DoD Mentor-Protégé"]},{k:"role",label:"Their role"},{k:"naics",label:"NAICS"},{k:"workshare",label:"Your workshare %",type:"num"},{k:"status",label:"Status",type:"select",opts:["Exploring","First meeting","NDA signed","Negotiating","Signed","Active","Paused"]},{k:"next",label:"Next step",type:"date"}],{extra:{label:"40% JV test",fn:r=>/JV/.test(r.type)?((+r.workshare||0)>=40?"Meets":"Below 40%"):"—"}})}</div>
+ <div class="sec"><h3>Stacking rules that keep you safe</h3>${ul(["Each certification has its own ownership, control and size rules; meet the strictest one","Recertify on time; a lapse can cost a contract mid-performance","Keep a single evidence folder: DD-214, rating letter, operating agreement, minutes, tax returns, licenses","Don't count the same dollars twice across grants and credits (most programs prohibit it)","Report jobs and wages exactly as defined in each incentive agreement","Size grows as you win; plan for graduating out of small-business status in your main NAICS"])}</div>`;};
+
+/* ---------- ELITE PLAYBOOKS ---------- */
+VIEWS.elite=()=>`
+ <div class="sec"><div class="eyebrow">How the biggest players pay for things</div><h2>Elite playbooks</h2><p class="lede">What public disclosures and reporting show about how Donald Trump, Elon Musk, sports team owners and mega-project developers structure their businesses and raise capital, and which of those moves scale down to your ventures. Figures come from public filings and news reports as of late 2026; check the sources before relying on any number.</p></div>
+ <div class="cols">
+  <div class="panel sec"><h3>Donald Trump</h3>
+   <p class="small"><b>Structure.</b> His assets sit in the Donald J. Trump Revocable Trust, managed by his sons; SEC filings show Donald Trump Jr. holds voting and investment power over the trust's roughly 114.75 million Trump Media (DJT) shares. Operating assets are held through hundreds of separate LLCs listed in his OGE disclosure, typically one per property, club or license.</p>
+   <p class="small"><b>2025 income (OGE filing released June 30, 2026).</b> Reports put crypto-related income at roughly $1.2–1.4 billion, including about $594 million tied to World Liberty Financial and large proceeds from the $TRUMP meme coin, alongside golf and resort revenue (Mar-a-Lago reported about $77 million) and licensing. The filing reports revenue, not profit.</p>
+   <h3 style="font-size:1rem">Strategies</h3>${ul(["Brand licensing: others build and finance; he collects fees (capital-light)","One LLC per asset to isolate liability and financing","Revocable trust for continuity while holding office","New asset classes early (crypto tokens, a public media company via SPAC merger)","Heavy use of real estate debt and depreciation"])}
+   <h3 style="font-size:1rem">What you can use</h3>${ul(["License your systems (mortgage training, family-office planning toolkit) instead of building every location","Separate LLC per property and per acquisition","Revocable trust plus a business continuity plan","Keep valuations defensible and documented: valuation disputes led to New York's civil fraud case"])}
+   <p class="small muted">Sources: AP/OPB, Bloomberg Law, Al Jazeera coverage of the 2026 OGE filing; AOL/AP on the trust.</p></div>
+  <div class="panel sec"><h3>Elon Musk</h3>
+   <p class="small"><b>Structure.</b> Musk holds large personal stakes in each company instead of one parent holding company: Tesla (public), SpaceX (private, which absorbed xAI in February 2026 at a reported $1.25 trillion combined valuation ahead of a planned IPO; X had already been folded into xAI in 2025), Neuralink and The Boring Company. Tesla shares are held through his revocable trust per SEC filings. His 2025 government role used a confidential disclosure, so there's no public OGE breakdown comparable to Trump's.</p>
+   <p class="small"><b>Compensation as capital.</b> Tesla restored his 2018 package as roughly 304 million restricted shares vesting in 2028, and shareholders approved a separate milestone-based award (reported near $1 trillion) on November 6, 2025.</p>
+   <h3 style="font-size:1rem">Strategies</h3>${ul(["Own equity, not salary: wealth compounds in stock","Borrow against shares instead of selling them (has historically pledged Tesla shares; check the current proxy)","Private-company liquidity through tender offers instead of an early IPO","Merge companies to share capital, data and compute (SpaceX + xAI)","Government as anchor customer: NASA and DoD launch contracts, plus incentives such as Tesla's 2010 DOE loan (repaid early) and Nevada Gigafactory tax abatements","Sell regulatory credits and by-products as extra revenue","Vertical integration to control cost and speed"])}
+   <h3 style="font-size:1rem">What you can use</h3>${ul(["Pay yourself and key leaders partly in equity","Use your SDVOSB status to make government an anchor customer for the AI company","Negotiate state incentives before every facility decision","Sell by-products: data, training, licensing"])}
+   <p class="small muted">Sources: Fortune, Axios, Bloomberg Law and Yahoo Finance on the SpaceX–xAI merger; Electrek and Bloomberg on Tesla pay.</p></div>
+ </div>
+ <div class="sec"><h3>Sports team owners: how they buy teams and fund stadiums</h3>
+ <div class="cols">
+  <div class="panel sec"><h3 style="font-size:1rem">Owning the team</h3>${ul(["Controlling owner plus limited partners who buy minority stakes","Private equity now allowed: NFL up to 10% combined (no votes, 6-year minimum hold; controlling owner must hold 30%); NBA and MLB allow a single fund up to 20%","League credit facilities let teams borrow at low rates; leagues cap team debt","Tax: most of a franchise's purchase price is treated as amortizable intangibles over 15 years, sheltering team income (often called roster depreciation)","Revenue sharing from national TV deals makes cash flow bond-like, which lenders love"])}</div>
+  <div class="panel sec"><h3 style="font-size:1rem">Funding the stadium</h3>${ul(["Hotel and tourist taxes: visitors pay, not residents (Las Vegas)","State and local bonds repaid by sales, hotel or general taxes","Kansas STAR bonds: future sales tax growth from the district repays bonds","Tax increment financing districts","League stadium loans (NFL G-4 and successors)","Personal seat licenses: fans pay up front for the right to buy season tickets","Naming rights and founding partner sponsorships","Team equity and private debt"])}</div>
+ </div>
+ ${staticTable(["Project","Total cost","Public share","How it was paid for"],[
+  ["Allegiant Stadium (Raiders, Las Vegas)","~$1.97B","$750M","Clark County hotel room tax increase repays bonds through 2048, with county backing; Raiders put in ~$1.02B (equity, team loans, seat licenses) plus a $200M NFL G-4 loan"],
+  ["Athletics ballpark (Las Vegas)","~$1.5B","$380M","Nevada package of transferable tax credits and county bonds (2023 law)"],
+  ["Titans stadium (Nashville)","~$2.1B","~$1.26B","Record public package: state and Metro bonds repaid largely by stadium-area sales and hotel taxes"],
+  ["Bills stadium (Orchard Park, NY)","~$1.7B","~$850M","State and Erie County funds plus a $200M NFL loan"],
+  ["Chiefs (Kansas)","Multi-billion","Record subsidy","Kansas STAR bonds backed by future sales tax in the stadium district (2025–26 deal)"],
+  ["Commanders (RFK site, DC)","~$3.8B pact","~$1B+","DC infrastructure and site funding; deal restructured in 2026"],
+  ["Bears (Chicago area)","~$4.7–5B dome","Unresolved","Downtown dome push vs. Arlington Heights; property tax deal reached Oct 2026; state funding undecided"],
+  ["SoFi Stadium (Rams/Chargers)","~$5B+","Minimal","Privately financed by Stan Kroenke as anchor of a mixed-use real estate development"],
+  ["Intuit Dome (Clippers)","~$2B","Minimal","Privately financed by Steve Ballmer"],
+  ["Sphere (Las Vegas)","~$2.3B","None for construction","Land contributed by Las Vegas Sands; built from company cash and credit; later a $550M credit facility ($275M term loan + $275M revolver) secured by the leasehold. A planned Maryland Sphere lined up up to $215M in public bond financing"]],true)}
+ <p class="small muted">Sources: Las Vegas Stadium Authority, Review-Journal, Nevada Independent, Front Office Sports, KCUR, Construction Dive and Sphere coverage. Deal terms change; verify before citing.</p></div>
+ <div class="cols">
+  <div class="panel sec"><h3>Other mega-project playbooks</h3>${ul(["Semiconductor fabs: federal CHIPS grants and loans plus state abatements, workforce and infrastructure packages","Data centers for AI: project finance, sale-leasebacks, utility deals and long-term property and sales tax abatements","Las Vegas Grand Prix: the promoter bought land and built a permanent pit building, then sells hospitality at premium prices","Resorts and arenas: land leases from casino partners, naming rights and pre-sold premium seating","Gigafactories: state abatements negotiated against competing states before site selection"])}</div>
+  <div class="panel sec"><h3>The pattern, scaled to your size</h3>${stepList(["Make the public or a partner pay for what benefits them (infrastructure, land, workforce)","Pre-sell: memberships, prepaid plans, founding-customer packages (your version of seat licenses)","Use visitors' or users' money, not yours (fees, deposits, sponsorships)","Borrow against stable, contracted cash flows (government contracts, leases)","Own the land or the IP; lease everything else","Negotiate before you announce, with competing options on the table","Hold assets in separate entities; share services at the HoldCo","Keep equity, borrow against it, and let it compound"])}</div>
+ </div>`;
+
+/* ---------- 100 INDUSTRIES ---------- */
+const IND_CATS={E:"Essential home services",C:"Commercial facility services",H:"Healthcare & aging",D:"Defense & government",I:"Infrastructure & energy",T:"Technology & AI",B:"Business services",R:"Real estate & storage",V:"Environmental & waste",A:"Auto & fleet",M:"Manufacturing",K:"Education & childcare",F:"Death care & essentials"};
+const IND=[
+ ["HVAC service & replacement","E","Comfort and safety can't wait; service agreements","Med (equipment tariffs)","AI dispatch, smart controls, heat pumps","M",1,"Buy"],
+ ["Plumbing","E","Emergencies are non-deferrable","Low","AI scheduling, leak sensors","M",1,"Buy"],
+ ["Electrical contracting","E","Code-required; EV, data center and base work","Med (copper, gear)","Data centers, EV, military bases","M",2,"Buy"],
+ ["Roofing (repair and insurance work)","E","Storm and insurance driven","Med (materials)","Drone inspections, AI estimating","M",1,"Buy"],
+ ["Pest control","E","Recurring routes; health codes","Low","IoT traps, route optimization","L",1,"Buy"],
+ ["Garage door repair","E","Safety and security repairs","Low","AI scheduling","L",0,"Buy"],
+ ["Water treatment & softening","E","Rentals and recurring service","Low","IoT water monitoring","L",0,"Start/Buy"],
+ ["Septic & drain services","E","Regulated and unavoidable","Low","Camera inspection AI","M",0,"Buy"],
+ ["Appliance repair","E","Repair beats replace in downturns","Med (parts)","AI diagnostics","L",0,"Start"],
+ ["Locksmith & access control","E","Security is essential","Low","Smart access; government access control","L",1,"Buy"],
+ ["Tree care & utility line clearance","E","Storms and multi-year utility contracts","Low","AI vegetation management","M",1,"Buy"],
+ ["Pool service routes","E","Recurring weekly revenue","Low","Route software","L",0,"Buy"],
+ ["Water, fire & mold restoration","E","Insurance-paid emergencies","Low","AI moisture mapping","M",1,"Franchise/Buy"],
+ ["Chimney & dryer vent service","E","Fire safety","Low","Scheduling AI","L",0,"Start"],
+ ["Commercial landscaping maintenance","C","Contracted recurring work","Low","Robotic mowers, route AI","M",1,"Buy"],
+ ["Janitorial & commercial cleaning","C","Essential (disinfection demand rose in 2020)","Low","Cleaning robots; government contracts","L",2,"Buy"],
+ ["Fire sprinkler inspection & service","C","Legally mandated inspections","Low","IoT monitoring; base contracts","M",2,"Buy"],
+ ["Fire alarm & life-safety monitoring","C","Code-mandated recurring monitoring","Low","AI monitoring","M",2,"Buy"],
+ ["Elevator maintenance (independent)","C","Mandated inspections and service","Med (parts)","Predictive maintenance","H",1,"Buy"],
+ ["Backflow testing","C","Annual testing required","Low","Compliance software","L",0,"Start"],
+ ["Commercial security systems & video","C","Security spending holds in crises","Med (hardware sourcing)","AI video analytics, counter-drone","M",2,"Buy"],
+ ["Security guard services","C","Essential; large federal buyer","Low","AI patrol, drones","L",2,"Start/Buy"],
+ ["Building automation & commercial HVAC","C","Hospitals, labs and data centers","Med","AI energy optimization","M",2,"Buy"],
+ ["Multi-trade facilities maintenance","C","Every building needs upkeep","Low","AI work-order platforms","M",2,"Start"],
+ ["Home health agency","H","Aging population; Medicare and VA funded","Low","AI documentation","M",1,"Buy"],
+ ["Hospice","H","Non-discretionary, Medicare benefit","Low","Care coordination AI","M",1,"Buy"],
+ ["Behavioral health & addiction treatment","H","Demand rose through COVID; VA community care","Low","Telehealth, AI triage","M",2,"Start/Buy"],
+ ["Physical & occupational therapy","H","Insurance and VA referrals","Low","Remote monitoring","M",1,"Buy"],
+ ["Dental practice group","H","Essential care; strong cash flow","Med (deferral in lockdown)","AI imaging","H",0,"Buy"],
+ ["Veterinary clinics","H","Pet spending held up in recessions","Low","AI diagnostics","H",0,"Buy"],
+ ["Specialty & compounding pharmacy","H","Essential medication access","Med (drug supply chain)","AI inventory","H",0,"Buy"],
+ ["Medical billing & revenue cycle","H","Fully remote-capable","Low","AI coding and claims","L",1,"Start"],
+ ["Occupational health & DOT testing","H","Required testing for employers","Low","Digital records","M",1,"Buy"],
+ ["Assisted living & memory care","H","Demographic demand","Low","AI fall detection","H",0,"Buy"],
+ ["Medical courier & lab logistics","H","Essential during shutdowns","Med (fuel)","Route AI, drone delivery","L",1,"Start"],
+ ["Durable medical equipment","H","Insurance-reimbursed necessities","Med (imports)","Remote monitoring","M",1,"Buy"],
+ ["Clinical & diagnostic labs","H","Testing demand in crises","Low","AI pathology","H",1,"Buy"],
+ ["VA community care clinic","H","VA pays for veteran care","Low","Telehealth","M",2,"Start"],
+ ["Defense IT & cybersecurity services","D","Multi-year federal budgets","Low","AI, zero trust, CMMC","L",2,"Start (SDVOSB)"],
+ ["CMMC compliance consulting","D","Mandatory for DoD suppliers","Low","AI compliance tooling","L",2,"Start"],
+ ["Base operations & facilities support","D","Bases run regardless of the economy","Low","Smart-base tech","M",2,"Sub then prime"],
+ ["Precision CNC machining (defense parts)","D","Munitions and aerospace demand","Med (metals)","Autonomy, hypersonics, AI CAM","H",2,"Buy"],
+ ["Drone services & pilot training","D","Public safety, inspection, defense","Med (Blue UAS sourcing)","Autonomy, counter-UAS","M",2,"Start"],
+ ["Counter-drone integration","D","Fast-growing defense priority","Med","AI detection","H",2,"Partner"],
+ ["Training & simulation","D","Readiness training never stops","Low","AI and VR simulation","M",2,"Start"],
+ ["Aviation maintenance (MRO)","D","Fleets must fly; military and commercial","Med","Predictive maintenance","H",2,"Buy"],
+ ["Government professional services & staffing","D","Federal spending is steady","Low","AI-enabled services","L",2,"Start"],
+ ["Linguist & translation services","D","Defense and courts","Low (AI disruption risk)","AI-assisted translation","L",2,"Start"],
+ ["Environmental remediation (PFAS, DoD, EPA)","V","Cleanup mandates","Low","AI site characterization","M",2,"Partner"],
+ ["Secure facility (SCIF) construction","D","Classified work keeps growing","Low","Secure AI facilities","M",2,"Partner"],
+ ["Defense logistics & spare parts (DLA)","D","Constant parts demand","Med","AI sourcing","M",2,"Start (DIBBS)"],
+ ["Shipyard & maritime supply services","D","Shipbuilding priority","Med","Automation","M",2,"Sub"],
+ ["Water & wastewater operations","I","Utilities are essential","Low","AI leak detection","M",1,"Buy/Partner"],
+ ["Utility locating & damage prevention","I","Required before digging","Low","GPR and AI mapping","L",1,"Start"],
+ ["Fiber & telecom installation","I","Broadband funding programs","Med","5G, edge compute","M",1,"Sub"],
+ ["Data center construction & critical services","I","AI buildout","Med (power, equipment)","AI infrastructure","H",2,"Partner/Sub"],
+ ["Grid & substation services","I","Grid modernization","Med","Smart grid","H",1,"Partner"],
+ ["EV charging installation & maintenance","I","Fleet electrification","Med (policy shifts)","Smart charging","M",1,"Start"],
+ ["Backup generator sales & service","I","Outages and data centers","Med","Microgrids","M",1,"Buy"],
+ ["Equipment rental (lifts, construction)","I","Renting beats buying in downturns","Med","Telematics","H",1,"Buy (lease-financed)"],
+ ["Crane & rigging","I","Construction and industrial","Med","Remote operation","H",1,"Buy"],
+ ["Managed IT services (MSP)","T","Recurring; remote-work surge","Low","AI operations","L",2,"Buy"],
+ ["Managed security & SOC services","T","Breaches don't stop for recessions","Low","AI threat detection","M",2,"Start/Buy"],
+ ["AI implementation & automation consulting","T","Every business is adopting AI","Low","Core","L",2,"Start"],
+ ["Vertical SaaS for regulated small businesses","T","Compliance software is sticky","Low","AI copilots","M",1,"Start"],
+ ["Data labeling & AI evaluation (US, cleared)","T","Defense AI needs U.S. workforce","Low","Core","L",2,"Start"],
+ ["Records digitization & document management","T","Paperless government mandates","Low","AI extraction","L",2,"Start"],
+ ["Cloud & cost (FinOps) consulting","T","Cloud bills keep rising","Low","AI optimization","L",1,"Start"],
+ ["Payroll, HR outsourcing & PEO","B","Every employer needs payroll","Low","AI HR","M",0,"Buy"],
+ ["AI-enabled answering & call centers","B","Customer service always needed","Low (AI disruption)","Voice AI","L",1,"Buy"],
+ ["Accounting, tax & bookkeeping","B","Mandatory filings","Low","AI bookkeeping","L",1,"Buy"],
+ ["Commercial insurance agency","B","Required coverage; renewals","Low","AI quoting","L",1,"Buy"],
+ ["Background screening & drug testing","B","Hiring and DOT compliance","Low","AI verification","L",1,"Start"],
+ ["Healthcare & skilled-trades staffing","B","Chronic shortages","Low","AI matching","L",1,"Start"],
+ ["Compliance & licensing consulting","B","Regulation keeps growing","Low","AI compliance","L",1,"Start"],
+ ["Legal support (process serving, e-discovery)","B","Courts keep running","Low","AI document review","L",1,"Start"],
+ ["Emergency management & continuity consulting","B","Demand rises after every crisis","Low","AI risk modeling","L",2,"Start"],
+ ["Mortgage processing & QC outsourcing","B","Regulatory QC always required","Low","AI document review","L",1,"Start"],
+ ["Self-storage","R","Thrived through COVID","Low","AI pricing","H",1,"Buy"],
+ ["Manufactured housing communities","R","Affordable housing demand","Low","Smart metering","H",1,"Buy"],
+ ["RV & boat storage","R","Low staffing, steady demand","Low","Gate automation","M",0,"Build/Buy"],
+ ["Small-bay industrial & flex space","R","Trades and e-commerce tenants","Low","Smart buildings","H",1,"Buy"],
+ ["Medical office buildings","R","Healthcare tenants are sticky","Low","Telehealth suites","H",0,"Buy"],
+ ["Small cold storage","R","Food and pharma supply chains","Med","Automation","H",1,"Build"],
+ ["Laundromats","R","Open as essential during COVID","Low (utilities)","Card/app payments","M",0,"Buy"],
+ ["Military-adjacent housing & mid-term rentals","R","BAH-backed demand near bases","Low","Dynamic pricing","M",2,"Buy (VA loan)"],
+ ["Waste hauling & roll-off dumpsters","V","Essential service","Med (fuel)","Route AI","H",1,"Buy"],
+ ["Portable sanitation","V","Construction and events","Med","Fill-level sensors","M",0,"Buy"],
+ ["Document shredding","V","HIPAA and GLBA compliance","Low","Chain-of-custody tech","M",1,"Buy"],
+ ["Grease trap & liquid waste","V","Regulated, recurring","Med","Sensor scheduling","M",0,"Buy"],
+ ["Environmental testing labs (water, soil, PFAS)","V","Regulation-driven","Low","AI analysis","H",1,"Buy"],
+ ["General auto repair","A","People repair cars in downturns","Med (parts)","EV service, AI diagnostics","M",0,"Buy"],
+ ["Collision repair","A","Insurance-paid","Med","AI estimating","H",0,"Buy"],
+ ["Mobile fleet maintenance","A","Fleets must stay running","Med","Telematics","M",1,"Start"],
+ ["Contract electronics manufacturing","M","Defense and medical reshoring","Med (components)","Defense electronics","H",2,"Buy"],
+ ["Additive manufacturing (3D printing) for defense","M","On-demand spare parts","Low","Field printing","M",2,"Start"],
+ ["Precision medical device components","M","Healthcare demand","Med","AI quality control","H",1,"Buy"],
+ ["Childcare centers","K","Essential workers' childcare; new employer credit","Low","Parent apps","M",1,"Buy"],
+ ["Trade & cybersecurity training schools","K","GI Bill and WIOA-funded students","Low","AI training","M",2,"Start"],
+ ["Funeral homes & cremation","F","Non-discretionary; aging population","Low","Online planning","M",0,"Buy"]];
+let INDQ="",INDCAT="All",INDVET=false;
+function indRows(){const q=INDQ.toLowerCase();const L=IND.map((r,i)=>[r,i]).filter(([r])=>(INDCAT==="All"||IND_CATS[r[1]]===INDCAT)&&(!INDVET||r[6]===2)&&(!q||r.join(" ").toLowerCase().includes(q)));
+ if(!L.length)return `<tr><td colspan="9" class="small muted">No industries match. Clear the search or filters.</td></tr>`;
+ return L.map(([r,i])=>`<tr><td class="num small">${i+1}</td><td><b>${h(r[0])}</b><div class="small muted">${h(IND_CATS[r[1]])}</div></td><td class="small">${h(r[2])}</td><td><span class="pill ${/^Low/.test(r[3])?"good":"warn"}">${h(r[3])}</span></td><td class="small">${h(r[4])}</td><td class="num">${{L:"$",M:"$$",H:"$$$"}[r[5]]}</td><td>${["","★","★★"][r[6]]||"—"}</td><td class="small">${h(r[7])}</td><td><button class="del" data-addidea="${i}">+ Idea</button></td></tr>`).join("");}
+VIEWS.industries=()=>`
+ <div class="sec"><div class="eyebrow">Where to make your next move</div><h2>100 resilient industries</h2><p class="lede">Industries that stayed open or grew through COVID shutdowns, aren't easily knocked over by fuel prices, tariffs or geopolitics, and have upside from AI and defense spending. Each one is rated for geopolitical exposure, capital needed and how much your veteran status helps.</p></div>
+ <div class="cols">
+  <div class="panel sec"><h3>How they were chosen</h3>${ul(["Essential: on the CISA essential critical infrastructure list or legally mandated (inspections, compliance)","Recurring revenue: contracts, routes, subscriptions, insurance or government payers","Low fuel and import dependence relative to trucking, airlines or retail","Upside from AI (automation, analytics) or defense spending","Financeable with SBA loans and leases; many are 'boring' businesses with retiring owners"])}</div>
+  <div class="panel sec"><h3>Best overlap for you</h3>${ul(["★★ means your SDVOSB status is a real advantage (government buyers)","Start with ★★ + $ (low capital): defense IT and cyber, CMMC consulting, janitorial, security guards, AI consulting, data labeling, training","Acquisition targets with ★★: fire protection, electrical, MSPs, precision machining, aviation MRO","Pair real estate (storage, small-bay industrial, military housing) with your VA loan and SBA 504"])}</div>
+ </div>
+ <div class="btn-row"><input class="field" id="indQ" placeholder="Search industries" value="${h(INDQ)}" style="max-width:280px"><select class="field" id="indCat" style="max-width:260px">${["All",...Object.values(IND_CATS)].map(c=>`<option ${c===INDCAT?"selected":""}>${h(c)}</option>`).join("")}</select><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" class="tchk" id="indVet" ${INDVET?"checked":""}> Only ★★ veteran advantage</label></div>
+ <div class="tbl-wrap"><table class="ind"><thead><tr><th>#</th><th>Industry</th><th>Why it holds up</th><th>Geopolitical / fuel exposure</th><th>AI & defense upside</th><th>Capital</th><th>Vet edge</th><th>Entry</th><th></th></tr></thead><tbody id="indBody">${indRows()}</tbody></table></div>
+ <p class="small muted">"+ Idea" adds the industry to New Ventures for scoring. Ratings are judgment calls for planning; validate local demand, licensing and margins before committing.</p>`;
+
+/* ---------- events, tabs, resources ---------- */
+document.addEventListener("input",e=>{const t=e.target;if(t.id==="indQ"){INDQ=t.value;document.getElementById("indBody").innerHTML=indRows();}});
+document.addEventListener("change",e=>{const t=e.target;if(t.id==="indCat"){INDCAT=t.value;document.getElementById("indBody").innerHTML=indRows();}if(t.id==="indVet"){INDVET=t.checked;document.getElementById("indBody").innerHTML=indRows();}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-addidea]");if(!b)return;const r=IND[+b.dataset.addidea];if(S.ideas.some(x=>x.idea===r[0]))return toast("Already in New Ventures");S.ideas.push({idea:r[0],market:4,fit:Math.min(5,3+r[6]),capital:{L:5,M:3,H:2}[r[5]],speed:r[7].startsWith("Buy")?4:3,vet:[2,4,5][r[6]]});save();toast("Added to New Ventures");});
+TABS.splice(TABS.findIndex(t=>t[0]==="incentives")+1,0,["scale","Scale & Capital"],["programs","Programs Max"],["elite","Elite Playbooks"],["industries","100 Industries"]);
+RESOURCES.push(
+ ["Funding & Loans","Equipment Leasing and Finance Association","https://www.elfaonline.org","Industry body for equipment leasing; lessor directories and guides."],
+ ["Funding & Loans","SEC exempt offerings (Reg D, Reg CF, Reg A)","https://www.sec.gov/resources-small-businesses/exempt-offerings","Rules for raising money from investors."],
+ ["Certifications","National Minority Supplier Development Council","https://nmsdc.org","Minority Business Enterprise certification for corporate supply chains."],
+ ["Certifications","DOT Disadvantaged Business Enterprise","https://www.transportation.gov/civil-rights/disadvantaged-business-enterprise","DBE program for federally funded transportation projects."],
+ ["Certifications","California procurement (DVBE certification)","https://caleprocure.ca.gov","California Small Business and Disabled Veteran Business Enterprise certification."],
+ ["Federal Contracting","DoD Mentor-Protégé Program","https://business.defense.gov/Programs/Mentor-Protege-Program/","Large defense contractors develop small businesses, including SDVOSBs."],
+ ["Grants & Research","Army xTech competitions","https://www.xtech.army.mil","Cash prizes and contracts for technology startups."],
+ ["Incentives & Tax","California Competes tax credit","https://business.ca.gov/california-competes-tax-credit/","Negotiated state income tax credits for growing businesses."],
+ ["Incentives & Tax","California Employment Training Panel","https://etp.ca.gov","Reimburses employers for training workers."],
+ ["Ops & Hiring","Apprenticeship.gov","https://www.apprenticeship.gov","Registered Apprenticeship programs and grants."],
+ ["Ops & Hiring","DOL WIOA (on-the-job training)","https://www.dol.gov/agencies/eta/wioa","Workforce boards fund on-the-job and incumbent worker training."],
+ ["Incentives & Tax","Las Vegas Stadium Authority","https://lvstadiumauthority.com","How Allegiant Stadium's room-tax bonds work."],
+ ["Incentives & Tax","OGE financial disclosures","https://www.oge.gov","Public financial disclosures of senior federal officials."],
+ ["Incentives & Tax","SEC EDGAR search","https://www.sec.gov/edgar/search/","Company filings, ownership and pledged-share disclosures."]);
+(function(){const x=EXTRA_DEFAULTS7();for(const k in x){if(S[k]==null)S[k]=x[k];}})();
 
 /* =========================================================
    ROUTER + EVENTS

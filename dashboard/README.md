@@ -4,7 +4,12 @@ Single-file dashboard (`index.html`) for running a veteran-owned HoldCo and its 
 Military Family Office, AI company, real estate, mortgage broker/MLO, foundation, nonprofit,
 research grants, gov contracts & grants, buy-a-business, and the acquisition HoldCo.
 
-Tabs: Incentives & Tax (state incentives with TX/NC/GA/OH/LA examples, how to find and apply,
+Tabs: Scale & Capital (organic growth, lease financing, revenue-based financing, group leverage with
+pros/cons/terms, RBF / lease-vs-buy / waterfall calculators, capital tracker, advanced funding strategies,
+incentive negotiation terms, workforce grants, tax credit stack, 12-month scale sequence), Programs Max
+(SDVOSB/8(a)/HUBZone/MBE/DBE/state/OZ maximization checklist, subcontracting playbook, partnering options,
+teaming tracker), Elite Playbooks (Trump, Musk, sports owners, stadium and mega-project financing),
+100 Industries (filterable resilient industries with AI/defense upside), Incentives & Tax (state incentives with TX/NC/GA/OH/LA examples, how to find and apply,
 SBA loan types and 2025-26 SOP changes, QSBS, Section 179 and bonus depreciation, historic
 rehabilitation credit, New Markets Tax Credit, Opportunity Zones, R&D credit, government-backed
 acquisition financing, debt leverage calculator, incentives tracker), Overview (with a Needs Attention alerts panel), Scorecard (13-week weekly measures with
