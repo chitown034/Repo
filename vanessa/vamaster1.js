@@ -56,7 +56,7 @@ window.VA_TOPICS=(window.VA_TOPICS||[]).concat([
     "The VA funding fee on a construction loan uses the same chart as a purchase: with less than 5 percent down it is 2.15 percent for first use and 3.3 percent for subsequent use; 5 to under 10 percent down is 1.5 percent; 10 percent or more down is 1.25 percent (current rates run through November 14, 2031 per VBA as reported by secondary sources).",
     "Veterans receiving VA disability compensation and certain others are exempt from the funding fee (38 USC 3729).",
     "Entitlement is used when the loan closes (one-time close) or when the permanent VA loan closes (two-time close); for a one-time close the full construction/permanent loan is one VA loan.",
-    "Full-entitlement veterans have no VA loan limit since the Blue Water Navy Vietnam Veterans Act (2020); partial-entitlement veterans are subject to the county limit, 2026 baseline $832,750, high-cost up to $1,249,125 (secondary sources).",
+    "Full-entitlement veterans have no VA loan limit since the Blue Water Navy Vietnam Veterans Act (2020); partial-entitlement veterans are subject to the county limit, 2027 baseline $855,400, high-cost up to $1,283,100 (secondary sources).",
     "VA allows the veteran to finance the funding fee into the loan; on a construction loan the lender decides how the fee is carried in the budget."]},
    {h:"Property requirements: energy, termite, soil, water and sewer",b:[
     "VA minimum property requirements (Chapter 12) apply to the finished home: safe, sanitary, structurally sound, with adequate heating, utilities and access.",
@@ -125,7 +125,7 @@ window.VA_TOPICS=(window.VA_TOPICS||[]).concat([
    ["Can the veteran put the lot equity in?","Often lender-specific; lot equity usually counts toward acquisition cost and may count as down payment, but confirm how the lender treats it."],
    ["How long is the construction period?","VA text is not confirmed here; lenders commonly allow about 12 months, with extensions possible. Lender overlay: confirm with the AE."],
    ["What if the appraisal is short?","The veteran may pay the difference in cash, renegotiate, or request a reconsideration of value with new comparables; VA does not exceed reasonable value."],
-   ["Is there a VA loan limit?","Not for full-entitlement veterans. Partial entitlement uses the county limit (2026 baseline $832,750)."],
+   ["Is there a VA loan limit?","Not for full-entitlement veterans. Partial entitlement uses the county limit (2027 baseline $855,400)."],
    ["Does a one-time close need a second appraisal?","Generally the as-completed appraisal supports the loan; a final completion inspection is required, but confirm whether a separate appraisal is required by the lender."]],
   caution:[
    "Most VA construction guidance online is lender marketing; the authoritative text is Chapter 7 Topic 2 (Change 43, 2024) and Chapters 10 and 12 of VA Pamphlet 26-7. Read them before quoting.",
@@ -304,7 +304,7 @@ window.VA_TOPICS=(window.VA_TOPICS||[]).concat([
     "A summary of the circular says lenders may charge a construction fee of up to 2 percent if at least 51 percent of proceeds is paid out during the work, and up to 1 percent otherwise (First Tuesday summary; verify against the current Handbook).",
     "The funding fee follows the purchase schedule on a purchase with repairs (2.15 percent first use / 3.3 percent subsequent under 5 percent down; 1.5 percent for 5 to under 10 percent down; 1.25 percent at 10 percent or more), exempt for disability-compensated veterans.",
     "A regular cash-out refinance carries the higher cash-out funding fee schedule; check va.gov for the current table.",
-    "Full-entitlement veterans have no VA loan limit; partial-entitlement veterans use the county limit (2026 baseline $832,750, high cost to $1,249,125).",
+    "Full-entitlement veterans have no VA loan limit; partial-entitlement veterans use the county limit (2027 baseline $855,400, high cost to $1,283,100).",
     "Repair funds are generally financed within the new loan and held in escrow until work is complete.",
     "Underwriting follows Chapter 4, and the repair cost is part of the debt service so the veteran must qualify at the full amount."]},
    {h:"Contractor requirements and the draw process",b:[

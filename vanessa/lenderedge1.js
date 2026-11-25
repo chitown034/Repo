@@ -108,7 +108,7 @@ window.LENDER_EDGE=Object.assign(window.LENDER_EDGE||{},{
   bestFor:["California veterans with credit/AUS issues who benefit from manual UW","Vets who want to avoid the VA funding fee","Buyers of rural CA, manufactured homes or farms (CalVet historically allows) (verify)"],
   avoidFor:["Non-CA properties","Tight closing deadlines (state agency pace) (verify)","Agents who also take a commission on the same deal (no broker origination fee allowed)"],
   pricing:{conv:"n/a",fha:"n/a",va:"market",usda:"n/a",jumbo:"n/a",nonqm:"n/a",dscr:"n/a",heloc:"n/a",reverse:"n/a",basis:"Rate set by CalVet from tax-exempt bond cost (Mar-2025 bond TIC 4.41%); compare vs. VA retail (verify)"},
-  ov:{va:{fico:"",dti:"",residual:"",notes:"Manual UW; no published min FICO; 2026 limit ~$832,750 / high-cost ~$1,249,125 per third party (verify on calvet.ca.gov)"}},
+  ov:{va:{fico:"",dti:"",residual:"",notes:"Manual UW; no published min FICO; 2027 limit ~$855,400 / high-cost $1,283,100 per third party (verify on calvet.ca.gov)"}},
   season:{bk7:"",bk13:"",fc:"",ss:"",notes:"Manual UW — case by case"},
   prop:{condoNW:false,manufactured:true,units:"1",mixedUse:false,rural:true,acreage:"",notes:"Manufactured eligibility historically allowed (verify)"},
   special:["No VA funding fee","CalVet/97","Home improvement loan","Disabled-veteran fee exemptions","Life/disaster insurance included (historical, verify)"],

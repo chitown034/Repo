@@ -2285,7 +2285,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    ],
    [
     "First lien",
-    "80% LTV conforming ($832,750 baseline 2026) or high-balance (up to $1,249,125 in high-cost counties - verify) to avoid PMI and jumbo pricing"
+    "80% LTV conforming ($855,400 baseline 2026) or high-balance (up to $1,249,125 in high-cost counties - verify) to avoid PMI and jumbo pricing"
    ],
    [
     "Second lien",
@@ -3250,7 +3250,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
     "Average drawn balance over a 12-month build ~ $500,000; at a hypothetical 9% interest-only, carry = $500,000 x 0.09 = $45,000.",
     "Construction closing costs and fees ~ $12,000; permanent loan closing costs ~ $10,000; two closings total ~ $22,000.",
     "As-completed value $1,550,000; permanent loan at 75% = $1,162,500 if cash-out allowed, or $1,000,000 rate/term payoff of construction loan.",
-    "A $1,000,000 permanent loan exceeds the 2026 baseline conforming limit ($832,750) but can fit high-balance in counties with a higher limit such as San Diego (verify the county limit); otherwise it is jumbo",
+    "A $1,000,000 permanent loan exceeds the 2027 baseline conforming limit ($855,400) but can fit high-balance in counties with a higher limit such as San Diego (verify the county limit); otherwise it is jumbo",
     "DTI during build: current rent $3,200 + construction interest ~$3,750 = $6,950 on $20,000 income = 34.8%."
    ],
    "result": "Land equity removes the down payment; the real costs of two-time are ~$45k interest carry and ~$22k in two sets of closing costs, offset by permanent-loan flexibility."

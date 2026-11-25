@@ -21,7 +21,7 @@ window.NICHE_DEEP=Object.assign(window.NICHE_DEEP||{},{
    ],
    [
     "Loan amount range",
-    "Above county conforming/high-balance limit (2026 baseline $832,750 - verify county) up to ~$3-5M; larger by exception"
+    "Above county conforming/high-balance limit (2027 baseline $855,400 - verify county) up to ~$3-5M; larger by exception"
    ],
    [
     "Max DTI",
