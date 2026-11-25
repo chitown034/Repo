@@ -1,0 +1,269 @@
+<!-- == APPLE SHELL 2026-11-25 == macOS-style sidebar + iOS tab bar and sheet; drives the existing page tabs, never replaces them -->
+<style>
+/* Scoped to html.ax (set by the script below), so a page without script keeps the old navigation. */
+html.ax { --ax-side: 268px; --ax-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+  --ax-glass: color-mix(in srgb, var(--surface) 72%, transparent); --ax-line: color-mix(in srgb, var(--text) 10%, transparent);
+  --ax-sel: color-mix(in srgb, var(--accent) 16%, transparent); --ax-ease: cubic-bezier(0.32, 0.72, 0, 1); }
+html.ax #pageNav, html.ax #pageCrumb, html.ax #secSlider, html.ax #secToggleBtn, html.ax .deck-head .brand, html.ax .world-clock-bar { display: none !important; }
+#axSide, #axTabs, #axScrim, #axHero, #axBarTitle { display: none; }
+html.ax #axHero, html.ax #axBarTitle { display: block; }
+
+/* ---- large title (iOS / macOS large navigation title) ---- */
+#axHero { padding: 28px 0 6px; font-family: var(--ax-font); }
+#axHero .ax-eyebrow { font-size: 13px; font-weight: 600; color: var(--accent); letter-spacing: 0; }
+#axHero h1 { margin: 2px 0 0; font-family: var(--ax-font); font-size: clamp(30px, 4vw, 40px); line-height: 1.08; font-weight: 700; letter-spacing: -0.022em; color: var(--text); }
+#axHero p { margin: 6px 0 0; font-size: 15px; color: var(--text-dim); }
+
+/* ---- slim toolbar: the old header, minus everything that moved into the sidebar ---- */
+html.ax .deck-head { position: sticky !important; top: 0; z-index: 100; background: var(--ax-glass); border-bottom: 1px solid var(--ax-line); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+html.ax .deck-head-inner { padding: 10px 24px; justify-content: flex-end; flex-wrap: nowrap; }
+#axBarTitle { margin-right: auto; font: 600 15px/1.2 var(--ax-font); color: var(--text); opacity: 0; transform: translateY(4px); transition: opacity .25s ease, transform .35s var(--ax-ease); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+html.ax.ax-scrolled #axBarTitle { opacity: 1; transform: none; }
+html.ax .panel-search input { font-family: var(--ax-font); font-size: 13px; border-radius: 9px; background: color-mix(in srgb, var(--text) 6%, transparent); border-color: transparent; padding: 7px 10px 7px 28px; }
+html.ax .panel-search input:focus { border-color: var(--accent); background: var(--surface); }
+
+/* ---- quick actions: one calm scrolling row instead of two wrapped rows ---- */
+html.ax #qaStart { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 92%, transparent); mask-image: linear-gradient(90deg, #000 92%, transparent); padding-bottom: 4px; }
+html.ax #qaStart::-webkit-scrollbar { display: none; }
+html.ax #qaStart > * { flex: none; }
+
+/* ---- sidebar (desktop) / sheet (phone): same element ---- */
+html.ax #axSide { display: flex; flex-direction: column; font-family: var(--ax-font); color: var(--text); z-index: 120;
+  background: color-mix(in srgb, var(--surface-2) 80%, transparent); -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }
+.ax-side-head { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 8px; padding: 18px 18px 10px; }
+.ax-app { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+.ax-date { font-size: 12px; color: var(--text-faint); margin-right: auto; white-space: nowrap; text-transform: capitalize; }
+.ax-done { display: none; font: 600 15px var(--ax-font); color: var(--accent); background: none; border: 0; padding: 6px 4px; min-height: 0 !important; }
+.ax-searchbtn { display: flex; align-items: center; gap: 8px; margin: 0 12px 8px; padding: 7px 10px; border-radius: 9px; border: 0; width: calc(100% - 24px);
+  background: color-mix(in srgb, var(--text) 7%, transparent); color: var(--text-faint); font: 400 14px var(--ax-font); text-align: left; cursor: text; min-height: 0 !important; }
+.ax-searchbtn kbd { margin-left: auto; font: 500 11px var(--ax-font); color: var(--text-faint); }
+.ax-searchbtn:hover { color: var(--text-dim); border: 0; }
+.ax-scroll { flex: 1; overflow-y: auto; padding: 0 10px 12px; overscroll-behavior: contain; }
+.ax-group { font-size: 11.5px; font-weight: 600; color: var(--text-faint); padding: 14px 10px 4px; letter-spacing: 0; }
+.ax-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 10px; margin: 1px 0; border: 0; border-radius: 8px; background: none;
+  color: var(--text); font: 400 14px/1.25 var(--ax-font); text-align: left; cursor: pointer; min-height: 32px !important; transition: background-color .15s ease; }
+.ax-item svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
+.ax-item .ax-n { margin-left: auto; font-size: 12px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.ax-item:hover { background: color-mix(in srgb, var(--text) 6%, transparent); color: var(--text); border: 0; }
+.ax-item:active { transform: none; background: color-mix(in srgb, var(--text) 10%, transparent); }
+.ax-item[aria-current="page"] { background: var(--ax-sel); font-weight: 600; }
+.ax-item[aria-current="page"] .ax-n { color: var(--accent); }
+.ax-sec { margin: 10px 0 0; border-top: 1px solid var(--ax-line); padding-top: 6px; }
+.ax-sec > summary { list-style: none; cursor: pointer; font-size: 11.5px; font-weight: 600; color: var(--text-faint); padding: 8px 10px 4px; display: flex; align-items: center; }
+.ax-sec > summary::-webkit-details-marker { display: none; }
+.ax-sec > summary::after { content: "›"; margin-left: auto; font-size: 15px; transition: transform .25s var(--ax-ease); }
+.ax-sec[open] > summary::after { transform: rotate(90deg); }
+html.ax .ax-sec #dashMenu { display: block; position: static; width: auto; max-height: none; box-shadow: none; border: 0; background: none; padding: 0; margin: 0; }
+html.ax .ax-sec #dashMenu .pm-group { font: 600 11px var(--ax-font); color: var(--text-faint); padding: 10px 10px 2px; text-transform: none; letter-spacing: 0; }
+html.ax .ax-sec #dashMenu .pm-item { display: flex; font: 400 13px/1.3 var(--ax-font); padding: 6px 10px; border-radius: 8px; min-height: 30px; color: var(--text); text-decoration: none; }
+html.ax .ax-sec #dashMenu .pm-item:hover { background: color-mix(in srgb, var(--text) 6%, transparent); }
+.ax-foot { border-top: 1px solid var(--ax-line); margin-top: 12px; padding: 12px 10px 6px; display: grid; gap: 8px; font-size: 12.5px; }
+.ax-foot .head-nw { flex-direction: row; align-items: baseline; gap: 8px; }
+.ax-foot .head-nw-label { font: 500 12px var(--ax-font); text-transform: none; letter-spacing: 0; }
+.ax-foot .head-nw-value { font-size: 15px; }
+.ax-status { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ax-status .pill { font-size: 10px; padding: 3px 8px; }
+.ax-foot details > summary { cursor: pointer; color: var(--text-faint); font-weight: 600; font-size: 11.5px; list-style: none; }
+.ax-foot details > summary::-webkit-details-marker { display: none; }
+html.ax .ax-foot .world-clock-bar { display: grid !important; padding: 6px 0 0; gap: 4px; max-width: none; }
+html.ax .ax-foot .wc-zone { justify-content: space-between; }
+
+/* ---- desktop: fixed sidebar ---- */
+@media (min-width: 900px) {
+  html.ax body { padding-left: var(--ax-side); }
+  html.ax #axSide { position: fixed; top: 0; left: 0; bottom: 0; width: var(--ax-side); border-right: 1px solid var(--ax-line); }
+}
+
+/* ---- phone & small tablet: tab bar + sheet ---- */
+@media (max-width: 899.98px) {
+  html.ax body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+  html.ax .deck-head-inner { padding: 8px 16px; gap: 8px; }
+  html.ax .panel-search { flex: 1; min-width: 0; }
+  html.ax .panel-search input, html.ax .panel-search input:focus { width: 100%; }
+  html.ax #panelSearchKbd { display: none; }
+  html.ax .nav-dock { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+  html.ax #axTabs { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 110;
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px)); background: var(--ax-glass); border-top: 1px solid var(--ax-line);
+    -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); font-family: var(--ax-font); }
+  .ax-tab { display: flex; flex-direction: column; align-items: center; gap: 2px; border: 0; background: none; color: var(--text-faint); font: 500 10.5px var(--ax-font); padding: 4px 0; min-height: 48px !important; border-radius: 10px; }
+  .ax-tab svg { width: 24px; height: 24px; }
+  .ax-tab[aria-current="page"], .ax-tab[aria-expanded="true"] { color: var(--accent); }
+  .ax-tab:hover { border: 0; color: var(--accent); }
+  .ax-tab:active { transform: scale(0.92); }
+  html.ax #axSide { position: fixed; left: 0; right: 0; bottom: 0; height: min(88vh, 760px); border-radius: 14px 14px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.22);
+    transform: translateY(104%); transition: transform .45s var(--ax-ease); visibility: hidden; padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: color-mix(in srgb, var(--surface) 92%, transparent); }
+  html.ax #axSide::before { content: ""; width: 36px; height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--text) 22%, transparent); margin: 6px auto 0; flex: none; }
+  html.ax.ax-sheet #axSide { transform: none; visibility: visible; }
+  .ax-done { display: inline-block; }
+  .ax-searchbtn kbd { display: none; }
+  html.ax #axScrim { display: block; position: fixed; inset: 0; z-index: 115; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+  html.ax.ax-sheet #axScrim { opacity: 1; pointer-events: auto; }
+  html.ax.ax-sheet body { overflow: hidden; }
+  .ax-item { padding: 9px 10px; min-height: 44px !important; font-size: 16px; }
+  #axHero { padding-top: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.ax #axSide, #axScrim, #axBarTitle, .ax-sec > summary::after { transition: none !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  html.ax #axSide, html.ax #axTabs, html.ax .deck-head { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); }
+}
+@media print { #axSide, #axTabs, #axScrim { display: none !important; } html.ax body { padding: 0 !important; } }
+</style>
+<script>
+/* == APPLE SHELL 2026-11-25 == reads the existing .page-tab buttons and clicks them, so switchPage, its storage key and every
+   other listener keep working; the old controls are only hidden. Remove this block and the old navigation is back as it was. */
+(function () {
+  var GROUPS = [["Run the day", ["daily", "showings", "realestate"]], ["Money & markets", ["markets", "wealth", "rewards"]],
+    ["Team & tools", ["aiteam", "toolkit", "orchestration"]], ["Growth & strategy", ["career", "nextmoves", "pedefense", "eliteaffluent"]], ["Life", ["health", "travel"]]];
+  var TABBAR = [["daily", "Today"], ["realestate", "Lending"], ["markets", "Markets"], ["aiteam", "Team"]];
+  var P = {
+    daily: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    markets: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+    wealth: '<path d="M12 3l9 5H3z"/><path d="M3 10h18M5 10v8M9 10v8M15 10v8M19 10v8M3 21h18"/>',
+    realestate: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+    showings: '<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/>',
+    aiteam: '<path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+    career: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2 9 2 12 0v-5"/>',
+    health: '<path d="M12 20s-7-4.4-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.6-9 9-9 9z"/>',
+    rewards: '<path d="M3 8h18v4H3zM5 12v9h14v-9M12 8v13"/><path d="M12 8c-2-4-6-3-5 0M12 8c2-4 6-3 5 0"/>',
+    pedefense: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>',
+    eliteaffluent: '<path d="M6 3h12l3 6-9 12L3 9z"/><path d="M3 9h18M9 3l3 6 3-6"/>',
+    nextmoves: '<path d="M5 21V4h11l-2 4 2 4H5"/>',
+    travel: '<path d="M2 13l20-8-8 16-2-7z"/>',
+    toolkit: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>',
+    orchestration: '<path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/>',
+    _more: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
+    _search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+    _dot: '<circle cx="12" cy="12" r="4"/>'
+  };
+  function icon(k) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[k] || P._dot) + "</svg>"; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function tabs() { return Array.prototype.slice.call(document.querySelectorAll("#pageTabs .page-tab[data-tab]")); }
+  function pages() { return tabs().map(function (t) { return { id: t.getAttribute("data-tab"), label: (t.textContent || "").trim() }; }); }
+  function current() { var t = document.querySelector("#pageTabs .page-tab.active"); return t ? t.getAttribute("data-tab") : (pages()[0] || {}).id; }
+  function count(id) { return document.querySelectorAll('.panel[data-page="' + id + '"]').length; }
+  function groupOf(id) { for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i][1].indexOf(id) >= 0) return GROUPS[i][0]; return "More"; }
+  function isPhone() { return window.matchMedia("(max-width: 899.98px)").matches; }
+
+  function go(id) {
+    var t = document.querySelector('#pageTabs .page-tab[data-tab="' + id + '"]');
+    if (!t) return;
+    t.click();
+    closeSheet(false);
+    try { window.scrollTo({ top: 0, behavior: "instant" }); } catch (e) { window.scrollTo(0, 0); }
+  }
+
+  function buildSide() {
+    var ps = pages(), byId = {}, seen = {}, html = "";
+    ps.forEach(function (p) { byId[p.id] = p; });
+    GROUPS.concat([["More", ps.map(function (p) { return p.id; })]]).forEach(function (g) {
+      var ids = g[1].filter(function (id) { return byId[id] && !seen[id]; });
+      if (!ids.length) return;
+      html += '<div class="ax-group" role="presentation">' + esc(g[0]) + "</div>";
+      ids.forEach(function (id) {
+        seen[id] = 1;
+        html += '<button type="button" class="ax-item" data-ax="' + esc(id) + '">' + icon(id) + "<span>" + esc(byId[id].label) + '</span><span class="ax-n" aria-label="' + count(id) + ' panels">' + count(id) + "</span></button>";
+      });
+    });
+    $("axNav").innerHTML = html;
+  }
+
+  function sync() {
+    var id = current(), p = pages().filter(function (x) { return x.id === id; })[0];
+    if (!p) return;
+    document.querySelectorAll("[data-ax]").forEach(function (b) { if (b.getAttribute("data-ax") === id) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
+    var inBar = TABBAR.some(function (t) { return t[0] === id; });
+    var more = $("axMoreTab"); if (more) { if (!inBar) more.setAttribute("aria-current", "page"); else more.removeAttribute("aria-current"); }
+    $("axTitle").textContent = p.label;
+    $("axEyebrow").textContent = groupOf(id);
+    var n = count(id);
+    $("axSub").textContent = n + " panel" + (n === 1 ? "" : "s") + " on this page";
+    $("axBarTitle").textContent = p.label;
+    try { document.title = p.label + " — Command Deck"; } catch (e) {}
+    var qa = $("qaStart"); if (qa) qa.style.display = id === "daily" ? "" : "none";
+  }
+
+  var lastFocus = null;
+  function openSheet() {
+    if (!isPhone()) return;
+    lastFocus = document.activeElement;
+    document.documentElement.classList.add("ax-sheet");
+    $("axMoreTab").setAttribute("aria-expanded", "true");
+    $("axSide").setAttribute("aria-modal", "true");
+    var f = $("axSide").querySelector('[aria-current="page"]') || $("axSide").querySelector(".ax-item");
+    setTimeout(function () { try { f && f.focus({ preventScroll: true }); } catch (e) {} }, 60);
+  }
+  function closeSheet(restore) {
+    if (!document.documentElement.classList.contains("ax-sheet")) return;
+    document.documentElement.classList.remove("ax-sheet");
+    var m = $("axMoreTab"); if (m) m.setAttribute("aria-expanded", "false");
+    $("axSide").removeAttribute("aria-modal");
+    if (restore !== false && lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (e) {}
+  }
+
+  function boot() {
+    if (!$("pageTabs") || !tabs().length || $("axSide")) return;
+    var root = document.documentElement;
+
+    var side = document.createElement("aside");
+    side.id = "axSide"; side.setAttribute("aria-label", "Command Deck navigation");
+    side.innerHTML = '<div class="ax-side-head"><span class="ax-app">Command Deck</span><span class="ax-date" id="axDate"></span><button type="button" class="ax-done" id="axDone">Done</button></div>' +
+      '<button type="button" class="ax-searchbtn" id="axSearch">' + icon("_search").replace('aria-hidden="true"', 'aria-hidden="true" width="15" height="15"') + "<span>Search</span><kbd>⌘K</kbd></button>" +
+      '<div class="ax-scroll"><nav id="axNav" aria-label="Pages"></nav><details class="ax-sec" id="axDash"><summary>Other dashboards</summary></details>' +
+      '<div class="ax-foot" id="axFoot"><div class="ax-status" id="axStatus"></div><details id="axClocks"><summary>World clocks</summary></details></div></div>';
+    document.body.appendChild(side);
+    var scrim = document.createElement("div"); scrim.id = "axScrim"; document.body.appendChild(scrim);
+
+    var bar = document.createElement("nav");
+    bar.id = "axTabs"; bar.setAttribute("aria-label", "Main pages");
+    bar.innerHTML = TABBAR.map(function (t) { return '<button type="button" class="ax-tab" data-ax="' + t[0] + '">' + icon(t[0]) + "<span>" + t[1] + "</span></button>"; }).join("") +
+      '<button type="button" class="ax-tab" id="axMoreTab" aria-haspopup="dialog" aria-expanded="false" aria-controls="axSide">' + icon("_more") + "<span>More</span></button>";
+    document.body.appendChild(bar);
+
+    var main = $("a11yMain");
+    var hero = document.createElement("header");
+    hero.id = "axHero";
+    hero.innerHTML = '<div class="ax-eyebrow" id="axEyebrow"></div><h1 id="axTitle"></h1><p id="axSub"></p>';
+    if (main) main.insertBefore(hero, main.firstChild);
+    var inner = document.querySelector(".deck-head-inner");
+    if (inner) { var bt = document.createElement("div"); bt.id = "axBarTitle"; bt.setAttribute("aria-hidden", "true"); inner.insertBefore(bt, inner.firstChild); }
+
+    /* Move, never copy: the moved nodes keep their ids, so every existing script that updates them still does. */
+    var foot = $("axFoot"), status = $("axStatus");
+    var nw = document.querySelector(".deck-head .head-nw"); if (nw) foot.insertBefore(nw, status);
+    ["pillSync", "pillChecklist", "pillShift", "headClock"].forEach(function (id) { var el = $(id); if (el) status.appendChild(el); });
+    var wc = $("worldClockBar"); if (wc) $("axClocks").appendChild(wc);
+    var dm = $("dashMenu"); if (dm) $("axDash").appendChild(dm); else $("axDash").style.display = "none";
+    var ds = $("deckDateShort"); if (ds) $("axDate").textContent = ds.textContent;
+
+    buildSide();
+    root.classList.add("ax");
+    sync();
+
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest && e.target.closest("[data-ax]");
+      if (b) { e.preventDefault(); go(b.getAttribute("data-ax")); return; }
+      if (e.target.closest && e.target.closest("#axMoreTab")) { if (root.classList.contains("ax-sheet")) closeSheet(); else openSheet(); return; }
+      if (e.target === scrim || (e.target.closest && e.target.closest("#axDone"))) { closeSheet(); return; }
+      if (e.target.closest && e.target.closest("#axSearch")) { closeSheet(false); var s = $("panelSearchInput"); if (s) { s.focus(); try { s.select(); } catch (x) {} } }
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeSheet(); });
+    window.addEventListener("resize", function () { if (!isPhone()) closeSheet(false); });
+
+    /* Keep the shell in step however the page changes: its own buttons, [ ] keys, number keys, search jumps, #panel links. */
+    var mo = new MutationObserver(function () { sync(); });
+    tabs().forEach(function (t) { mo.observe(t, { attributes: true, attributeFilter: ["class"] }); });
+    var ds2 = $("deckDateShort"); if (ds2) new MutationObserver(function () { $("axDate").textContent = ds2.textContent; }).observe(ds2, { childList: true, characterData: true, subtree: true });
+
+    /* Large title collapses into the toolbar once it scrolls away, as on iOS. */
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (en) { root.classList.toggle("ax-scrolled", !en.isIntersecting); }); }, { rootMargin: "-56px 0px 0px 0px" }).observe(hero);
+    }
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+</script>
