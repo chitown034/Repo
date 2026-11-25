@@ -9,7 +9,7 @@ pros/cons/terms, RBF / lease-vs-buy / waterfall calculators, capital tracker, ad
 incentive negotiation terms, workforce grants, tax credit stack, 12-month scale sequence), Programs Max
 (SDVOSB/8(a)/HUBZone/MBE/DBE/state/OZ maximization checklist, subcontracting playbook, partnering options,
 teaming tracker), Elite Playbooks (Trump, Musk, sports owners, stadium and mega-project financing),
-100 Industries (filterable resilient industries with AI/defense upside), Incentives & Tax (state incentives with TX/NC/GA/OH/LA examples, how to find and apply,
+100 Industries (filterable resilient industries with AI/defense upside), Deal Playbook (1,000 deal structures: 240 core + 760 ranked combinations, each with definition, how to use, pros/cons and documented users; weighted ranking by goal, side-by-side compare of up to 4, stacking recipes), Funding Finder (35 programs filling gaps: SSBCI, SBICs, surety bonds, DoD OSC, DPA Title III, VETS 2, OASIS+, SSVF, GPD, HVRP, LIHTC, FHLB, CDBG, PRIs and more), Incentives & Tax (state incentives with TX/NC/GA/OH/LA examples, how to find and apply,
 SBA loan types and 2025-26 SOP changes, QSBS, Section 179 and bonus depreciation, historic
 rehabilitation credit, New Markets Tax Credit, Opportunity Zones, R&D credit, government-backed
 acquisition financing, debt leverage calculator, incentives tracker), Overview (with a Needs Attention alerts panel), Scorecard (13-week weekly measures with
