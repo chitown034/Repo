@@ -1,8 +1,5 @@
 <title>Retirement Horizon</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 /* Layout: sticky ledger header with tab rail; assumptions column on the left, analysis canvas on the right; stacks to one column on phones. */
 :root{
@@ -233,47 +230,281 @@ tr.hl td{background:var(--accent-soft)}
 .foot-space{height:8px}
 @media (prefers-reduced-motion: reduce){ .view.on{animation:none} .kpi .bar i, .bracket-bar div, .flow-row .track i{transition:none} }
 </style>
+<style>
+/* Apple-style layer: system typography, Apple system colors, sidebar + inspector layout, sheets, palette and tab bar. Overrides the base layer above. */
+:root{
+  --bg:#F2F2F7; --surface:#FFFFFF; --surface-2:#F2F2F7; --surface-3:#E5E5EA; --ink:#1D1D1F; --muted:#6E6E73; --line:rgba(60,60,67,.16);
+  --accent:#007AFF; --accent-soft:rgba(0,122,255,.10); --accent-ink:#FFFFFF;
+  --good:#248A3D; --good-soft:rgba(52,199,89,.14); --warn:#C93400; --warn-soft:rgba(255,149,0,.14); --bad:#D70015; --bad-soft:rgba(255,59,48,.12);
+  --c-pre:#007AFF; --c-roth:#34C759; --c-tax:#FF9500; --c-hsa:#AF52DE; --c-ss:#FF3B30; --c-ss2:#FF2D55; --c-pen:#32ADE6; --c-ann:#E5A800; --c-spend:#1D1D1F; --c-grid:rgba(60,60,67,.10);
+  --f-display:-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-body:-apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-mono:"SF Mono", ui-monospace, Menlo, Consolas, "Roboto Mono", monospace;
+  --r:14px; --shadow:0 1px 2px rgba(0,0,0,.05), 0 6px 20px rgba(0,0,0,.04);
+  --glass:rgba(255,255,255,.72); --hdr:56px; --side:252px; --insp:360px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#000000; --surface:#1C1C1E; --surface-2:#2C2C2E; --surface-3:#3A3A3C; --ink:#F5F5F7; --muted:#98989D; --line:rgba(84,84,88,.6);
+  --accent:#0A84FF; --accent-soft:rgba(10,132,255,.18); --accent-ink:#FFFFFF;
+  --good:#30D158; --good-soft:rgba(48,209,88,.16); --warn:#FF9F0A; --warn-soft:rgba(255,159,10,.16); --bad:#FF453A; --bad-soft:rgba(255,69,58,.16);
+  --c-pre:#0A84FF; --c-roth:#30D158; --c-tax:#FF9F0A; --c-hsa:#BF5AF2; --c-ss:#FF453A; --c-ss2:#FF375F; --c-pen:#64D2FF; --c-ann:#FFD60A; --c-spend:#F5F5F7; --c-grid:rgba(235,235,245,.09);
+  --shadow:none; --glass:rgba(28,28,30,.72); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#000000; --surface:#1C1C1E; --surface-2:#2C2C2E; --surface-3:#3A3A3C; --ink:#F5F5F7; --muted:#98989D; --line:rgba(84,84,88,.6);
+  --accent:#0A84FF; --accent-soft:rgba(10,132,255,.18); --accent-ink:#FFFFFF;
+  --good:#30D158; --good-soft:rgba(48,209,88,.16); --warn:#FF9F0A; --warn-soft:rgba(255,159,10,.16); --bad:#FF453A; --bad-soft:rgba(255,69,58,.16);
+  --c-pre:#0A84FF; --c-roth:#30D158; --c-tax:#FF9F0A; --c-hsa:#BF5AF2; --c-ss:#FF453A; --c-ss2:#FF375F; --c-pen:#64D2FF; --c-ann:#FFD60A; --c-spend:#F5F5F7; --c-grid:rgba(235,235,245,.09);
+  --shadow:none; --glass:rgba(28,28,30,.72); color-scheme:dark }
+body{font-size:14.5px; -webkit-font-smoothing:antialiased; letter-spacing:-.005em}
+h1,h2,h3,h4{letter-spacing:-.015em}
+h3{font-size:1.08rem; font-weight:650}
+
+/* Header */
+body::before{background:var(--glass)}
+.top{background:var(--glass); -webkit-backdrop-filter:saturate(180%) blur(20px); backdrop-filter:saturate(180%) blur(20px); border-bottom:.5px solid var(--line)}
+.top-inner{max-width:none; flex-direction:row; align-items:center; gap:12px; padding-block:0; height:var(--hdr)}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); flex:0 0 auto}
+.brand b{font-family:var(--f-display); font-size:17px; font-weight:650; letter-spacing:-.02em; white-space:nowrap}
+.logo{width:30px; height:30px; border-radius:8px; background:linear-gradient(135deg,#0A84FF,#5E5CE6); display:grid; place-items:center; color:#fff; box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.search{flex:1 1 auto; max-width:460px; margin-inline:auto; display:flex; align-items:center; gap:8px; height:34px; padding:0 10px; border-radius:10px; border:0; background:var(--surface-3); color:var(--muted); font:inherit; font-size:14px; cursor:pointer; text-align:left}
+.search span{flex:1; overflow:hidden; white-space:nowrap; text-overflow:ellipsis}
+kbd{font-family:var(--f-body); font-size:11.5px; padding:1px 6px; border-radius:5px; background:var(--surface); color:var(--muted); border:.5px solid var(--line)}
+.hdr-ctrls{flex:0 0 auto; gap:8px}
+.hdr-ctrls .eyebrow{display:none}
+.iconbtn{width:34px; height:34px; border-radius:9px; border:0; background:transparent; color:var(--ink); display:inline-grid; place-items:center; cursor:pointer}
+.iconbtn:hover{background:var(--surface-3)}
+.only-narrow{display:none}
+.seg{background:var(--surface-3); border:0; border-radius:9px; padding:2px}
+.seg button{border-radius:7px; padding:5px 12px; font-size:12.5px; color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--surface); box-shadow:0 1px 3px rgba(0,0,0,.12), 0 0 0 .5px rgba(0,0,0,.04)}
+.btn{border-radius:980px; border:0; background:var(--surface-3); padding:7px 14px; font-weight:500; font-size:13px; transition:background .15s, transform .1s}
+.btn:hover{border-color:transparent; filter:brightness(.97)}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--accent); color:#fff}
+.chip{border-radius:980px; border:0; background:var(--surface-3); color:var(--ink); padding:5px 12px}
+.chip[aria-pressed="true"]{background:var(--accent); color:#fff}
+
+/* Shell: sidebar | content | inspector */
+.shell{max-width:none; margin:0; padding:0; display:grid; grid-template-columns:var(--side) minmax(0,1fr); grid-template-areas:"side main"; gap:0; align-items:start}
+body.insp .shell{grid-template-columns:var(--side) minmax(0,1fr) var(--insp); grid-template-areas:"side main insp"}
+main{grid-area:main; padding-left:max(28px, env(safe-area-inset-left,0px)); padding-right:max(28px, env(safe-area-inset-right,0px)); padding-block:22px 64px; min-width:0}
+main > .view, main > .disclaimer{max-width:1220px; margin-inline:auto}
+.side{grid-area:side; position:sticky; top:calc(env(safe-area-inset-top,0px) + var(--hdr)); height:calc(100vh - var(--hdr) - env(safe-area-inset-top,0px)); overflow:auto; display:block; margin:0; padding:14px 10px 40px; border-right:.5px solid var(--line); background:var(--bg); scrollbar-width:thin}
+.side .grp{margin-bottom:14px}
+.side .grp-t{font-size:11.5px; font-weight:600; color:var(--muted); padding:4px 10px; letter-spacing:.02em}
+.side a, .tabs.side > a{display:flex; align-items:center; gap:10px; padding:6px 10px; margin:1px 0; border-radius:8px; color:var(--ink); text-decoration:none; font-size:13.5px; font-weight:450; border:0; white-space:normal; line-height:1.25}
+.side a:hover{background:var(--surface-3)}
+.side a[aria-current="page"]{background:var(--accent); color:#fff; font-weight:550}
+.side a[aria-current="page"] .ico{box-shadow:0 0 0 1.5px rgba(255,255,255,.55)}
+.ico{flex:0 0 auto; width:24px; height:24px; border-radius:6px; display:grid; place-items:center; color:#fff}
+.ico svg{width:15px; height:15px}
+.tabs.side > a:not(:has(.ico))::before{content:""; width:24px; height:24px; border-radius:6px; background:#8E8E93; flex:0 0 auto}
+.panel{grid-area:insp; display:none; border-radius:0; border:0; border-left:.5px solid var(--line); background:var(--surface); position:sticky; top:calc(env(safe-area-inset-top,0px) + var(--hdr)); height:calc(100vh - var(--hdr) - env(safe-area-inset-top,0px)); max-height:none; overflow:auto}
+body.insp .panel{display:block}
+.panel-head{position:sticky; top:0; background:var(--surface); z-index:2; border-bottom:.5px solid var(--line)}
+.panel summary{font-size:13px}
+.panel details{border-bottom:.5px solid var(--line)}
+.insp-close{display:none}
+@media (max-width:1399px){
+  body.insp .shell{grid-template-columns:var(--side) minmax(0,1fr); grid-template-areas:"side main"}
+  .panel{display:block; position:fixed; right:0; top:0; bottom:0; height:auto; width:min(var(--insp), 92vw); z-index:70; transform:translateX(105%); transition:transform .32s cubic-bezier(.2,.8,.2,1); box-shadow:-12px 0 40px rgba(0,0,0,.18); padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+  body.insp .panel{transform:none}
+  .insp-close{display:inline-grid}
+}
+@media (max-width:999px){
+  .shell, body.insp .shell{grid-template-columns:minmax(0,1fr); grid-template-areas:"main"}
+  .side{position:fixed; left:0; top:0; bottom:0; height:auto; width:min(300px, 86vw); z-index:70; transform:translateX(-105%); transition:transform .32s cubic-bezier(.2,.8,.2,1); background:var(--surface); box-shadow:12px 0 40px rgba(0,0,0,.18); padding-top:calc(14px + env(safe-area-inset-top,0px)); padding-left:max(10px, env(safe-area-inset-left,0px))}
+  body.drawer .side{transform:none}
+  .only-narrow{display:inline-grid}
+  main{padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .search span{display:none} .search{max-width:none; flex:0 0 auto; width:34px; padding:0; justify-content:center; background:transparent} .search kbd{display:none}
+  .hdr-ctrls .seg{display:none}
+  .brand b{font-size:16px}
+}
+@media (max-width:520px){ #setupBtn{display:none} #inspBtn{padding:7px 12px} }
+.scrim{position:fixed; inset:0; background:rgba(0,0,0,.32); z-index:65; opacity:0; pointer-events:none; transition:opacity .25s}
+body.drawer .scrim{opacity:1; pointer-events:auto}
+@media (max-width:1399px){ body.insp .scrim{opacity:1; pointer-events:auto} }
+
+/* Page chrome */
+.crumb{font-size:12.5px; color:var(--muted); display:flex; gap:6px; align-items:center; margin-bottom:2px}
+.crumb a{color:var(--muted); text-decoration:none} .crumb a:hover{color:var(--accent)}
+.view-head{align-items:flex-end}
+.view-head h2{font-size:2.05rem; font-weight:700; letter-spacing:-.025em; line-height:1.1}
+.view-head .eyebrow{color:var(--accent); text-transform:none; letter-spacing:0; font-size:13px; font-weight:600}
+.view-head > p{font-size:14px; line-height:1.5}
+.help-btn{display:inline-flex; align-items:center; gap:6px; margin-top:8px}
+.card{border:0; box-shadow:var(--shadow); border-radius:var(--r); padding:18px}
+.kpi{border:0; box-shadow:var(--shadow); border-radius:var(--r)}
+.kpi .v{font-family:var(--f-display); font-weight:700}
+.cat, .coa, .org-node, .ideal-c, .leak{border:.5px solid var(--line); border-radius:12px}
+.tbl-wrap{border:.5px solid var(--line); border-radius:12px}
+th{background:var(--surface-2); letter-spacing:.02em; text-transform:none; font-size:11.5px}
+th, td{border-bottom:.5px solid var(--line)}
+input[type=number], input[type=text], input[type=date], input[type=search], select, textarea{border:.5px solid var(--line); border-radius:8px; background:var(--surface-2); padding:7px 9px}
+input:focus, select:focus, textarea:focus{outline:none; box-shadow:0 0 0 3px var(--accent-soft); border-color:var(--accent)}
+.insight{border-left:0; border-radius:10px; background:var(--surface-2); position:relative; padding-left:16px}
+.insight::before{content:""; position:absolute; left:6px; top:10px; bottom:10px; width:3px; border-radius:3px; background:var(--muted)}
+.insight.good::before{background:var(--good)} .insight.warn::before{background:var(--warn)} .insight.bad::before{background:var(--bad)} .insight.acc::before{background:var(--accent)}
+.big-callout{border:0; border-radius:var(--r)}
+.example-note{color:var(--ink); background:var(--warn-soft)}
+.disclaimer{border-top:.5px solid var(--line)}
+.pager{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px}
+.pager a{display:flex; flex-direction:column; gap:2px; padding:14px 16px; border-radius:var(--r); background:var(--surface); box-shadow:var(--shadow); text-decoration:none; color:var(--ink)}
+.pager a span{font-size:12px; color:var(--muted)} .pager a b{font-weight:600; color:var(--accent)}
+.pager a.next{text-align:right; grid-column:2}
+.pager a:hover{background:var(--surface-2)}
+
+/* Summary tiles */
+.tiles{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px}
+.tile{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:4px 12px; align-items:center; padding:14px 16px; background:var(--surface); border-radius:var(--r); box-shadow:var(--shadow); text-decoration:none; color:var(--ink); transition:transform .15s, background .15s}
+.tile:hover{transform:translateY(-1px); background:var(--surface-2)}
+.tile .ico{grid-row:1/3; width:34px; height:34px; border-radius:9px} .tile .ico svg{width:19px; height:19px}
+.tile .t{font-size:12.5px; color:var(--muted); font-weight:500}
+.tile .v{font-family:var(--f-display); font-size:1.3rem; font-weight:700; letter-spacing:-.02em; line-height:1.15}
+.tile .c{grid-column:2/4; font-size:12px; color:var(--muted)}
+.tile .chev{grid-row:1/3; grid-column:3; color:var(--muted)}
+.setup-banner{display:flex; gap:14px; align-items:center; flex-wrap:wrap; padding:16px 18px; border-radius:var(--r); background:linear-gradient(135deg, rgba(10,132,255,.12), rgba(94,92,230,.12)); }
+.setup-banner b{font-family:var(--f-display); font-size:1.05rem}
+.setup-banner p{color:var(--muted); font-size:13.5px; flex:1 1 280px}
+
+/* Sheets: palette, wizard, help */
+.sheet-wrap{position:fixed; inset:0; z-index:90; display:grid; place-items:start center; padding:max(10vh, 24px) 16px 16px; background:rgba(0,0,0,.28); -webkit-backdrop-filter:blur(2px); backdrop-filter:blur(2px)}
+.sheet-wrap.center{place-items:center}
+.sheet{width:min(680px, 100%); max-height:min(80vh, 760px); overflow:auto; background:var(--surface); border-radius:16px; box-shadow:0 24px 80px rgba(0,0,0,.35); animation:pop .22s cubic-bezier(.2,.8,.2,1)}
+@keyframes pop{from{transform:scale(.97) translateY(6px); opacity:.4} to{transform:none; opacity:1}}
+@media (prefers-reduced-motion: reduce){ .sheet{animation:none} .side, .panel{transition:none} }
+.pal-in{display:flex; align-items:center; gap:10px; padding:14px 16px; border-bottom:.5px solid var(--line); position:sticky; top:0; background:var(--surface)}
+.pal-in input{flex:1; border:0; background:transparent; font-size:18px; padding:4px 0; box-shadow:none}
+.pal-in input:focus{box-shadow:none}
+.pal-list{padding:6px}
+.pal-grp{font-size:11.5px; color:var(--muted); font-weight:600; padding:10px 10px 4px}
+.pal-it{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px; align-items:center; padding:8px 10px; border-radius:9px; cursor:pointer; color:var(--ink)}
+.pal-it .s{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.pal-it[aria-selected="true"]{background:var(--accent); color:#fff} .pal-it[aria-selected="true"] .s{color:rgba(255,255,255,.8)}
+.pal-empty{padding:24px; text-align:center; color:var(--muted)}
+.wz{width:min(560px, 100%)}
+.wz-h{padding:22px 24px 6px} .wz-h h3{font-size:1.45rem; font-weight:700} .wz-h p{color:var(--muted); margin-top:4px}
+.wz-dots{display:flex; gap:6px; padding:0 24px} .wz-dots i{flex:1; height:4px; border-radius:4px; background:var(--surface-3)} .wz-dots i.on{background:var(--accent)}
+.wz-b{padding:18px 24px; display:grid; grid-template-columns:1fr 1fr; gap:12px 14px}
+.wz-b .field.full{grid-column:1/-1}
+@media (max-width:480px){ .wz-b{grid-template-columns:1fr} }
+.wz-f{display:flex; justify-content:space-between; gap:10px; padding:14px 24px 20px; border-top:.5px solid var(--line)}
+.wz-sum{grid-column:1/-1; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px}
+.wz-sum div{background:var(--surface-2); border-radius:12px; padding:12px} .wz-sum b{display:block; font-family:var(--f-display); font-size:1.25rem}
+.help{width:min(620px,100%)}
+.help-h{display:flex; justify-content:space-between; align-items:center; padding:18px 22px 8px} .help-h h3{font-size:1.3rem}
+.help-b{padding:4px 22px 22px; display:flex; flex-direction:column; gap:12px; line-height:1.55}
+.help-b ol, .help-b ul{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:6px}
+
+/* Mobile tab bar */
+.tabbar{display:none}
+@media (max-width:999px){
+  .tabbar{display:grid; grid-template-columns:repeat(5,1fr); position:fixed; left:0; right:0; bottom:0; z-index:60; background:var(--glass); -webkit-backdrop-filter:saturate(180%) blur(20px); backdrop-filter:saturate(180%) blur(20px); border-top:.5px solid var(--line); padding:6px max(6px, env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(6px, env(safe-area-inset-left,0px))}
+  .tabbar a, .tabbar button{display:flex; flex-direction:column; align-items:center; gap:2px; font:inherit; font-size:10.5px; color:var(--muted); text-decoration:none; background:none; border:0; padding:4px 0; cursor:pointer}
+  .tabbar svg{width:23px; height:23px}
+  .tabbar [aria-current="page"]{color:var(--accent)}
+}
+/* Learn pages */
+.gl-list{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:10px}
+.gl{padding:12px 14px; background:var(--surface); border-radius:12px; box-shadow:var(--shadow)}
+.gl b{display:block; margin-bottom:3px} .gl p{font-size:13px; color:var(--ink)} .gl a{font-size:12px}
+.gl.flash{box-shadow:0 0 0 3px var(--accent)}
+.az{display:flex; flex-wrap:wrap; gap:4px}
+.az button{width:28px; height:28px; border-radius:7px; border:0; background:var(--surface-3); color:var(--ink); font:inherit; font-size:12px; cursor:pointer}
+.rm{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:12px}
+.rm-c{background:var(--surface); border-radius:var(--r); box-shadow:var(--shadow); padding:16px 18px; display:flex; flex-direction:column; gap:8px}
+.rm-c.now{box-shadow:0 0 0 2px var(--accent), var(--shadow)}
+.rm-c h4{display:flex; justify-content:space-between; align-items:center; font-size:1.05rem}
+.rm-c h5{margin:4px 0 0; font-size:11.5px; color:var(--muted); font-weight:600; letter-spacing:.02em}
+.rm-c ul{margin:0; padding-left:18px; font-size:13px; display:flex; flex-direction:column; gap:3px}
+.md{display:flex; flex-direction:column; gap:10px; line-height:1.6; max-width:82ch}
+.md h4{margin-top:6px} .md ul{margin:0; padding-left:20px}
+.toc{display:flex; flex-wrap:wrap; gap:6px}
+.flash-card{animation:flashc 1.6s ease-out}
+@keyframes flashc{0%{box-shadow:0 0 0 3px var(--accent)} 100%{box-shadow:var(--shadow)}}
+
+.top svg, .tabbar svg, .help-btn svg{width:18px; height:18px; flex:0 0 auto}
+.iconbtn svg{width:21px; height:21px}
+.search svg{width:16px; height:16px}
+.logo svg{width:18px; height:18px}
+kbd{white-space:nowrap}
+#ovKpis{display:none}
+.card, .gl, .rm-c{scroll-margin-top:calc(var(--hdr) + 16px + env(safe-area-inset-top,0px))}
+.tiles{grid-template-columns:repeat(auto-fill,minmax(min(100%,196px),1fr))}
+@media (max-width:560px){
+  .tiles{grid-template-columns:1fr 1fr; gap:10px}
+  .tile{grid-template-columns:minmax(0,1fr) auto; padding:12px}
+  .tile .ico{grid-row:auto; grid-column:1; width:30px; height:30px; margin-bottom:6px}
+  .tile .chev{grid-row:1; grid-column:2; align-self:start}
+  .tile .t, .tile .v, .tile .c{grid-column:1/3}
+  .tile .v{font-size:1.15rem}
+  .view-head h2{font-size:1.7rem}
+}
+.wz-f{position:sticky; bottom:0; background:var(--surface)}
+.wz-h{position:relative}
+</style>
 
 <header class="top">
   <div class="top-inner">
-    <div class="brand-row">
-      <div class="brand"><h1>Retirement Horizon</h1><span class="tag">Accumulation · income · tax · insurance — one ledger</span></div>
-      <div class="hdr-ctrls">
-        <span class="eyebrow">Show</span>
-        <div class="seg" role="group" aria-label="Dollar basis">
-          <button type="button" id="dollarsReal" aria-pressed="true">Today's $</button>
-          <button type="button" id="dollarsNom" aria-pressed="false">Future $</button>
-        </div>
+    <button class="iconbtn only-narrow" type="button" id="menuBtn" aria-label="Show sections" aria-controls="sideNav" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <a class="brand" href="#overview" aria-label="Retirement Horizon, summary"><span class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5h16"/><path d="m5 15 4.5-4.5 3.5 3 6-7"/><path d="M15 6.5h4v4"/></svg></span><b>Retirement Horizon</b></a>
+    <button class="search" type="button" id="searchBtn" aria-label="Search pages, tools and terms" aria-keyshortcuts="Meta+K Control+K /"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/></svg><span>Search pages, tools, terms</span><kbd id="kbdHint">⌘K</kbd></button>
+    <div class="hdr-ctrls">
+      <span class="eyebrow">Show</span>
+      <div class="seg" role="group" aria-label="Dollar basis">
+        <button type="button" id="dollarsReal" aria-pressed="true">Today's $</button>
+        <button type="button" id="dollarsNom" aria-pressed="false">Future $</button>
       </div>
+      <button class="btn" type="button" id="setupBtn" title="Guided setup">Set up</button>
+      <button class="btn primary" type="button" id="inspBtn" aria-controls="planPanel" aria-expanded="false" title="Edit plan assumptions (E)">Edit plan</button>
     </div>
-    <nav class="tabs" aria-label="Sections">
-      <a href="#overview">Overview</a>
-      <a href="#cockpit">Family office cockpit</a>
-      <a href="#planner">Budget &amp; life events</a>
-      <a href="#advisor">Advisor &amp; war-game</a>
-      <a href="#wealth">Wealth &amp; family office</a>
-      <a href="#portfolio">Portfolio &amp; dividends</a>
-      <a href="#rentals">Rental properties</a>
-      <a href="#business">Business exit</a>
-      <a href="#healthcare">Medicare &amp; healthcare</a>
-      <a href="#social-security">Social Security</a>
-      <a href="#pension">Pension</a>
-      <a href="#annuities">Annuities</a>
-      <a href="#accounts">Accounts</a>
-      <a href="#taxes">Taxes &amp; strategy</a>
-      <a href="#insurance">Insurance</a>
-      <a href="#benefits">Disability &amp; VA benefits</a>
-      <a href="#military">Military: stay or go</a>
-      <a href="#investing">Investing &amp; risk</a>
-      <a href="#leak">Spending leak</a>
-      <a href="#tools">Tools &amp; checklists</a>
-    </nav>
   </div>
 </header>
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+
 
 <div class="shell">
-  <aside class="panel" aria-label="Plan assumptions">
-    <div class="panel-head"><h3>Your plan</h3><button class="btn" type="button" id="resetBtn">Reset example</button></div>
+<nav class="tabs side" id="sideNav" aria-label="Sections">
+  <div class="grp" role="group" aria-label="Plan"><div class="grp-t">Plan</div>
+    <a href="#overview" data-group="Plan" title="The plan at a glance: odds of success, balances, income, taxes, ledger"><span class="ico" style="background:#0A84FF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg></span><span>Summary</span></a>
+    <a href="#cockpit" data-group="Plan" title="Five lenses, balance sheet, Sankey, risk radar, goals, liquidity"><span class="ico" style="background:#5E5CE6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="m12 13 4-4"/><circle cx="12" cy="13" r="1.3"/></svg></span><span>Family office cockpit</span></a>
+    <a href="#advisor" data-group="Plan" title="Assessment, levers, 200 scenarios × 4 courses of action, HECM, SBLOC"><span class="ico" style="background:#AF52DE"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 13.8 9 19.5 11 13.8 13 12 18.5 10.2 13 4.5 11 10.2 9Z"/><path d="M18.5 3.5v3M17 5h3"/></svg></span><span>Advisor &amp; war-game</span></a>
+    <a href="#planner" data-group="Plan" title="Take-home budget, debts payoff, one-time events, spending smile"><span class="ico" style="background:#34C759"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5.5" width="16" height="14" rx="2.5"/><path d="M4 10h16M8.5 3.5v4M15.5 3.5v4"/></svg></span><span>Budget &amp; life events</span></a>
+  </div>
+  <div class="grp" role="group" aria-label="Income"><div class="grp-t">Income</div>
+    <a href="#social-security" data-group="Income" title="Claiming ages, breakeven, spousal and survivor benefits"><span class="ico" style="background:#FF3B30"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.8 3.6-6 7-6s6.2 2.2 7 6"/></svg></span><span>Social Security</span></a>
+    <a href="#pension" data-group="Income" title="Formula, payout options, lump sum vs. annuity"><span class="ico" style="background:#30B0C7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 9 12 4.5 20.5 9"/><path d="M5.5 9.5v8M10 9.5v8M14 9.5v8M18.5 9.5v8M3.5 19.5h17"/></svg></span><span>Pension</span></a>
+    <a href="#annuities" data-group="Income" title="SPIA/DIA pricing, fixed vs. indexed, 14 annuity types"><span class="ico" style="background:#FFB800"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="7" rx="6.5" ry="2.8"/><path d="M5.5 7v5c0 1.5 2.9 2.8 6.5 2.8s6.5-1.3 6.5-2.8V7"/><path d="M5.5 12v5c0 1.5 2.9 2.8 6.5 2.8s6.5-1.3 6.5-2.8v-5"/></svg></span><span>Annuities</span></a>
+    <a href="#rentals" data-group="Income" title="IDEAL: inflation, depreciation, equity, appreciation, leverage"><span class="ico" style="background:#FF9500"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="14" r="4"/><path d="m11 11 8.5-8.5M16.5 5.5l2 2M14 8l2 2"/></svg></span><span>Rental properties</span></a>
+    <a href="#business" data-group="Income" title="Valuation and eight exit paths after tax"><span class="ico" style="background:#A2845E"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="7.5" width="17" height="12" rx="2.5"/><path d="M9 7.5V5.5h6v2M3.5 12.5h17"/></svg></span><span>Business exit</span></a>
+    <a href="#military" data-group="Income" title="True cost of serving past 20; High-3 vs. BRS"><span class="ico" style="background:#6B8E23"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4 2.4 5 5.4.6-4 3.7 1.1 5.4L12 16l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6Z"/></svg></span><span>Military: stay or go</span></a>
+  </div>
+  <div class="grp" role="group" aria-label="Wealth"><div class="grp-t">Wealth</div>
+    <a href="#accounts" data-group="Wealth" title="Three tax buckets, savings waterfall, 48 account types"><span class="ico" style="background:#0A84FF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2Z"/></svg></span><span>Accounts</span></a>
+    <a href="#portfolio" data-group="Wealth" title="Holdings, fees, asset location, $1M dividend draw"><span class="ico" style="background:#34C759"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5v8.5h8.5"/><path d="M19.5 15.5A8.5 8.5 0 1 1 8.5 4.2"/><path d="M14.5 3.6a8.5 8.5 0 0 1 6 6"/></svg></span><span>Portfolio &amp; dividends</span></a>
+    <a href="#wealth" data-group="Wealth" title="Balance sheet, creditor protection, estate, entities"><span class="ico" style="background:#5E5CE6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h16M5.5 17h13M6.5 10v7M10 10v7M14 10v7M17.5 10v7M3.5 9.5 12 4l8.5 5.5Z"/></svg></span><span>Wealth &amp; family office</span></a>
+    <a href="#investing" data-group="Wealth" title="Monte Carlo, sequence risk, safe withdrawal rates"><span class="ico" style="background:#AF52DE"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5h16"/><path d="m5 15 4.5-4.5 3.5 3 6-7"/><path d="M15 6.5h4v4"/></svg></span><span>Investing &amp; risk</span></a>
+  </div>
+  <div class="grp" role="group" aria-label="Protect"><div class="grp-t">Protect</div>
+    <a href="#insurance" data-group="Protect" title="Life (term, whole, IUL, GUL), mortgage, LTC, disability"><span class="ico" style="background:#FF3B30"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 0 1 17 0Z"/><path d="M12 12v6a2 2 0 0 0 4 0M12 3.5V2.5"/></svg></span><span>Insurance</span></a>
+    <a href="#healthcare" data-group="Protect" title="Medigap vs. Advantage, IRMAA, ACA before 65"><span class="ico" style="background:#FF2D55"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19.5s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7a4.3 4.3 0 0 1 7.5 2.5c0 5.6-7.5 10-7.5 10Z"/><path d="M8 12h2l1-2 2 4 1-2h2"/></svg></span><span>Medicare &amp; healthcare</span></a>
+    <a href="#benefits" data-group="Protect" title="SSDI, VA ratings, CRDP/CRSC, SSI, 22 benefits"><span class="ico" style="background:#30B0C7"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 13.5h3l4 2.5h5a1.5 1.5 0 0 0 0-3H12"/><path d="M6.5 19.5l2-1h6l5.5-4.5a1.5 1.5 0 0 0-2-2.2L15 14"/><path d="M14 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg></span><span>Disability &amp; VA</span></a>
+  </div>
+  <div class="grp" role="group" aria-label="Taxes & tools"><div class="grp-t">Taxes & tools</div>
+    <a href="#taxes" data-group="Taxes & tools" title="Bracket fill, Roth conversions, tax torpedo, 22 strategies"><span class="ico" style="background:#FF9500"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 4.5h8l4 4v11h-12Z"/><path d="m9.5 16 5-6"/><circle cx="10" cy="10.5" r=".9"/><circle cx="14" cy="15.5" r=".9"/></svg></span><span>Taxes &amp; strategy</span></a>
+    <a href="#tools" data-group="Taxes & tools" title="State moves, charity, equity comp, ladders, backup"><span class="ico" style="background:#8E8E93"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4.5a4.5 4.5 0 0 0-4.2 6.1L4.5 16.4a2 2 0 0 0 2.8 2.8l5.8-5.8a4.5 4.5 0 0 0 6-4.2l-2.6 2.6-2.6-.6-.6-2.6Z"/></svg></span><span>Tools &amp; checklists</span></a>
+    <a href="#leak" data-group="Taxes & tools" title="F.A.S.T. leak and S&P 500 vs. IUL redirect"><span class="ico" style="background:#FF2D55"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5s6 6.2 6 10.5a6 6 0 0 1-12 0c0-4.3 6-10.5 6-10.5Z"/></svg></span><span>Spending leak</span></a>
+  </div>
+  <div class="grp" role="group" aria-label="Learn"><div class="grp-t">Learn</div>
+    <a href="#roadmap" data-group="Learn" title="What to do in your 20s through your 80s"><span class="ico" style="background:#32ADE6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3.5 6.5 5.5-2 6 2 5.5-2v13l-5.5 2-6-2-5.5 2Z"/><path d="M9 4.5v13M15 6.5v13"/></svg></span><span>Roadmap by age</span></a>
+    <a href="#glossary" data-group="Learn" title="Plain-English definitions of 100+ terms"><span class="ico" style="background:#8E8E93"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 5.5a2 2 0 0 1 2-2h12v15h-12a2 2 0 0 0-2 2Z"/><path d="M4.5 20.5a2 2 0 0 1 2-2h12v2"/></svg></span><span>Glossary</span></a>
+    <a href="#methodology" data-group="Learn" title="Assumptions, formulas, data sources, limits"><span class="ico" style="background:#5E5CE6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.2"/></svg></span><span>How the model works</span></a>
+  </div>
+</nav>
+  <aside class="panel" id="planPanel" aria-label="Plan assumptions">
+    <div class="panel-head"><h3>Your plan</h3><div style="display:flex;gap:6px;align-items:center"><button class="btn" type="button" id="resetBtn">Reset example</button><button class="iconbtn insp-close" type="button" id="inspClose" aria-label="Close plan editor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg></button></div></div>
+    <p class="small muted" style="padding:8px 14px 0">Every page updates as you type. Values save in this browser only.</p>
     <div class="example-note" id="exampleNote">Example household loaded. Replace these numbers with your own; they save in this browser only.</div>
 
     <details open><summary>Household</summary>
@@ -1369,9 +1600,34 @@ tr.hl td{background:var(--accent-soft)}
       </div>
     </section>
 
+        <!-- LEARN -->
+    <section class="view" id="v-roadmap" aria-labelledby="h-rm">
+      <div class="view-head"><div><span class="eyebrow">Learn</span><h2 id="h-rm">Roadmap by age</h2></div><p>What matters most in each decade, from first paycheck to legacy. The card for your age is highlighted and filled in with your own numbers.</p></div>
+      <div id="rmNow"></div>
+      <div class="rm" id="rmGrid"></div>
+    </section>
+    <section class="view" id="v-glossary" aria-labelledby="h-gl">
+      <div class="view-head"><div><span class="eyebrow">Learn</span><h2 id="h-gl">Glossary</h2></div><p>Plain-English definitions for the terms used across this dashboard, each linked to the page where it matters.</p></div>
+      <div class="card"><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><input type="search" id="glSearch" placeholder="Filter terms, e.g. IRMAA, backdoor, 1031" aria-label="Filter glossary" style="flex:1 1 260px"><span class="small muted" id="glCount"></span></div><div class="az" id="glAz" style="margin-top:10px"></div></div>
+      <div class="gl-list" id="glList"></div>
+    </section>
+    <section class="view" id="v-methodology" aria-labelledby="h-me">
+      <div class="view-head"><div><span class="eyebrow">Learn</span><h2 id="h-me">How the model works</h2></div><p>Every number on this dashboard comes from the same year-by-year engine. Here is exactly what it assumes, how it calculates, and where it simplifies.</p></div>
+      <div class="kpis" id="meKpis"></div>
+      <div class="card"><div class="toc" id="meToc"></div></div>
+      <div id="meBody"></div>
+    </section>
+
     <p class="disclaimer">Educational planning model, not tax, legal or investment advice. Tax law reflects the 2025 reconciliation act (TCJA rates made permanent, the $6,000 senior deduction for 2025–2028, new Trump Accounts) and 2026 IRS/SSA figures as published; limits change every fall, so confirm current numbers at irs.gov and ssa.gov. State taxes are simplified. Annuity, pension and insurance prices are actuarial approximations; real quotes differ.</p>
   </main>
 </div>
+<nav class="tabbar" aria-label="Quick navigation">
+  <a href="#overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/></svg><span>Summary</span></a>
+  <a href="#cockpit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 17a8.5 8.5 0 1 1 15 0"/><path d="m12 13 4-4"/><circle cx="12" cy="13" r="1.3"/></svg><span>Cockpit</span></a>
+  <a href="#advisor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 13.8 9 19.5 11 13.8 13 12 18.5 10.2 13 4.5 11 10.2 9Z"/><path d="M18.5 3.5v3M17 5h3"/></svg><span>Advisor</span></a>
+  <button type="button" id="tbSearch"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/></svg><span>Search</span></button>
+  <button type="button" id="tbMore" aria-controls="sideNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg><span>All pages</span></button>
+</nav>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
 <script>
@@ -4172,6 +4428,476 @@ function renderMilitary(){
     insight('', 'SBP', `SBP costs 6.5% of retired pay (${fmt(stay.retMo/0.935*.065)}/mo at ${stay.yos} years) and pays your spouse 55% for life, inflation-adjusted. Compare with term life on the Insurance tab.`);
 }
 
+/* ---------- LEARN CONTENT: page help, glossary, roadmap ---------- */
+const PAGE_HELP = {
+  overview: { q:'Will the money last, and what drives the answer?', steps:['Press <b>Edit plan</b> (or E) and replace the example household with your own numbers, or run <b>Set up</b> for a five-step guided version.','Read the cards across the top: the odds of success, money at retirement, and when, if ever, savings run short.','The balances chart shows which tax bucket you live on each year; the income chart shows where each year\'s paycheck comes from.','Work through "What to act on", then open the ledger to check any single year.'], tip:'Use the Today\'s $ / Future $ switch in the header. Today\'s dollars compare directly with prices you know now.', rel:['cockpit','advisor','investing'] },
+  cockpit: { q:'How does the whole family balance sheet hold up under stress?', steps:['Pick a lens (as entered, survivor, crash, long-term care, longevity to 100) to re-run the plan under that stress.','Use the Sankey for any year to follow every dollar from source to spending, taxes and savings.','Check goals funded in priority order: essentials, taxes, lifestyle, wishes, legacy.','Size your cash and bond buckets with the liquidity ladder.'], tip:'If the survivor lens fails while the base plan passes, look at pension survivor options, Social Security claiming for the higher earner, and life insurance.', rel:['wealth','insurance','overview'] },
+  advisor: { q:'What should I change, and how robust is the plan to everything that could happen?', steps:['Read the written assessment and scorecard.','The lever table shows how much each change (work longer, spend less, claim later, convert to Roth) moves the odds.','Run the 200-scenario war-game: 5 market regimes × 4 lifespans × 10 life events, each tried with 4 courses of action.','Check the reverse-mortgage and securities-line analyzers if home equity or a large taxable account can add flexibility.'], tip:'Choose the course of action that wins in most scenarios, not the one with the best average.', rel:['overview','taxes','investing'] },
+  planner: { q:'Where does my paycheck go today, and what one-time events change the plan?', steps:['Enter monthly spending by category; take-home pay is computed from salary, taxes, FICA and payroll savings.','Add debts and compare avalanche (highest rate first) with snowball (smallest balance first).','Add life events such as an inheritance, home sale, wedding, parent care or long-term care. They flow into every projection.','Choose a spending shape (flat or the "retirement smile") and any part-time income.'], tip:'Aim for 3 to 6 months of essential spending in cash while working; 1 to 2 years once retired.', rel:['overview','cockpit','tools'] },
+  'social-security': { q:'When should each of us claim?', steps:['Enter your full-retirement-age benefit (PIA) from your my Social Security statement.','Compare monthly checks at 62, full retirement age and 70.','Read the breakeven: the age when waiting has paid more in total. Turn on investing early checks to see the tougher test.','Use the heatmap to compare lifetime value by age at death, and check spousal and survivor benefits.'], tip:'For couples, the higher earner\'s claiming age sets the survivor benefit, so waiting is often worth more than the breakeven alone suggests.', rel:['taxes','overview','benefits'] },
+  pension: { q:'Which payout option and is the lump sum a good deal?', steps:['Enter the pension formula (multiplier × years × final average salary) or a known monthly amount.','Compare single-life, joint-and-survivor and period-certain options.','Enter the lump-sum offer to see the interest rate it implies and the age it would run out at.','Check pension maximization: single-life plus life insurance vs. joint-and-survivor.'], tip:'If the implied rate is below what a fixed annuity pays, the pension is the better deal.', rel:['annuities','insurance','military'] },
+  annuities: { q:'Should I buy guaranteed income, and what kind?', steps:['Price an immediate (SPIA) or deferred (DIA) annuity from age and mortality.','Compare annuity income with the 4% rule from the same money.','Project a fixed vs. indexed annuity on actual 1996–2025 S&P 500 returns.','Browse 14 annuity types with pros, cons and typical fees.'], tip:'Covering essential spending with Social Security, pensions and annuities lets the rest of the portfolio take more risk.', rel:['pension','investing','overview'] },
+  rentals: { q:'What do my rental properties really earn, and what happens when I sell?', steps:['Pick a property or add one; enter price, loan, rent, expenses and growth rates.','Read the IDEAL stack: Inflation, Depreciation, Equity, Appreciation, Leverage.','Compare exit options: sell with recapture, 1031 exchange, cash-out refinance, hold for step-up, installment sale, DST.','Turn on "include in plan" so rental cash flow and taxable income flow into retirement.'], tip:'Return on equity often falls as a property is paid down. That is the signal to consider refinancing or exchanging.', rel:['wealth','taxes','overview'] },
+  business: { q:'What is my business worth and which exit keeps the most?', steps:['Enter revenue, EBITDA, industry and growth to set the value range.','Score the seven value drivers; each one moves the multiple.','Compare eight exit paths after tax, fees and timing.','Turn on integration to add the proceeds to your plan and net worth.'], tip:'Exit planning starts 3 to 5 years out. Recurring revenue, clean books and a management team that runs without you raise the multiple.', rel:['wealth','taxes','advisor'] },
+  military: { q:'What does serving past 20 really cost or earn?', steps:['Enter every pay: base, special and incentive pays, bonus, BAH, BAS, other allowances, combat-zone exclusion.','Enter the civilian job you would take, its growth and retirement match.','Read the true cost of staying, the payback age and the break-even civilian salary.','Compare High-3 with the Blended Retirement System.'], tip:'Tax-free allowances are worth more than their face value. Use the civilian-equivalent salary, not base pay, when comparing offers.', rel:['benefits','pension','healthcare'] },
+  accounts: { q:'Which accounts should I use and in what order?', steps:['See your mix across pre-tax, Roth, taxable and HSA.','Follow the savings waterfall from match to HSA to Roth to the rest.','Plan college with the 529 calculator.','Search 48 account types with 2026 limits, catch-ups and early-access rules.'], tip:'Tax diversification (money in all three buckets) gives you control over your tax bracket every year in retirement.', rel:['taxes','portfolio','overview'] },
+  portfolio: { q:'What am I paying in fees and taxes, and can my dividends fund retirement?', steps:['Enter holdings by account with expense ratio and yield.','Review allocation, asset location and 30-year fee and tax cost.','Use the dividend calculator: $1M at 4% with inflation raises, four withdrawal methods, Monte Carlo and real-history backtests.','Push holdings back to the plan with "Sync balances".'], tip:'A 1% fee on $1M is $10,000 a year, compounding to hundreds of thousands over retirement.', rel:['investing','accounts','taxes'] },
+  wealth: { q:'Is my wealth protected and organized for the next generation?', steps:['Review the balance sheet and creditor-exposure map for your state.','Project estate tax, income in respect of a decedent and probate.','See the recommended entity structure for your situation.','Compare how each retirement vehicle is treated for protection, estate and heirs.'], tip:'Beneficiary designations override the will. Review them after every marriage, divorce, birth or death.', rel:['cockpit','insurance','taxes'] },
+  investing: { q:'How much risk am I taking and what withdrawal rate is safe?', steps:['Read the Monte Carlo fan: the median and the 10th to 90th percentile range.','See sequence-of-returns risk: same average, different order.','Check the safe withdrawal rate for your allocation and horizon.','Compare glide paths and withdrawal strategies.'], tip:'The first 5 to 10 years of retirement carry most of the sequence risk. A cash or bond buffer protects them.', rel:['advisor','portfolio','overview'] },
+  insurance: { q:'How much life, disability and long-term care coverage do I need?', steps:['Size life insurance with DIME (Debt, Income, Mortgage, Education).','Compare term + invest vs. whole life, IUL and GUL, including stress and market tests.','Check mortgage protection, final expense, disability income gap, long-term care and umbrella.','Read the Q&A for common questions.'], tip:'Buy term for income replacement; consider permanent coverage only for permanent needs such as estate liquidity.', rel:['wealth','benefits','healthcare'] },
+  healthcare: { q:'What will health care cost before and after 65?', steps:['Compare Medigap G or N, Medicare Advantage, TRICARE For Life and retiree plans by health level.','See costs to the end of the plan with medical inflation.','Check IRMAA tiers against your projected income.','Before 65, estimate ACA premiums after subsidy and watch the 400% poverty-level cliff.'], tip:'Medigap is guaranteed issue only in your first six months on Part B. After that, most states allow underwriting.', rel:['taxes','insurance','overview'] },
+  benefits: { q:'What would I get if I became disabled, and what VA benefits do I qualify for?', steps:['Estimate SSDI with family benefits and the timeline to first check and Medicare.','Simulate a disability: income and nest egg vs. staying healthy.','Combine VA ratings with the bilateral factor and see 2026 pay.','Check CRDP and CRSC, SSI and 22 other benefits.'], tip:'VA compensation is tax-free and does not count for IRMAA, ACA or Social Security taxation.', rel:['military','insurance','social-security'] },
+  taxes: { q:'How much will I pay in tax and how do I pay less over my lifetime?', steps:['See a full retirement-year return.','Fill low brackets with Roth conversions; test the conversion.','Watch the Social Security tax torpedo and IRMAA thresholds.','Work through 22 strategies.'], tip:'The years between retirement and RMDs are often the cheapest time to convert to Roth.', rel:['accounts','healthcare','advisor'] },
+  tools: { q:'What else should I check each year?', steps:['Compare state taxes if you might move.','Choose the best way to give: cash, donor-advised fund, appreciated stock, QCD.','Model equity compensation and build a Treasury, TIPS or CD ladder.','Save scenarios side by side, back up the plan, and use the 32-item annual checklist.'], tip:'Copy your plan backup into a note before switching browsers or devices.', rel:['taxes','wealth','planner'] },
+  leak: { q:'What are small daily habits costing my retirement?', steps:['Enter what you spend on fast food, alcohol, stimulants and treats.','See the 10, 20 and 30-year cost if invested instead.','Compare redirecting the money to the S&P 500 vs. an IUL on 1996–2025 returns.'], tip:'Automate the redirect: move the same amount to savings the day you get paid.', rel:['planner','insurance','investing'] },
+  roadmap: { q:'What should I focus on at my age?', steps:['Your decade is highlighted with your own numbers.','Each card lists priorities, accounts to use, what to protect and what to watch for.','Use the links to jump to the page that handles each item.'], tip:'Look one decade ahead; most big decisions (claiming, Medicare, RMDs) need a few years of preparation.', rel:['overview','tools','glossary'] },
+  glossary: { q:'What does this term mean?', steps:['Type in the filter or tap a letter.','Each definition links to the page where the term matters.','Search (⌘K) also finds glossary terms from any page.'], tip:'', rel:['methodology','roadmap'] },
+  methodology: { q:'How are these numbers calculated?', steps:['Read the assumptions behind every projection.','Each section explains one part of the engine: returns, taxes, Social Security, RMDs, Monte Carlo and more.','The limits section lists what the model simplifies.'], tip:'This is an educational model. Confirm decisions with a fiduciary advisor, CPA or attorney.', rel:['glossary','overview'] },
+  mirror: { q:'How is this dashboard linked to the other dashboards?', steps:['The plan summary is written to this dashboard\'s database.','The relay shares feeds with the Command Deck, Broker Command Center and Loan Dashboard.'], tip:'', rel:['overview'] }
+};
+
+const GLOSSARY = [
+ ['401(k)','Employer retirement plan. Contributions go in pre-tax (traditional) or after-tax (Roth); the employer match is part of your pay, so contribute at least enough to get all of it. 2026 limit: $24,500, plus catch-ups at 50+.','accounts'],
+ ['403(b)','The 401(k) equivalent for public schools, hospitals and nonprofits. Some plans allow an extra 15-year-service catch-up.','accounts'],
+ ['457(b)','Government deferred-compensation plan. Its limit stacks on top of a 403(b), and withdrawals after you leave the employer have no 10% early penalty at any age.','accounts'],
+ ['529 plan','Education savings account. Growth is tax-free for qualified education costs; unused money can roll to the beneficiary\'s Roth IRA within lifetime limits after 15 years.','accounts'],
+ ['72(t) / SEPP','Substantially equal periodic payments: a way to take IRA money before 59½ without the 10% penalty, if continued for 5 years or until 59½, whichever is longer.','accounts'],
+ ['1031 exchange','Selling investment real estate and buying like-kind property within strict deadlines (45 days to identify, 180 to close) to defer capital gains and depreciation recapture.','rentals'],
+ ['ACA subsidy cliff','Premium tax credits for marketplace health insurance before 65. With the enhanced credits expired after 2025, subsidies stop entirely above 400% of the federal poverty level.','healthcare'],
+ ['Annuitization','Turning a lump sum into guaranteed income for life or a set period. You give up access to the principal in exchange for income you cannot outlive.','annuities'],
+ ['Appreciation','Growth in a property\'s market value over time. The A in IDEAL.','rentals'],
+ ['Asset allocation','Your mix of stocks, bonds and cash. It drives most of a portfolio\'s risk and return.','investing'],
+ ['Asset location','Putting each investment in the account where it is taxed least: bonds and REITs in pre-tax, highest-growth assets in Roth, tax-efficient index funds in taxable.','portfolio'],
+ ['Backdoor Roth','Contributing to a nondeductible traditional IRA and converting it to Roth when income is too high for a direct Roth contribution. The pro-rata rule applies if you hold other pre-tax IRA money.','taxes'],
+ ['BAH','Basic Allowance for Housing: tax-free military pay that varies by duty station, rank and dependents. It belongs in any true-cost comparison with civilian pay.','military'],
+ ['Basis','What you paid for an investment, adjusted over time. Gains above basis are taxed when you sell.','portfolio'],
+ ['Beneficiary designation','The form that passes an account directly to named people. It overrides your will, so it must be kept current.','wealth'],
+ ['Blended Retirement System (BRS)','Military retirement for members entering after 2017: 2.0% × years × High-3, plus TSP matching up to 5% and mid-career continuation pay.','military'],
+ ['Breakeven age','For Social Security, the age at which waiting to claim has paid more in total than claiming early.','social-security'],
+ ['Bucket strategy','Splitting savings into near-term cash, medium-term bonds and long-term stocks, then refilling the near buckets from the far one.','cockpit'],
+ ['Buy, borrow, die','Borrowing against appreciated assets instead of selling, then leaving them to heirs, who get a step-up in basis.','advisor'],
+ ['Cap rate','Net operating income divided by property value; a quick way to compare rentals before financing.','rentals'],
+ ['Cash-on-cash return','Annual pre-tax cash flow from a property divided by the cash you invested.','rentals'],
+ ['Catch-up contributions','Extra contributions allowed at 50+. Workplace plans allow a larger "super catch-up" at ages 60 to 63; high earners must make catch-ups as Roth.','accounts'],
+ ['COLA','Cost-of-living adjustment applied to Social Security, many pensions and VA pay. Social Security\'s 2026 COLA is 2.8%.','social-security'],
+ ['Combined rating (VA)','VA "whole person" math: each rating applies to the remaining healthy percentage, then the total rounds to the nearest 10%. 50% + 50% = 75%, rounded to 80%.','benefits'],
+ ['Continuation pay','A one-time BRS bonus at roughly 8 to 12 years of service in exchange for additional service.','military'],
+ ['CRDP','Concurrent Retirement and Disability Pay: military retirees with 20+ years and a VA rating of 50% or more receive full retired pay and VA compensation.','benefits'],
+ ['CRSC','Combat-Related Special Compensation: restores retired pay offset by VA compensation for combat-related disabilities, at any rating.','benefits'],
+ ['CRT','Charitable remainder trust: pays you income for life or a term and leaves the remainder to charity. Funding it before a sale can spread out capital gains.','business'],
+ ['DAF','Donor-advised fund: donate now, take the deduction now, grant to charities later. Useful for bunching several years of gifts into one.','tools'],
+ ['Delayed retirement credits','Social Security grows by 8% per year for each year you wait past full retirement age, up to 70.','social-security'],
+ ['Depreciation','A yearly deduction for wear on rental buildings (27.5 years for residential). It shelters rental income but is recaptured at up to 25% when you sell.','rentals'],
+ ['DIA','Deferred income annuity: pay now, income starts years later. Often called longevity insurance.','annuities'],
+ ['DIME','Debt, Income, Mortgage, Education: a quick method for sizing life insurance.','insurance'],
+ ['Dividend yield','Annual dividends divided by price.','portfolio'],
+ ['Earnings test','If you claim Social Security before full retirement age and keep working, benefits are withheld above an earnings limit, then credited back later.','social-security'],
+ ['EBITDA','Earnings before interest, taxes, depreciation and amortization. Private businesses are usually valued as a multiple of it.','business'],
+ ['Elimination period','The waiting period before disability or long-term care benefits start paying.','insurance'],
+ ['ESOP','Employee stock ownership plan. Selling C-corporation shares to one can defer the gain under Section 1042.','business'],
+ ['Estate tax exemption','The amount you can pass free of federal estate tax: $15 million per person from 2026, indexed. Several states tax estates far below that.','wealth'],
+ ['Expense ratio','A fund\'s yearly cost as a percentage of your investment.','portfolio'],
+ ['Family maximum','The cap on total Social Security benefits paid on one worker\'s record to the worker and family.','benefits'],
+ ['FICA','Payroll taxes: 6.2% Social Security (up to the $184,500 wage base in 2026) and 1.45% Medicare, plus 0.9% on high wages.','planner'],
+ ['Full retirement age (FRA)','The age you receive your full Social Security benefit: 67 for anyone born in 1960 or later.','social-security'],
+ ['Glide path','How a portfolio\'s allocation shifts over time, usually toward bonds as retirement nears. A rising glide path adds stocks back after retirement.','investing'],
+ ['Guardrails','A withdrawal rule that trims spending after poor markets and raises it after strong ones, keeping the withdrawal rate within bands.','advisor'],
+ ['GUL','Guaranteed universal life: permanent coverage with a guaranteed death benefit and little cash value; often the lowest-cost permanent policy.','insurance'],
+ ['HECM','Home Equity Conversion Mortgage, the FHA-insured reverse mortgage for homeowners 62+. An unused line of credit grows over time.','advisor'],
+ ['High-3','Pension based on the highest 36 months of basic pay. Legacy military High-3 pays 2.5% × years of service.','military'],
+ ['HSA','Health savings account: deductible going in, tax-free growth, tax-free out for medical costs. After 65 it can be used for anything, taxed like an IRA.','accounts'],
+ ['IDEAL','Inflation, Depreciation, Equity, Appreciation, Leverage: the five ways rental real estate builds wealth.','rentals'],
+ ['IDGT','Intentionally defective grantor trust: assets and their growth leave the estate while the grantor keeps paying the income tax.','wealth'],
+ ['ILIT','Irrevocable life insurance trust: owns a policy so the death benefit stays out of the taxable estate.','wealth'],
+ ['Inherited IRA 10-year rule','Most non-spouse heirs must empty an inherited IRA within 10 years, which can push them into higher brackets.','cockpit'],
+ ['IRD','Income in respect of a decedent: pre-tax money (traditional IRAs, 401(k)s, annuity gains) that heirs still owe income tax on.','wealth'],
+ ['IRMAA','Income-related monthly adjustment amount: Medicare Part B and D surcharges when income from two years earlier crosses set thresholds.','healthcare'],
+ ['IUL','Indexed universal life: cash value credited from an index with a cap and a 0% floor, less policy charges that rise with age.','insurance'],
+ ['Joint and survivor','A pension or annuity option that keeps paying a surviving spouse, in exchange for a smaller monthly amount.','pension'],
+ ['Leverage','Using borrowed money to control a larger asset. It magnifies gains and losses.','rentals'],
+ ['Long-term capital gains (LTCG)','Gains on assets held more than a year, taxed at 0%, 15% or 20% federally depending on income.','taxes'],
+ ['Long-term care','Help with daily activities such as bathing or dressing. Medicare covers only short skilled-nursing stays.','insurance'],
+ ['MAGI','Modified adjusted gross income. Used for IRMAA, ACA subsidies, Roth IRA eligibility and the senior deduction phase-out.','taxes'],
+ ['Medicare Advantage','Part C: private plans that bundle Parts A, B and usually D, with networks and an out-of-pocket maximum.','healthcare'],
+ ['Medigap','Supplement plans (G and N are the most common) that fill Original Medicare\'s gaps. Guaranteed issue in your first six months on Part B.','healthcare'],
+ ['Monte Carlo','Running a plan through many randomly generated market sequences to estimate the odds the money lasts. This dashboard runs 1,000.','investing'],
+ ['MYGA','Multi-year guaranteed annuity: a fixed rate for a set term, similar to a CD, with tax deferral.','annuities'],
+ ['NIIT','Net investment income tax: an extra 3.8% on investment income above $200,000 (single) or $250,000 (joint) of MAGI.','taxes'],
+ ['NUA','Net unrealized appreciation: employer stock taken out of a 401(k) in kind is taxed at capital-gains rates on its growth instead of ordinary rates.','taxes'],
+ ['Pension maximization','Taking a single-life pension and buying life insurance to protect the spouse instead of a joint-and-survivor option.','pension'],
+ ['PIA','Primary insurance amount: your Social Security benefit at full retirement age.','social-security'],
+ ['Pro-rata rule','IRA conversions are taxed in proportion to all pre-tax IRA money you hold, not just the dollars you convert.','taxes'],
+ ['Probate','The court process for settling an estate. Beneficiary designations, transfer-on-death titling and revocable trusts avoid it.','wealth'],
+ ['Provisional income','AGI plus tax-exempt interest plus half of Social Security. It decides how much of your benefit is taxable (up to 85%).','taxes'],
+ ['QCD','Qualified charitable distribution: at 70½ or older, give from an IRA directly to charity. It is excluded from income and counts toward RMDs.','tools'],
+ ['QLAC','Qualifying longevity annuity contract: a deferred annuity inside an IRA that postpones RMDs on that money as late as 85.','annuities'],
+ ['QSBS','Section 1202 qualified small-business stock: gains on qualifying C-corporation shares held long enough can be excluded from federal tax up to a cap.','business'],
+ ['Real return','Return after inflation. A 6% return with 3% inflation is about a 3% real return.','investing'],
+ ['Recapture','Depreciation deductions taken on a rental are taxed at up to 25% when it is sold, unless deferred by a 1031 exchange or erased by a step-up at death.','rentals'],
+ ['Required minimum distribution (RMD)','Yearly withdrawals from pre-tax accounts starting at 73 (75 for anyone born in 1960 or later), sized by the IRS Uniform Lifetime Table.','taxes'],
+ ['Roth conversion','Moving money from pre-tax to Roth and paying the tax now, so later growth and withdrawals are tax-free.','taxes'],
+ ['Roth IRA','After-tax contributions, tax-free growth and tax-free withdrawals after 59½ and 5 years. No RMDs for the owner. 2026 limit: $7,500, plus $1,100 at 50+.','accounts'],
+ ['Rule of 55','Penalty-free withdrawals from a 401(k) if you leave that employer in or after the year you turn 55 (50 for public-safety workers).','accounts'],
+ ['SBLOC','Securities-based line of credit: borrowing against a brokerage account instead of selling. A market drop can trigger a margin call.','advisor'],
+ ['SBP','Survivor Benefit Plan: a military annuity paying a surviving spouse 55% of the chosen base amount, in exchange for a premium from retired pay.','military'],
+ ['Senior deduction','An extra $6,000 deduction per person 65 and older for 2025 through 2028, phasing out above $75,000 (single) or $150,000 (joint) of MAGI.','taxes'],
+ ['SEP IRA','An employer-funded IRA for self-employed people and small businesses.','accounts'],
+ ['Sequence-of-returns risk','Bad returns early in retirement do far more damage than the same returns later, because you are selling while prices are down.','investing'],
+ ['SGA','Substantial gainful activity: earning above about $1,690 a month in 2026 generally rules out SSDI.','benefits'],
+ ['Safe withdrawal rate','The share of savings you can withdraw in year one, then raise with inflation, with high odds of lasting. The "4% rule" came from 30-year US history.','investing'],
+ ['Solo 401(k)','A 401(k) for an owner with no employees, allowing both employee and employer contributions.','accounts'],
+ ['SPIA','Single premium immediate annuity: pay a lump sum, receive income starting within a year.','annuities'],
+ ['Spending smile','Research finding that retiree spending tends to fall through the 70s and rise late in life with health costs.','planner'],
+ ['SSDI','Social Security Disability Insurance: monthly benefits for workers who cannot do substantial work for 12+ months, after a 5-month wait.','benefits'],
+ ['SSI','Supplemental Security Income: a needs-based federal benefit with strict income and asset limits.','benefits'],
+ ['Standard deduction','The deduction everyone gets without itemizing: $16,100 single or $32,200 joint in 2026, plus extra at 65.','taxes'],
+ ['Step-up in basis','At death, heirs\' cost basis resets to market value, erasing the built-in capital gain and depreciation recapture.','wealth'],
+ ['Survivor benefit (Social Security)','A surviving spouse keeps the larger of the two benefits; the smaller one stops.','social-security'],
+ ['Tax bracket fill','Adding just enough income, often a Roth conversion, to use up a low bracket without spilling into the next.','taxes'],
+ ['Tax drag','The yearly loss to taxes on dividends and fund distributions in a taxable account.','portfolio'],
+ ['Tax torpedo','The income range where each extra dollar also makes Social Security taxable, pushing marginal rates well above your bracket.','taxes'],
+ ['Term life','Life insurance for a set number of years. The cheapest way to buy a large death benefit.','insurance'],
+ ['TIPS','Treasury Inflation-Protected Securities: Treasury bonds whose principal rises with inflation.','tools'],
+ ['TRICARE For Life','Coverage for military retirees on Medicare that pays most costs Medicare leaves behind.','healthcare'],
+ ['TSP','Thrift Savings Plan: the 401(k)-style plan for federal employees and the military.','military'],
+ ['Umbrella insurance','Extra liability coverage above home and auto policies, usually in $1 million layers.','insurance'],
+ ['Vesting','The schedule by which employer contributions become yours to keep.','accounts'],
+ ['Whole life','Permanent life insurance with level premiums, guaranteed cash value and possible dividends.','insurance'],
+ ['Withdrawal order','Which account you draw from first. Taxable, then pre-tax, then Roth is conventional; filling low brackets from pre-tax first often saves more.','advisor']
+];
+
+const ROADMAP = [
+ { lo:18, hi:29, t:'Your 20s', sub:'Build the habit', pri:['Get the full employer match, then build a starter emergency fund.','Pay off high-interest debt with the avalanche method.','Favor Roth contributions while your tax rate is low.'], acc:['Roth 401(k) or Roth IRA','HSA if you have a high-deductible plan'], pro:['Disability insurance: your earning power is your biggest asset','Renters insurance and an umbrella once you have assets'], watch:['Lifestyle creep after raises: save half of every raise'], go:['planner','accounts','leak'] },
+ { lo:30, hi:39, t:'Your 30s', sub:'Protect the family', pri:['Raise savings to 15% or more of pay including the match.','Buy term life sized with DIME once anyone depends on you.','Start 529s if college is a goal.'], acc:['401(k) / 403(b), Roth or traditional by bracket','529 plans','Taxable brokerage for flexibility'], pro:['Term life, own-occupation disability','Wills, guardians, beneficiary designations'], watch:['House size: keep housing near 25 to 30% of take-home'], go:['insurance','accounts','rentals'] },
+ { lo:40, hi:49, t:'Your 40s', sub:'Peak earning, peak complexity', pri:['Run a full projection and check the odds of success.','Balance tax buckets: add Roth and taxable alongside pre-tax.','Plan business or equity-compensation exits 3 to 5 years ahead.'], acc:['Max workplace plan and HSA','Backdoor Roth if income is high','Real estate or business equity'], pro:['Revisit life and disability coverage','Consider an umbrella policy and asset-protection titling'], watch:['Caring for parents and kids at once','Concentration in employer stock'], go:['overview','business','wealth'] },
+ { lo:50, hi:59, t:'Your 50s', sub:'The retirement runway', pri:['Use catch-up contributions (super catch-up at 60 to 63).','Pick a target retirement date and test it in the war-game.','Build 1 to 2 years of cash and bonds before the date.'], acc:['Catch-ups in 401(k), IRA and HSA','Rule of 55 if you might stop working early'], pro:['Price long-term care coverage while healthy','Health insurance bridge plan if retiring before 65'], watch:['Sequence-of-returns risk in the 5 years around retirement'], go:['advisor','investing','healthcare'] },
+ { lo:60, hi:69, t:'Your 60s', sub:'Turning savings into income', pri:['Choose Social Security claiming ages for both spouses.','Enroll in Medicare around 65 and pick a plan.','Convert to Roth in the low-tax years before RMDs.'], acc:['Draw taxable and pre-tax first; let Roth grow','Consider annuitizing part of essential spending'], pro:['Pension survivor option, life insurance review','Medigap guaranteed-issue window'], watch:['IRMAA two-year lookback on conversions and sales','The Social Security tax torpedo'], go:['social-security','taxes','healthcare'] },
+ { lo:70, hi:79, t:'Your 70s', sub:'Taxes and simplicity', pri:['Take RMDs on time (73, or 75 if born 1960+).','Give through QCDs instead of cash after 70½.','Simplify: consolidate accounts and automate income.'], acc:['QCDs from IRAs','Roth for heirs, taxable assets for step-up'], pro:['Long-term care funding plan','Powers of attorney and health-care directives'], watch:['Scams and cognitive decline: add a trusted contact'], go:['taxes','tools','wealth'] },
+ { lo:80, hi:120, t:'80 and beyond', sub:'Legacy and care', pri:['Keep a clear inventory of accounts, policies and passwords.','Coordinate with heirs on the 10-year inherited-IRA rule.','Decide where care will happen and how it is funded.'], acc:['Leave Roth and appreciated taxable assets','Use the home\'s value: downsize, HECM, or step-up'], pro:['Estate documents current; trustee named','Beneficiaries reviewed'], watch:['Late-life spending rise from health and care'], go:['wealth','cockpit','insurance'] }
+];
+
+/* ---------- APP SHELL: sidebar, inspector, search, setup, help, highlights, Learn ---------- */
+const UI_KEY = 'retirement-horizon-ui';
+let UI = (() => { try { return JSON.parse(localStorage.getItem(UI_KEY)) || {}; } catch(_){ return {}; } })();
+const uiSave = () => { try { localStorage.setItem(UI_KEY, JSON.stringify(UI)); } catch(_){} };
+const ICON = {
+  search:'<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.4-4.4"/>', x:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>', chev:'<path d="m9.5 6 6 6-6 6"/>',
+  sliders:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>', wand:'<path d="m4 20 11-11M13 7l2 2"/><path d="M17.5 3.5v3M16 5h3M19.5 10v2M18.5 11h2M9.5 3.5v2M8.5 4.5h2"/>',
+  book:'<path d="M4.5 5.5a2 2 0 0 1 2-2h12v15h-12a2 2 0 0 0-2 2Z"/><path d="M4.5 20.5a2 2 0 0 1 2-2h12v2"/>', doc:'<path d="M6.5 3.5h7l4 4v13h-11Z"/><path d="M13.5 3.5v4h4M9 12h6M9 15.5h6"/>',
+  bolt:'<path d="M13 3.5 5.5 13.5H12l-1 7 7.5-10H12Z"/>', q:'<circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.3c-.6.3-1 .8-1 1.5v.4M12 16.6v.2"/>', link:'<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/>'
+};
+const ic = (k, w=2) => `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k] || ''}</svg>`;
+const isMac = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+const narrow = () => window.innerWidth < 1000;
+const overlayInsp = () => window.innerWidth < 1400;
+
+/* Pages, derived from the sidebar so the Mirror link and any later page join automatically */
+function pages(){
+  return $$('#sideNav a').map(a => { const k = a.getAttribute('href').slice(1); const g = a.dataset.group || 'Connected'; const icoEl = a.querySelector('.ico');
+    return { k, t: (a.querySelector('span:not(.ico)') || a).textContent.trim(), g, d: a.getAttribute('title') || '', ico: icoEl ? icoEl.outerHTML : '<span class="ico" style="background:#8E8E93"></span>' }; });
+}
+const pageOf = k => pages().find(p => p.k === k);
+function tidyNav(){
+  const nav = $('#sideNav'); if (!nav) return;
+  const loose = [...nav.children].filter(el => el.tagName === 'A');
+  if (!loose.length) return;
+  let grp = nav.querySelector('.grp[data-extra]');
+  if (!grp){ grp = document.createElement('div'); grp.className = 'grp'; grp.dataset.extra = '1'; grp.setAttribute('role', 'group'); grp.setAttribute('aria-label', 'Connected'); grp.innerHTML = '<div class="grp-t">Connected</div>'; nav.appendChild(grp); }
+  loose.forEach(a => { a.dataset.group = 'Connected'; if (!a.querySelector('.ico')){ const t = a.textContent; a.innerHTML = `<span class="ico" style="background:#C9A227">${ic('link', 2.1)}</span><span>${esc(t)}</span>`; a.title = a.title || 'Feeds shared with the linked dashboards'; } grp.appendChild(a); });
+}
+
+/* Inspector (plan editor) and drawer */
+function setInsp(open, focus){
+  document.body.classList.toggle('insp', !!open);
+  const b = $('#inspBtn'); if (b) b.setAttribute('aria-expanded', !!open);
+  if (!overlayInsp()){ UI.insp = !!open; uiSave(); }
+  if (open && focus){ const p = $('#planPanel'); setTimeout(() => { const el = p.querySelector('input,select'); if (el) el.focus({preventScroll:true}); }, 60); }
+  if (!open && overlayInsp() && focus !== false){ const b2 = $('#inspBtn'); if (b2 && !narrow()) b2.focus({preventScroll:true}); }
+  if (!overlayInsp()) setTimeout(() => Object.values(charts).forEach(ch => ch.resize && ch.resize()), 30);
+}
+function setDrawer(open){
+  document.body.classList.toggle('drawer', !!open);
+  const m = $('#menuBtn'); if (m) m.setAttribute('aria-expanded', !!open);
+  if (open){ const cur = $('#sideNav a[aria-current="page"]') || $('#sideNav a'); if (cur) setTimeout(() => cur.focus({preventScroll:true}), 50); }
+}
+function focusInput(k){
+  setDrawer(false); setInsp(true);
+  const el = $(`#planPanel [data-k="${k}"]`); if (!el) return;
+  const d = el.closest('details'); if (d) d.open = true;
+  setTimeout(() => { el.scrollIntoView({block:'center'}); el.focus({preventScroll:true}); const f = el.closest('.field'); if (f){ f.classList.remove('flash-card'); void f.offsetWidth; f.classList.add('flash-card'); } }, 80);
+}
+
+/* Sheets */
+let sheetPrev = null;
+function openSheet(html, cls='', center=false){
+  closeSheet(true);
+  sheetPrev = document.activeElement;
+  const w = document.createElement('div'); w.className = 'sheet-wrap' + (center ? ' center' : ''); w.id = 'sheetWrap';
+  w.innerHTML = `<div class="sheet ${cls}" role="dialog" aria-modal="true">${html}</div>`;
+  w.addEventListener('mousedown', e => { if (e.target === w) closeSheet(); });
+  w.addEventListener('keydown', e => { if (e.key !== 'Tab') return; const f = $$('a[href],button:not([disabled]),input,select,textarea', w).filter(x => x.offsetParent !== null); if (!f.length) return; const a = f[0], z = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === a){ e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z){ e.preventDefault(); a.focus(); } });
+  document.body.appendChild(w);
+  return w;
+}
+function closeSheet(silent){ const w = $('#sheetWrap'); if (!w) return; w.remove(); if (!silent && sheetPrev && sheetPrev.focus) try { sheetPrev.focus({preventScroll:true}); } catch(_){} }
+
+/* Command palette */
+let palItems = [], palSel = 0;
+function palIndex(){
+  const out = [];
+  pages().forEach(p => out.push({ g:'Pages', t:p.t, s:p.d, ico:p.ico, kw:p.g + ' ' + p.d, run:() => go(p.k) }));
+  const act = (t, s, k, run, kw='') => out.push({ g:'Actions', t, s, ico:`<span class="ico" style="background:#8E8E93">${ic(k, 2.1)}</span>`, kw, run });
+  act('Edit plan assumptions', 'Open the plan editor · E', 'sliders', () => setInsp(true, true), 'inputs settings inspector');
+  act('Guided setup', 'Five quick steps to make the plan yours', 'wand', openWizard, 'onboarding wizard start');
+  act('How this page works', 'Help for the current page · ?', 'q', () => openHelp(current()), 'help');
+  act(S._real ? 'Show future dollars' : "Show today's dollars", 'Switch the dollar basis everywhere', 'bolt', () => { S._real = !S._real; save(); syncInputs(); render(); }, 'inflation nominal real');
+  [['light','Use light appearance'],['dark','Use dark appearance'],['','Match system appearance']].forEach(([v, t]) => act(t, 'Appearance', 'bolt', () => setTheme(v), 'theme dark mode light'));
+  act('Reset to example household', 'Replace your inputs with the example', 'bolt', () => { if (confirm('Replace your plan with the example household?')){ $('#resetBtn').click(); } }, 'reset clear');
+  $$('main section.view').forEach(sec => { const k = sec.id.slice(2); const p = pageOf(k); if (!p) return;
+    $$('.card-head h3, .card > h3', sec).forEach(h => { const t = h.textContent.replace(/\s+/g, ' ').trim(); if (!t || t.length > 90) return; out.push({ g:'Sections', t, s:p.t, ico:p.ico, kw:'', run:() => go(k, h) }); }); });
+  $$('#planPanel .field').forEach(f => { const l = f.querySelector('label'); const i = f.querySelector('[data-k]'); if (!l || !i) return; const sum = f.closest('details')?.querySelector('summary')?.textContent || '';
+    out.push({ g:'Plan inputs', t:l.textContent.trim(), s:'Edit plan · ' + sum, ico:`<span class="ico" style="background:#0A84FF">${ic('sliders', 2.1)}</span>`, kw:i.dataset.k, run:() => focusInput(i.dataset.k) }); });
+  GLOSSARY.forEach(([t, d, pg]) => out.push({ g:'Glossary', t, s:d, ico:`<span class="ico" style="background:#8E8E93">${ic('book', 2.1)}</span>`, kw:'', run:() => { UI.glq = t; go('glossary'); } }));
+  return out;
+}
+function palScore(it, q){
+  if (!q) return it.g === 'Pages' || it.g === 'Actions' ? 1 : 0;
+  const t = it.t.toLowerCase(), hay = (it.t + ' ' + it.s + ' ' + it.kw + ' ' + it.g).toLowerCase();
+  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+  if (!words.every(w => hay.includes(w))) return 0;
+  let s = 1; const ql = q.toLowerCase();
+  if (t === ql) s += 100; if (t.startsWith(ql)) s += 40; if (new RegExp('\\b' + ql.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).test(t)) s += 20; if (t.includes(ql)) s += 10;
+  s += { Pages:8, Actions:5, 'Plan inputs':4, Sections:3, Glossary:2 }[it.g] || 0;
+  return s - t.length/200;
+}
+function openPalette(q=''){
+  setDrawer(false);
+  const w = openSheet(`<div class="pal-in">${ic('search')}<input id="palQ" type="search" placeholder="Search pages, sections, inputs and terms" aria-label="Search" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="palList"><kbd>esc</kbd></div><div class="pal-list" id="palList" role="listbox"></div>`, 'pal');
+  const all = palIndex(); const inp = $('#palQ', w); inp.value = q;
+  const draw = () => { const qq = inp.value.trim(); const scored = all.map(it => [palScore(it, qq), it]).filter(x => x[0] > 0).sort((a, b) => b[0] - a[0]).slice(0, qq ? 60 : 40).map(x => x[1]);
+    const order = qq ? [...new Set(scored.map(x => x.g))] : ['Pages','Actions'];
+    palItems = []; let html = '';
+    order.forEach(g => { const xs = scored.filter(x => x.g === g); if (!xs.length) return; html += `<div class="pal-grp">${g}</div>`; xs.forEach(x => { const i = palItems.length; palItems.push(x); html += `<div class="pal-it" role="option" id="po${i}" data-i="${i}" aria-selected="false">${x.ico}<div style="min-width:0"><div>${esc(x.t)}</div><div class="s">${esc(x.s)}</div></div>${ic('chev')}</div>`; }); });
+    $('#palList', w).innerHTML = html || `<div class="pal-empty">No results for “${esc(qq)}”. Try a page name, a term like “IRMAA”, or an input like “retire”.</div>`;
+    palSel = 0; mark(); };
+  const mark = () => { $$('.pal-it', w).forEach(el => el.setAttribute('aria-selected', +el.dataset.i === palSel)); const el = $('#po' + palSel, w); if (el){ el.scrollIntoView({block:'nearest'}); inp.setAttribute('aria-activedescendant', el.id); } };
+  const pick = i => { const it = palItems[i]; if (!it) return; closeSheet(true); it.run(); };
+  inp.addEventListener('input', draw);
+  inp.addEventListener('keydown', e => { if (e.key === 'ArrowDown'){ e.preventDefault(); palSel = Math.min(palItems.length - 1, palSel + 1); mark(); } else if (e.key === 'ArrowUp'){ e.preventDefault(); palSel = Math.max(0, palSel - 1); mark(); } else if (e.key === 'Enter'){ e.preventDefault(); pick(palSel); } });
+  $('#palList', w).addEventListener('click', e => { const el = e.target.closest('.pal-it'); if (el) pick(+el.dataset.i); });
+  $('#palList', w).addEventListener('mousemove', e => { const el = e.target.closest('.pal-it'); if (el && +el.dataset.i !== palSel){ palSel = +el.dataset.i; mark(); } });
+  draw(); setTimeout(() => inp.focus(), 10);
+}
+function go(k, target){
+  setDrawer(false);
+  const jump = () => { if (!target) return; const card = target.closest('.card') || target; card.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block:'start'}); card.classList.remove('flash-card'); void card.offsetWidth; card.classList.add('flash-card'); };
+  if (current() === k && location.hash){ if (k === 'glossary') renderGlossary(); jump(); return; }
+  location.hash = k; setTimeout(jump, 120);
+}
+function setTheme(v){ if (v) document.documentElement.setAttribute('data-theme', v); else document.documentElement.removeAttribute('data-theme'); UI.theme = v; uiSave(); }
+
+/* Help sheet */
+function openHelp(k){
+  const h = PAGE_HELP[k]; const p = pageOf(k); if (!h || !p) return;
+  openSheet(`<div class="help-h"><div style="display:flex;gap:12px;align-items:center">${p.ico.replace('class="ico" style="', 'class="ico" style="width:34px;height:34px;')}<div><span class="small muted">${esc(p.g)}</span><h3>${esc(p.t)}</h3></div></div><button class="iconbtn" type="button" data-close aria-label="Close">${ic('x')}</button></div>
+    <div class="help-b"><p><b>${h.q}</b></p><ol>${h.steps.map(s => `<li>${s}</li>`).join('')}</ol>${h.tip ? insight('acc','TIP', h.tip) : ''}
+    ${h.rel && h.rel.length ? `<div><span class="small muted">Related</span><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">${h.rel.map(r => { const q = pageOf(r); return q ? `<a class="chip" href="#${r}" data-close style="text-decoration:none">${esc(q.t)}</a>` : ''; }).join('')}</div></div>` : ''}
+    <p class="small muted">Shortcuts: ${isMac ? '⌘K' : 'Ctrl K'} or / search · E edit plan · [ and ] previous and next page · ? this help</p></div>`, 'help', true);
+  const w = $('#sheetWrap'); w.addEventListener('click', e => { if (e.target.closest('[data-close]')) closeSheet(); });
+  setTimeout(() => { const b = $('[data-close]', w); if (b) b.focus(); }, 10);
+}
+
+/* Guided setup */
+const WZ = [
+  { t:'About you', p:'Ages and filing status set tax brackets, Social Security, Medicare and required distributions.', k:['birth','sex','filing','state','spBirth','spSex'] },
+  { t:'Your timeline', p:'When you stop working, when you claim Social Security, and how long the plan must last.', k:['retireAge','le','claim','spClaim'] },
+  { t:'Savings today', p:'Current balances by tax treatment. Use your latest statements; round numbers are fine.', k:['bPre','bRoth','bTax','bBasis','bHsa'] },
+  { t:'Earning and saving', p:'Pay, raises, and what goes into each account every year. Social Security amounts come from your my Social Security statement.', k:['salary','salGrowth','k401','rothShare','match','ira','hsa','taxableC','pia','spPia'] },
+  { t:'Retirement lifestyle', p:'Spending in today\'s dollars, investment mix and any part-time income. The results update live.', k:['spend','health','stock','spendShape','ptIncome','ptUntil'], sum:true }
+];
+let wzStep = 0;
+function openWizard(){ wzStep = 0; setDrawer(false); drawWizard(); }
+function wzSummary(){
+  if (!PLAN || !MC) return '';
+  const rr = PLAN.retRow; const succ = MC.success;
+  return `<div class="wz-sum"><div><span class="small muted">Odds of success</span><b style="color:var(--${succ >= .85 ? 'good' : succ >= .7 ? 'warn' : 'bad'})">${pct(succ,0)}</b></div><div><span class="small muted">At retirement</span><b>${fmtK(rr.start/rr.idx)}</b></div><div><span class="small muted">Money lasts</span><b>${PLAN.depleted ? 'Age ' + PLAN.depleted.age : 'Past ' + S.le}</b></div></div>`;
+}
+function drawWizard(){
+  const st = WZ[wzStep];
+  const w = openSheet(`<div class="wz-h"><span class="small muted">Step ${wzStep + 1} of ${WZ.length}</span><h3>${st.t}</h3><p>${st.p}</p></div>
+    <div class="wz-dots" aria-hidden="true">${WZ.map((_, i) => `<i class="${i <= wzStep ? 'on' : ''}"></i>`).join('')}</div>
+    <div class="wz-b" id="wzBody"></div>
+    <div class="wz-f"><button type="button" class="btn" id="wzBack">${wzStep ? 'Back' : 'Cancel'}</button><div style="display:flex;gap:8px">${wzStep < WZ.length - 1 ? '<button type="button" class="btn" id="wzSkip">Skip setup</button>' : ''}<button type="button" class="btn primary" id="wzNext">${wzStep < WZ.length - 1 ? 'Continue' : 'Done'}</button></div></div>`, 'wz', true);
+  w.querySelector('.sheet').setAttribute('aria-label', 'Guided setup, ' + st.t);
+  const body = $('#wzBody', w);
+  st.k.forEach(k => { const src = $(`#planPanel [data-k="${k}"]`); if (!src) return; const f = src.closest('.field').cloneNode(true);
+    const inp = f.querySelector('[data-k]'); inp.id = 'wz_' + k; const l = f.querySelector('label'); if (l) l.setAttribute('for', 'wz_' + k);
+    $$('[id]', f).forEach(x => { if (x !== inp) x.removeAttribute('id'); });
+    if (inp.tagName === 'SELECT') inp.value = S[k];
+    body.appendChild(f); });
+  if (st.sum){ const d = document.createElement('div'); d.className = 'field full'; d.id = 'wzSum'; d.innerHTML = wzSummary(); body.appendChild(d); }
+  syncInputs();
+  $('#wzBack', w).onclick = () => { if (wzStep){ wzStep--; drawWizard(); } else closeSheet(); };
+  const sk = $('#wzSkip', w); if (sk) sk.onclick = () => { UI.wz = 1; uiSave(); closeSheet(); };
+  $('#wzNext', w).onclick = () => { if (wzStep < WZ.length - 1){ wzStep++; drawWizard(); } else { UI.wz = 1; uiSave(); S._touched = true; save(); syncInputs(); closeSheet(); go('overview'); } };
+  setTimeout(() => { const f = body.querySelector('input,select'); if (f) f.focus(); }, 20);
+}
+function openWelcome(){
+  const row = (k, col, t, d) => `<div style="display:flex;gap:14px;align-items:flex-start"><span class="ico" style="background:${col};width:38px;height:38px;border-radius:10px">${ic(k, 2.1)}</span><div><b>${t}</b><p class="small muted" style="margin-top:2px">${d}</p></div></div>`;
+  const w = openSheet(`<div class="wz-h" style="text-align:center;padding-top:30px"><span class="logo" style="width:56px;height:56px;border-radius:14px;margin:0 auto 12px;display:grid">${ic('bolt', 2)}</span><h3 style="font-size:1.7rem">Welcome to Retirement Horizon</h3><p>One plan, every account, every income source, every tax.</p></div>
+    <div class="help-b" style="padding:16px 30px 8px;gap:16px">${row('wand', '#0A84FF', 'Set up in five steps', 'Answer a few questions and every page fills in with your numbers.')}${row('search', '#5E5CE6', 'Find anything', `Press ${isMac ? '⌘K' : 'Ctrl K'} to jump to any page, chart, input or term.`)}${row('sliders', '#34C759', 'Change anything, see everything', 'Edit the plan from any page; charts update as you type.')}${row('q', '#FF9500', 'Learn as you go', 'Every page has a guide, and the Learn section explains the terms and the math.')}</div>
+    <div class="wz-f" style="border:0;flex-direction:column;gap:8px;padding:16px 30px 26px"><button type="button" class="btn primary" id="wlGo" style="padding:11px">Set up my plan</button><button type="button" class="btn" id="wlEx" style="padding:11px;background:transparent;color:var(--accent)">Explore with the example household</button></div>`, 'wz', true);
+  $('#wlGo', w).onclick = () => { UI.welcomed = 1; uiSave(); openWizard(); };
+  $('#wlEx', w).onclick = () => { UI.welcomed = 1; uiSave(); closeSheet(); };
+  setTimeout(() => $('#wlGo', w).focus(), 20);
+}
+
+/* Page chrome: breadcrumb, help button, pager */
+function chrome(){
+  const ps = pages();
+  ps.forEach((p, i) => { const sec = document.getElementById('v-' + p.k); if (!sec || sec.dataset.chrome || p.k === 'mirror') return; const head = sec.querySelector('.view-head > div'); if (!head) return;
+    sec.dataset.chrome = '1';
+    head.insertAdjacentHTML('afterbegin', `<nav class="crumb" aria-label="Breadcrumb"><a href="#overview">Home</a><span aria-hidden="true">›</span><span>${esc(p.g)}</span></nav>`);
+    const eb = head.querySelector('.eyebrow'); if (eb) eb.remove();
+    if (PAGE_HELP[p.k]) head.insertAdjacentHTML('beforeend', `<button type="button" class="btn help-btn" data-help="${p.k}">${ic('q')}How this page works</button>`);
+    const pv = ps[i - 1], nx = ps[i + 1];
+    sec.insertAdjacentHTML('beforeend', `<nav class="pager" aria-label="Previous and next page">${pv ? `<a class="prev" href="#${pv.k}"><span>‹ Previous</span><b>${esc(pv.t)}</b></a>` : ''}${nx ? `<a class="next" href="#${nx.k}"><span>Next ›</span><b>${esc(nx.t)}</b></a>` : ''}</nav>`);
+  });
+}
+function step(d){ const ps = pages(); const i = ps.findIndex(p => p.k === current()); const n = ps[i + d]; if (n) go(n.k); }
+
+/* Summary highlights */
+function renderHighlights(){
+  const sec = $('#v-overview'); if (!sec || !PLAN || !MC) return;
+  let box = $('#ovHighlights'); if (!box){ box = document.createElement('div'); box.id = 'ovHighlights'; box.style.cssText = 'display:flex;flex-direction:column;gap:14px'; sec.querySelector('.view-head').after(box); }
+  const P = PLAN, rr = P.retRow, by = parseDate(S.birth).y, a0 = ageOn(S.birth);
+  const ssRow = P.rows.find(r => r.ss > 0); const ssMo = ssRow ? ssRow.ss/12/ssRow.idx : 0;
+  const guar = rr.ss + rr.ssSp + rr.pension + rr.annuity; const cover = guar / Math.max(1, rr.spend);
+  const t = (k, col, icoK, ti, v, cap) => { const p = pageOf(k); return p ? `<a class="tile" href="#${k}">${p.ico.replace(/background:[^;"]+/, 'background:' + col)}<span class="t">${ti}</span><span class="chev">${ic('chev')}</span><span class="v">${v}</span><span class="c">${cap}</span></a>` : ''; };
+  const s = MC.success;
+  const banner = !S._touched ? `<div class="setup-banner"><span class="ico" style="background:#0A84FF;width:40px;height:40px;border-radius:10px">${ic('wand', 2.1)}</span><div style="flex:1 1 260px"><b>You are looking at an example household</b><p>Five quick questions turn every page into your own plan. It takes about two minutes and stays in this browser.</p></div><button class="btn primary" type="button" id="hlSetup">Set up my plan</button></div>` : '';
+  box.innerHTML = banner + `<div class="tiles">
+    ${t('investing', s >= .85 ? '#34C759' : s >= .7 ? '#FF9500' : '#FF3B30', '', 'Odds of success', pct(s,0), '1,000 simulated markets')}
+    ${t('accounts', '#0A84FF', '', 'At retirement', fmtK(rr.start/rr.idx), `Age ${rr.age}, today's dollars`)}
+    ${t('advisor', P.depleted ? '#FF3B30' : '#AF52DE', '', 'Money lasts', P.depleted ? 'Age ' + P.depleted.age : 'Past ' + S.le, P.depleted ? 'Average markets run short' : 'In average markets')}
+    ${t('social-security', '#FF3B30', '', 'Social Security', ssMo ? fmt(ssMo) + '/mo' : 'Not claimed', `Claiming at ${S.claim}${S.filing === 'mfj' ? `, spouse at ${S.spClaim}` : ''}`)}
+    ${t('annuities', '#FFB800', '', 'Guaranteed income', pct(Math.min(cover, 9.99),0), 'Of first-year spending')}
+    ${t('taxes', '#FF9500', '', 'Lifetime taxes', fmtK(P.lifeTaxReal), "Federal, state and IRMAA, today's $")}
+    ${t('healthcare', '#FF2D55', '', 'Medicare', String(by + 65), a0 >= 65 ? 'Enrolled age' : `Eligible in ${by + 65 - NOW.getFullYear()} years`)}
+    ${t('wealth', '#5E5CE6', '', `Legacy at ${S.le}`, fmtK(P.last.end/P.last.idx), "Average path, today's $")}
+  </div>`;
+  const b = $('#hlSetup'); if (b) b.onclick = openWizard;
+}
+
+/* Learn: roadmap */
+function renderRoadmap(){
+  const a0 = ageOn(S.birth), by = parseDate(S.birth).y, P = PLAN, rr = P.retRow;
+  const yrs = Math.max(0, S.retireAge - a0); const rmdAge = P.rmdAge; const fra = fraMonths(by)/12;
+  const save = (S.salary*(S.k401||0)/100) + (S.salary*(S.match||0)/100) + (+S.ira||0) + (+S.hsa||0) + (+S.taxableC||0);
+  const rate = save / Math.max(1, S.salary);
+  const items = [];
+  if (yrs > 0) items.push(insight('acc', 'RUNWAY', `<b>${yrs} years</b> to your target retirement at ${S.retireAge}. You are saving about <b>${fmt(save)}</b> a year (${pct(rate,0)} of pay including the match).${rate < .15 ? ' Working toward 15% or more is the usual target.' : ' That is at or above the usual 15% target.'}`));
+  else items.push(insight('acc', 'RETIRED', `You are past your retirement age of ${S.retireAge}. Focus on withdrawal order, taxes, and keeping 1 to 2 years of spending in cash and bonds.`));
+  if (a0 >= 50 && a0 < 64) items.push(insight('good', 'CATCH-UP', `At ${a0} you can add catch-up contributions${a0 >= 60 && a0 <= 63 ? ', including the larger 60 to 63 "super catch-up" in workplace plans' : ''}.`));
+  items.push(insight('', 'MILESTONES', `Medicare at 65 in <b>${by + 65}</b> · Full Social Security age ${Number.isInteger(fra) ? fra : fra.toFixed(1)} in <b>${Math.floor(by + fra)}</b> · Required distributions at <b>${rmdAge}</b> in ${by + rmdAge} · Plan horizon age ${S.le}.`));
+  if (S.claim < 70) items.push(insight('warn', 'CLAIMING', `You plan to claim Social Security at ${S.claim}. Each year of waiting to 70 adds about 7 to 8%; see the breakeven on the Social Security page.`));
+  $('#rmNow').innerHTML = `<div class="card"><div class="card-head"><h3>Your next moves at ${a0}</h3><p>Built from your plan inputs.</p></div><div class="insights">${items.join('')}</div></div>`;
+  const li = xs => `<ul>${xs.map(x => `<li>${x}</li>`).join('')}</ul>`;
+  $('#rmGrid').innerHTML = ROADMAP.map(d => { const now = a0 >= d.lo && a0 <= d.hi;
+    return `<article class="rm-c ${now ? 'now' : ''}"><h4><span>${d.t}</span>${now ? '<span class="pill acc">You are here</span>' : ''}</h4><span class="small muted">${d.sub}</span>
+      <h5>PRIORITIES</h5>${li(d.pri)}<h5>ACCOUNTS</h5>${li(d.acc)}<h5>PROTECT</h5>${li(d.pro)}<h5>WATCH FOR</h5>${li(d.watch)}
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:4px">${d.go.map(k => { const p = pageOf(k); return p ? `<a class="chip" href="#${k}" style="text-decoration:none">${esc(p.t)}</a>` : ''; }).join('')}</div></article>`; }).join('');
+}
+
+/* Learn: glossary */
+function renderGlossary(){
+  const inp = $('#glSearch'); if (UI.glq !== undefined){ inp.value = UI.glq; delete UI.glq; }
+  const q = inp.value.trim().toLowerCase();
+  const xs = GLOSSARY.filter(([t, d]) => !q || t.toLowerCase().includes(q) || d.toLowerCase().includes(q)).sort((a, b) => a[0].localeCompare(b[0], 'en', {numeric:true}));
+  $('#glCount').textContent = `${xs.length} of ${GLOSSARY.length} terms`;
+  const letters = [...new Set(GLOSSARY.map(g => /[A-Z]/i.test(g[0][0]) ? g[0][0].toUpperCase() : '#'))].sort();
+  $('#glAz').innerHTML = letters.map(l => `<button type="button" data-gl="${l}" aria-label="Terms starting with ${l === '#' ? 'a number' : l}">${l}</button>`).join('');
+  $('#glList').innerHTML = xs.map(([t, d, pg]) => { const p = pageOf(pg); const l = /[A-Z]/i.test(t[0]) ? t[0].toUpperCase() : '#';
+    return `<article class="gl" data-l="${l}" id="gl-${t.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}"><b>${esc(t)}</b><p>${esc(d)}</p>${p ? `<a href="#${pg}">${esc(p.t)} ›</a>` : ''}</article>`; }).join('') || '<p class="muted">No matching terms.</p>';
+  if (q){ const exact = xs.find(x => x[0].toLowerCase() === q); if (exact){ const el = document.getElementById('gl-' + exact[0].replace(/[^a-z0-9]+/gi, '-').toLowerCase()); if (el){ el.classList.add('flash-card'); } } }
+}
+
+/* Learn: methodology */
+function renderMethodology(){
+  const yrs = PLAN.rows.length, sig = sigmaFor(S.stock);
+  kpis('meKpis', [
+    { l:'Years projected', text: String(yrs), s:`Age ${PLAN.rows[0].age} to ${S.le}, one row per year` },
+    { l:'Market simulations', text:'1,000', s:'Seeded, so results are repeatable' },
+    { l:'Volatility used', text: pct(sig,1), s:`${S.stock}% stocks, yearly standard deviation` },
+    { l:'Returns', text:`${S.rPre}% / ${S.rPost}%`, s:'Before / after retirement, nominal' },
+    { l:'Inflation', text: S.infl + '%', s:'Spending and tax brackets rise with it' },
+    { l:'Tax law', text:'2026', s:'Brackets indexed forward with inflation' }
+  ]);
+  const sec = [
+   ['engine','The projection engine', `<p>Every page reads from one year-by-year projection. Each year it grows salary by your raise rate, adds contributions to each account (pre-tax, Roth, taxable, HSA, with employer match), applies the expected return, and once you retire it pays spending plus taxes from income first and then from savings.</p><ul><li>Income sources: Social Security for both spouses, pension, annuity, rental cash flow, part-time work, business-sale proceeds and one-time life events.</li><li>Spending is entered in today's dollars and grows with inflation. The optional "smile" shape trims real spending through the 70s and raises it late in life.</li><li>Withdrawal order follows your choice: taxable then pre-tax then Roth, bracket-filling, or proportional.</li><li>Balances never go below zero; the first year spending cannot be met is reported as the depletion age.</li></ul>`],
+   ['returns','Returns and inflation', `<p>The average path uses your expected nominal return before retirement (${S.rPre}%) and after (${S.rPost}%). "Today's dollars" divides every future amount by cumulative inflation at ${S.infl}% a year, so numbers compare with today's prices.</p><p>Volatility comes from your stock share: stocks at 16.5% and bonds at 6% yearly standard deviation with a 0.15 correlation, giving ${pct(sig,1)} for ${S.stock}% stocks.</p>`],
+   ['mc','Monte Carlo', `<p>1,000 paths each draw a random lognormal return every year with the same average as the plan and the volatility above, then apply that year's net cash flow from the projection. A path fails if the portfolio hits zero after retirement. "Odds of success" is the share of paths that never fail. Bands on charts are the 10th, 25th, 50th, 75th and 90th percentiles.</p><p>The war-game on the Advisor page layers five market regimes (including a 1970s-style stagflation and a lost decade), four lifespans and ten life events, and re-runs each with four courses of action.</p>`],
+   ['tax','Taxes', `<p>Federal tax uses 2026 brackets, the standard deduction ($16,100 single, $32,200 joint) with the extra amount at 65, and the $6,000 senior deduction for 2025 to 2028 with its income phase-out. Long-term gains and qualified dividends stack on top of ordinary income at 0, 15 and 20%. The 3.8% net investment income tax applies above $200,000 or $250,000.</p><ul><li>Social Security is taxed with the provisional-income formula (up to 85% taxable).</li><li>IRMAA tiers (2026) are tested against the prior projected year's income; Medicare itself looks back two years, so the real surcharge arrives a year later.</li><li>State tax is a flat effective rate by state, with exemptions for Social Security and retirement income where the state provides them.</li><li>Brackets and thresholds are indexed with your inflation assumption.</li></ul>`],
+   ['ss','Social Security', `<p>Benefits start from the full-retirement-age amount you enter (PIA). Claiming early reduces it by 5/9 of 1% per month for the first 36 months and 5/12 of 1% after; waiting past full retirement age adds 2/3 of 1% per month to 70. Spousal benefits are up to half the worker's PIA; a survivor keeps the larger check. Benefits grow with your COLA assumption, and an optional cut models a trust-fund shortfall.</p>`],
+   ['rmd','Required distributions', `<p>Required minimum distributions start at 73, or 75 for anyone born in 1960 or later, dividing the prior year-end pre-tax balance by the IRS Uniform Lifetime Table factor. Each RMD is taxed as ordinary income in the year it is taken, whether or not you need it for spending.</p>`],
+   ['other','Annuities, pensions, insurance and benefits', `<ul><li>Annuity prices and life expectancy use a Gompertz mortality curve close to annuitant tables; annuity quotes include a 4% expense load.</li><li>Pension options use standard actuarial reductions; the lump-sum test solves for the interest rate that equates the lump sum with the stream of payments.</li><li>Life insurance illustrations use typical cost-of-insurance curves; IUL is tested at the illustrated rate, at 4.5%, and on simulated markets with the cap and floor applied.</li><li>VA, SSDI, SSI and military pay use 2026 published rates.</li><li>Rental properties amortize each loan monthly, depreciate the building over 27.5 years and apply passive-loss rules.</li></ul>`],
+   ['limits','What the model simplifies', `<ul><li>Returns are smooth on the average path; real markets are not. Use the Monte Carlo and war-game for risk.</li><li>No alternative minimum tax, no itemized deductions beyond what pages model, and state taxes are approximate.</li><li>Fund-level cost basis is tracked as one pool per taxable account, not by lot.</li><li>Laws change. Tax law, contribution limits, Medicare premiums and benefit rates are as published for 2026.</li><li>This is an educational model, not tax, legal or investment advice.</li></ul>`],
+   ['sources','Data sources', `<p>IRS 2026 inflation adjustments and the 2025 reconciliation act; SSA 2026 fact sheet (COLA 2.8%, wage base $184,500); CMS 2026 Medicare premiums and IRMAA tiers; VA 2026 compensation tables; DFAS military pay; IRS Uniform Lifetime Table; S&P 500 total returns 1996–2025 for history-based tools.</p>`]
+  ];
+  $('#meToc').innerHTML = sec.map(([id, h]) => `<a class="chip" href="#methodology" data-me="${id}" style="text-decoration:none">${h}</a>`).join('');
+  $('#meBody').innerHTML = sec.map(([id, h, body]) => `<div class="card" id="me-${id}"><div class="card-head"><h3>${h}</h3></div><div class="md">${body}</div></div>`).join('');
+}
+
+/* Hooks called by the router */
+function afterRender(v){
+  if (v === 'overview') renderHighlights();
+  const sum = $('#wzSum'); if (sum) sum.innerHTML = wzSummary();
+}
+function shellShow(v){
+  const p = pageOf(v);
+  document.title = (p && v !== 'overview' ? p.t + ' · ' : '') + 'Retirement Horizon';
+  $$('.tabbar a').forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + v ? 'page' : 'false'));
+  const side = $('#sideNav'), cur = $(`#sideNav a[href="#${v}"]`);
+  if (side && cur){ const r = cur.getBoundingClientRect(), sr = side.getBoundingClientRect(); if (r.top < sr.top + 40 || r.bottom > sr.bottom - 20) side.scrollTop += r.top - sr.top - sr.height/3; }
+  setDrawer(false);
+  if (overlayInsp() && document.body.classList.contains('insp')) setInsp(false, false);
+}
+function shellInit(){
+  tidyNav(); chrome();
+  if (UI.theme) setTheme(UI.theme);
+  const kh = $('#kbdHint'); if (kh) kh.textContent = isMac ? '⌘K' : 'Ctrl K';
+  setInsp(!overlayInsp() && UI.insp !== false && window.innerWidth >= 1400);
+  document.addEventListener('click', e => {
+    const t = e.target.closest('button, a'); if (!t) return;
+    if (t.id === 'inspBtn') setInsp(!document.body.classList.contains('insp'), true);
+    else if (t.id === 'inspClose') setInsp(false);
+    else if (t.id === 'menuBtn' || t.id === 'tbMore') setDrawer(!document.body.classList.contains('drawer'));
+    else if (t.id === 'searchBtn' || t.id === 'tbSearch') openPalette();
+    else if (t.id === 'setupBtn') openWizard();
+    else if (t.dataset.help) openHelp(t.dataset.help);
+    else if (t.dataset.gl){ const el = $(`#glList .gl[data-l="${t.dataset.gl}"]`); if (el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    else if (t.dataset.me){ e.preventDefault(); const el = $('#me-' + t.dataset.me); if (el){ el.scrollIntoView({behavior:'smooth', block:'start'}); el.classList.remove('flash-card'); void el.offsetWidth; el.classList.add('flash-card'); } }
+    else if (t.closest('#sideNav') && t.tagName === 'A') setDrawer(false);
+  });
+  $('#scrim').addEventListener('click', () => { setDrawer(false); if (overlayInsp()) setInsp(false); });
+  document.addEventListener('input', e => { if (e.target.id === 'glSearch') renderGlossary(); });
+  document.addEventListener('keydown', e => {
+    const tag = (e.target.tagName || '').toLowerCase(); const typing = tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable;
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){ e.preventDefault(); if ($('#sheetWrap .pal')) closeSheet(); else openPalette(); return; }
+    if (e.key === 'Escape'){ if ($('#sheetWrap')){ e.preventDefault(); closeSheet(); return; } if (document.body.classList.contains('drawer')){ setDrawer(false); $('#menuBtn')?.focus(); return; } if (overlayInsp() && document.body.classList.contains('insp')){ setInsp(false); return; } }
+    if (typing || e.metaKey || e.ctrlKey || e.altKey || $('#sheetWrap')) return;
+    if (e.key === '/'){ e.preventDefault(); openPalette(); }
+    else if (e.key === 'e' || e.key === 'E'){ e.preventDefault(); setInsp(!document.body.classList.contains('insp'), true); }
+    else if (e.key === '?'){ e.preventDefault(); openHelp(current()); }
+    else if (e.key === ']') step(1);
+    else if (e.key === '[') step(-1);
+  });
+  let lastW = window.innerWidth;
+  window.addEventListener('resize', () => { const w = window.innerWidth; if ((lastW < 1400) !== (w < 1400)){ setInsp(w >= 1400 && UI.insp !== false, false); } if (w >= 1000) setDrawer(false); lastW = w; });
+  if (!UI.welcomed && !S._touched && !/[?&]nowelcome/.test(location.search)) setTimeout(openWelcome, 400);
+}
+
 /* ---------- BENEFITS ---------- */
 function ssdiCalc(){
   const pia = piaFromAime(+S.sdAime);
@@ -4345,19 +5071,21 @@ function renderLeak(){
 }
 
 /* ---------- Router & init ---------- */
-const VIEWS = { overview: renderOverview, business: renderBusiness, military: renderMilitary, planner: renderPlanner, tools: renderTools, rentals: renderRentals, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak };
+const VIEWS = { overview: renderOverview, business: renderBusiness, military: renderMilitary, planner: renderPlanner, tools: renderTools, rentals: renderRentals, cockpit: renderCockpit, portfolio: renderPortfolio, healthcare: renderHealthcare, advisor: renderAdvisor, wealth: renderWealth, 'social-security': renderSS, pension: renderPension, annuities: renderAnnuities, accounts: renderAccounts, taxes: renderTaxes, insurance: renderInsurance, benefits: renderBenefits, investing: renderInvesting, leak: renderLeak, roadmap: renderRoadmap, glossary: renderGlossary, methodology: renderMethodology };
 function current(){ const h = location.hash.replace('#',''); return VIEWS[h] ? h : 'overview'; }
 function show(){
   const v = current();
   $$('.view').forEach(el => el.classList.toggle('on', el.id === 'v-' + v));
   $$('.tabs a').forEach(a => a.setAttribute('aria-current', a.getAttribute('href') === '#' + v ? 'page' : 'false'));
-  const tab = $(`.tabs a[href="#${v}"]`); if (tab) tab.scrollIntoView({block:'nearest', inline:'nearest'});
+  if (typeof shellShow === 'function') shellShow(v);
+  if (show._v && show._v !== v) window.scrollTo(0, 0); show._v = v;
   render();
 }
 function render(){
   setChartDefaults();
   const v = current();
   try { VIEWS[v](); } catch(e){ console.error(e); }
+  try { if (typeof afterRender === 'function') afterRender(v); } catch(e){ console.error(e); }
 }
 function syncInputs(){
   $$('[data-k]').forEach(el => { const k = el.dataset.k; const v = S[k]; if (el.type === 'checkbox') el.checked = !!v; else if (v !== undefined && el !== document.activeElement) el.value = v; });
@@ -4418,6 +5146,7 @@ function init(){
   matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', rerender);
   new MutationObserver(rerender).observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
   recompute(); show();
+  setTimeout(() => { try { shellInit(); show(); } catch(e){ console.error(e); } }, 0);
 }
 function boot(){ if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init(); }
 if (window.Chart) boot(); else { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js'; s.onload = boot; s.onerror = boot; document.head.appendChild(s); }

@@ -2,11 +2,20 @@
 
 A single-file, offline-capable retirement, investment, tax, insurance and benefits planning dashboard. Open `index.html` in a browser. `dashboard.html` is the same page without the document wrapper (used for publishing as a claude.ai artifact).
 
-## Tabs
+## Navigation
 
-| Tab | What it does |
+- **Sidebar** grouped like macOS Settings: Plan, Income, Wealth, Protect, Taxes & tools, Learn (and Connected). On phones it becomes a drawer, with a bottom tab bar for Summary, Cockpit, Advisor, Search and All pages.
+- **Search** (⌘K / Ctrl K or `/`) jumps to any page, card, plan input, action or glossary term.
+- **Edit plan** (or `E`) opens the plan editor as a side inspector, docked on wide screens and a slide-over sheet elsewhere.
+- **Set up** runs a five-step guided setup with live odds of success; first-time visitors get a welcome sheet.
+- Every page has a breadcrumb, a **How this page works** guide (`?`), and previous/next links (`[` and `]`).
+- System fonts, Apple system colors, frosted header, light and dark appearance (switchable from search).
+
+## Pages
+
+| Page | What it does |
 | --- | --- |
-| Overview | Year-by-year projection of every tax bucket, income sources vs. spending, taxes and IRMAA each year, Monte Carlo odds, action items, full ledger |
+| Summary | Tappable highlight tiles (odds, money at retirement, how long it lasts, Social Security, guaranteed income, lifetime taxes, Medicare date, legacy) linking to each page; setup prompt for the example household; year-by-year projection of every tax bucket, income sources vs. spending, taxes and IRMAA each year, Monte Carlo odds, action items, full ledger |
 | Family office cockpit | Five lenses (as entered, survivor, crash, long-term care, longevity to 100); family balance sheet over time; cash-flow Sankey for any year; 8-factor risk radar; goals funded in priority order (essentials, taxes, lifestyle, wishes, legacy); liquidity ladder / bucket sizing; "how much do I need" by withdrawal rate; inflation purchasing power; two-generation legacy under the 10-year rule; holistic review of 14 planning areas |
 | Portfolio & dividends | Editable holdings (mutual funds, ETFs, stocks, bonds, munis, REITs, cash) by account: expense ratio, income, tax drag, allocation, asset location, 30-year fee/tax cost, fund-by-fund recommendations; dividend portfolio calculator ($1M at 4% = $3,333/mo, raised with inflation) with four withdrawal methods, dividends vs. principal sold, 1,000-market Monte Carlo, real-history backtests for every start year 1996–2020, success-rate grid by rate × years, year-by-year table |
 | Rental properties | IDEAL framework (Inflation, Depreciation, Equity, Appreciation, Leverage) for each property or the whole portfolio: rent/expense growth, vacancy, management and reserves, amortization and payoff jump, 27.5-year depreciation and tax shield, passive-loss rules, equity build-up chart, IDEAL return stack with return on equity, real rent vs. fixed payment, leverage curve (all-cash to 20% down), exit options (sell with recapture, 1031, cash-out refi, step-up, installment, DST), portfolio summary, pro forma; rental cash flow and taxable income flow into the retirement plan |
@@ -26,5 +35,8 @@ A single-file, offline-capable retirement, investment, tax, insurance and benefi
 | Disability & VA benefits | SSDI with family maximum and timeline, disability simulator (income and nest egg), VA combined-rating calculator with bilateral factor and 2026 rates, CRDP/CRSC, SSI estimate, 22 other benefits |
 | Investing & risk | Monte Carlo fan chart, sequence-of-returns risk, ending-balance distribution, safe withdrawal rate by allocation, glide path, withdrawal strategies, investment vehicles |
 | Spending leak | F.A.S.T. (fast food, alcohol, stimulants, treats) calculator and S&P 500 vs. IUL redirect on actual 1996–2025 returns |
+| Roadmap by age | Priorities, accounts, protection and pitfalls for each decade from the 20s to 80+, with your decade highlighted and personal next moves (runway, savings rate, catch-ups, Medicare / full retirement age / RMD dates, claiming) |
+| Glossary | 110 plain-English definitions with A–Z index and filter, each linked to the page where it matters |
+| How the model works | Assumptions and formulas behind every number: projection engine, returns and volatility, Monte Carlo, 2026 taxes, Social Security, RMDs, annuity/pension/insurance pricing, simplifications and data sources |
 
 Inputs save in the browser's local storage. Figures reflect 2026 IRS/SSA/VA numbers as published and are approximate; this is an educational model, not tax, legal or investment advice.
