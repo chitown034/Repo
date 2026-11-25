@@ -1,7 +1,7 @@
 /* VANESSA 3.0 — static reference data. Program rules are from the blueprint's "Researched 2026-10-12" table;
    DSCR / Non-QM / Jumbo / HELOC / ARM ranges are lender-typical, NOT fixed rules — verify against live investor overlays. */
 const RULES_AS_OF = "2026-10-12";
-const LIMITS = { baseline: 832750, ceiling: 1249125, sandiego: 1104000, fhaFloor: 541287, fhaCeiling: 1249125 };
+const LIMITS = { baseline: 855400, ceiling: 1283100, sandiego: 1104000, baseline2026: 832750, ceiling2026: 1249125, confYear: 2027, fhaFloor: 541287, fhaCeiling: 1249125 };
 
 const PROGRAMS = [
   { id:"va", name:"VA", cat:"Government", minFico:"Lender-set (typical ~620, some to 580)", down:"0%", dti:"No hard cap — residual income governs (ref. 41%)",

@@ -245,9 +245,9 @@ PAGE.programs={ html:()=>`
 <div class="row" style="margin-bottom:8px"><select id="pcat" style="width:auto"><option value="">All categories</option>${[...new Set(PROGRAMS.map(p=>p.cat))].map(c=>`<option>${c}</option>`).join("")}</select><input type="text" id="psearch" placeholder="Search programs…" style="max-width:260px"></div>
 <div style="overflow:auto"><table id="ptbl"></table></div></div>
 <div class="grid g2">
- <div class="card"><h3>2026 limits &amp; confirmations</h3><table><tbody>
-  <tr><td>Conforming baseline / ceiling</td><td><b>${money(LIMITS.baseline)}</b> / <b>${money(LIMITS.ceiling)}</b> <span class="tag good">confirmed</span></td></tr>
-  <tr><td>San Diego / Riverside</td><td>${money(LIMITS.sandiego)} / ${money(LIMITS.baseline)}</td></tr>
+ <div class="card"><h3>2027 conforming &amp; 2026 FHA limits</h3><table><tbody>
+  <tr><td>Conforming baseline / ceiling (2027)</td><td><b>${money(LIMITS.baseline)}</b> / <b>${money(LIMITS.ceiling)}</b> <span class="tag good">FHFA Nov 24, 2026</span> <span class="sm mut">2026: ${money(LIMITS.baseline2026)} / ${money(LIMITS.ceiling2026)}</span></td></tr>
+  <tr><td>San Diego / Riverside</td><td>${money(LIMITS.sandiego)} <span class="tag warn">2026 — 2027 pending FHFA county file</span> / ${money(LIMITS.baseline)}</td></tr>
   <tr><td>FHA floor / ceiling</td><td>${money(LIMITS.fhaFloor)} / ${money(LIMITS.fhaCeiling)} <span class="tag good">confirmed</span></td></tr>
   <tr><td>FHA annual MIP</td><td>Unchanged since ML 2023-05 <span class="tag good">confirmed</span></td></tr>
   <tr><td>VA funding fee</td><td>2.15% first / 3.30% subsequent (&lt;5% down); IRRRL 0.50% <span class="tag good">confirmed</span></td></tr>
