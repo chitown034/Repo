@@ -1,3 +1,4 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><!-- == STALE-REFRESH-ISA 2026-10-12 == -->
 </head><body>
 <meta charset="utf-8">
@@ -511,6 +512,41 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
 
   <section class="panel" id="panel-isa-aiteam">
     <div class="panel-head"><span class="panel-tag">PANEL&nbsp;01</span><h2 class="panel-title">AI Team</h2><span class="panel-note">Mirrored from Command Deck</span></div>
+    <div class="card" id="isaTodayCard" style="margin-bottom:16px;border-left:4px solid var(--gold);">
+      <p class="card-title">Today from Vanessa — your ISA / EA list</p>
+      <p class="card-sub" style="margin-top:0;">Written by Vanessa’s daily Chief-of-Staff cycle (weekdays 6:25 AM PT) and copied here. The AI team and the automations take about 80% of the work; this is the part that is yours. Report each item on the <a href="#isaLineCard">ISA line</a>. Never send to a client, quote a rate or decide eligibility — draft it and hand it to Steven.</p>
+      <div id="isaTodayBody"><p class="src-note">No list yet on this device.</p></div>
+      <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">
+        <p class="card-sub" style="margin:0 0 6px;"><b>Hand something to Vanessa</b> — prep, research, a draft or a follow-up. The AI team picks it up at the next 6:25 AM PT cycle; you can also ask her in the chat below.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;"><input id="isaHandText" type="text" maxlength="300" placeholder="e.g. Prep a showing packet for Maria's Saturday tours" style="flex:1;min-width:200px;"><button type="button" class="btn" id="isaHandBtn">Hand to Vanessa</button></div>
+        <div id="isaOutboxList"></div>
+      </div>
+      <div id="isaListsBox" style="margin-top:10px;border-top:1px solid var(--border);padding-top:10px;">
+        <p class="card-sub" style="margin:0 0 6px;"><b>Lists only you keep</b> — Vanessa's 6:25 AM cycle moves these to Steven's deck for the Monday refi watch and the monthly sphere touches. Never type a surname, phone, email, address or loan amount here.</p>
+        <p class="src-note" id="isaListsMsg" hidden style="margin:0 0 6px;color:var(--gold);"></p>
+        <p class="card-sub" style="margin:8px 0 4px;"><b>Refi list</b> — first name and note rate only</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input id="isaRefiFirst" type="text" maxlength="40" placeholder="First name" style="flex:1;min-width:120px;">
+          <input id="isaRefiRate" type="number" step="0.01" min="2" max="15" placeholder="Note rate %" style="width:120px;">
+          <select id="isaRefiType"><option>Conventional 30</option><option>Conventional 15</option><option>VA 30</option><option>VA IRRRL-eligible</option><option>FHA 30</option><option>Jumbo</option><option>Other</option></select>
+          <input id="isaRefiMonth" type="month" placeholder="YYYY-MM" style="width:150px;">
+          <input id="isaRefiNote" type="text" maxlength="120" placeholder="Note (optional)" style="flex:2;min-width:160px;">
+          <button type="button" class="btn" id="isaRefiAddBtn">Add to refi list</button>
+        </div>
+        <div id="isaRefiList"></div>
+        <p class="card-sub" style="margin:10px 0 4px;"><b>Sphere list</b> — who to touch, and when</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input id="isaSphereFirst" type="text" maxlength="40" placeholder="First name" style="flex:1;min-width:120px;">
+          <select id="isaSphereRelation"><option value="past client">past client</option><option value="referral partner">referral partner</option><option value="family/friend">family/friend</option><option value="vendor">vendor</option><option value="other">other</option></select>
+          <input id="isaSphereTouch" type="date" title="Last touch" style="width:150px;">
+          <input id="isaSphereBday" type="text" maxlength="5" placeholder="Birthday MM-DD" style="width:130px;">
+          <input id="isaSphereAnniv" type="text" maxlength="5" placeholder="Home anniv. MM-DD" style="width:140px;">
+          <input id="isaSphereNote" type="text" maxlength="120" placeholder="Note (optional)" style="flex:2;min-width:160px;">
+          <button type="button" class="btn" id="isaSphereAddBtn">Add to sphere list</button>
+        </div>
+        <div id="isaSphereList"></div>
+      </div>
+    </div>
     <div class="card" id="isaLineCard" style="margin-bottom:16px;border-left:4px solid var(--gold);">
       <div class="card-title-row">
         <div>
@@ -569,12 +605,15 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
       <p class="card-sub" style="margin-top:0;">Added Sep 7, 2026. Each is a draft, checklist, or finding — nothing sends, files, or changes an account; Steven decides what happens next. Most useful from the ISA seat: <b>Victor</b> — call-prep sheet for a lead, 5-minute response audit, weekly pipeline review · <b>Alexandra</b> — what you can and can't say to a borrower (ad/social copy review), TRID timeline check, dual-capacity / RESPA AfBA check · <b>Sofia</b> — 5-touch follow-up sequence drafts, listing one-pager · <b>Elena</b> — wire-fraud / phishing triage for any email about closing funds or changed wiring instructions (call back on a known number, never the one in the email) · <b>Derek</b> — a runbook you can follow without Steven.</p>
     </div>
       <div class="card" style="margin-top:16px;" id="isaAiToolsCard">
-      <p class="card-title">New tools behind the AI team (updated 2026-10-09)</p>
+      <p class="card-title">New tools behind the AI team (updated 2026-11-25)</p>
       <p class="card-sub" style="margin-top:0;">Mirrored from the Command Deck's org chart and Second Brain. You use them by asking Vanessa; none of them sends, books, signs or changes an account.</p>
       <ul class="simple-list">
         <li><span class="badge amber">Mac install pending</span> <b>API Anything</b> — teaches the AI team a public website once, then reads it like an API (fast, read-only). First up: FRED and Freddie Mac mortgage-rate data. Redfin, lender, builder and homes.com pages only after Steven approves each group's terms of use. <b>Never</b> used on ShowingTime, Showami, SkySlope or zipForms — those hold client records.</li>
         <li><span class="badge amber">Mac install pending</span> <b>browser-use</b> — lets Claude read public web pages in a separate, logged-out browser. Look, don't act; no client pages.</li>
         <li><span class="badge amber">Mac install pending</span> <b>OpenDesign</b> — design workspace for flyers, pages and decks; anything client-facing still goes through Sofia and Alexandra and Steven's approval.</li>
+        <li><span class="badge green">Live 2026-11-22</span> <b>Engineering Core (Atlas)</b> — one harness for every AI call in the Broker Command Center: each answer is checked for a quoted rate, a guarantee, fair-housing language, a referral-fee offer and a draft missing DRE/NMLS. It warns and logs; it never rewrites. Broken links in the pipeline become owned tasks.</li>
+        <li><span class="badge green">Added 2026-11-18</span> <b>The Agency squads</b> — 122 specialist agents placed in the executives' departments under Vanessa. Drafts only.</li>
+        <li><span class="badge amber">Mac install pending</span> <b>Local model tier (Bonsai 2 27B)</b> — for client-data requests only, on Steven's own machine, never a cloud fallback. Off until proven there.</li>
         <li><span class="badge green">Merged 2026-10-08</span> <b>Second Brain engine</b> — Vanessa looks up the one right page before answering, so answers about programs, playbooks and processes are faster and cite their source.</li>
       </ul>
     </div>
@@ -1806,7 +1845,140 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
   </section>
 
   <p class="src-note" id="isaRenderErrors" hidden style="border:1px solid var(--negative);background:var(--negative-soft);color:var(--negative);border-radius:8px;padding:10px 12px;margin-bottom:14px;"></p>
-  <footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-10-12 — rates, builder write-ups and program-facts stamps mirror the Command Deck's stale-info refresh of 2026-10-12; previously: Build 2026-10-05 — builder-incentive and housing-market notes mirror the Command Deck's (Claude routines on Steven's subscription; no Perplexity), drift re-measured against both stores. Earlier: build 2026-10-04 — rates and market cards read the shared ratesSnapshot live, Military Base Installation Guide added (Panel 10); build 2026-09-22, connection wording re-checked 2026-09-24 · You.com retired (connector at 0 credits), Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
+  
+<!-- CAP-PACK:BEGIN -->
+<section id="cap-pack" aria-labelledby="cap-pack-h">
+<style>
+#cap-pack{box-sizing:border-box;max-width:1120px;margin:44px auto 64px;padding:0 16px;color:inherit;font:inherit;line-height:1.5}
+#cap-pack *{box-sizing:border-box}
+#cap-pack .cp-top{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;justify-content:space-between;border-bottom:1px solid color-mix(in srgb,currentColor 22%,transparent);padding-bottom:10px;margin-bottom:12px}
+#cap-pack h2{margin:0;font-size:1.3rem;line-height:1.2;font-weight:700;letter-spacing:.01em}
+#cap-pack .cp-sub{margin:4px 0 0;font-size:.86rem;opacity:.78;max-width:78ch}
+#cap-pack .cp-meta{font-size:.74rem;opacity:.7;font-variant-numeric:tabular-nums}
+#cap-pack .cp-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+#cap-pack .cp-chip{font:inherit;font-size:.78rem;font-weight:600;color:inherit;background:transparent;border:1px solid color-mix(in srgb,currentColor 30%,transparent);border-radius:999px;padding:4px 11px;cursor:pointer}
+#cap-pack .cp-chip[aria-pressed=true]{background:color-mix(in srgb,currentColor 18%,transparent);border:2px solid currentColor;padding:3px 10px}
+#cap-pack .cp-chip em{font-style:normal;opacity:.65;margin-left:4px}
+#cap-pack input[type=search]{font:inherit;font-size:.82rem;color:inherit;background:color-mix(in srgb,currentColor 6%,transparent);border:1px solid color-mix(in srgb,currentColor 28%,transparent);border-radius:8px;padding:6px 10px;min-width:200px;flex:1 1 200px;max-width:340px}
+#cap-pack .cp-legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.72rem;opacity:.72;margin:2px 0 12px}
+#cap-pack .cp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,310px),1fr));gap:10px;align-items:start}
+#cap-pack details.cp-card{background:color-mix(in srgb,currentColor 5%,transparent);border:1px solid color-mix(in srgb,currentColor 20%,transparent);border-radius:10px;min-width:0}
+#cap-pack details.cp-card[open]{grid-column:1/-1}
+#cap-pack summary{list-style:none;cursor:pointer;padding:11px 13px;display:grid;gap:3px}
+#cap-pack summary::-webkit-details-marker{display:none}
+#cap-pack summary:focus-visible,#cap-pack button:focus-visible,#cap-pack input:focus-visible,#cap-pack a:focus-visible{outline:2px solid currentColor;outline-offset:2px}
+#cap-pack .cp-kind{font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;opacity:.66;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#cap-pack .cp-name{font-weight:650;font-size:.96rem;overflow-wrap:anywhere}
+#cap-pack .cp-one{font-size:.82rem;opacity:.82}
+#cap-pack .cp-badge{font-size:.64rem;letter-spacing:.06em;font-weight:700;border:1px solid currentColor;border-radius:5px;padding:0 5px;text-transform:none}
+#cap-pack .cp-badge.SPEC{border-style:dashed}
+#cap-pack .cp-badge.EXTENDS{border-style:dotted;border-width:2px}
+#cap-pack .cp-badge.BUILT{background:color-mix(in srgb,currentColor 14%,transparent)}
+#cap-pack .cp-body{padding:2px 13px 13px;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));font-size:.84rem}
+#cap-pack .cp-body h3{margin:0 0 4px;font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;opacity:.66;font-weight:700}
+#cap-pack .cp-body ol,#cap-pack .cp-body ul{margin:0;padding-left:1.15em}
+#cap-pack .cp-body li{margin:2px 0}
+#cap-pack .cp-body p{margin:0}
+#cap-pack .cp-act{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#cap-pack .cp-btn{font:inherit;font-size:.78rem;font-weight:600;color:inherit;background:transparent;border:1px solid color-mix(in srgb,currentColor 40%,transparent);border-radius:7px;padding:5px 10px;cursor:pointer}
+#cap-pack .cp-btn:hover{background:color-mix(in srgb,currentColor 10%,transparent)}
+#cap-pack a{color:inherit;text-decoration:underline}
+#cap-pack .cp-note{font-size:.76rem;opacity:.75;margin-top:12px;max-width:90ch}
+#cap-pack .cp-empty{padding:18px;text-align:center;opacity:.7;border:1px dashed color-mix(in srgb,currentColor 30%,transparent);border-radius:10px}
+#cap-pack .cp-live{position:absolute;left:-9999px}
+@media (prefers-reduced-motion:no-preference){#cap-pack details.cp-card{transition:border-color .15s}}
+@media print{#cap-pack details.cp-card{break-inside:avoid}}
+</style>
+<div class="cp-top"><div><h2 id="cap-pack-h">Capability Pack - ISA support</h2><p class="cp-sub">This portal is scoped to real estate and mortgage work for the ISA, so the pack is limited to items that touch that scope: task hand-offs, webinar and showing follow-up, SOP drafting, meeting capture and the privacy gate.</p></div><div class="cp-meta">Capability Pack · 2026-10-22 · <span class="cp-count"></span></div></div>
+<div class="cp-bar" role="group" aria-label="Filter the capability pack"><input type="search" placeholder="Search this pack" aria-label="Search this pack"></div>
+<div class="cp-legend" aria-label="Status key"><span><b>SPEC</b> specified, not created yet</span><span><b>EXTENDS</b> adds to something that exists</span><span><b>BUILT</b> working, tested</span><span><b>CONNECTED</b> connector available, main sessions only</span><span><b>REFERENCE</b> official source</span></div>
+<div class="cp-grid"></div>
+<p class="cp-note">Registered here as specifications. Nothing on this list runs until it is installed or switched on, and every item keeps Steven's draft-only rule: never send, sign, spend, book, trade or quote automatically. The full registry, the org chart and the agent files are in the <a href="https://claude.ai/artifact/3jbdGMNFkGLEpJiZ3cTmZW" target="_blank" rel="noopener">Command Deck</a>.</p>
+<script type="application/json" id="cap-pack-data">{"items": [{"id": "AG-16", "cat": "agent", "name": "Gideon - Delegation Gatekeeper", "persona": "Gideon", "title": "Delegation Gatekeeper", "slug": "delegation-gatekeeper", "one": "Checks every task before it reaches Isa: purpose, source material, deadline, owner, definition of done and escalation path.", "seat": "vanessa-orchestrator", "pod": "Quality & Governance Pod", "tier": 2, "model": "sonnet", "tools": "Read, Grep, Glob", "tags": ["isa", "ops", "cmd", "biz"], "status": "SPEC", "trigger": "Every ISA/EA instruction and every Hand-to-Isa item, before it is released.", "how": ["Read the draft instruction and its attachments.", "Test six fields: purpose, source material, deadline, owner, definition of done, escalation path.", "Return PASS or FIX with the exact missing field and a suggested rewrite.", "Log the failure type so Sylvie can see which fields fail most."], "outputs": ["PASS/FIX verdict", "Rewritten instruction", "Failure-type log entry"], "rules": ["Never send to Isa; return the verdict to Vanessa. Strip client NPI from the rewritten instruction, using the file reference only."], "gate": "Vanessa releases; Steven owns what Isa is asked to do.", "kpi": "Clarification questions from Isa fall week over week.", "needs": ["Drop agents/delegation-gatekeeper.md into ~/.claude/agents/", "Add the slug and tier to roster-tiers.json", "Run agent_pack_lint.py"], "handoffs": "vanessa (release), sop-engineer (patterns), isa-eod (feedback)", "md": "---\nname: delegation-gatekeeper\ndescription: \"Gideon (Delegation Gatekeeper). Checks every task before it reaches Isa: purpose, source material, deadline, owner, definition of done and escalation path. Reports to vanessa-orchestrator. Use when: Every ISA/EA instruction and every Hand-to-Isa item, before it is released.\"\ntools: Read, Grep, Glob\nmodel: sonnet\ntier: 2\nlead: vanessa-orchestrator\npod: Quality & Governance Pod\npack: capability-pack-2026-10-22\n---\n\n# Gideon - Delegation Gatekeeper\n\n## Mission\nRemove rework and clarification round-trips. The single cheapest quality win in the 2026-09-12 automation plan.\n\n## Method\n1. Read the draft instruction and its attachments.\n2. Test six fields: purpose, source material, deadline, owner, definition of done, escalation path.\n3. Return PASS or FIX with the exact missing field and a suggested rewrite.\n4. Log the failure type so Sylvie can see which fields fail most.\n\n## Output\n- PASS/FIX verdict\n- Rewritten instruction\n- Failure-type log entry\n\n## Hard rules\n- Never send to Isa; return the verdict to Vanessa. Strip client NPI from the rewritten instruction, using the file reference only.\n\n## Halt and return a Needs-Steven packet when\n- An instruction asks Isa to do licensed work\n\n## Hand-offs\nHAND-OFFS: vanessa (release), sop-engineer (patterns), isa-eod (feedback)\n\n## Success measure\nClarification questions from Isa fall week over week.\n\n## Human gate\nVanessa releases; Steven owns what Isa is asked to do.\n\n## Standing guardrail\nStanding guardrail (applies to every seat on Steven's AI Team): draft only - never send, sign, spend, book, trade or quote on Steven's behalf. Return drafts and decision packets to Vanessa; Steven approves. Never put client NPI/PII, account numbers, loan numbers, passwords, tokens or third-party contact details into any output. Licensed or professional determinations (rate quotes, loan eligibility, legal, tax, medical, benefit eligibility) are out of scope: state what is needed and return a Needs-Steven packet. If a source is missing, say so - do not guess and do not invent citations, figures or names. Mark every claim as VERIFIED (with the source), REPORTED (secondary source) or ASSUMPTION.\n"}, {"id": "AG-17", "cat": "agent", "name": "Elias - Publish Guard (privacy gate)", "persona": "Elias", "title": "Publish Guard (privacy gate)", "slug": "publish-guard", "one": "Reads the privacy scan before any dashboard is published and blocks on NPI, third-party contact data or credentials.", "seat": "ciso-elena", "pod": "Quality & Governance Pod", "tier": 2, "model": "sonnet", "tools": "Read, Grep, Glob", "tags": ["security", "ops", "cmd", "biz", "va", "isa", "tools"], "status": "SPEC", "trigger": "Before every dashboard or artifact publish, and weekly across all published dashboards.", "how": ["Read the scan report for the file about to be published.", "Classify each finding: block (SSN, loan or account number, credential, third-party email/phone, calendar event description), review (own public contact data) or ignore (documented public identifiers such as NMLS/DRE numbers).", "Return PASS, REVIEW or BLOCK with the line context masked and the fix.", "Track recurring findings by dashboard."], "outputs": ["PASS/REVIEW/BLOCK verdict", "Masked findings with fixes", "Trend by dashboard"], "rules": ["Never print a full sensitive value in a report; mask all but the last characters.", "Never publish or edit a page; verdicts only."], "gate": "Steven publishes.", "kpi": "Zero BLOCK findings in published dashboards.", "needs": ["Drop agents/publish-guard.md into ~/.claude/agents/", "Add the slug and tier to roster-tiers.json", "Run agent_pack_lint.py"], "handoffs": "elena (policy), derek (fix the generator), alexandra (client-facing content questions)", "md": "---\nname: publish-guard\ndescription: \"Elias (Publish Guard (privacy gate)). Reads the privacy scan before any dashboard is published and blocks on NPI, third-party contact data or credentials. Reports to ciso-elena. Use when: Before every dashboard or artifact publish, and weekly across all published dashboards.\"\ntools: Read, Grep, Glob\nmodel: sonnet\ntier: 2\nlead: ciso-elena\npod: Quality & Governance Pod\npack: capability-pack-2026-10-22\n---\n\n# Elias - Publish Guard (privacy gate)\n\n## Mission\nPrevent a repeat of the 2026-09-12 finding where client NPI reached published HTML. The scanner (tools/pii_publish_guard.py) does the pattern work; this seat judges the findings.\n\n## Method\n1. Read the scan report for the file about to be published.\n2. Classify each finding: block (SSN, loan or account number, credential, third-party email/phone, calendar event description), review (own public contact data) or ignore (documented public identifiers such as NMLS/DRE numbers).\n3. Return PASS, REVIEW or BLOCK with the line context masked and the fix.\n4. Track recurring findings by dashboard.\n\n## Output\n- PASS/REVIEW/BLOCK verdict\n- Masked findings with fixes\n- Trend by dashboard\n\n## Hard rules\n- Never print a full sensitive value in a report; mask all but the last characters.\n- Never publish or edit a page; verdicts only.\n\n## Halt and return a Needs-Steven packet when\n- Any BLOCK finding\n\n## Hand-offs\nHAND-OFFS: elena (policy), derek (fix the generator), alexandra (client-facing content questions)\n\n## Success measure\nZero BLOCK findings in published dashboards.\n\n## Human gate\nSteven publishes.\n\n## Standing guardrail\nStanding guardrail (applies to every seat on Steven's AI Team): draft only - never send, sign, spend, book, trade or quote on Steven's behalf. Return drafts and decision packets to Vanessa; Steven approves. Never put client NPI/PII, account numbers, loan numbers, passwords, tokens or third-party contact details into any output. Licensed or professional determinations (rate quotes, loan eligibility, legal, tax, medical, benefit eligibility) are out of scope: state what is needed and return a Needs-Steven packet. If a source is missing, say so - do not guess and do not invent citations, figures or names. Mark every claim as VERIFIED (with the source), REPORTED (secondary source) or ASSUMPTION.\n"}, {"cat": "automation", "id": "AU-04", "name": "Webinar to pipeline", "one": "When a Zoom webinar ends, attendee follow-ups are drafted inside the 5-minute speed-to-lead SLA.", "schedule": "Event: Zoom meeting ended / recording ready", "agents": ["webinar-producer", "mortgage-isa-ai", "ad-compliance-reviewer"], "seat": "cro-victor", "status": "EXTENDS", "tags": ["va", "biz", "marketing", "isa"], "how": ["Zoom supplies the registrant and attendee export through the Zoom connector in a main session.", "Kenji drafts the first-touch message per attendee; Diane reviews anything that reads as an ad or a rate claim.", "Follow-up tasks are drafted for Follow Up Boss or Zoho; the ISA works the queue."], "outputs": ["Draft follow-ups", "Draft CRM tasks"], "gate": "Alexandra's ad review, then Steven or Isa sends. Nothing is sent automatically.", "needs": ["Zoom connector (main session)", "Attendee consent language on the registration page"]}, {"cat": "automation", "id": "AU-05", "name": "Meeting to execution", "one": "A finished conversation becomes decisions, commitments, CRM updates, follow-up drafts and SOP candidates in separate queues.", "schedule": "Event: Fieldy conversation completed or Zoom recording processed", "agents": ["decision-ledger-keeper", "sop-engineer"], "seat": "vanessa-orchestrator", "status": "EXTENDS", "tags": ["ops", "cmd", "biz", "brain", "isa"], "how": ["Extends the existing Recap my meetings button (Gmail and Fieldy, drafts only).", "Outputs a structured record, not a summary: decisions, commitments by Steven and by others, tasks, deadlines, CRM updates, documents needed, risks, follow-up draft, SOP candidates.", "Keep the source transcript; extract only durable facts into the registers."], "outputs": ["Structured meeting record", "Commitments rows", "Follow-up drafts"], "gate": "Drafts only. Never render third-party emails or passcodes from calendar descriptions.", "needs": ["Fieldy or Zoom connector (main session)", "Commitments Register"]}, {"cat": "automation", "id": "AU-08", "name": "Pre-publish privacy gate", "one": "Every dashboard publish runs the privacy scanner first; Elias reads the report and blocks on sensitive findings.", "schedule": "Event: before each publish, plus a weekly sweep of all dashboards", "agents": ["publish-guard"], "seat": "ciso-elena", "status": "BUILT", "tags": ["security", "ops", "cmd", "tools", "biz", "va", "isa"], "how": ["python3 tools/pii_publish_guard.py page.html prints masked findings and exits 2 on a block.", "Elias classifies block / review / ignore.", "Fix the generator, not just the page."], "outputs": ["Scan report", "PASS / REVIEW / BLOCK"], "gate": "Steven publishes only on PASS or a reviewed REVIEW.", "needs": ["Python 3 on the machine that publishes"]}, {"cat": "workflow", "id": "WF-01", "name": "Webinar to pipeline to content", "one": "Zoom webinar, transcript, follow-ups, then repurposed content, with compliance review before anything goes out.", "agents": ["webinar-producer", "mortgage-isa-ai", "ad-compliance-reviewer", "content-writer"], "seat": "cmo-sofia", "status": "EXTENDS", "tags": ["va", "biz", "marketing", "isa"], "steps": ["Zoom webinar ends; recording and attendee list pulled by the main session.", "WhisperAI transcript with speaker labels.", "Kenji drafts attendee follow-ups; Diane reviews.", "Mia and Rico draft a recap email, three short clips and a blog outline from the transcript.", "Alexandra reviews every ad-like asset; Steven approves; Isa works the lead queue."], "gate": "Compliance review, then Steven.", "needs": ["Zoom and WhisperAI connectors"]}, {"id": "IN-01", "cat": "integration", "name": "Fieldy", "one": "Recorded in-person and phone conversations with summaries and transcripts.", "how": ["Recorded in-person and phone conversations with summaries and transcripts.", "Used for: Meeting to execution (AU-05); client and partner call recaps.", "Main sessions only (desktop, claude.ai web and mobile, Vanessa Live). Sub-agent files do not receive connector tools, so route through Vanessa."], "seat": "vanessa-orchestrator", "status": "CONNECTED", "tags": ["biz", "ops", "cmd", "isa"], "gate": "Drafts and reads only; sending or booking needs Steven's go-ahead each time.", "needs": ["Connector available in the Claude account"]}, {"cat": "tool", "id": "TL-01", "name": "pii_publish_guard.py", "one": "Privacy scanner for dashboards and artifacts: SSN, card numbers, credentials, emails, phones, calendar-description leaks, with masked output.", "status": "BUILT", "tags": ["security", "ops", "cmd", "tools", "biz", "va", "isa"], "seat": "ciso-elena", "how": ["python3 tools/pii_publish_guard.py page.html [--json]", "Exit code 0 clean, 1 review, 2 block.", "Masks every finding; never prints a full sensitive value."], "gate": "A finding is a prompt to review, not a verdict.", "needs": ["Python 3"]}, {"id": "RS-14", "cat": "resource", "name": "CFPB", "one": "Mortgage rules, TRID guidance and compliance resources.", "how": ["Mortgage rules, TRID guidance and compliance resources."], "url": "https://www.consumerfinance.gov", "status": "REFERENCE", "tags": ["biz", "va", "isa"], "seat": "research-analyst", "gate": "Official source; confirm the date before relying on it.", "needs": []}, {"id": "AG-15", "cat": "agent", "name": "Sylvie - SOP Engineer", "persona": "Sylvie", "title": "SOP Engineer", "slug": "sop-engineer", "one": "Mines repeated manual work into SOPs: three repeats propose an SOP, five repeats open an automation review. The SOP Engineer gap from 2026-09-12.", "seat": "cto-innovator", "pod": "Quality & Governance Pod", "tier": 2, "model": "sonnet", "tools": "Read, Grep, Glob", "tags": ["ops", "cmd", "brain", "tools"], "status": "SPEC", "trigger": "Weekly, after Rafael's workflow coverage report and the interaction log.", "how": ["Read the interaction and task logs for the week and count repeats per process.", "At 3 repeats draft an SOP in the house template: purpose, trigger, inputs, steps, owner, definition of done, escalation, review date.", "At 5 repeats write the automation-eligibility note: volume, error cost, data needed, human gate, candidate seat.", "Check existing SOPs for drift against what actually happened."], "outputs": ["SOP drafts", "Automation-eligibility notes", "Drift list"], "rules": ["Draft only; SOPs are versioned and approved by Steven. Do not copy client data into an SOP; use placeholders."], "gate": "Steven approves every SOP.", "kpi": "At least two SOP drafts per week while repeat counts exist.", "needs": ["Drop agents/sop-engineer.md into ~/.claude/agents/", "Add the slug and tier to roster-tiers.json", "Run agent_pack_lint.py"], "handoffs": "workflow-architect Rafael (automation queue), agent-evaluator Hana (quality), decision-ledger-keeper (approvals), capability-engineer (build)", "md": "---\nname: sop-engineer\ndescription: \"Sylvie (SOP Engineer). Mines repeated manual work into SOPs: three repeats propose an SOP, five repeats open an automation review. The SOP Engineer gap from 2026-09-12. Reports to cto-innovator. Use when: Weekly, after Rafael's workflow coverage report and the interaction log.\"\ntools: Read, Grep, Glob\nmodel: sonnet\ntier: 2\nlead: cto-innovator\npod: Quality & Governance Pod\npack: capability-pack-2026-10-22\n---\n\n# Sylvie - SOP Engineer\n\n## Mission\nTurn recurring work into documented, testable procedures and feed the automation queue, so the system improves instead of accumulating one-off fixes.\n\n## Method\n1. Read the interaction and task logs for the week and count repeats per process.\n2. At 3 repeats draft an SOP in the house template: purpose, trigger, inputs, steps, owner, definition of done, escalation, review date.\n3. At 5 repeats write the automation-eligibility note: volume, error cost, data needed, human gate, candidate seat.\n4. Check existing SOPs for drift against what actually happened.\n\n## Output\n- SOP drafts\n- Automation-eligibility notes\n- Drift list\n\n## Hard rules\n- Draft only; SOPs are versioned and approved by Steven. Do not copy client data into an SOP; use placeholders.\n\n## Halt and return a Needs-Steven packet when\n- A candidate SOP touches a licensed or regulated step: route to Alexandra first\n\n## Hand-offs\nHAND-OFFS: workflow-architect Rafael (automation queue), agent-evaluator Hana (quality), decision-ledger-keeper (approvals), capability-engineer (build)\n\n## Success measure\nAt least two SOP drafts per week while repeat counts exist.\n\n## Human gate\nSteven approves every SOP.\n\n## Standing guardrail\nStanding guardrail (applies to every seat on Steven's AI Team): draft only - never send, sign, spend, book, trade or quote on Steven's behalf. Return drafts and decision packets to Vanessa; Steven approves. Never put client NPI/PII, account numbers, loan numbers, passwords, tokens or third-party contact details into any output. Licensed or professional determinations (rate quotes, loan eligibility, legal, tax, medical, benefit eligibility) are out of scope: state what is needed and return a Needs-Steven packet. If a source is missing, say so - do not guess and do not invent citations, figures or names. Mark every claim as VERIFIED (with the source), REPORTED (secondary source) or ASSUMPTION.\n"}, {"cat": "automation", "id": "AU-09", "name": "Showing & open-house weather check", "one": "Forecast check the evening before and the morning of showings and open houses; drafts a reschedule or prep note.", "schedule": "Daily 07:00 PT and 24 hours before any showing or open house", "agents": ["showing-coordinator"], "seat": "cro-victor", "status": "SPEC", "tags": ["biz", "pcs", "personal"], "how": ["AccuWeather forecasts are pulled through the connector in a main session.", "The Showing Coordinator compares them with the day's route and drafts a note (umbrellas, lighting, reschedule option).", "Travel days use the same check."], "outputs": ["Weather note per showing", "Draft reschedule message"], "gate": "Steven or Isa sends any client message.", "needs": ["AccuWeather connector (main session)"]}, {"id": "RS-13", "cat": "resource", "name": "NMLS Consumer Access", "one": "Public licence lookup for partner and vendor diligence.", "how": ["Public licence lookup for partner and vendor diligence."], "url": "https://www.nmlsconsumeraccess.org", "status": "REFERENCE", "tags": ["biz", "va", "security"], "seat": "research-analyst", "gate": "Official source; confirm the date before relying on it.", "needs": []}, {"id": "RS-15", "cat": "resource", "name": "FHFA conforming loan limits", "one": "Annual conforming and high-cost limits.", "how": ["Annual conforming and high-cost limits."], "url": "https://www.fhfa.gov", "status": "REFERENCE", "tags": ["biz", "va"], "seat": "research-analyst", "gate": "Official source; confirm the date before relying on it.", "needs": []}], "statusKey": {"SPEC": "Specified, not created yet", "EXTENDS": "Adds to something that exists", "BUILT": "Working, tested in this pack", "CONNECTED": "Connector available (main sessions only)", "REFERENCE": "Official source"}}</script>
+<script>
+(function(){
+  var root=document.getElementById('cap-pack'); if(!root) return;
+  var D; try{ D=JSON.parse(document.getElementById('cap-pack-data').textContent); }catch(e){ return; }
+  var KIND={agent:'Agent',automation:'Automation',workflow:'Workflow',integration:'Integration',tool:'Tool',resource:'Resource'};
+  var ORDER=['agent','automation','workflow','integration','tool','resource'];
+  var STAT={SPEC:'SPEC',EXTENDS:'EXTENDS',BUILT:'BUILT',CONNECTED:'CONNECTED',REFERENCE:'REFERENCE'};
+  var state={cat:'all',q:''};
+  function el(t,c,x){var e=document.createElement(t); if(c) e.className=c; if(x!=null) e.textContent=x; return e;}
+  function list(tag,arr){var l=el(tag); arr.forEach(function(s){l.appendChild(el('li',null,s));}); return l;}
+  function sec(title,node){var d=el('div'); d.appendChild(el('h3',null,title)); d.appendChild(node); return d;}
+  function copy(text,btn){
+    var done=function(){var o=btn.textContent; btn.textContent='Copied'; live.textContent='Copied to clipboard'; setTimeout(function(){btn.textContent=o;},1400);};
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done,fallback); return; } }catch(e){}
+    fallback();
+    function fallback(){var t=document.createElement('textarea'); t.value=text; t.style.position='fixed'; t.style.opacity='0'; document.body.appendChild(t); t.select(); try{document.execCommand('copy'); done();}catch(e){btn.textContent='Copy failed';} document.body.removeChild(t);}
+  }
+  function save(name,text,btn){
+    try{ if(window.claude&&typeof window.claude.use==='function'){
+      window.claude.use('downloads').then(function(d){
+        if(!d){copy(text,btn);return;}
+        d.save({filename:name,data:text}).then(function(){var o=btn.textContent; btn.textContent='Saved'; setTimeout(function(){btn.textContent=o;},1400);}).catch(function(e){ if(e&&e.code==='declined') return; copy(text,btn); });
+      }).catch(function(){copy(text,btn);}); return; } }catch(e){}
+    copy(text,btn);
+  }
+  var live=el('div','cp-live'); live.setAttribute('role','status'); live.setAttribute('aria-live','polite'); root.appendChild(live);
+  function specText(it){
+    var L=[it.id+' - '+it.name+' ['+it.status+']', it.one, ''];
+    if(it.seat) L.push('Seat: '+it.seat); if(it.schedule) L.push('Schedule: '+it.schedule); if(it.trigger) L.push('Trigger: '+it.trigger);
+    if(it.how){L.push('','How it works:'); it.how.forEach(function(s,i){L.push((i+1)+'. '+s);});}
+    if(it.steps){L.push('','Steps:'); it.steps.forEach(function(s,i){L.push((i+1)+'. '+s);});}
+    if(it.outputs) L.push('','Outputs: '+it.outputs.join('; ')); if(it.rules){L.push('','Rules:'); it.rules.forEach(function(s){L.push('- '+s);});}
+    if(it.gate) L.push('','Human gate: '+it.gate); if(it.needs&&it.needs.length) L.push('Needs: '+it.needs.join('; ')); if(it.url) L.push('URL: '+it.url);
+    return L.join('\n');
+  }
+  function card(it){
+    var d=el('details','cp-card'); d.dataset.cat=it.cat; d.dataset.id=it.id;
+    var s=el('summary');
+    var k=el('div','cp-kind'); k.appendChild(el('span',null,KIND[it.cat]+' · '+it.id)); var b=el('span','cp-badge '+it.status,STAT[it.status]||it.status); b.title=D.statusKey[it.status]||''; k.appendChild(b);
+    if(it.cat==='agent'){ k.appendChild(el('span',null,'Tier '+it.tier+' · '+it.model)); }
+    s.appendChild(k); s.appendChild(el('div','cp-name',it.name)); s.appendChild(el('div','cp-one',it.one)); d.appendChild(s);
+    var body=el('div','cp-body');
+    var steps=it.steps||it.how; if(steps&&steps.length) body.appendChild(sec(it.steps?'Steps':'How it works',list('ol',steps)));
+    var meta=el('div');
+    if(it.seat) meta.appendChild(el('p',null,'Seat: '+it.seat+(it.pod?' · '+it.pod:'')));
+    if(it.schedule) meta.appendChild(el('p',null,'Runs: '+it.schedule)); if(it.trigger) meta.appendChild(el('p',null,'When: '+it.trigger));
+    if(it.tools) meta.appendChild(el('p',null,'Tools: '+it.tools)); if(it.agents&&it.agents.length) meta.appendChild(el('p',null,'Agents: '+it.agents.join(', ')));
+    if(it.handoffs) meta.appendChild(el('p',null,'Hand-offs: '+it.handoffs)); if(it.kpi) meta.appendChild(el('p',null,'Success: '+it.kpi));
+    if(meta.childNodes.length) body.appendChild(sec('Where it sits',meta));
+    if(it.outputs&&it.outputs.length) body.appendChild(sec('Outputs',list('ul',it.outputs)));
+    if(it.rules&&it.rules.length) body.appendChild(sec('Hard rules',list('ul',it.rules)));
+    var g=el('div'); if(it.gate) g.appendChild(el('p',null,it.gate)); if(it.needs&&it.needs.length) g.appendChild(el('p',null,'Needs: '+it.needs.join('; ')));
+    if(g.childNodes.length) body.appendChild(sec('Human gate and prerequisites',g));
+    var act=el('div','cp-act');
+    var cb=el('button','cp-btn','Copy spec'); cb.type='button'; cb.addEventListener('click',function(){copy(specText(it),cb);}); act.appendChild(cb);
+    if(it.md){var ab=el('button','cp-btn','Copy agent file'); ab.type='button'; ab.addEventListener('click',function(){copy(it.md,ab);}); act.appendChild(ab);
+      var db=el('button','cp-btn','Download .md'); db.type='button'; db.addEventListener('click',function(){save(it.slug+'.md',it.md,db);}); act.appendChild(db);}
+    if(it.url){var a=el('a',null,'Open source'); a.href=it.url; a.target='_blank'; a.rel='noopener'; act.appendChild(a);}
+    body.appendChild(act); d.appendChild(body); return d;
+  }
+  var bar=root.querySelector('.cp-bar'), grid=root.querySelector('.cp-grid'), meta=root.querySelector('.cp-count');
+  var counts={}; D.items.forEach(function(i){counts[i.cat]=(counts[i.cat]||0)+1;});
+  function chip(label,key,n){var b=el('button','cp-chip'); b.type='button'; b.setAttribute('aria-pressed',key===state.cat?'true':'false'); var sp=el('span',null,label); b.appendChild(sp); b.appendChild(el('em',null,String(n))); b.addEventListener('click',function(){state.cat=key; render();}); return b;}
+  if(root.dataset.registryDl==='1'){var rb=el('button','cp-btn','Download registry (JSON)'); rb.type='button'; rb.addEventListener('click',function(){save('capability-registry-2026-10-22.json',JSON.stringify({pack:'capability-pack-2026-10-22',items:D.items.map(function(i){var c=Object.assign({},i); delete c.md; return c;})},null,1),rb);}); bar.appendChild(rb);}
+  var search=bar.querySelector('input'); search.addEventListener('input',function(){state.q=search.value.toLowerCase(); render();});
+  var sorted=D.items.slice().sort(function(a,b){return ORDER.indexOf(a.cat)-ORDER.indexOf(b.cat)||a.id.localeCompare(b.id);});
+  var cards=sorted.map(card);
+  function render(){
+    Array.prototype.slice.call(bar.querySelectorAll('.cp-chip')).forEach(function(c){c.remove();});
+    var first=search; bar.insertBefore(chip('All','all',D.items.length),first);
+    ORDER.forEach(function(c){ if(counts[c]) bar.insertBefore(chip(KIND[c]+'s',c,counts[c]),first); });
+    var shown=0; grid.textContent='';
+    sorted.forEach(function(it,i){
+      var ok=(state.cat==='all'||it.cat===state.cat)&&(!state.q||(it.name+' '+it.one+' '+(it.tags||[]).join(' ')+' '+(it.slug||'')).toLowerCase().indexOf(state.q)>-1);
+      if(ok){grid.appendChild(cards[i]); shown++;} });
+    if(!shown) grid.appendChild(el('div','cp-empty','Nothing matches that filter.'));
+    meta.textContent=shown+' of '+D.items.length+' shown';
+  }
+  render();
+})();
+</script>
+</section>
+<!-- CAP-PACK:END -->
+<footer class="deck-foot">ISA PORTAL · SCOPED ACCESS · REAL ESTATE &amp; MORTGAGE ONLY<br><span style="opacity:.75;">Build 2026-11-25 — Apple-style navigation (sidebar with scroll-spy on desktop, tab bar and More sheet on phones; the old section slider is hidden, not removed) and an info refresh: AI team roster adds Elon, Bennett, Sienna, Hollis, Atlas, Remy and the Agency squads; Lofty wording now says read-only bridge, cloud sign-in pending; Vanessa may consult Carmen, Denise and Howard by name. Build 2026-10-22c — refi and sphere list intake (listOutbox, moved to the deck by the daily cycle). Build 2026-10-22b — Vanessa chat fixed (the runtime rejects cache with tools), she now sees today’s ISA list, and the ISA can hand tasks to her queue (vanessaOutbox, read by the daily cycle). Build 2026-10-22 — “Today from Vanessa” card (the daily cycle’s ISA list, mirrored as isaToday) and rates re-mirrored from the Command Deck (synced 2026-10-22 03:01 UTC; the Mac rates task has been silent since 2026-10-13). Previously: Build 2026-10-12 — rates, builder write-ups and program-facts stamps mirror the Command Deck's stale-info refresh of 2026-10-12; previously: Build 2026-10-05 — builder-incentive and housing-market notes mirror the Command Deck's (Claude routines on Steven's subscription; no Perplexity), drift re-measured against both stores. Earlier: build 2026-10-04 — rates and market cards read the shared ratesSnapshot live, Military Base Installation Guide added (Panel 10); build 2026-09-22, connection wording re-checked 2026-09-24 · You.com retired (connector at 0 credits), Lofty is the real-estate CRM of record, sync status re-measured against both databases - if two sessions edit this page, the newer build wins; check this stamp before assuming your change is live.</span></footer>
 </div>
 
 <script>
@@ -2103,6 +2275,9 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
         /* liveFeeds (2026-10-05) only feeds the dated notes on the Markets panel: redraw them in place
            rather than reload the whole page under someone mid-call. */
         if (wrote && key === "liveFeeds") { safeRun(renderIsaLiveFeeds, "renderIsaLiveFeeds"); }
+        else if (wrote && key === "isaToday") { safeRun(renderIsaToday, "renderIsaToday"); }
+        else if (wrote && key === "vanessaOutbox") { safeRun(renderIsaOutbox, "renderIsaOutbox"); }
+        else if (wrote && key === "listOutbox") { safeRun(renderIsaLists, "renderIsaLists"); }
         else if (wrote && key !== "sectionEdits") changed = true;   // stamps re-render on their own; never worth a reload
       }
     });
@@ -2754,6 +2929,168 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
   }
   safeRun(renderMortgageRates, "renderMortgageRates");
   safeRun(renderMarketUpdates, "renderMarketUpdates");
+
+  /* ================= TODAY FROM VANESSA (2026-10-22) =================
+     isaToday = {date, ranAt, instructions:[{task, by, detail}], drafts:[{title, body, compliance}], standing:[...]},
+     copied from the Command Deck's cosBrief.isaInstructions by the daily cycle. Older than a day says so. */
+  function renderIsaToday() {
+    var box = $("isaTodayBody"); if (!box) return;
+    var d = lsGet("isaToday", null);
+    if (!d || typeof d !== "object") { box.innerHTML = '<p class="src-note">No list yet on this device \u2014 it arrives with the next weekday 6:25 AM PT cycle.</p>'; return; }
+    var ageH = d.ranAt ? (Date.now() - Date.parse(d.ranAt)) / 3600000 : NaN;
+    var html = '<p class="src-note" style="margin:0 0 8px;">For ' + chatEsc(d.date || "?") + (isFinite(ageH) ? " \u00b7 written " + Math.round(ageH) + "h ago" + (ageH > 30 ? " \u2014 <b>older than a day; ask Steven on the ISA line if nothing new arrives</b>" : "") : "") + "</p>";
+    var items = Array.isArray(d.instructions) ? d.instructions : [];
+    html += items.length ? '<ol style="margin:0 0 8px 18px;padding:0;">' + items.map(function (it) {
+      return "<li><b>" + chatEsc(it.task || "") + "</b>" + (it.by ? " \u2014 by " + chatEsc(it.by) : "") + (it.detail ? '<div class="src-note">' + chatEsc(it.detail) + "</div>" : "") + "</li>";
+    }).join("") + "</ol>" : '<p class="src-note">Nothing assigned today beyond the standing duties below.</p>';
+    (Array.isArray(d.drafts) ? d.drafts : []).forEach(function (dr) {
+      html += '<details style="margin:6px 0;"><summary><b>' + chatEsc(dr.title || "Steps") + '</b></summary><p class="src-note" style="white-space:pre-wrap;">' + chatEsc(dr.body || "") + "</p>" + (dr.compliance ? '<p class="src-note">' + chatEsc(dr.compliance) + "</p>" : "") + "</details>";
+    });
+    var st = Array.isArray(d.standing) ? d.standing : [];
+    if (st.length) html += '<p class="card-sub" style="margin:8px 0 4px;"><b>Every day</b></p><ul style="margin:0 0 0 18px;padding:0;">' + st.map(function (x) { return '<li class="src-note">' + chatEsc(x) + "</li>"; }).join("") + "</ul>";
+    box.innerHTML = html;
+  }
+  safeRun(renderIsaToday, "renderIsaToday");
+
+  /* ================= ONE VANESSA QUEUE — ISA side (2026-10-22) =================
+     A page cannot write the Command Deck's store, so the ISA's hand-offs go to this page's own
+     vanessaOutbox document ({v: [{id, ts, task, priority, status, from:"isa", ref, note}]}, append-only,
+     newest 200). Vanessa's daily cycle reads it every weekday morning and moves each item into the
+     deck's vanessaQueue. Drafts and prep only: nothing here sends, books, quotes or signs. */
+  function isaTodayContext() {
+    var d = lsGet("isaToday", null);
+    if (!d || typeof d !== "object") return "";
+    var lines = (Array.isArray(d.instructions) ? d.instructions : []).map(function (it) { return "- " + (it.task || "") + (it.by ? " (by " + it.by + ")" : "") + (it.detail ? ": " + it.detail : ""); });
+    var st = (Array.isArray(d.standing) ? d.standing : []).map(function (x) { return "- " + x; });
+    return "\n\nTODAY'S ISA LIST from the daily cycle (" + (d.date || "date unknown") + "):\n" + (lines.join("\n") || "- nothing assigned today") + "\nStanding duties:\n" + st.join("\n") +
+      "\nWhen the ISA asks you to take something on, use the hand_to_vanessa tool to queue it; say it is queued for the morning cycle, never that it is done.";
+  }
+  function isaOutboxAdd(task, note, ref) {
+    task = String(task || "").trim(); if (!task) return null;
+    var box = lsGet("vanessaOutbox", []); if (!Array.isArray(box)) box = [];
+    for (var i = 0; i < box.length; i++) if (box[i].task === task && box[i].status === "pending") return box[i];
+    var item = { id: "vo_" + Date.now(), ts: new Date().toISOString(), task: task.slice(0, 300), priority: "p2", status: "pending", from: "isa", ref: ref || "", note: String(note || "").slice(0, 500) };
+    box.push(item); if (box.length > 200) box = box.slice(box.length - 200);
+    lsSet("vanessaOutbox", box);
+    return item;
+  }
+  function isaQueueTool() {
+    return {
+      name: "hand_to_vanessa",
+      description: "Queue a task for Vanessa and the AI team (picked up by the 6:25 AM PT daily cycle). Use for prep, research, drafts or follow-ups the ISA wants done. Never for sending to a client, quoting a rate, deciding eligibility or signing.",
+      inputSchema: { type: "object", properties: { task: { type: "string" }, note: { type: "string" } }, required: ["task"] },
+      execute: function (input) { var it = isaOutboxAdd(input && input.task, input && input.note, "isa-chat"); safeRun(renderIsaOutbox, "renderIsaOutbox"); return it ? "Queued for Vanessa (" + it.id + ")." : "Nothing queued — the task was empty."; }
+    };
+  }
+  function renderIsaOutbox() {
+    var box = $("isaOutboxList"); if (!box) return;
+    var items = lsGet("vanessaOutbox", []); if (!Array.isArray(items)) items = [];
+    var open = items.filter(function (x) { return x && x.status === "pending"; }).slice(-10).reverse();
+    box.innerHTML = open.length ? "<ul style=\"margin:4px 0 0 18px;padding:0;\">" + open.map(function (x) { return '<li class="src-note">' + chatEsc(x.task) + " \u00b7 queued " + chatEsc((x.ts || "").slice(0, 16).replace("T", " ")) + " UTC</li>"; }).join("") + "</ul>" : '<p class="src-note">Nothing waiting for Vanessa.</p>';
+  }
+  safeRun(renderIsaOutbox, "renderIsaOutbox");
+  (function () {
+    var b = $("isaHandBtn"), t = $("isaHandText");
+    if (b && t) b.addEventListener("click", function () { var it = isaOutboxAdd(t.value, "", "isa-today-card"); if (it) { t.value = ""; safeRun(renderIsaOutbox, "renderIsaOutbox"); } });
+  })();
+
+  /* ================= LISTS ONLY THE ISA KEEPS (2026-10-22c) =================
+     listOutbox = {refi:[{first, noteRate, loanType, closedMonth, note, ts, status}],
+                   sphere:[{first, relation, lastTouch, birthday, homeAnniversary, note, ts, status}]}.
+     status "pending" until Vanessa's 6:25 AM cycle moves the row to Steven's deck (refi watch /
+     sphere touches) and marks it "moved". First names only: no surname, phone, email, address or
+     loan amount ever enters this document. */
+  function isaListsGet() {
+    var v = lsGet("listOutbox", null);
+    if (!v || typeof v !== "object") v = {};
+    if (!Array.isArray(v.refi)) v.refi = [];
+    if (!Array.isArray(v.sphere)) v.sphere = [];
+    return v;
+  }
+  function isaListsMsg(text) {
+    var m = $("isaListsMsg"); if (!m) return;
+    m.textContent = text || ""; m.hidden = !text;
+  }
+  function isaListsPiiCheck(fields) {
+    for (var i = 0; i < fields.length; i++) {
+      var f = String(fields[i] == null ? "" : fields[i]);
+      if (f.indexOf("@") !== -1) return "Refused: that looks like an email. First names only here.";
+      if (/\d{7,}/.test(f)) return "Refused: that looks like a phone number or a loan amount. First names and a note rate only.";
+    }
+    return "";
+  }
+  function isaListsAdd(kind, row) {
+    var v = isaListsGet();
+    v[kind].push(row);
+    if (v[kind].length > 300) v[kind] = v[kind].slice(v[kind].length - 300);
+    lsSet("listOutbox", v);
+  }
+  function isaListsRemove(kind, ts) {
+    var v = isaListsGet();
+    v[kind] = v[kind].filter(function (r) { return !(r && r.ts === ts && r.status === "pending"); });
+    lsSet("listOutbox", v);
+    safeRun(renderIsaLists, "renderIsaLists");
+  }
+  function isaListsRowHtml(kind, r, summary) {
+    var moved = r.status === "moved";
+    return '<li class="src-note">' + summary + " \u00b7 " + chatEsc((r.ts || "").slice(0, 10)) +
+      (moved ? ' \u00b7 <b>on Steven\u2019s deck</b>' : ' <button type="button" class="btn" style="padding:1px 8px;font-size:11px;margin-left:6px;" data-list-kind="' + kind + '" data-list-ts="' + chatEsc(r.ts) + '">Remove</button>') + "</li>";
+  }
+  function renderIsaLists() {
+    var v = isaListsGet();
+    var rb = $("isaRefiList"), sb = $("isaSphereList");
+    if (rb) {
+      var refi = v.refi.slice(-30).reverse();
+      rb.innerHTML = refi.length ? '<ul style="margin:4px 0 0 18px;padding:0;">' + refi.map(function (r) {
+        return isaListsRowHtml("refi", r, "<b>" + chatEsc(r.first) + "</b> \u00b7 " + chatEsc(r.noteRate) + "% \u00b7 " + chatEsc(r.loanType) + " \u00b7 closed " + chatEsc(r.closedMonth) + (r.note ? " \u00b7 " + chatEsc(r.note) : ""));
+      }).join("") + "</ul>" : '<p class="src-note">No one on the refi list yet.</p>';
+    }
+    if (sb) {
+      var sph = v.sphere.slice(-30).reverse();
+      sb.innerHTML = sph.length ? '<ul style="margin:4px 0 0 18px;padding:0;">' + sph.map(function (r) {
+        return isaListsRowHtml("sphere", r, "<b>" + chatEsc(r.first) + "</b> \u00b7 " + chatEsc(r.relation) + " \u00b7 last touch " + chatEsc(r.lastTouch) + (r.birthday ? " \u00b7 bday " + chatEsc(r.birthday) : "") + (r.homeAnniversary ? " \u00b7 home anniv. " + chatEsc(r.homeAnniversary) : "") + (r.note ? " \u00b7 " + chatEsc(r.note) : ""));
+      }).join("") + "</ul>" : '<p class="src-note">No one on the sphere list yet.</p>';
+    }
+  }
+  safeRun(renderIsaLists, "renderIsaLists");
+  (function () {
+    var box = $("isaListsBox"); if (!box) return;
+    box.addEventListener("click", function (ev) {
+      var t = ev.target; if (!t || !t.getAttribute) return;
+      var kind = t.getAttribute("data-list-kind"); if (kind) isaListsRemove(kind, t.getAttribute("data-list-ts"));
+    });
+    var MMDD = /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+    var rBtn = $("isaRefiAddBtn");
+    if (rBtn) rBtn.addEventListener("click", function () {
+      var first = String($("isaRefiFirst").value || "").trim();
+      var rateRaw = String($("isaRefiRate").value || "").trim();
+      var rate = Math.round(parseFloat(rateRaw) * 100) / 100;
+      var loanType = $("isaRefiType").value, month = String($("isaRefiMonth").value || "").trim(), note = String($("isaRefiNote").value || "").trim().slice(0, 120);
+      if (!first) return isaListsMsg("Refused: a first name is needed.");
+      if (/\s/.test(first)) return isaListsMsg("Refused: first names only \u2014 no spaces, no surname.");
+      if (!isFinite(rate) || rate < 2 || rate > 15) return isaListsMsg("Refused: note rate must be a number between 2 and 15 (two decimals).");
+      if (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month)) return isaListsMsg("Refused: month closed must be YYYY-MM.");
+      var pii = isaListsPiiCheck([first, note, loanType]); if (pii) return isaListsMsg(pii);
+      isaListsAdd("refi", { first: first, noteRate: rate.toFixed(2), loanType: loanType, closedMonth: month, note: note, ts: new Date().toISOString(), status: "pending" });
+      $("isaRefiFirst").value = ""; $("isaRefiRate").value = ""; $("isaRefiMonth").value = ""; $("isaRefiNote").value = "";
+      isaListsMsg(""); safeRun(renderIsaLists, "renderIsaLists");
+    });
+    var sBtn = $("isaSphereAddBtn");
+    if (sBtn) sBtn.addEventListener("click", function () {
+      var first = String($("isaSphereFirst").value || "").trim();
+      var relation = $("isaSphereRelation").value, touch = String($("isaSphereTouch").value || "").trim();
+      var bday = String($("isaSphereBday").value || "").trim(), anniv = String($("isaSphereAnniv").value || "").trim(), note = String($("isaSphereNote").value || "").trim().slice(0, 120);
+      if (!first) return isaListsMsg("Refused: a first name is needed.");
+      if (/\s/.test(first)) return isaListsMsg("Refused: first names only \u2014 no spaces, no surname.");
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(touch)) return isaListsMsg("Refused: last touch needs a date.");
+      if (bday && !MMDD.test(bday)) return isaListsMsg("Refused: birthday must be MM-DD (no year).");
+      if (anniv && !MMDD.test(anniv)) return isaListsMsg("Refused: home anniversary must be MM-DD (no year).");
+      var pii = isaListsPiiCheck([first, note]); if (pii) return isaListsMsg(pii);
+      isaListsAdd("sphere", { first: first, relation: relation, lastTouch: touch, birthday: bday, homeAnniversary: anniv, note: note, ts: new Date().toISOString(), status: "pending" });
+      $("isaSphereFirst").value = ""; $("isaSphereTouch").value = ""; $("isaSphereBday").value = ""; $("isaSphereAnniv").value = ""; $("isaSphereNote").value = "";
+      isaListsMsg(""); safeRun(renderIsaLists, "renderIsaLists");
+    });
+  })();
 
 
   /* ================= LENDER DIRECTORY ================= */
@@ -4159,7 +4496,14 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
     ["Carmen", "CA Transaction Coordinator (reports to Victor)", "The closing checklist on real CAR forms, every date from the actual contract, disclosure tracking, the earnest-money and wire-fraud warning. Ask her what is due on a file this week.", "Live — reachable via Vanessa's chat here (\"ask Carmen\")"],
     ["Denise", "CA Loan Processor (reports to Alexandra)", "Document checklist and conditions from the actual findings, plain-language borrower document requests you can send, the TRID clock. Ask her what a borrower still owes the file.", "Live — reachable via Vanessa's chat here (\"ask Denise\")"],
     ["Howard", "CA Underwriter — pre-underwrite read (reports to Alexandra)", "What underwriting will say before it says it: DTI/LTV/residual/reserves from real numbers, the conditions to expect. Never a decision, never a rate.", "Live — reachable via Vanessa's chat here (\"ask Howard\")"],
-    ["Elena", "Chief Information Security Officer (CISO)", "Data/cyber risk, credential hygiene.", "Live — reachable via Vanessa's chat here, or on Claude Desktop by asking Vanessa to answer as Elena (her skill carries her full persona)"]
+    ["Elena", "Chief Information Security Officer (CISO)", "Data/cyber risk, credential hygiene.", "Live — reachable via Vanessa's chat here, or on Claude Desktop by asking Vanessa to answer as Elena (her skill carries her full persona)"],
+    ["Elon", "CTO Innovator (proposal-only, reports to Vanessa)", "Vets every new tool for feasibility, integration cost and security risk before it can be tested. Proposals only — never ships a change himself.", "Org chart — ask Vanessa; she relays his read"],
+    ["Bennett", "Daily Flow & Power Hour Lead (added 2026-11-11, reports to Vanessa)", "One action inbox of everything waiting on Steven — new leads with no first touch first — and the Power Hour call list. Owns the speed-to-lead loop (target: 90%+ same-day first touch).", "Broker Command Center → Overview → Daily Flow"],
+    ["Sienna", "AI Voice ISA (added 2026-10-31, reports to Priya)", "Eight call playbooks (speed-to-lead, follow-up, appointment confirmation, no-show rebook, open-house follow-up, seller inquiry and more). Draft approval rate is a tracked loop (target 70%+).", "Broker Command Center → Clients → AI Call Center"],
+    ["Hollis", "Partner Outreach Lead (added 2026-11-15, reports to Riley)", "Referral-partner channel — attorneys, builders and contractors in Temecula Valley and San Diego County, business-to-business only.", "Org chart — drafts only, nothing sends without Steven"],
+    ["Atlas", "Systems Engineer — harness, graph and loop engineering (added 2026-11-22, reports to Elon)", "Harness: every dashboard AI call traced and checked for a quoted rate, a guarantee, fair-housing language, a referral fee or a draft missing DRE/NMLS (warns, never edits). Graph: broken links (lead with no next step, buyer with no loan file) become owned tasks. Loops: ten measured loops, small pre-approved changes only after 7 met days.", "Broker Command Center → System → Engineering Core"],
+    ["Remy", "Digital Operations Lead (added 2026-11-23, reports to Derek)", "Tech stack and agent autopilots — the tools list and the routine automations behind it.", "Broker Command Center → Growth → Tech Stack"],
+    ["The Agency squads", "122 specialist agents in 9 department squads (added 2026-11-18)", "Each executive leads a squad (Revenue: Victor, Marketing: Sofia, Technology: Derek and so on); every squad reports to Vanessa. Drafts only — nothing sent, signed, quoted or paid without Steven.", "Via Vanessa — the Mac install is Steven's one paste (integrations/agency-agents)"]
   ];
   function renderIsaAiTeamRoster() {
     var wrap = $("isaAiTeamRosterRows");
@@ -4242,7 +4586,7 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
     underwriter: { name: "Howard", role: "CA Underwriter (pre-underwrite read)", prompt: "You are Howard, a top-1% mortgage underwriter's read on a file for Steven Shearrill's AI Team (MLO NMLS 2449246, Patriot Pacific Financial Corp, Company NMLS 1921615; Steven is a former underwriter himself), reporting to Alexandra (Compliance). You catch what underwriting will say before it says it: compute front and back DTI, LTV/CLTV, VA residual income by region and family size, reserves and seasoning, and self-employment income as the real two-year average with add-backs cited by form and line — from numbers actually supplied, showing the math. Produce a pre-underwrite read (approve-as-submitted likely / will draw conditions — name them / won't support as structured — why, and what would fix it), the conditions to expect written the way an underwriter issues them, a manual-underwrite flag when the file sits outside AUS territory, and a guideline citation for every number (DU/LPA message, agency selling-guide section, VA Lender's Handbook chapter). Hard limits: never issue a credit decision; never quote a rate, APR or payment; never invent a number — say 'cannot compute without <the missing figure>'; always distinguish stated from verified; flag undisclosed debt or document inconsistencies plainly to Steven, never resolve them quietly." + ISA_COA_INSTRUCTION },
     ciso: { name: "Elena", role: "Chief Information Security Officer", prompt: "You are Elena, Chief Information Security Officer for Steven Shearrill's business — data/cyber risk and credential hygiene sized right for a solo-operator business handling client PII and financial data, never enterprise-security theater that doesn't fit his scale." + ISA_COA_INSTRUCTION }
   };
-  var ISA_VANESSA_PREAMBLE = "You are Vanessa, Chief of Staff / Executive Assistant / COO for Steven Shearrill (mortgage loan officer, Patriot Pacific Financial Corp; Realtor/Broker Associate, LPT Realty / SPACE Real Estate Team; serving military/veteran and hometown-hero communities in San Diego/Temecula/Southwest Riverside County). Trained on Steven's real EA/ISA SOP: dual-CRM, never blended — Zoho CRM (with the ARIVE wholesale LOS) is the system of record for mortgage; and Lofty (formerly Chime) has been the system of record for real estate since 2026-09-22. Two current facts you must not paper over: Zoho's CRM API is returning 403 NO_PERMISSION (Crm_Implied_Api_Access) so nobody can read live Zoho data from the ISA Portal or the Command Deck — only Steven can fix that in Zoho's profile settings; and the first Lofty sync has not run yet, so there are no live real-estate lead counts either. If a question needs a live CRM number, say plainly that it cannot be read right now. Non-negotiables: 5-minute lead response during coverage hours, every active lead has a documented next step, zero avoidable missed deadlines. You never independently quote a rate/APR/payment, determine eligibility or underwriting outcome, negotiate a real-estate offer/price/contingency, or interpret a contract. You are talking here with Steven's real, human Executive Assistant / ISA on ISA Portal, not with Steven directly — she may ask about pipeline status, deal notes, or anything else in her scope, or relay something to or from Steven. Answer yourself when it's straightforward, or use the consult_specialist tool for anything centrally about finances (cfo/Marcus), marketing (cmo/Sofia), systems/automation (cto/Derek), compliance (compliance/Alexandra), AI strategy (caio/Nadia), revenue/pipeline (cro/Victor), or security/data risk (ciso/Elena) — and when you do, say plainly in your final answer which specialist(s) you checked with." + ISA_COA_INSTRUCTION + " Never fabricate a specific number, rate, or fact — say when something isn't available from here.";
+  var ISA_VANESSA_PREAMBLE = "You are Vanessa, Chief of Staff / Executive Assistant / COO for Steven Shearrill (mortgage loan officer, Patriot Pacific Financial Corp; Realtor/Broker Associate, LPT Realty / SPACE Real Estate Team; serving military/veteran and hometown-hero communities in San Diego/Temecula/Southwest Riverside County). Trained on Steven's real EA/ISA SOP: dual-CRM, never blended — Zoho CRM (with the ARIVE wholesale LOS) is the system of record for mortgage; and Lofty (formerly Chime) has been the system of record for real estate since 2026-09-22. Two current facts you must not paper over: Zoho's CRM API is returning 403 NO_PERMISSION (Crm_Implied_Api_Access) so nobody can read live Zoho data from the ISA Portal or the Command Deck — only Steven can fix that in Zoho's profile settings; and no Lofty sync has written lead counts into this portal yet (as of 2026-11-25 the Mac reads Lofty only through a read-only bridge that returns stage totals without lead ids; Lofty's own cloud connector still needs Steven's sign-in), so there are no live real-estate lead counts either. If a question needs a live CRM number, say plainly that it cannot be read right now. Non-negotiables: 5-minute lead response during coverage hours, every active lead has a documented next step, zero avoidable missed deadlines. You never independently quote a rate/APR/payment, determine eligibility or underwriting outcome, negotiate a real-estate offer/price/contingency, or interpret a contract. You are talking here with Steven's real, human Executive Assistant / ISA on ISA Portal, not with Steven directly — she may ask about pipeline status, deal notes, or anything else in her scope, or relay something to or from Steven. Answer yourself when it's straightforward, or use the consult_specialist tool for anything centrally about finances (cfo/Marcus), marketing (cmo/Sofia), systems/automation (cto/Derek), compliance (compliance/Alexandra), AI strategy (caio/Nadia), revenue/pipeline (cro/Victor), security/data risk (ciso/Elena), a transaction's closing checklist and dates (tc/Carmen), what a borrower still owes the loan file (processor/Denise), or a pre-underwrite read that is never a decision or a rate (underwriter/Howard) — and when you do, say plainly in your final answer which specialist(s) you checked with." + ISA_COA_INSTRUCTION + " Never fabricate a specific number, rate, or fact — say when something isn't available from here.";
   function isaVanessaChatHistory() { return lsGetSeeded("isaVanessaChat", []); }
   /* ================= AI AGENT ENGAGEMENT: chat renderer (mirrors Command Deck) ================= */
   function chatEsc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
@@ -4374,10 +4718,10 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
           }).catch(function () { return "(" + spec.name + " didn't respond)"; });
         }
       };
-      var systemPreamble = ISA_VANESSA_PREAMBLE;
+      var systemPreamble = ISA_VANESSA_PREAMBLE + isaTodayContext();
       var turns = [{ role: "user", content: systemPreamble }, { role: "assistant", content: "Understood — I'm Vanessa, ready to help." }]
         .concat(history.slice(-20).map(function (m) { return { role: (m.from === "steven" || m.from === "isa") ? "user" : "assistant", content: m.text }; }));
-      sample(turns, { modelTier: "default", tools: [consultTool], cache: false }).then(function (res) {
+      sample(turns, { modelTier: "default", tools: [consultTool, isaQueueTool()] }).then(function (res) {
         var text = (res && res.text) || "";
         var h2 = isaVanessaChatHistory();
         h2.push({ ts: new Date().toISOString(), from: "vanessa", text: text || "(no response)", specialists: consulted.length ? consulted.slice() : undefined });
@@ -4594,7 +4938,7 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
       if (lf && lf.status !== "not-configured" && lf.status !== "error" && Array.isArray(lf.newLeads90d)) {
         parts.push("Lofty (real-estate CRM since 2026-09-22): " + lf.newLeads90d.length + " new leads in the last 90 days (synced " + (lf.syncedAt || "no stamp") + ").");
       } else {
-        parts.push("Lofty (real-estate CRM since 2026-09-22): awaiting the first sync \u2014 no live lead counts available from this portal. Lofty is not connected yet \u2014 the API key is not installed \u2014 so there is no real-estate lead count to quote. Say so rather than giving a number.");
+        parts.push("Lofty (real-estate CRM since 2026-09-22): awaiting the first sync \u2014 no live lead counts available from this portal. As of 2026-11-25 the Mac reads Lofty only through a read-only bridge (stage totals, no lead ids) and Lofty's cloud connector still needs Steven's sign-in \u2014 so there is no real-estate lead count to quote. Say so rather than giving a number.");
       }
     } catch (e) {}
     try { parts.push("Zoho CRM remains the system of record for mortgage, but its API returns 403 NO_PERMISSION \u2014 no live Zoho data is readable from this portal."); } catch (e) {}
@@ -4641,7 +4985,7 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
       var system = persona === "steve" ? ISA_STEVE_PREAMBLE + context
         : ISA_VANESSA_PREAMBLE + context + (persona === "vanessa" ? "" : "\n\nThe ISA addressed this to the AI team: identify the right specialist(s), consult them with the tool, and relay their answer with attribution.");
       var turns = [{ role: "user", content: system }, { role: "assistant", content: "Understood — I'm " + ISA_LINE_WHO[persona].replace(" (twin)", "") + ", ready." }].concat(isaLineAiTurns(persona, ask));
-      return sample(turns, { modelTier: "default", tools: persona === "steve" ? [] : [consultTool], cache: false }).then(function (res) {
+      return sample(turns, persona === "steve" ? { modelTier: "default", cache: false } : { modelTier: "default", tools: [consultTool, isaQueueTool()] }).then(function (res) {
         var raw = (res && res.text) || "(no response)";
         var parsed = persona === "steve" ? isaLineParseNeedsSteven(raw) : { needs: false, summary: "", clean: raw };
         var replyFrom = persona === "team" ? "vanessa" : persona;
@@ -5357,6 +5701,289 @@ button:active, .page-tab:active, .tv-chip:active, .pages-btn:active { transform:
     } catch (e) { try { console.warn("[w2Polish] skipped: " + (e && e.message)); } catch (e2) {} }
   })();
 
+</script>
+
+</body></html>
+<!-- == APPLE SHELL (ISA) 2026-11-25 == macOS-style sidebar + iOS tab bar and sheet as section navigation with scroll-spy; the old slider and contents dock are hidden, never removed -->
+<style id="ax-shell">
+/* Scoped to html.ax (set by the script below), so a page without script keeps the old navigation exactly as it was. */
+html.ax { --ax-side: 268px; --ax-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+  --ax-glass: color-mix(in srgb, var(--surface) 72%, transparent); --ax-line: color-mix(in srgb, var(--text) 10%, transparent);
+  --ax-sel: color-mix(in srgb, var(--accent) 16%, transparent); --ax-ease: cubic-bezier(0.32, 0.72, 0, 1); }
+html.ax #secSlider, html.ax #secToggleBtn, html.ax #tocToggleBtn, html.ax #tocPanel, html.ax .deck-head .brand { display: none !important; }
+#axSide, #axTabs, #axScrim, #axBarTitle { display: none; }
+html.ax #axBarTitle { display: block; }
+
+/* ---- large title: the page's own hero, restyled; it collapses into the toolbar once it scrolls away ---- */
+html.ax .hero { padding: 26px 0 8px; }
+html.ax .hero::before { display: none; }
+html.ax .hero .ax-eyebrow { font: 600 13px/1.3 var(--ax-font); color: var(--accent); margin-bottom: 2px; }
+html.ax .hero-greet { font-family: var(--ax-font); font-size: clamp(30px, 4vw, 40px); line-height: 1.08; font-weight: 700; letter-spacing: -0.022em; text-transform: none; }
+html.ax .hero-sub { font-family: var(--ax-font); font-size: 14.5px; line-height: 1.5; letter-spacing: 0; }
+html.ax .panel, html.ax .card, html.ax #cap-pack { scroll-margin-top: 76px; }
+
+/* ---- slim toolbar: the old header minus everything that moved into the sidebar ---- */
+html.ax .deck-head { position: sticky !important; top: 0; z-index: 100; background: var(--ax-glass); border-bottom: 1px solid var(--ax-line); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+html.ax .deck-head-inner { max-width: none; padding: 10px 24px; min-height: 48px; justify-content: flex-end; flex-wrap: nowrap; gap: 10px; }
+#axBarTitle { margin-right: auto; font: 600 15px/1.2 var(--ax-font); color: var(--text); opacity: 0; transform: translateY(4px); transition: opacity .25s ease, transform .35s var(--ax-ease); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#axBarTitle span { color: var(--text-faint); font-weight: 500; }
+html.ax.ax-scrolled #axBarTitle { opacity: 1; transform: none; }
+
+/* ---- sidebar (desktop) / sheet (phone): one element ---- */
+html.ax #axSide { display: flex; flex-direction: column; font-family: var(--ax-font); color: var(--text); z-index: 120;
+  background: color-mix(in srgb, var(--surface-2) 80%, transparent); -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }
+.ax-side-head { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 8px; padding: 18px 18px 10px; }
+.ax-app { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+.ax-date { font-size: 12px; color: var(--text-faint); margin-right: auto; white-space: nowrap; }
+.ax-done { display: none; font: 600 15px var(--ax-font); color: var(--accent); background: none; border: 0; padding: 6px 4px; min-height: 0 !important; }
+.ax-scroll { flex: 1; overflow-y: auto; padding: 0 10px 12px; overscroll-behavior: contain; }
+.ax-group { font-size: 11.5px; font-weight: 600; color: var(--text-faint); padding: 14px 10px 4px; letter-spacing: 0; }
+.ax-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 10px; margin: 1px 0; border: 0; border-radius: 8px; background: none;
+  color: var(--text); font: 400 14px/1.25 var(--ax-font); text-align: left; cursor: pointer; min-height: 32px !important; transition: background-color .15s ease; }
+.ax-item svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
+.ax-item .ax-n { margin-left: auto; font-size: 12px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.ax-item .ax-n.ax-alert { color: #fff; background: var(--negative, #d14); border-radius: 999px; padding: 0 7px; line-height: 18px; font-weight: 600; }
+.ax-item:hover { background: color-mix(in srgb, var(--text) 6%, transparent); color: var(--text); border: 0; box-shadow: none; }
+.ax-item:active { transform: none; background: color-mix(in srgb, var(--text) 10%, transparent); }
+.ax-item[aria-current="location"] { background: var(--ax-sel); font-weight: 600; }
+.ax-item[aria-current="location"] .ax-n:not(.ax-alert) { color: var(--accent); }
+.ax-foot { border-top: 1px solid var(--ax-line); margin-top: 12px; padding: 12px 10px 6px; display: grid; gap: 8px; font-size: 12.5px; }
+.ax-status { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ax-status .pill { font-size: 10px; padding: 3px 8px; }
+.ax-foot details > summary { cursor: pointer; color: var(--text-faint); font-weight: 600; font-size: 11.5px; list-style: none; }
+.ax-foot details > summary::-webkit-details-marker { display: none; }
+html.ax .ax-foot .world-clock-bar { display: grid !important; padding: 6px 0 0; gap: 4px; max-width: none; margin: 0; flex-wrap: wrap; overflow: visible; }
+html.ax .ax-foot .wc-zone { justify-content: space-between; }
+
+/* ---- desktop: fixed sidebar ---- */
+@media (min-width: 900px) {
+  html.ax body { padding-left: var(--ax-side); }
+  html.ax #axSide { position: fixed; top: 0; left: 0; bottom: 0; width: var(--ax-side); border-right: 1px solid var(--ax-line); }
+}
+
+/* ---- phone & small tablet: tab bar + sheet ---- */
+@media (max-width: 899.98px) {
+  html.ax body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+  html.ax .deck-head-inner { padding: 8px 16px; min-height: 44px; }
+  html.ax #axBarTitle { opacity: 1; transform: none; }
+  html.ax .nav-dock { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+  html.ax #axTabs { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 110;
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px)); background: var(--ax-glass); border-top: 1px solid var(--ax-line);
+    -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); font-family: var(--ax-font); }
+  .ax-tab { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; border: 0; background: none; color: var(--text-faint); font: 500 10.5px var(--ax-font); padding: 4px 0; min-height: 48px !important; border-radius: 10px; }
+  .ax-tab svg { width: 24px; height: 24px; }
+  .ax-tab .ax-badge { position: absolute; top: 1px; left: calc(50% + 6px); min-width: 17px; height: 17px; padding: 0 5px; border-radius: 999px; background: var(--negative, #d14); color: #fff; font: 600 11px/17px var(--ax-font); }
+  .ax-tab[aria-current="location"], .ax-tab[aria-expanded="true"] { color: var(--accent); }
+  .ax-tab:hover { border: 0; color: var(--accent); box-shadow: none; }
+  .ax-tab:active { transform: scale(0.92); }
+  html.ax #axSide { position: fixed; left: 0; right: 0; bottom: 0; height: min(88vh, 760px); border-radius: 14px 14px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.22);
+    transform: translateY(104%); transition: transform .45s var(--ax-ease); visibility: hidden; padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: color-mix(in srgb, var(--surface) 92%, transparent); }
+  html.ax #axSide::before { content: ""; width: 36px; height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--text) 22%, transparent); margin: 6px auto 0; flex: none; }
+  html.ax.ax-sheet #axSide { transform: none; visibility: visible; }
+  .ax-done { display: inline-block; }
+  html.ax #axScrim { display: block; position: fixed; inset: 0; z-index: 115; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+  html.ax.ax-sheet #axScrim { opacity: 1; pointer-events: auto; }
+  html.ax.ax-sheet body { overflow: hidden; }
+  .ax-item { padding: 9px 10px; min-height: 44px !important; font-size: 16px; }
+  html.ax .hero { padding-top: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.ax #axSide, #axScrim, #axBarTitle, .ax-tab { transition: none !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  html.ax #axSide, html.ax #axTabs, html.ax .deck-head { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); }
+}
+@media print { #axSide, #axTabs, #axScrim, #axBarTitle { display: none !important; } html.ax body { padding: 0 !important; } html.ax .deck-head { position: static !important; } }
+</style>
+<script>
+/* == APPLE SHELL (ISA) 2026-11-25 == The portal is one long page, so the sidebar and the tab bar are section navigation:
+   a tap scrolls to the panel under the toolbar and scroll-spy marks the panel in view. The section slider and the contents
+   dock are hidden, not removed; delete this block and the old navigation is back exactly as it was. Moved nodes
+   (#pillSync, #worldClockBar) keep their ids, so the scripts that update them still do. */
+(function () {
+  var SECTIONS = [
+    ["Today", [["panel-isa-aiteam", "AI Team & ISA Line", "team"], ["panel-isa-playbook", "Your Week", "today"], ["panel-isa-syncstatus", "Sync Status", "sync"]]],
+    ["Pipeline", [["panel-isa-crmimport", "CRM Import", "import"], ["panel-isa-reclients", "Real Estate Clients", "clients"], ["panel-isa-pipeline", "Mortgage Pipeline", "pipeline"], ["panel-isa-showings", "Showings", "showings"]]],
+    ["Market & lending", [["panel-isa-mortgagerates", "Rates & Market", "rates"], ["panel-isa-pst", "Property Search", "search"], ["panel-isa-loanprograms", "Loan Programs", "programs"]]],
+    ["Playbooks & ops", [["panel-isa-workflows", "Workflows", "workflows"], ["panel-isa-team", "Team & Delegation", "people"], ["panel-isa-easop", "EA / ISA Operations", "ops"], ["panel-isa-vamastermind", "VA Loan Mastermind", "va"]]],
+    ["Reference", [["cap-pack", "Capability Pack", "pack"]]]
+  ];
+  var TABBAR = [["panel-isa-aiteam", "Team", "team"], ["panel-isa-playbook", "Today", "today"], ["panel-isa-reclients", "Clients", "clients"], ["panel-isa-pipeline", "Pipeline", "pipeline"]];
+  var P = {
+    team: '<path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+    today: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h3v3H8z"/>',
+    sync: '<path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/>',
+    import: '<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v3h16v-3"/>',
+    clients: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+    pipeline: '<path d="M3 5h18l-7 8v6l-4 2v-8z"/>',
+    showings: '<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/>',
+    rates: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+    programs: '<path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h6"/>',
+    workflows: '<rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M9 6h4a3 3 0 0 1 3 3v6"/>',
+    people: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.6"/><path d="M16 14.2a5 5 0 0 1 5.5 4.8"/>',
+    ops: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+    va: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+    pack: '<path d="M21 8l-9-5-9 5 9 5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+    _more: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
+    _dot: '<circle cx="12" cy="12" r="4"/>'
+  };
+  function icon(k) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[k] || P._dot) + "</svg>"; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function isPhone() { return window.matchMedia("(max-width: 899.98px)").matches; }
+  function reduced() { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+  var FLAT = [], LABEL = {}, GROUP = {}, currentId = null;
+  SECTIONS.forEach(function (g) { g[1].forEach(function (s) { FLAT.push(s[0]); LABEL[s[0]] = s[1]; GROUP[s[0]] = g[0]; }); });
+  function targets() { return FLAT.map(function (id) { return $(id); }).filter(function (el) { return el && el.offsetParent !== null; }); }
+  function headH() { var h = document.querySelector(".deck-head"); return h ? h.getBoundingClientRect().height : 0; }
+
+  /* Panels use content-visibility:auto, so a far target's position shifts as the panels above it render.
+     Jump, then re-measure for a few frames until it settles under the toolbar. */
+  function scrollToSection(id) {
+    var el = $(id); if (!el) return;
+    var tries = 0, calm = 0;
+    function y() { return Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - headH() - 12); }
+    lockSpy(id);
+    if (!reduced() && Math.abs(el.getBoundingClientRect().top) < window.innerHeight * 1.5) { try { window.scrollTo({ top: y(), behavior: "smooth" }); return; } catch (e) {} }
+    window.scrollTo(0, y());
+    (function settle() {
+      requestAnimationFrame(function () {
+        var d = el.getBoundingClientRect().top - headH() - 12;
+        if (Math.abs(d) > 2) { window.scrollTo(0, y()); calm = 0; } else calm++;
+        if (calm < 4 && tries++ < 40) settle();
+      });
+    })();
+    var f = el.querySelector(".panel-title, h2");
+    if (f) { if (!f.hasAttribute("tabindex")) f.setAttribute("tabindex", "-1"); try { f.focus({ preventScroll: true }); } catch (e) {} }
+  }
+
+  var spyLock = 0;
+  function lockSpy(id) { spyLock = Date.now() + 1200; setCurrent(id); }
+  function spy() {
+    if (Date.now() < spyLock) return;
+    var ts = targets(), line = headH() + 90, id = null;
+    for (var i = 0; i < ts.length; i++) { if (ts[i].getBoundingClientRect().top <= line) id = ts[i].id; else break; }
+    if ((window.innerHeight + window.pageYOffset) >= document.documentElement.scrollHeight - 4 && ts.length) id = ts[ts.length - 1].id;
+    setCurrent(id);
+  }
+  function setCurrent(id) {
+    if (id === currentId) return;
+    currentId = id;
+    document.querySelectorAll("[data-ax]").forEach(function (b) { if (b.getAttribute("data-ax") === id) b.setAttribute("aria-current", "location"); else b.removeAttribute("aria-current"); });
+    var inBar = TABBAR.some(function (t) { return t[0] === id; });
+    var more = $("axMoreTab"); if (more) { if (id && !inBar) more.setAttribute("aria-current", "location"); else more.removeAttribute("aria-current"); }
+    var bt = $("axBarTitle");
+    if (bt) bt.innerHTML = id ? esc(LABEL[id]) + ' <span>· ' + esc(GROUP[id]) + "</span>" : "ISA Portal";
+  }
+
+  function unread() {
+    var p = $("isaLineUnreadPill"); if (!p || p.hidden) return 0;
+    var m = (p.textContent || "").match(/(\d+)/); return m ? +m[1] : 0;
+  }
+  function paintBadges() {
+    var n = unread();
+    var s = document.querySelector('#axNav [data-ax="panel-isa-aiteam"] .ax-n');
+    if (s) { s.textContent = n ? n : "01"; s.classList.toggle("ax-alert", !!n); s.setAttribute("aria-label", n ? n + " unread on the ISA line" : "panel 01"); }
+    var t = document.querySelector('#axTabs [data-ax="panel-isa-aiteam"]');
+    if (t) { var b = t.querySelector(".ax-badge"); if (n) { if (!b) { b = document.createElement("span"); b.className = "ax-badge"; t.appendChild(b); } b.textContent = n; b.setAttribute("aria-label", n + " unread"); } else if (b) b.remove(); }
+  }
+
+  function buildSide() {
+    var html = "";
+    SECTIONS.forEach(function (g) {
+      var items = g[1].filter(function (s) { return $(s[0]); });
+      if (!items.length) return;
+      html += '<div class="ax-group" role="presentation">' + esc(g[0]) + "</div>";
+      items.forEach(function (s) {
+        var n = FLAT.indexOf(s[0]) + 1, num = s[0] === "cap-pack" ? "" : (n < 10 ? "0" : "") + n;
+        html += '<button type="button" class="ax-item" data-ax="' + esc(s[0]) + '">' + icon(s[2]) + "<span>" + esc(s[1]) + '</span><span class="ax-n"' + (num ? ' aria-label="panel ' + num + '"' : "") + ">" + num + "</span></button>";
+      });
+    });
+    $("axNav").innerHTML = html;
+  }
+
+  var lastFocus = null;
+  function openSheet() {
+    if (!isPhone()) return;
+    lastFocus = document.activeElement;
+    document.documentElement.classList.add("ax-sheet");
+    $("axMoreTab").setAttribute("aria-expanded", "true");
+    $("axSide").setAttribute("role", "dialog"); $("axSide").setAttribute("aria-modal", "true");
+    var f = $("axSide").querySelector('[aria-current="location"]') || $("axSide").querySelector(".ax-item");
+    setTimeout(function () { try { f && f.focus({ preventScroll: true }); } catch (e) {} }, 60);
+  }
+  function closeSheet(restore) {
+    if (!document.documentElement.classList.contains("ax-sheet")) return;
+    document.documentElement.classList.remove("ax-sheet");
+    var m = $("axMoreTab"); if (m) m.setAttribute("aria-expanded", "false");
+    $("axSide").removeAttribute("aria-modal"); $("axSide").removeAttribute("role");
+    if (restore !== false && lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (e) {}
+  }
+
+  function boot() {
+    if ($("axSide") || !$("panel-isa-aiteam") || !document.querySelector(".deck-head-inner")) return;
+    var root = document.documentElement;
+
+    var side = document.createElement("aside");
+    side.id = "axSide"; side.setAttribute("aria-label", "ISA Portal sections");
+    side.innerHTML = '<div class="ax-side-head"><span class="ax-app">ISA Portal</span><span class="ax-date" id="axDate"></span><button type="button" class="ax-done" id="axDone">Done</button></div>' +
+      '<div class="ax-scroll"><nav id="axNav" aria-label="Sections"></nav>' +
+      '<div class="ax-foot" id="axFoot"><div class="ax-status" id="axStatus"></div><details id="axClocks"><summary>World clocks</summary></details></div></div>';
+    document.body.appendChild(side);
+    var scrim = document.createElement("div"); scrim.id = "axScrim"; document.body.appendChild(scrim);
+
+    var bar = document.createElement("nav");
+    bar.id = "axTabs"; bar.setAttribute("aria-label", "Main sections");
+    bar.innerHTML = TABBAR.map(function (t) { return '<button type="button" class="ax-tab" data-ax="' + t[0] + '">' + icon(t[2]) + "<span>" + t[1] + "</span></button>"; }).join("") +
+      '<button type="button" class="ax-tab" id="axMoreTab" aria-haspopup="dialog" aria-expanded="false" aria-controls="axSide">' + icon("_more") + "<span>More</span></button>";
+    document.body.appendChild(bar);
+
+    var inner = document.querySelector(".deck-head-inner");
+    var bt = document.createElement("div"); bt.id = "axBarTitle"; bt.setAttribute("aria-hidden", "true"); bt.textContent = "ISA Portal";
+    inner.insertBefore(bt, inner.firstChild);
+
+    var hero = document.querySelector(".wrap > .hero"), greet = hero && hero.querySelector(".hero-greet");
+    if (greet) { var eb = document.createElement("div"); eb.className = "ax-eyebrow"; eb.id = "axEyebrow"; greet.parentNode.insertBefore(eb, greet); }
+    try { var d = new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }); $("axDate").textContent = d; if ($("axEyebrow")) $("axEyebrow").textContent = "ISA Portal · " + d; } catch (e) {}
+
+    /* Move, never copy. The unread pill stays in the toolbar: it is the one thing that needs the ISA's attention. */
+    var ps = $("pillSync"); if (ps) $("axStatus").appendChild(ps);
+    var wc = $("worldClockBar"); if (wc) $("axClocks").appendChild(wc);
+
+    buildSide();
+    root.classList.add("ax");
+    paintBadges(); spy();
+
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest && e.target.closest("[data-ax]");
+      if (b) { e.preventDefault(); closeSheet(false); scrollToSection(b.getAttribute("data-ax")); return; }
+      if (e.target.closest && e.target.closest("#axMoreTab")) { if (root.classList.contains("ax-sheet")) closeSheet(); else openSheet(); return; }
+      if (e.target === scrim || (e.target.closest && e.target.closest("#axDone"))) { closeSheet(); return; }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { closeSheet(); return; }
+      if (e.key === "Tab" && root.classList.contains("ax-sheet")) {
+        var f = Array.prototype.slice.call($("axSide").querySelectorAll("button, summary, a[href]")).filter(function (x) { return x.offsetParent !== null; });
+        if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    window.addEventListener("resize", function () { if (!isPhone()) closeSheet(false); });
+    var ticking = false;
+    window.addEventListener("scroll", function () { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; spy(); }); }, { passive: true });
+    var up = $("isaLineUnreadPill");
+    if (up) new MutationObserver(paintBadges).observe(up, { attributes: true, attributeFilter: ["hidden"], childList: true, characterData: true, subtree: true });
+
+    if (hero && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (en) { root.classList.toggle("ax-scrolled", !en.isIntersecting); }); }, { rootMargin: "-56px 0px 0px 0px" }).observe(greet || hero);
+    }
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
 </script>
 
 </body></html>

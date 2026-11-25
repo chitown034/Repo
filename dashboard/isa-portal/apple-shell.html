@@ -1,0 +1,281 @@
+<!-- == APPLE SHELL (ISA) 2026-11-25 == macOS-style sidebar + iOS tab bar and sheet as section navigation with scroll-spy; the old slider and contents dock are hidden, never removed -->
+<style id="ax-shell">
+/* Scoped to html.ax (set by the script below), so a page without script keeps the old navigation exactly as it was. */
+html.ax { --ax-side: 268px; --ax-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+  --ax-glass: color-mix(in srgb, var(--surface) 72%, transparent); --ax-line: color-mix(in srgb, var(--text) 10%, transparent);
+  --ax-sel: color-mix(in srgb, var(--accent) 16%, transparent); --ax-ease: cubic-bezier(0.32, 0.72, 0, 1); }
+html.ax #secSlider, html.ax #secToggleBtn, html.ax #tocToggleBtn, html.ax #tocPanel, html.ax .deck-head .brand { display: none !important; }
+#axSide, #axTabs, #axScrim, #axBarTitle { display: none; }
+html.ax #axBarTitle { display: block; }
+
+/* ---- large title: the page's own hero, restyled; it collapses into the toolbar once it scrolls away ---- */
+html.ax .hero { padding: 26px 0 8px; }
+html.ax .hero::before { display: none; }
+html.ax .hero .ax-eyebrow { font: 600 13px/1.3 var(--ax-font); color: var(--accent); margin-bottom: 2px; }
+html.ax .hero-greet { font-family: var(--ax-font); font-size: clamp(30px, 4vw, 40px); line-height: 1.08; font-weight: 700; letter-spacing: -0.022em; text-transform: none; }
+html.ax .hero-sub { font-family: var(--ax-font); font-size: 14.5px; line-height: 1.5; letter-spacing: 0; }
+html.ax .panel, html.ax .card, html.ax #cap-pack { scroll-margin-top: 76px; }
+
+/* ---- slim toolbar: the old header minus everything that moved into the sidebar ---- */
+html.ax .deck-head { position: sticky !important; top: 0; z-index: 100; background: var(--ax-glass); border-bottom: 1px solid var(--ax-line); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+html.ax .deck-head-inner { max-width: none; padding: 10px 24px; min-height: 48px; justify-content: flex-end; flex-wrap: nowrap; gap: 10px; }
+#axBarTitle { margin-right: auto; font: 600 15px/1.2 var(--ax-font); color: var(--text); opacity: 0; transform: translateY(4px); transition: opacity .25s ease, transform .35s var(--ax-ease); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#axBarTitle span { color: var(--text-faint); font-weight: 500; }
+html.ax.ax-scrolled #axBarTitle { opacity: 1; transform: none; }
+
+/* ---- sidebar (desktop) / sheet (phone): one element ---- */
+html.ax #axSide { display: flex; flex-direction: column; font-family: var(--ax-font); color: var(--text); z-index: 120;
+  background: color-mix(in srgb, var(--surface-2) 80%, transparent); -webkit-backdrop-filter: saturate(180%) blur(24px); backdrop-filter: saturate(180%) blur(24px); }
+.ax-side-head { display: flex; align-items: baseline; flex-wrap: wrap; column-gap: 8px; padding: 18px 18px 10px; }
+.ax-app { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+.ax-date { font-size: 12px; color: var(--text-faint); margin-right: auto; white-space: nowrap; }
+.ax-done { display: none; font: 600 15px var(--ax-font); color: var(--accent); background: none; border: 0; padding: 6px 4px; min-height: 0 !important; }
+.ax-scroll { flex: 1; overflow-y: auto; padding: 0 10px 12px; overscroll-behavior: contain; }
+.ax-group { font-size: 11.5px; font-weight: 600; color: var(--text-faint); padding: 14px 10px 4px; letter-spacing: 0; }
+.ax-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 10px; margin: 1px 0; border: 0; border-radius: 8px; background: none;
+  color: var(--text); font: 400 14px/1.25 var(--ax-font); text-align: left; cursor: pointer; min-height: 32px !important; transition: background-color .15s ease; }
+.ax-item svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
+.ax-item .ax-n { margin-left: auto; font-size: 12px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
+.ax-item .ax-n.ax-alert { color: #fff; background: var(--negative, #d14); border-radius: 999px; padding: 0 7px; line-height: 18px; font-weight: 600; }
+.ax-item:hover { background: color-mix(in srgb, var(--text) 6%, transparent); color: var(--text); border: 0; box-shadow: none; }
+.ax-item:active { transform: none; background: color-mix(in srgb, var(--text) 10%, transparent); }
+.ax-item[aria-current="location"] { background: var(--ax-sel); font-weight: 600; }
+.ax-item[aria-current="location"] .ax-n:not(.ax-alert) { color: var(--accent); }
+.ax-foot { border-top: 1px solid var(--ax-line); margin-top: 12px; padding: 12px 10px 6px; display: grid; gap: 8px; font-size: 12.5px; }
+.ax-status { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.ax-status .pill { font-size: 10px; padding: 3px 8px; }
+.ax-foot details > summary { cursor: pointer; color: var(--text-faint); font-weight: 600; font-size: 11.5px; list-style: none; }
+.ax-foot details > summary::-webkit-details-marker { display: none; }
+html.ax .ax-foot .world-clock-bar { display: grid !important; padding: 6px 0 0; gap: 4px; max-width: none; margin: 0; flex-wrap: wrap; overflow: visible; }
+html.ax .ax-foot .wc-zone { justify-content: space-between; }
+
+/* ---- desktop: fixed sidebar ---- */
+@media (min-width: 900px) {
+  html.ax body { padding-left: var(--ax-side); }
+  html.ax #axSide { position: fixed; top: 0; left: 0; bottom: 0; width: var(--ax-side); border-right: 1px solid var(--ax-line); }
+}
+
+/* ---- phone & small tablet: tab bar + sheet ---- */
+@media (max-width: 899.98px) {
+  html.ax body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+  html.ax .deck-head-inner { padding: 8px 16px; min-height: 44px; }
+  html.ax #axBarTitle { opacity: 1; transform: none; }
+  html.ax .nav-dock { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+  html.ax #axTabs { display: grid; grid-template-columns: repeat(5, 1fr); position: fixed; left: 0; right: 0; bottom: 0; z-index: 110;
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px)); background: var(--ax-glass); border-top: 1px solid var(--ax-line);
+    -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); font-family: var(--ax-font); }
+  .ax-tab { position: relative; display: flex; flex-direction: column; align-items: center; gap: 2px; border: 0; background: none; color: var(--text-faint); font: 500 10.5px var(--ax-font); padding: 4px 0; min-height: 48px !important; border-radius: 10px; }
+  .ax-tab svg { width: 24px; height: 24px; }
+  .ax-tab .ax-badge { position: absolute; top: 1px; left: calc(50% + 6px); min-width: 17px; height: 17px; padding: 0 5px; border-radius: 999px; background: var(--negative, #d14); color: #fff; font: 600 11px/17px var(--ax-font); }
+  .ax-tab[aria-current="location"], .ax-tab[aria-expanded="true"] { color: var(--accent); }
+  .ax-tab:hover { border: 0; color: var(--accent); box-shadow: none; }
+  .ax-tab:active { transform: scale(0.92); }
+  html.ax #axSide { position: fixed; left: 0; right: 0; bottom: 0; height: min(88vh, 760px); border-radius: 14px 14px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.22);
+    transform: translateY(104%); transition: transform .45s var(--ax-ease); visibility: hidden; padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: color-mix(in srgb, var(--surface) 92%, transparent); }
+  html.ax #axSide::before { content: ""; width: 36px; height: 5px; border-radius: 3px; background: color-mix(in srgb, var(--text) 22%, transparent); margin: 6px auto 0; flex: none; }
+  html.ax.ax-sheet #axSide { transform: none; visibility: visible; }
+  .ax-done { display: inline-block; }
+  html.ax #axScrim { display: block; position: fixed; inset: 0; z-index: 115; background: rgba(0,0,0,.32); opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+  html.ax.ax-sheet #axScrim { opacity: 1; pointer-events: auto; }
+  html.ax.ax-sheet body { overflow: hidden; }
+  .ax-item { padding: 9px 10px; min-height: 44px !important; font-size: 16px; }
+  html.ax .hero { padding-top: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.ax #axSide, #axScrim, #axBarTitle, .ax-tab { transition: none !important; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  html.ax #axSide, html.ax #axTabs, html.ax .deck-head { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--surface); }
+}
+@media print { #axSide, #axTabs, #axScrim, #axBarTitle { display: none !important; } html.ax body { padding: 0 !important; } html.ax .deck-head { position: static !important; } }
+</style>
+<script>
+/* == APPLE SHELL (ISA) 2026-11-25 == The portal is one long page, so the sidebar and the tab bar are section navigation:
+   a tap scrolls to the panel under the toolbar and scroll-spy marks the panel in view. The section slider and the contents
+   dock are hidden, not removed; delete this block and the old navigation is back exactly as it was. Moved nodes
+   (#pillSync, #worldClockBar) keep their ids, so the scripts that update them still do. */
+(function () {
+  var SECTIONS = [
+    ["Today", [["panel-isa-aiteam", "AI Team & ISA Line", "team"], ["panel-isa-playbook", "Your Week", "today"], ["panel-isa-syncstatus", "Sync Status", "sync"]]],
+    ["Pipeline", [["panel-isa-crmimport", "CRM Import", "import"], ["panel-isa-reclients", "Real Estate Clients", "clients"], ["panel-isa-pipeline", "Mortgage Pipeline", "pipeline"], ["panel-isa-showings", "Showings", "showings"]]],
+    ["Market & lending", [["panel-isa-mortgagerates", "Rates & Market", "rates"], ["panel-isa-pst", "Property Search", "search"], ["panel-isa-loanprograms", "Loan Programs", "programs"]]],
+    ["Playbooks & ops", [["panel-isa-workflows", "Workflows", "workflows"], ["panel-isa-team", "Team & Delegation", "people"], ["panel-isa-easop", "EA / ISA Operations", "ops"], ["panel-isa-vamastermind", "VA Loan Mastermind", "va"]]],
+    ["Reference", [["cap-pack", "Capability Pack", "pack"]]]
+  ];
+  var TABBAR = [["panel-isa-aiteam", "Team", "team"], ["panel-isa-playbook", "Today", "today"], ["panel-isa-reclients", "Clients", "clients"], ["panel-isa-pipeline", "Pipeline", "pipeline"]];
+  var P = {
+    team: '<path d="M12 3l1.8 4.7 4.7 1.8-4.7 1.8L12 16l-1.8-4.7-4.7-1.8 4.7-1.8z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>',
+    today: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M8 14h3v3H8z"/>',
+    sync: '<path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/>',
+    import: '<path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v3h16v-3"/>',
+    clients: '<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+    pipeline: '<path d="M3 5h18l-7 8v6l-4 2v-8z"/>',
+    showings: '<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/>',
+    rates: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
+    search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
+    programs: '<path d="M4 4h12a4 4 0 0 1 4 4v12H8a4 4 0 0 1-4-4z"/><path d="M8 9h8M8 13h6"/>',
+    workflows: '<rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="15" y="15" width="6" height="6" rx="1.5"/><path d="M9 6h4a3 3 0 0 1 3 3v6"/>',
+    people: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.6"/><path d="M16 14.2a5 5 0 0 1 5.5 4.8"/>',
+    ops: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/>',
+    va: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+    pack: '<path d="M21 8l-9-5-9 5 9 5z"/><path d="M3 8v8l9 5 9-5V8"/><path d="M12 13v8"/>',
+    _more: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
+    _dot: '<circle cx="12" cy="12" r="4"/>'
+  };
+  function icon(k) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[k] || P._dot) + "</svg>"; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function $(id) { return document.getElementById(id); }
+  function isPhone() { return window.matchMedia("(max-width: 899.98px)").matches; }
+  function reduced() { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+  var FLAT = [], LABEL = {}, GROUP = {}, currentId = null;
+  SECTIONS.forEach(function (g) { g[1].forEach(function (s) { FLAT.push(s[0]); LABEL[s[0]] = s[1]; GROUP[s[0]] = g[0]; }); });
+  function targets() { return FLAT.map(function (id) { return $(id); }).filter(function (el) { return el && el.offsetParent !== null; }); }
+  function headH() { var h = document.querySelector(".deck-head"); return h ? h.getBoundingClientRect().height : 0; }
+
+  /* Panels use content-visibility:auto, so a far target's position shifts as the panels above it render.
+     Jump, then re-measure for a few frames until it settles under the toolbar. */
+  function scrollToSection(id) {
+    var el = $(id); if (!el) return;
+    var tries = 0, calm = 0;
+    function y() { return Math.max(0, el.getBoundingClientRect().top + window.pageYOffset - headH() - 12); }
+    lockSpy(id);
+    if (!reduced() && Math.abs(el.getBoundingClientRect().top) < window.innerHeight * 1.5) { try { window.scrollTo({ top: y(), behavior: "smooth" }); return; } catch (e) {} }
+    window.scrollTo(0, y());
+    (function settle() {
+      requestAnimationFrame(function () {
+        var d = el.getBoundingClientRect().top - headH() - 12;
+        if (Math.abs(d) > 2) { window.scrollTo(0, y()); calm = 0; } else calm++;
+        if (calm < 4 && tries++ < 40) settle();
+      });
+    })();
+    var f = el.querySelector(".panel-title, h2");
+    if (f) { if (!f.hasAttribute("tabindex")) f.setAttribute("tabindex", "-1"); try { f.focus({ preventScroll: true }); } catch (e) {} }
+  }
+
+  var spyLock = 0;
+  function lockSpy(id) { spyLock = Date.now() + 1200; setCurrent(id); }
+  function spy() {
+    if (Date.now() < spyLock) return;
+    var ts = targets(), line = headH() + 90, id = null;
+    for (var i = 0; i < ts.length; i++) { if (ts[i].getBoundingClientRect().top <= line) id = ts[i].id; else break; }
+    if ((window.innerHeight + window.pageYOffset) >= document.documentElement.scrollHeight - 4 && ts.length) id = ts[ts.length - 1].id;
+    setCurrent(id);
+  }
+  function setCurrent(id) {
+    if (id === currentId) return;
+    currentId = id;
+    document.querySelectorAll("[data-ax]").forEach(function (b) { if (b.getAttribute("data-ax") === id) b.setAttribute("aria-current", "location"); else b.removeAttribute("aria-current"); });
+    var inBar = TABBAR.some(function (t) { return t[0] === id; });
+    var more = $("axMoreTab"); if (more) { if (id && !inBar) more.setAttribute("aria-current", "location"); else more.removeAttribute("aria-current"); }
+    var bt = $("axBarTitle");
+    if (bt) bt.innerHTML = id ? esc(LABEL[id]) + ' <span>· ' + esc(GROUP[id]) + "</span>" : "ISA Portal";
+  }
+
+  function unread() {
+    var p = $("isaLineUnreadPill"); if (!p || p.hidden) return 0;
+    var m = (p.textContent || "").match(/(\d+)/); return m ? +m[1] : 0;
+  }
+  function paintBadges() {
+    var n = unread();
+    var s = document.querySelector('#axNav [data-ax="panel-isa-aiteam"] .ax-n');
+    if (s) { s.textContent = n ? n : "01"; s.classList.toggle("ax-alert", !!n); s.setAttribute("aria-label", n ? n + " unread on the ISA line" : "panel 01"); }
+    var t = document.querySelector('#axTabs [data-ax="panel-isa-aiteam"]');
+    if (t) { var b = t.querySelector(".ax-badge"); if (n) { if (!b) { b = document.createElement("span"); b.className = "ax-badge"; t.appendChild(b); } b.textContent = n; b.setAttribute("aria-label", n + " unread"); } else if (b) b.remove(); }
+  }
+
+  function buildSide() {
+    var html = "";
+    SECTIONS.forEach(function (g) {
+      var items = g[1].filter(function (s) { return $(s[0]); });
+      if (!items.length) return;
+      html += '<div class="ax-group" role="presentation">' + esc(g[0]) + "</div>";
+      items.forEach(function (s) {
+        var n = FLAT.indexOf(s[0]) + 1, num = s[0] === "cap-pack" ? "" : (n < 10 ? "0" : "") + n;
+        html += '<button type="button" class="ax-item" data-ax="' + esc(s[0]) + '">' + icon(s[2]) + "<span>" + esc(s[1]) + '</span><span class="ax-n"' + (num ? ' aria-label="panel ' + num + '"' : "") + ">" + num + "</span></button>";
+      });
+    });
+    $("axNav").innerHTML = html;
+  }
+
+  var lastFocus = null;
+  function openSheet() {
+    if (!isPhone()) return;
+    lastFocus = document.activeElement;
+    document.documentElement.classList.add("ax-sheet");
+    $("axMoreTab").setAttribute("aria-expanded", "true");
+    $("axSide").setAttribute("role", "dialog"); $("axSide").setAttribute("aria-modal", "true");
+    var f = $("axSide").querySelector('[aria-current="location"]') || $("axSide").querySelector(".ax-item");
+    setTimeout(function () { try { f && f.focus({ preventScroll: true }); } catch (e) {} }, 60);
+  }
+  function closeSheet(restore) {
+    if (!document.documentElement.classList.contains("ax-sheet")) return;
+    document.documentElement.classList.remove("ax-sheet");
+    var m = $("axMoreTab"); if (m) m.setAttribute("aria-expanded", "false");
+    $("axSide").removeAttribute("aria-modal"); $("axSide").removeAttribute("role");
+    if (restore !== false && lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (e) {}
+  }
+
+  function boot() {
+    if ($("axSide") || !$("panel-isa-aiteam") || !document.querySelector(".deck-head-inner")) return;
+    var root = document.documentElement;
+
+    var side = document.createElement("aside");
+    side.id = "axSide"; side.setAttribute("aria-label", "ISA Portal sections");
+    side.innerHTML = '<div class="ax-side-head"><span class="ax-app">ISA Portal</span><span class="ax-date" id="axDate"></span><button type="button" class="ax-done" id="axDone">Done</button></div>' +
+      '<div class="ax-scroll"><nav id="axNav" aria-label="Sections"></nav>' +
+      '<div class="ax-foot" id="axFoot"><div class="ax-status" id="axStatus"></div><details id="axClocks"><summary>World clocks</summary></details></div></div>';
+    document.body.appendChild(side);
+    var scrim = document.createElement("div"); scrim.id = "axScrim"; document.body.appendChild(scrim);
+
+    var bar = document.createElement("nav");
+    bar.id = "axTabs"; bar.setAttribute("aria-label", "Main sections");
+    bar.innerHTML = TABBAR.map(function (t) { return '<button type="button" class="ax-tab" data-ax="' + t[0] + '">' + icon(t[2]) + "<span>" + t[1] + "</span></button>"; }).join("") +
+      '<button type="button" class="ax-tab" id="axMoreTab" aria-haspopup="dialog" aria-expanded="false" aria-controls="axSide">' + icon("_more") + "<span>More</span></button>";
+    document.body.appendChild(bar);
+
+    var inner = document.querySelector(".deck-head-inner");
+    var bt = document.createElement("div"); bt.id = "axBarTitle"; bt.setAttribute("aria-hidden", "true"); bt.textContent = "ISA Portal";
+    inner.insertBefore(bt, inner.firstChild);
+
+    var hero = document.querySelector(".wrap > .hero"), greet = hero && hero.querySelector(".hero-greet");
+    if (greet) { var eb = document.createElement("div"); eb.className = "ax-eyebrow"; eb.id = "axEyebrow"; greet.parentNode.insertBefore(eb, greet); }
+    try { var d = new Date().toLocaleDateString(undefined, { weekday: "long", month: "long", day: "numeric" }); $("axDate").textContent = d; if ($("axEyebrow")) $("axEyebrow").textContent = "ISA Portal · " + d; } catch (e) {}
+
+    /* Move, never copy. The unread pill stays in the toolbar: it is the one thing that needs the ISA's attention. */
+    var ps = $("pillSync"); if (ps) $("axStatus").appendChild(ps);
+    var wc = $("worldClockBar"); if (wc) $("axClocks").appendChild(wc);
+
+    buildSide();
+    root.classList.add("ax");
+    paintBadges(); spy();
+
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest && e.target.closest("[data-ax]");
+      if (b) { e.preventDefault(); closeSheet(false); scrollToSection(b.getAttribute("data-ax")); return; }
+      if (e.target.closest && e.target.closest("#axMoreTab")) { if (root.classList.contains("ax-sheet")) closeSheet(); else openSheet(); return; }
+      if (e.target === scrim || (e.target.closest && e.target.closest("#axDone"))) { closeSheet(); return; }
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { closeSheet(); return; }
+      if (e.key === "Tab" && root.classList.contains("ax-sheet")) {
+        var f = Array.prototype.slice.call($("axSide").querySelectorAll("button, summary, a[href]")).filter(function (x) { return x.offsetParent !== null; });
+        if (!f.length) return;
+        if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+        else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+      }
+    });
+    window.addEventListener("resize", function () { if (!isPhone()) closeSheet(false); });
+    var ticking = false;
+    window.addEventListener("scroll", function () { if (ticking) return; ticking = true; requestAnimationFrame(function () { ticking = false; spy(); }); }, { passive: true });
+    var up = $("isaLineUnreadPill");
+    if (up) new MutationObserver(paintBadges).observe(up, { attributes: true, attributeFilter: ["hidden"], childList: true, characterData: true, subtree: true });
+
+    if (hero && "IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) { es.forEach(function (en) { root.classList.toggle("ax-scrolled", !en.isIntersecting); }); }, { rootMargin: "-56px 0px 0px 0px" }).observe(greet || hero);
+    }
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+</script>
