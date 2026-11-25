@@ -91,7 +91,7 @@ const STUB=`(()=>{window.__prompts=[];window.__mode="ok";window.__n=0;pbCall=asy
  const LA=await p.evaluate(async()=>{const t=n=>PB_TOOLS().find(x=>x.name===n);const r={};r.mhl=Object.keys(window.LENDER_MHL||{}).length;
   const a=await t("lender_rank_scenario").execute({type:"mfg",state:"CA",fico:700,value:300000,loan:270000,mhWidth:"single",mhLand:"owned",mhYear:2010});
   r.sorted=a.ranked.every((x,i,A)=>!i||A[i-1].likelihood>=x.likelihood);r.reason=!!(a.ranked[0]&&a.ranked[0].reason&&a.ranked[0].askAE);
-  const out=a.ruledOut.map(x=>x.lender).join("|");r.aaa=/AAA Lendings/.test(out);r.angel=/Angel Oak/.test(out)&&!a.ranked.some(x=>/Angel Oak/.test(x.lender));
+  const RO=a.ruledOut.map(x=>x.lender+": "+x.why.join("; "));r.aaa=RO.some(x=>/^AAA Lendings: .*manufactured/i.test(x));r.angel=RO.some(x=>/No single-wide/.test(x))&&!a.ranked.some(x=>RO.some(y=>y.startsWith(x.lender+":")))&&!RO.some(x=>/^(Equity Prime|JMAC|Freedom|Kind)[^:]*: No manufactured homes/.test(x));
   const l=await t("lender_rank_scenario").execute({type:"lot",state:"CA",fico:700,value:200000,loan:120000,landType:"raw",acres:5});r.fnba=l.ranked.some(x=>/FNBA/.test(x.lender));
   const l2=await t("lender_rank_scenario").execute({type:"lot",state:"CA",fico:700,value:200000,loan:150000,landType:"raw",acres:5});r.ltvStop=l2.ruledOut.some(x=>/FNBA/.test(x.lender)&&/LTV/.test(x.why.join(" ")));
   const m=await t("lender_niche_matrix").execute({niche:"mh"});r.mx=m.offered.length>=10&&m.notOffered.length>=3;r.comp=!/\b(lpc|bps|basis points)\b|comp(ensation)?\s*[:=]?\s*\d/i.test(JSON.stringify(a.ranked));return r});

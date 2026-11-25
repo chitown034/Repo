@@ -12,9 +12,10 @@
 const LA_MH_TYPES=new Set(["mfg","mfgchattel"]),LA_LAND_TYPES=new Set(["lot","rural","ag"]);
 const laM=n=>((window.LENDER_MHL||{})[String(n)])||null;
 const laNum=s=>{const m=String(s??"").replace(/,/g,"").match(/-?\d+(\.\d+)?/);return m?+m[0]:null};
-function laLtvFor(text,purpose){const t=String(text||"");if(!t)return null;const pairs=[...t.matchAll(/(\d{2,3}(?:\.\d+)?)\s*%\s*([a-z\- ]{0,22})/gi)].map(m=>({v:+m[1],w:m[2].toLowerCase()}));if(!pairs.length)return null;
- const want=purpose==="cashout"?/cash/:purpose==="refi"?/rate|refi|r\/t|no.?cash/:/purch|buy/;const hit=pairs.find(p=>want.test(p.w));return hit?hit.v:Math.max(...pairs.map(p=>p.v))}
-function laYearMin(text){const t=String(text||"");const y=[...t.matchAll(/\b(19[5-9]\d|20[0-2]\d)\b/g)].map(m=>+m[1]);const ago=t.match(/(\d{1,2})\s*(?:years?|yrs?)\b/i);let v=y.length?Math.max(...y):null;if(ago&&/older|old|age|within|newer/i.test(t)){const v2=new Date().getFullYear()-+ago[1];v=v==null?v2:Math.max(v,v2)}return v}
+function laLtvFor(text,purpose){const t=String(text||"");if(!t)return null;const pairs=[...t.matchAll(/(?<![\d.])(\d{2,3}(?:\.\d+)?)\s*%\s*([a-z\- \/]{0,22})/gi)].map(m=>({v:+m[1],w:m[2].toLowerCase(),pre:t.slice(Math.max(0,m.index-18),m.index).toLowerCase()})).filter(p=>p.v>=20&&p.v<=105);if(!pairs.length)return null;
+ const isCash=p=>/cash/.test(p.w)||/cash[- ]?out[^%]{0,10}$/.test(p.pre);const want=purpose==="cashout"?/cash/:purpose==="refi"?/rate|refi|r\/t|no.?cash/:/purch|buy/;
+ const hit=pairs.find(p=>want.test(p.w)||want.test(p.pre));if(hit)return hit.v;const pool=purpose==="cashout"?pairs:pairs.filter(p=>!isCash(p)&&!/down/.test(p.w+p.pre));return pool.length?Math.max(...pool.map(p=>p.v)):null}
+function laYearMin(text){const t=String(text||"");if(!t||/no age (limit|restriction|requirement)|no maximum age/i.test(t))return null;const y=[...t.matchAll(/\b(19[5-9]\d|20[0-2]\d)\b/g)].map(m=>+m[1]).filter(v=>v<=new Date().getFullYear()-1);const ago=t.match(/(?:no (?:more|older) than|not older than|within|under|less than|newer than|≤|<=)\s*(\d{1,2})\s*(?:years?|yrs?)|(\d{1,2})\s*(?:years?|yrs?)\s*(?:old )?or (?:newer|less|younger)/i);let v=y.length?Math.max(...y):null;if(ago){const n=+(ago[1]||ago[2]);if(n>0&&n<60){const v2=new Date().getFullYear()-n;v=v==null?v2:Math.max(v,v2)}}return v}
 function laAcreMax(text){const m=String(text||"").match(/(\d{1,4}(?:\.\d+)?)\s*(?:\+)?\s*acres?/i);return m?+m[1]:null}
 function laPurpose(p){return p.purpose==="cashout"||+p.cashout>0?"cashout":p.purpose==="refi"?"refi":"purchase"}
 
@@ -24,8 +25,8 @@ function laRules(r,p){const x=r.x,M=laM(x.n);const why=r.why,warn=r.warn,stop=r.
  const isMH=LA_MH_TYPES.has(p.type)||p.prop==="mfg",isLand=LA_LAND_TYPES.has(p.type);
  if(isMH){const H=M&&M.mh;
   if(!H||H.offered==null){unk++;warn.push("Manufactured-home criteria not confirmed in published sources — confirm with the AE")}
-  else if(H.offered===false){stop.push("Does not lend on manufactured homes"+(H.notes?` (${String(H.notes).slice(0,90)})`:""))}
-  else{const T=H.types||{};why.push("Lends on manufactured homes"+((H.programs||[]).length?`: ${H.programs.slice(0,4).join(", ")}`:""));
+  else if(H.offered===false){for(let k=stop.length-1;k>=0;k--)if(/^No manufactured homes$/.test(stop[k]))stop.splice(k,1);stop.push("Does not lend on manufactured homes"+(H.notes?` (${String(H.notes).slice(0,90)})`:""))}
+  else{for(let k=stop.length-1;k>=0;k--)if(/^No manufactured homes$/.test(stop[k]))stop.splice(k,1);for(let k=warn.length-1;k>=0;k--)if(/^Manufactured acceptance unknown$/.test(warn[k]))warn.splice(k,1);const T=H.types||{};why.push("Lends on manufactured homes"+((H.programs||[]).length?`: ${H.programs.slice(0,4).join(", ")}`:""));
    const chk=(on,k,label)=>{if(!on)return;if(T[k]===false)stop.push(`No ${label}`);else if(T[k]===true)why.push(`${label[0].toUpperCase()+label.slice(1)} OK`);else{unk++;warn.push(`${label[0].toUpperCase()+label.slice(1)}: not confirmed — ask AE`)}};
    chk(p.mhWidth==="single","singleWide","single-wide homes");chk(p.mhWidth==="multi","multiWide","multi-wide homes");
    chk(p.type==="mfgchattel"||p.mhTitle==="chattel","chattel","chattel (home-only) loans");chk(p.mhLand==="leased","leasedLand","homes on leased land");chk(p.mhLand==="park","parkCommunity","homes in parks/communities");
@@ -48,9 +49,10 @@ function laRules(r,p){const x=r.x,M=laM(x.n);const why=r.why,warn=r.warn,stop=r.
    if(L.term)why.push(`Term: ${String(L.term).slice(0,60)}`);(L.overlays||[]).slice(0,4).forEach(o=>warn.push("Land overlay: "+String(o).slice(0,140)))}}
  /* current overlay updates (2025-26 sources) for the product family */
  const key=((LM_TYPES.find(t=>t[0]===p.type)||[])[2])||"conv";const OU=M&&M.overlayUpdates&&M.overlayUpdates[key];
- if(OU){const f=laNum(OU.fico);if(f&&+p.fico<f&&!stop.some(s=>/FICO/.test(s)))stop.push(`FICO ${p.fico} below current ${key.toUpperCase()} overlay ${f} (updated source)`);const d=laNum(OU.dti);if(d&&+p.dti>d&&!stop.some(s=>/DTI/.test(s))){warn.push(`DTI ${p.dti}% over current overlay ${d}% — ${String(OU.notes||"").slice(0,80)}`);unk++}const l=laLtvFor(OU.ltv,purp);if(l&&ltv&&ltv>l&&!stop.some(s=>/LTV/.test(s)))stop.push(`LTV ${ltv}% over current overlay ${l}%`);if(OU.notes)why.push(`Current overlay (${key.toUpperCase()}): ${String(OU.notes).slice(0,90)}`)}
+ if(OU){const f=laNum(OU.fico),cond=/(above|over|>|cash|invest|2nd|second|jumbo|high.?bal|condo|manual|refer|tier|loan amount|\$)/i.test(String(OU.fico)+" "+String(OU.notes||""));if(f&&f>=500&&f<=800&&+p.fico<f&&!stop.some(s=>/FICO/.test(s))){if(cond)warn.push(`Current ${key.toUpperCase()} overlay may require FICO ${f} (${String(OU.notes||"").slice(0,70)})`);else stop.push(`FICO ${p.fico} below current ${key.toUpperCase()} overlay ${f}`)}
+  const d=laNum(OU.dti);if(d&&d>=30&&d<=65&&+p.dti>d)warn.push(`DTI ${p.dti}% over current overlay ${d}%${OU.notes?" — "+String(OU.notes).slice(0,70):""}`);const l=laLtvFor(OU.ltv,purp);if(l&&ltv&&ltv>l&&!isMH&&!isLand)warn.push(`LTV ${ltv}% may exceed current overlay ${l}% (${String(OU.ltv).slice(0,60)})`);if(OU.notes)why.push(`Current overlay (${key.toUpperCase()}): ${String(OU.notes).slice(0,90)}`)}
  r.laUnk=unk;r.laConf=M?M.confidence:null;
- if(stop.length)r.status="Ineligible";else if(unk&&r.status==="Eligible")r.status="Conditional";
+ if(stop.length)r.status="Ineligible";else if(r.status==="Ineligible"){r.status=unk||warn.length?"Conditional":"Eligible";r.score=Math.min(100,r.score+(r.status==="Eligible"?18:10));if(r.parts)r.parts.Odds=r.status==="Eligible"?100:56}else if(unk&&r.status==="Eligible")r.status="Conditional";
  return r}
 function laLikelihood(r){if(r.status==="Ineligible")return 5;const head=(r.parts&&r.parts.Headroom)||0;let v=(r.status==="Eligible"?80:58)+Math.round(head/10)-6*(r.laUnk||0)-Math.min(12,2*Math.max(0,(r.warn||[]).length-(r.laUnk||0)-1));if(r.laConf==="low")v-=5;if(r.laConf==="high")v+=3;return Math.max(8,Math.min(95,v))}
 const laTier=v=>v>=75?["High","good"]:v>=60?["Good","good"]:v>=40?["Possible","warn"]:v>=15?["Unlikely","bad"]:["Not eligible","bad"];
