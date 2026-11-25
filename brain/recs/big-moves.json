@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-24T14:09:48Z",
- "date": "2026-11-24",
+ "generated": "2026-11-25T14:07:39Z",
+ "date": "2026-11-25",
  "items": [
   {
    "id": "bm_08ef5bf8ac",
@@ -69,7 +69,7 @@
    "id": "bm_198db6df26",
    "category": "ops",
    "topic": "",
-   "title": "Wake the Mac runner (down ~6 days): run connect-all.sh",
+   "title": "Wake the Mac runner (down ~6.4 days): run connect-all.sh",
    "why": "Every Mac-fed deck doc (leads, calendar, ISA line, pipeline, brief, inbox) is frozen at 11/18; 7 Mac tasks show error/refused",
    "owner": "Derek",
    "executor": "steven",
@@ -113,7 +113,7 @@
    "id": "bm_c46fa76c49",
    "category": "revenue",
    "topic": "",
-   "title": "Decide on the clear-to-close file with no update for 49 days",
+   "title": "Decide on the clear-to-close file with no update for 50 days",
    "why": "cosBrief p1: a loan has read Clear to Close since early October with no logged update; decision card overdue",
    "owner": "Harrison",
    "executor": "steven",
@@ -453,7 +453,7 @@
      "category": "brain",
      "topic": "",
      "title": "Fix the 1 gold question(s) the brain gets wrong",
-     "why": "bench 33/34 on 2026-11-24",
+     "why": "bench 33/34 on 2026-11-25",
      "owner": "Vanessa",
      "executor": "vanessa",
      "impact": 3,
@@ -525,7 +525,7 @@
      "id": "bm_198db6df26",
      "category": "ops",
      "topic": "",
-     "title": "Wake the Mac runner (down ~6 days): run connect-all.sh",
+     "title": "Wake the Mac runner (down ~6.4 days): run connect-all.sh",
      "why": "Every Mac-fed deck doc (leads, calendar, ISA line, pipeline, brief, inbox) is frozen at 11/18; 7 Mac tasks show error/refused",
      "owner": "Derek",
      "executor": "steven",
@@ -548,7 +548,7 @@
      "id": "bm_c46fa76c49",
      "category": "revenue",
      "topic": "",
-     "title": "Decide on the clear-to-close file with no update for 49 days",
+     "title": "Decide on the clear-to-close file with no update for 50 days",
      "why": "cosBrief p1: a loan has read Clear to Close since early October with no logged update; decision card overdue",
      "owner": "Harrison",
      "executor": "steven",
@@ -730,7 +730,7 @@
    "ref": "bm_295bee4eb4"
   },
   {
-   "q": "What should I do about: Wake the Mac runner (down ~6 days): run connect-all.sh?",
+   "q": "What should I do about: Wake the Mac runner (down ~6.4 days): run connect-all.sh?",
    "a": "Every Mac-fed deck doc (leads, calendar, ISA line, pipeline, brief, inbox) is frozen at 11/18; 7 Mac tasks show error/refused.",
    "action": "Wake the Mac, open Terminal in the Repo folder",
    "coa": "risk",
@@ -769,7 +769,7 @@
   },
   {
    "q": "What did the weekly loop find?",
-   "a": "last run 2026-11-24: bench 33/34, routes 23/23, 20 stale pages, 30 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
+   "a": "last run 2026-11-25: bench 33/34, routes 23/23, 20 stale pages, 30 untested wiki pages, 0 tune proposals, 0/0 learned facts promoted",
    "action": "Open docs/reports/BRAIN-LOOP.md; the Self-improvement lane above carries the fixes",
    "coa": "question",
    "ref": "brain/loop-history.jsonl"
