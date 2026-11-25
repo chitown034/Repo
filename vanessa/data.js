@@ -147,45 +147,48 @@ const PROGRAM_LENDER_TAGS = {
   arm_conv:["agency","conv"], arm_fha:["agency","fha"], arm_va:["agency","va"], arm_jumbo:["jumbo","port"], arm_nonqm:["nonqm","dscr"],
 };
 
-/* ---- Market sample (Fri Oct 16 2026). Replace via Supabase v_home_report_signals when connected. ---- */
+/* ---- Market snapshot (Wed Nov 25 2026, from Claude Code WebSearch summaries of dated sources; the live Claude Code feed
+   (ccfeed/rates) and the live relay override these at run time). Sources: Freddie Mac PMMS 11/25; Mortgage News Daily 11/24;
+   CNBC 11/25; U.S. Treasury par yield curve 11/17 (latest complete curve found); FOMC 10/28 statement. Verify before quoting. ---- */
 const MARKET = {
-  asOf:"Fri Oct 16, 2026 · close edition (sample data)",
-  umbs:{ coupon:"UMBS 5.5", price:101.28, ticks:+12, lean:"neutral", conf:0.58 },
-  y2:3.91, y10:4.06, y30:4.62, y10chg:-4, pmms30:6.18, pmms15:5.43, vapar30:5.875,
-  intraday:[100.94,100.97,101.02,100.99,101.05,101.11,101.08,101.15,101.19,101.14,101.22,101.26,101.24,101.28],
-  support:101.02, resistance:101.34,
+  asOf:"Wed Nov 25, 2026 · PMMS 11/25 · MND & UMBS 11/24 · 10y intraday 11/25 · curve 11/17 (verify before quoting)",
+  umbs:{ coupon:"UMBS 6.0", price:99.65, ticks:+10, lean:"neutral", conf:0.55 },
+  y2:4.63, y10:4.82, y30:5.29, y10chg:-10, pmms30:7.21, pmms15:6.54, vapar30:6.97, mnd30:7.32, fha30:6.95,
+  fed:{ range:"3.75%–4.00%", last:"Oct 27–28: hold (10–2; two dissents favored a hike)", next:"Dec 8–9 (statement Wed Dec 9, 2:00 pm ET) · hike widely priced" },
+  intraday:[99.55,99.61,99.92,99.65], intradayLabels:["Prior close","Session low","Session high","Close 11/24"],
+  support:99.61, resistance:99.92,
   curve:{ labels:["1m","3m","6m","1y","2y","3y","5y","7y","10y","20y","30y"],
-          today:[4.18,4.12,4.02,3.96,3.91,3.91,3.97,4.02,4.06,4.38,4.62],
-          week:[4.20,4.15,4.06,4.01,3.97,3.98,4.04,4.09,4.10,4.42,4.66],
-          year:[4.55,4.38,4.22,4.01,3.74,3.70,3.75,3.84,3.98,4.42,4.50],
-          month:[4.19,4.14,4.05,3.99,3.94,3.95,4.01,4.06,4.12,4.43,4.67] },
+          date:"Nov 17, 2026 (U.S. Treasury par curve; latest complete curve found)",
+          today:[4.09,4.33,4.41,4.60,4.80,4.84,4.90,4.99,5.10,5.50,5.46],
+          since:"Since then: 2y ~4.63%, 10y 4.92% (Nov 23) → ~4.82% intraday Nov 25; 30y ~5.29%." },
   spreadHist:[1.72,1.78,1.85,1.99,2.18,2.34,2.62,2.88,2.74,2.46,2.31,2.17,2.12],
   stories:[
-    {step:"Data release",title:"Retail sales soft (8:30 ET)",body:"Headline retail sales missed consensus; control group flat. Consumer spending is the largest GDP driver."},
-    {step:"Market reaction",title:"Treasuries rally, 10-yr −4bp",body:"Traders pulled forward rate-cut odds; 10-yr yield fell to 4.06% and the bond-price/yield seesaw tilted toward price."},
-    {step:"MBS follow-through",title:"UMBS 5.5 +12 ticks",body:"Mortgage bonds followed, helped by light supply. Price pressed toward resistance near 101.34."},
-    {step:"Mortgage impact",title:"Par rates ~0.0625% better",body:"Lenders may reprice slightly better intraday. On a $400k VA loan that is roughly $16/month — a nudge, not a trend."},
+    {step:"Catalyst",title:"Tech-stock weakness sends money to bonds",body:"Safe-haven buying pushed Treasuries higher through the week (MND 11/24: \u201cA Bit More Help From Stocks\u201d), even with October PCE inflation running hot at 3.8% y/y."},
+    {step:"Market reaction",title:"10-yr falls ~28bp in a week",body:"The 10-year went from about 5.10% (Nov 17) to 4.92% (Nov 20–23) and about 4.82% intraday Nov 25 (CNBC). The front end stayed high (2y ~4.63%) because a December Fed hike is still almost fully priced."},
+    {step:"MBS follow-through",title:"UMBS 6.0 back near 99.65",body:"Mortgage bonds followed with a lag: UMBS 6.0 climbed from about 98.7 (Nov 16) to 99.65 (Nov 24)."},
+    {step:"Mortgage impact",title:"Rates at 2-week lows",body:"MND's 30-yr index fell to 7.32% (Nov 24); Freddie Mac's Nov 25 survey eased to 7.21% from 7.28%. On a $400k loan, 0.07% is about $19/month. Next tests: jobs report Fri Dec 4 and the FOMC Dec 9."},
   ],
   calendar:[
-    {t:"Mon 8:30 ET",e:"Empire State Mfg",imp:2},{t:"Tue 8:30 ET",e:"Retail Sales (Sep)",imp:4},{t:"Wed 2:00 ET",e:"FOMC Minutes",imp:3},
-    {t:"Thu 8:30 ET",e:"Jobless Claims",imp:2},{t:"Thu 9:15 PT",e:"Freddie PMMS",imp:2},{t:"Thu 10:00 ET",e:"10-yr TIPS Auction",imp:3},{t:"Fri 8:30 ET",e:"PCE Inflation",imp:5},
+    {t:"Tue 12/1 10:00 ET",e:"ISM Manufacturing (Nov)",imp:3},{t:"Tue 12/1 10:00 ET",e:"JOLTS (Oct)",imp:3},{t:"Wed 12/2 8:15 ET",e:"ADP Employment (Nov)",imp:3},
+    {t:"Thu 12/3 8:30 ET",e:"Jobless Claims",imp:2},{t:"Thu 12/3 10:00 ET",e:"ISM Services (Nov)",imp:3},{t:"Fri 12/4 8:30 ET",e:"Employment Situation (Nov)",imp:5},{t:"Wed 12/9 2:00 ET",e:"FOMC decision",imp:5},
   ],
+  sources:["https://www.globenewswire.com/news-release/2026/11/25/3410486/0/en/mortgage-rates-dip-to-7-21.html","https://www.mortgagenewsdaily.com/markets/mbs-recap-11242026","https://www.cnbc.com/2026/11/25/treasury-yields-bonds-inflation.html","https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202611","https://www.cnbc.com/2026/10/28/fed-interest-rate-decision-october-2026.html","https://www.bls.gov/schedule/news_release/jolts.htm"],
 };
 
-/* MBS Highway Home Report — signal board (sample; mirrors mbsh_signals table) */
+/* Home Report — signal board (Nov 25 2026 snapshot; mirrors mbsh_signals table when connected) */
 const HOME_REPORT = {
-  edition:"Close", headline:"Bonds grind higher into the weekend; PCE is the next real test", lean:"neutral", conf:0.58,
+  edition:"Close", headline:"Bonds rally into Thanksgiving; the Dec 4 jobs report and Dec 9 FOMC are the next real tests", lean:"neutral", conf:0.55,
   signals:[
-    {kind:"trend",label:"UMBS 5.5 short-term trend",value:"Up 3 sessions",dir:"bullish",str:3,locks:false},
-    {kind:"resistance",label:"Resistance",value:"101.34 (tested twice)",dir:"bearish",str:4,locks:true},
-    {kind:"support",label:"Support",value:"101.02 (held Thu)",dir:"bullish",str:3,locks:true},
-    {kind:"momentum",label:"Stochastics",value:"Approaching overbought",dir:"bearish",str:2,locks:false},
-    {kind:"bollinger",label:"Bollinger bands",value:"Price near upper band",dir:"bearish",str:2,locks:false},
-    {kind:"calendar",label:"Fri 8:30 ET PCE",value:"High-impact — event risk",dir:"neutral",str:5,locks:true},
-    {kind:"auction",label:"10-yr TIPS auction Thu",value:"Watch tail / bid-to-cover",dir:"neutral",str:3,locks:false},
-    {kind:"fed",label:"Fed speakers",value:"Two hawkish-leaning this week",dir:"bearish",str:3,locks:true},
+    {kind:"trend",label:"UMBS 6.0 short-term trend",value:"Up from ~98.7 to 99.65 in a week",dir:"bullish",str:3,locks:false},
+    {kind:"resistance",label:"Resistance",value:"99.92 (Nov 24 session high)",dir:"bearish",str:3,locks:true},
+    {kind:"support",label:"Support",value:"99.61 (Nov 24 session low)",dir:"bullish",str:3,locks:true},
+    {kind:"momentum",label:"10-yr yield",value:"~5.10% → ~4.82% since Nov 17",dir:"bullish",str:3,locks:false},
+    {kind:"inflation",label:"October PCE",value:"3.8% y/y headline — hot",dir:"bearish",str:4,locks:true},
+    {kind:"calendar",label:"Fri Dec 4 8:30 ET jobs report",value:"High-impact — event risk",dir:"neutral",str:5,locks:true},
+    {kind:"fed",label:"FOMC Dec 8–9",value:"Hike widely priced (FedWatch ~90%)",dir:"bearish",str:5,locks:true},
+    {kind:"holiday",label:"Thanksgiving week",value:"Thin trading; bond market closed Thu, early close Fri",dir:"neutral",str:2,locks:false},
     {kind:"alert",label:"Rate alert threshold",value:"UMBS ±25 ticks or 10y ±7bp",dir:"neutral",str:1,locks:false},
-    {kind:"commentary",label:"Desk commentary",value:"“Float-neutral into PCE; bias to lock if 101.02 breaks.”",dir:"neutral",str:2,locks:true},
+    {kind:"commentary",label:"Desk view",value:"\u201cFloat-neutral into the holiday; lock ahead of Dec 4 if a closing is inside 30 days.\u201d",dir:"neutral",str:2,locks:true},
   ],
 };
 
