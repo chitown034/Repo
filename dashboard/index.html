@@ -2,28 +2,34 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: sticky command bar + tab rail; one 1200px operating column; tables scroll inside their own wrappers. */
+/* Layout: macOS-style app shell. Translucent sidebar (grouped sections) + toolbar with breadcrumb; phone gets a bottom tab bar. One content column, tables scroll in their own wrappers. */
 :root{
-  --bg:#ECEEF2; --surface:#FFFFFF; --surface-2:#F4F5F8; --ink:#15223A; --muted:#58637A; --line:#D3D8E1;
-  --accent:#8F6418; --accent-ink:#FFFFFF; --accent-soft:#F2E6CF; --navy:#1F3A64; --navy-soft:#DCE5F3;
-  --good:#2C7A4B; --good-soft:#DDF0E4; --warn:#9A5B00; --warn-soft:#F8E8CC; --bad:#B0281F; --bad-soft:#F7DEDB;
-  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
-  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --bg:#F5F5F7; --surface:#FFFFFF; --surface-2:#F5F5F7; --ink:#1D1D1F; --muted:#6E6E73; --line:#E3E3E8;
+  --accent:#0066CC; --accent-ink:#FFFFFF; --accent-soft:#E8F1FC; --navy:#0066CC; --navy-soft:#EAF1FB;
+  --good:#1E8E3E; --good-soft:#E3F4E8; --warn:#B25000; --warn-soft:#FCEFD9; --bad:#D70015; --bad-soft:#FDE8EA; --on-bad:#FFFFFF;
+  --brass:#C9A04E; --logo:#1D1D1F; --fill:rgba(118,118,128,.10); --hover:rgba(118,118,128,.10); --ring:rgba(0,102,204,.22); --scrim:rgba(0,0,0,.28);
+  --side:rgba(242,242,245,.86); --bar:rgba(255,255,255,.80); --shadow:0 1px 2px rgba(0,0,0,.04),0 6px 20px rgba(0,0,0,.04);
+  --f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,"Segoe UI",Roboto,sans-serif;
+  --f-body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",system-ui,"Segoe UI",Roboto,sans-serif;
+  --f-mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0D1422; --surface:#141F33; --surface-2:#1A2740; --ink:#E5EAF3; --muted:#9BA7BD; --line:#2A3A56;
-  --accent:#D8A957; --accent-ink:#1A1408; --accent-soft:#3A2F1B; --navy:#93B5EA; --navy-soft:#1E3152;
-  --good:#5FC78E; --good-soft:#173A29; --warn:#E5A445; --warn-soft:#3D2C12; --bad:#F27B6F; --bad-soft:#431D1A; color-scheme:dark;}}
+  --bg:#0B0B0D; --surface:#1C1C1E; --surface-2:#242426; --ink:#F5F5F7; --muted:#A1A1A6; --line:#333336;
+  --accent:#0A84FF; --accent-ink:#FFFFFF; --accent-soft:#0F2A48; --navy:#4DA3FF; --navy-soft:#13263F;
+  --good:#30D158; --good-soft:#10301A; --warn:#FF9F0A; --warn-soft:#3A2A0C; --bad:#FF453A; --bad-soft:#3B1513; --on-bad:#FFFFFF;
+  --brass:#D8A957; --logo:#3A3A3C; --fill:rgba(118,118,128,.24); --hover:rgba(118,118,128,.20); --ring:rgba(10,132,255,.35); --scrim:rgba(0,0,0,.5);
+  --side:rgba(28,28,30,.86); --bar:rgba(22,22,24,.80); --shadow:0 0 0 rgba(0,0,0,0); color-scheme:dark;}}
 :root[data-theme="dark"]{
-  --bg:#0D1422; --surface:#141F33; --surface-2:#1A2740; --ink:#E5EAF3; --muted:#9BA7BD; --line:#2A3A56;
-  --accent:#D8A957; --accent-ink:#1A1408; --accent-soft:#3A2F1B; --navy:#93B5EA; --navy-soft:#1E3152;
-  --good:#5FC78E; --good-soft:#173A29; --warn:#E5A445; --warn-soft:#3D2C12; --bad:#F27B6F; --bad-soft:#431D1A; color-scheme:dark;}
+  --bg:#0B0B0D; --surface:#1C1C1E; --surface-2:#242426; --ink:#F5F5F7; --muted:#A1A1A6; --line:#333336;
+  --accent:#0A84FF; --accent-ink:#FFFFFF; --accent-soft:#0F2A48; --navy:#4DA3FF; --navy-soft:#13263F;
+  --good:#30D158; --good-soft:#10301A; --warn:#FF9F0A; --warn-soft:#3A2A0C; --bad:#FF453A; --bad-soft:#3B1513; --on-bad:#FFFFFF;
+  --brass:#D8A957; --logo:#3A3A3C; --fill:rgba(118,118,128,.24); --hover:rgba(118,118,128,.20); --ring:rgba(10,132,255,.35); --scrim:rgba(0,0,0,.5);
+  --side:rgba(28,28,30,.86); --bar:rgba(22,22,24,.80); --shadow:0 0 0 rgba(0,0,0,0); color-scheme:dark;}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
 a{color:var(--navy)} a:hover{color:var(--accent)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1;letter-spacing:.01em}
@@ -36,7 +42,7 @@ header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .brand{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .brand h1{font-size:1.7rem;font-weight:700;text-transform:uppercase}
 .brand .call{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);letter-spacing:.08em}
-.brand .star{color:var(--accent)}
+.brand .star{color:var(--brass)}
 nav.tabs{display:flex;gap:2px;overflow-x:auto;padding-bottom:0;scrollbar-width:thin}
 nav.tabs a{font-family:var(--f-display);font-weight:600;font-size:1rem;text-transform:uppercase;letter-spacing:.05em;text-decoration:none;color:var(--muted);padding:8px 12px;border-bottom:3px solid transparent;white-space:nowrap}
 nav.tabs a:hover{color:var(--ink)}
@@ -189,18 +195,155 @@ tr.flash td{background:var(--accent-soft)}
 .dsgoals{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}.dsgoals ol{margin:4px 0 0;padding-left:18px}
 .dsw{display:flex;flex-direction:column;gap:2px;min-width:96px}.dsw input{width:96px}
 .dscmp th,.dscmp td{vertical-align:top;min-width:200px}.dscmp tbody th{min-width:110px;text-align:left}
+
+/* ===== Round 10: app shell + system-style refresh ===== */
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;letter-spacing:-.006em}
+h1,h2,h3{letter-spacing:-.015em}
+h2{font-size:clamp(1.6rem,1.15rem + 1.4vw,2.15rem);font-weight:700;text-transform:none;letter-spacing:-.028em}
+h3{font-size:1.08rem;font-weight:600;text-transform:none;letter-spacing:-.012em}
+.eyebrow{font-family:var(--f-body);font-weight:600;font-size:.8rem;letter-spacing:0;text-transform:none;color:var(--accent)}
+.lede{font-size:1.02rem;line-height:1.55}
+.panel{border-radius:14px;border-color:var(--line);box-shadow:var(--shadow);padding:20px}
+.tbl-wrap{border-radius:12px;box-shadow:var(--shadow)}
+th{font-family:var(--f-body);font-weight:600;font-size:.75rem;text-transform:none;letter-spacing:0}
+tbody tr:hover td{background:var(--hover)}
+.btn{border-radius:999px;padding:7px 15px;font-weight:500;transition:background .15s,border-color .15s,filter .15s;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btn:hover{border-color:var(--muted)} .btn.primary:hover{filter:brightness(1.08);border-color:var(--accent)}
+input.field,select.field,textarea.field{border-radius:10px;padding:8px 11px}
+input.field:focus,select.field:focus,textarea.field:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--ring)}
+.pill{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:.74rem;font-weight:500}
+label.lbl{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:.8rem;font-weight:500}
+.stats{border-radius:14px;box-shadow:var(--shadow)}
+.stat .k{font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:.8rem}
+.stat .v{font-weight:600;letter-spacing:-.03em}
+.fig b{font-weight:600;letter-spacing:-.03em}
+.vcard,.fig,.res,.agent,.dealcard{border-radius:12px} .alert{border-radius:10px} .lane{border-radius:12px}
+.vcard{box-shadow:var(--shadow);transition:transform .15s,box-shadow .15s} .vcard:hover{transform:translateY(-1px)}
+.vcard h3{font-size:1.12rem}
+.callout{border-left-width:0;border-radius:12px;padding:14px 16px}
+.modal-bg{background:var(--scrim);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.modal-card{border-radius:16px;padding:22px;gap:12px}
+.toast{border-radius:12px;left:50%;right:auto;transform:translateX(-50%);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+.chipbtn{padding:5px 12px}
+.view{gap:32px}
+#app h2,#app h3{scroll-margin-top:calc(76px + env(safe-area-inset-top,0px))}
+.ic{width:18px;height:18px;flex:none} .ic-s{width:14px;height:14px;flex:none} .ic-xs{width:12px;height:12px} .ic-l{width:22px;height:22px;flex:none} .ic-t{width:22px;height:22px}
+
+/* shell */
+.shell{display:flex;align-items:flex-start;min-height:100vh}
+.side{position:sticky;top:env(safe-area-inset-top,0px);height:calc(100vh - env(safe-area-inset-top,0px));width:262px;flex:none;overflow-y:auto;overscroll-behavior:contain;background:var(--side);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-right:1px solid var(--line);padding-block:16px 24px;padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:10px;display:flex;flex-direction:column;gap:12px;scrollbar-width:thin}
+.side-brand{display:flex;gap:10px;align-items:center;padding:4px 8px;text-decoration:none;color:var(--ink)}
+.side-brand .logo{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;background:var(--logo);color:var(--brass);font-size:1.05rem;flex:none}
+.side-brand b{display:block;font-size:.92rem;letter-spacing:-.01em;line-height:1.2} .side-brand small{display:block;color:var(--muted);font-size:.72rem;line-height:1.3}
+.side-search{display:flex;align-items:center;gap:8px;font:inherit;font-size:.86rem;color:var(--muted);background:var(--fill);border:0;border-radius:9px;padding:7px 10px;cursor:pointer;text-align:left;margin:0 2px}
+.side-search kbd{margin-left:auto}
+.side-nav{display:flex;flex-direction:column;gap:6px}
+.side-gh{display:flex;width:100%;justify-content:space-between;align-items:center;font:inherit;font-size:.74rem;font-weight:600;color:var(--muted);background:none;border:0;padding:6px 10px 3px;cursor:pointer;border-radius:6px}
+.side-gh:hover{color:var(--ink)} .side-gh svg{transition:transform .2s;opacity:.7} .side-gh[aria-expanded="false"] svg{transform:rotate(-90deg)}
+.side-items{display:flex;flex-direction:column;gap:1px}
+.side-a{display:flex;align-items:center;gap:10px;padding:6px 10px;border-radius:8px;color:var(--ink);text-decoration:none;font-size:.88rem;line-height:1.25;min-width:0}
+.side-a span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side-a .ic{color:var(--accent)}
+.side-a:hover{background:var(--hover);color:var(--ink)}
+.side-a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)} .side-a[aria-current="page"] .ic{color:var(--accent-ink)}
+.side-a .badge{margin-left:auto;font-size:.7rem;font-weight:600;background:var(--bad);color:var(--on-bad);border-radius:999px;padding:1px 7px}
+.side-vents{display:flex;flex-direction:column;gap:1px;margin:1px 0 4px}
+.side-a.sub{padding-left:38px;font-size:.82rem;color:var(--muted);padding-block:4px}
+.side-a.sub .dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex:none;opacity:.6}
+.side-a.sub[aria-current="page"]{color:var(--accent-ink)}
+.side-foot{margin-top:auto;font-size:.74rem;color:var(--muted);padding:8px 10px}
+.side-foot [data-sync="synced"]{color:var(--good)}
+.main-col{flex:1;min-width:0;display:flex;flex-direction:column;min-height:100vh}
+header.bar{background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line)}
+.bar-in{display:flex;align-items:center;gap:8px;min-height:54px;padding-block:8px}
+.tb-ic{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;border:0;background:transparent;color:var(--muted);cursor:pointer;flex:none}
+.tb-ic:hover{background:var(--hover);color:var(--ink)} .tb-ic.on{color:var(--brass)} .tb-ic.on svg{fill:currentColor}
+.tb-hist{display:flex;gap:0}
+.crumb{display:flex;align-items:center;gap:6px;min-width:0;flex:1;font-size:.92rem;padding-left:4px}
+.crumb .g{color:var(--muted);text-decoration:none;white-space:nowrap} a.g:hover{color:var(--accent)}
+.crumb .sep{color:var(--muted);display:grid;opacity:.6}
+.crumb .p{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
+.tb-right{display:flex;gap:6px;align-items:center;flex:none}
+.tb-right .btn{padding:6px 13px}
+#savedNote{white-space:nowrap}
+.scrim{position:fixed;inset:0;z-index:35;background:var(--scrim)}
+.tabbar{display:none}
+main{flex:1}
+.main-col>main{width:100%;min-width:0}
+/* pages */
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.pn a{display:flex;flex-direction:column;gap:2px;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-decoration:none;color:var(--ink);box-shadow:var(--shadow);min-width:0}
+.pn a:hover{border-color:var(--accent)} .pn a small{color:var(--muted);font-size:.78rem} .pn a b{color:var(--accent);font-weight:600}
+.pn a.next{text-align:right;grid-column:2}
+.otp{display:flex;justify-content:flex-end}
+.otp b,.otp button{display:none}
+select.otp-sel{width:auto;max-width:100%;font-size:.84rem;padding:6px 10px;color:var(--muted);background:var(--surface)}
+@media (min-width:1440px){
+ #app.has-otp{display:grid;grid-template-columns:minmax(0,1fr) 212px;gap:40px;max-width:1480px}
+ #app.has-otp .otp{order:2;display:flex;flex-direction:column;justify-content:flex-start;gap:1px;position:sticky;top:calc(78px + env(safe-area-inset-top,0px));align-self:start;max-height:calc(100vh - 110px);overflow:auto;border-left:1px solid var(--line);padding-left:14px;margin:0}
+ .otp b{display:block;font-size:.76rem;color:var(--ink);margin-bottom:6px}
+ .otp button{display:block;text-align:left;font:inherit;font-size:.8rem;color:var(--muted);background:none;border:0;padding:4px 0;cursor:pointer;line-height:1.3}
+ .otp button:hover{color:var(--accent)} select.otp-sel{display:none}
+}
+.greet{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.greet-q{display:flex;gap:8px;flex-wrap:wrap}
+.qa{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:.88rem;font-weight:500;box-shadow:var(--shadow)}
+.qa .ic-l{color:var(--accent)} .qa:hover{border-color:var(--accent)}
+.hero-s{display:flex;flex-direction:column;gap:12px;padding:28px;border-radius:18px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.grp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}
+.grp{display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);min-width:0}
+.grp-h{display:flex;gap:12px;align-items:center} .grp-h .ic-l{color:var(--accent);padding:6px;width:36px;height:36px;border-radius:10px;background:var(--accent-soft)}
+.grp-h b{display:block;font-size:1rem} .grp-h small{color:var(--muted);font-size:.76rem}
+.grp-links{display:flex;flex-wrap:wrap;gap:6px}
+.grp-links a{font-size:.8rem;padding:4px 10px;border-radius:999px;background:var(--fill);color:var(--ink);text-decoration:none}
+.grp-links a:hover{background:var(--accent-soft);color:var(--accent)}
+.step-a{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;text-decoration:none;color:var(--ink);font-size:.9rem}
+.step-a:hover{background:var(--hover)} .step-a small{color:var(--accent);white-space:nowrap}
+.kbd-t td{border:0;padding:5px 8px} .kbd-t td:first-child{width:90px}
+.gl-tools{display:flex;flex-direction:column;gap:10px;position:sticky;top:calc(62px + env(safe-area-inset-top,0px));z-index:2;background:var(--bg);padding-block:8px}
+.gl-tools input{max-width:420px}
+.gl-az{display:flex;flex-wrap:wrap;gap:2px}
+.gl-j{font:inherit;font-size:.76rem;font-weight:600;color:var(--accent);background:none;border:0;border-radius:6px;padding:3px 6px;cursor:pointer;min-width:24px} .gl-j:hover{background:var(--accent-soft)}
+.gl{margin:0;display:flex;flex-direction:column;gap:0}
+.gl-l{font-size:1.4rem;font-weight:700;letter-spacing:-.02em;color:var(--accent);padding:14px 0 4px;scroll-margin-top:170px}
+.gl-i{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:4px 18px;padding:10px 0;border-bottom:1px solid var(--line)}
+.gl-i dt{font-weight:600} .gl-i dd{margin:0;font-size:.9rem;color:var(--ink)} .gl-go{font-size:.8rem;white-space:nowrap;text-decoration:none;margin-left:4px}
+@media (max-width:640px){.gl-i{grid-template-columns:1fr}}
+@media (min-width:1024px){body.side-off .side{display:none}}
+@media (max-width:1023px){
+ .side{position:fixed;top:0;left:0;bottom:0;height:auto;z-index:40;width:min(300px,86vw);transform:translateX(-105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);padding-top:calc(16px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));background:var(--surface)}
+ body.side-open .side{transform:none;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+ .tb-hist,#savedNote,.tb-backup,.crumb .g,.crumb .sep{display:none}
+ .tb-right .lbl-t,.tb-right kbd{display:none}
+ .tb-right .btn{padding:7px 10px}
+ .tabbar{display:grid;grid-template-columns:repeat(5,1fr);position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--bar);-webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--line);padding-top:6px;padding-bottom:calc(6px + env(safe-area-inset-bottom,0px));padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:max(6px,env(safe-area-inset-right,0px))}
+ .tabbar a,.tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;font:inherit;font-size:.66rem;font-weight:500;color:var(--muted);text-decoration:none;background:none;border:0;padding:3px 0;cursor:pointer}
+ .tabbar .on{color:var(--accent)}
+ main{padding-bottom:calc(100px + env(safe-area-inset-bottom,0px))!important}
+ .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+ .pn{grid-template-columns:1fr}.pn a.next{grid-column:1}
+ .hero-s{padding:20px}
+}
+@media (prefers-reduced-motion: reduce){.side{transition:none}}
 </style>
 
+<div class="shell">
+<aside class="side" id="side" aria-label="Navigation"></aside>
+<div class="scrim" id="scrim" hidden></div>
+<div class="main-col">
 <header class="bar">
-  <div class="wrap">
-    <div class="bar-top">
-      <div class="brand"><h1><span class="star">★</span> Venture Command Center</h1><span class="call">HOLDCO · 10 VENTURES · VETERAN-OWNED</span></div>
-      <div class="btn-row"><button class="btn" id="paletteBtn" aria-label="Search everything">Search <kbd>Ctrl K</kbd></button><button class="btn primary" id="captureBtn">+ Capture</button><span class="small muted" id="savedNote">Saved in this browser</span><a class="btn ghost" href="#backup">Backup</a></div>
-    </div>
-    <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+  <div class="wrap bar-in">
+    <button class="tb-ic" id="sideBtn" aria-label="Show or hide sidebar" title="Sidebar (\)"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v16H3zM9 4v16"/></svg></button>
+    <div class="tb-hist"><button class="tb-ic" id="histBack" aria-label="Back" title="Back"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><button class="tb-ic" id="histFwd" aria-label="Forward" title="Forward"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div>
+    <div class="crumb" id="crumb"></div>
+    <div class="tb-right"><button class="tb-ic" id="pinBtn" aria-label="Pin page to sidebar" title="Pin to sidebar"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z"/></svg></button><button class="tb-ic" id="infoBtn" aria-label="About this page" title="About this page"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v5M12 7.5h.01"/></svg></button><button class="btn" id="paletteBtn" aria-label="Search everything"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4"/></svg><span class="lbl-t">Search</span> <kbd id="kbdHint">Ctrl K</kbd></button><button class="btn primary" id="captureBtn" aria-label="Capture"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span class="lbl-t">Capture</span></button><span class="small muted" id="savedNote">Saved in this browser</span><a class="btn ghost tb-backup" href="#backup">Backup</a></div>
   </div>
+  <nav id="tabs" hidden></nav>
 </header>
 <main class="wrap" id="app"></main>
+<nav class="tabbar" id="tabbar" aria-label="Main"></nav>
+</div>
+</div>
 <div class="toast" id="toast" hidden></div>
 <div id="modal" class="modal-bg" hidden></div>
 
@@ -2972,6 +3115,242 @@ RESOURCES.push(
  ["Grants & Research","VA SSVF","https://www.va.gov/homeless/ssvf/","Grants for nonprofits preventing veteran homelessness."],
  ["Funding & Loans","DoD Office of Strategic Capital","https://www.cto.mil/osc/","Loans for critical-technology equipment and facilities."]);
 
+
+/* =========================================================
+   ROUND 10: APP SHELL (sidebar, toolbar, tab bar), PAGE GUIDES, START HERE, GLOSSARY
+   ========================================================= */
+const ICP={house:"M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z",check:"M9 11l3 3 8-8M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9",gauge:"M12 14l4-4M3.5 18a9 9 0 1 1 17 0",briefcase:"M3 7h18v12H3zM8 7V5h8v2M3 12h18",grid:"M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z",map:"M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14",bulb:"M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2V16h5v-.1c0-.8.4-1.5 1-2A6 6 0 0 0 12 3z",factory:"M3 21V10l6 4V10l6 4V6h6v15z",dollar:"M12 3v18M16.5 7.5c0-1.9-2-3-4.5-3s-4.5 1.2-4.5 3.2c0 4.6 9 2.4 9 7 0 2-2 3.3-4.5 3.3S7.5 15.9 7.5 14",search:"M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4",percent:"M19 5 5 19M7 5a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM17 15a2 2 0 1 0 0 4 2 2 0 0 0 0-4z",trend:"M3 17l6-6 4 4 8-8M15 7h6v6",list:"M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01",arrows:"M7 7h13l-4-4M17 17H4l4 4",crown:"M3 19h18M4 8l4 4 4-6 4 6 4-4-2 9H6z",cart:"M3 4h2l2.4 11h11l2-8H6.2M9 20h.01M18 20h.01",flag:"M5 21V4M5 4h11l-2 4 2 4H5",radar:"M12 12l6-6M12 3a9 9 0 1 0 9 9M12 7a5 5 0 1 0 5 5",seal:"M12 3l2.4 1.8 3-.2.9 2.9 2.4 1.8-1 2.8 1 2.8-2.4 1.8-.9 2.9-3-.2L12 21l-2.4-1.8-3 .2-.9-2.9-2.4-1.8 1-2.8-1-2.8 2.4-1.8.9-2.9 3 .2zM9 12l2 2 4-4",gift:"M4 11h16v10H4zM3 7h18v4H3zM12 7v14M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0",chart:"M4 20V10M10 20V4M16 20v-7M22 20H2",scale:"M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 0 0 6 0zM19 7l-3 7a3 3 0 0 0 6 0z",shield:"M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z",megaphone:"M3 11v2a1 1 0 0 0 1 1h3l6 4V6L7 10H4a1 1 0 0 0-1 1zM17 8a5 5 0 0 1 0 8",person:"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM4 21a8 8 0 0 1 16 0",bolt:"M13 2 4 14h7l-1 8 9-12h-7z",book:"M4 4h6a3 3 0 0 1 3 3v14a2 2 0 0 0-2-2H4zM20 4h-6a3 3 0 0 0-3 3v14a2 2 0 0 1 2-2h7z",sparkle:"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z",calc:"M5 3h14v18H5zM8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01",globe:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM3 12h18M12 3c2.5 2.5 3.5 5.5 3.5 9s-1 6.5-3.5 9c-2.5-2.5-3.5-5.5-3.5-9s1-6.5 3.5-9z",abc:"M3 19 7 6l4 13M4.3 15h5.4M14 6v13M14 6h3.5a3 3 0 0 1 0 6H14M14 12h4a3.5 3.5 0 0 1 0 7h-4",compass:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM15.5 8.5l-2 5-5 2 2-5z",archive:"M3 4h18v4H3zM5 8v12h14V8M10 12h4",sidebar:"M3 4h18v16H3zM9 4v16",chl:"M15 18l-6-6 6-6",chr:"M9 6l6 6-6 6",chd:"M6 9l6 6 6-6",info:"M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 11v5M12 7.5h.01",star:"M12 3l2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z",plus:"M12 5v14M5 12h14",ellipsis:"M5 12h.01M12 12h.01M19 12h.01"};
+function ic(n,c){return `<svg class="${c||"ic"}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${ICP[n]||ICP.list}"/></svg>`;}
+const NAV_ICON={overview:"house",actions:"check",scorecard:"gauge",ceo:"briefcase",ventures:"grid",roadmap:"map",ideas:"bulb",industries:"factory",funding:"dollar",fundfind:"search",incentives:"percent",scale:"trend",programs:"list",deals:"arrows",acquisitions:"cart",elite:"crown",govcon:"flag",radar:"radar",certs:"seal",grants:"gift",finance:"chart",legal:"scale",wealth:"shield",marketing:"megaphone",operator:"person",automation:"bolt",playbooks:"book",assist:"sparkle",calculators:"calc",resources:"globe",glossary:"abc",start:"compass",backup:"archive"};
+const NAVG=[["Home",["start","overview","actions","scorecard","ceo"]],["Ventures",["ventures","roadmap","ideas","industries"]],["Capital",["funding","fundfind","deals","incentives","scale","programs","acquisitions","elite"]],["Government",["govcon","radar","certs","grants"]],["Operations",["finance","legal","wealth","marketing","operator","automation","playbooks"]],["Tools",["assist","calculators","glossary","resources","backup"]]];
+TABS.push(["start","Start Here"],["glossary","Glossary"],["backup","Backup & Sync"]);
+function navGroups(){const lab=Object.fromEntries(TABS);const known=new Set(NAVG.flatMap(g=>g[1]));const G=NAVG.map(([g,ks])=>[g,ks.filter(k=>lab[k]&&VIEWS[k])]);const extra=TABS.map(t=>t[0]).filter(k=>!known.has(k)&&VIEWS[k]);if(extra.length)G.push(["More",extra]);return G;}
+function navFlat(){return navGroups().flatMap(([g,ks])=>ks.map(k=>[k,g]));}
+function navLabel(k){const t=TABS.find(x=>x[0]===k);return t?t[1]:k;}
+const UI={get(k,d){try{const v=localStorage.getItem("vcc.ui."+k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem("vcc.ui."+k,JSON.stringify(v));}catch(e){}}};
+let NAVCOLL=UI.get("coll",{}),PINS=UI.get("pins",[]),LASTG={};
+const IS_MAC=/Mac|iPhone|iPad/.test(navigator.platform||navigator.userAgent||"");
+
+/* ---------- page guides (ⓘ) ---------- */
+const GUIDE={
+ start:["Orientation: how the command center is organized, a first-week path and keyboard shortcuts.",["Read 'How it's organized' once","Work through the first-week path in order","Pin the five pages you use most with ☆ in the toolbar"],["overview","glossary","actions"]],
+ overview:["Your portfolio at a glance: today's tasks, alerts, every venture's stage and health, and upcoming deadlines.",["Check 'Today' for overdue and due tasks","Scan the venture cards for red or amber health","Open a venture card to update its stage, KPIs and notes"],["actions","scorecard","ventures"]],
+ actions:["One inbox for every task across all ventures, including tasks the automations create.",["Clear overdue items first","Use Capture (C) to add tasks from anywhere","Launch a workflow to create a full task sequence"],["automation","overview","ceo"]],
+ scorecard:["Weekly numbers for each venture, compared with goals, so problems show up early.",["Enter this week's numbers every Monday","Red cells missed goal; ask why before fixing","Adjust goals each quarter"],["ceo","finance","operator"]],
+ ceo:["Your weekly CEO routine: priorities, decisions, delegation and meeting rhythm.",["Set three priorities for the week","Log decisions with the reason","Delegate anything below your hourly value"],["scorecard","operator","actions"]],
+ ventures:["All ten ventures with stage, health, next milestone and a detail page for each.",["Keep each venture's stage current","Open a venture for its playbook, KPIs and SOPs","Move stalled ventures to 'Watch' honestly"],["roadmap","overview","ideas"]],
+ roadmap:["The phased plan to launch, systematize and delegate each venture.",["Tick items as you finish them","Work one phase at a time per venture","Review the roadmap monthly"],["ventures","operator","automation"]],
+ ideas:["Score new venture ideas on market, fit, capital, speed and veteran advantage before you commit.",["Add ideas from 100 Industries with + Idea","Score honestly; the total ranks them","Only start ideas that beat your current weakest venture"],["industries","ventures","deals"]],
+ industries:["100 resilient industries rated for geopolitical exposure, capital and veteran advantage.",["Filter to ★★ for the biggest SDVOSB edge","Add promising ones to New Ventures","Validate local demand before buying or starting"],["ideas","acquisitions","govcon"]],
+ funding:["Every funding source you're pursuing, with amounts, status and next steps.",["Add each lender, grant or investor you talk to","Keep the next step and date current","Compare total committed against your plan"],["fundfind","deals","scale"]],
+ fundfind:["Programs the dashboard was missing: defense capital, SDVOSB contract vehicles, nonprofit and housing funding, with status notes.",["Filter by venture","Open the official page to confirm current rules","+ Track adds a program to your Capital tracker"],["funding","programs","grants"]],
+ deals:["1,000 deal structures with definitions, pros and cons, documented users, weighted ranking and side-by-side comparison.",["Pick a goal preset or set your own weights","Filter by venture and category","Tick up to four to compare, then + Track the winner"],["acquisitions","scale","calculators"]],
+ incentives:["State incentives, SBA loans and tax tools (QSBS, Section 179, bonus depreciation, NMTC, historic and R&D credits).",["Check which credits fit each venture","Negotiate state incentives before choosing a site","Bring the checklist to your CPA"],["programs","elite","wealth"]],
+ scale:["Ways to scale and pay for it: organic growth, leases, revenue-based financing, group leverage and a Capital tracker.",["Read pros and cons of each method","Model costs in the calculators","Track every capital conversation in the tracker"],["deals","calculators","funding"]],
+ programs:["Step-by-step checklists to get the most from 8(a), HUBZone, SDVOSB, Opportunity Zones, grants and subcontracting.",["Work the checklist for each program you qualify for","Use the teaming tracker for partners","Revisit when rules change"],["certs","govcon","fundfind"]],
+ acquisitions:["Your buy-a-business pipeline from sourcing through closing, with diligence checklists.",["Add every target you review","Move deals across stages as they progress","Run each deal through the SBA and DSCR calculators"],["deals","calculators","operator"]],
+ elite:["How Trump, Musk, sports owners and venue builders fund their businesses, with lessons you can scale down.",["Read each case for the structure, not the headline","Note which tools apply to your size","Cross-check in the Deal Playbook"],["deals","incentives","wealth"]],
+ govcon:["Federal contracting playbook for a service-disabled veteran-owned firm, from registration to first award.",["Finish SAM.gov and VetCert first","Pick 3–5 NAICS codes","Build relationships with small business offices and primes"],["radar","certs","programs"]],
+ radar:["A feed of contract opportunities filtered for your codes and set-asides.",["Search and filter the feed","Shortlist and assign each opportunity","Note bid/no-bid decisions"],["govcon","certs","actions"]],
+ certs:["How to get VetCert (SDVOSB), 8(a), HUBZone, WOSB and state certifications, with links and documents to gather.",["Start with VetCert","Gather documents before applying","Track renewal dates"],["govcon","programs","legal"]],
+ grants:["Research and business grants you're pursuing, with deadlines and status.",["Add each grant with its deadline","Start proposals at least six weeks out","Reuse boilerplate across applications"],["fundfind","assist","actions"]],
+ finance:["Revenue, expenses and cash across ventures, with simple charts.",["Update monthly numbers","Watch cash runway","Separate books for each entity"],["scorecard","wealth","calculators"]],
+ legal:["Entities, contracts, licenses, insurance and compliance deadlines.",["List every entity and its renewal date","Track license and insurance expirations","Review contracts before renewal"],["certs","wealth","actions"]],
+ wealth:["Personal wealth, estate planning and exit planning across your holdings.",["Review your net worth quarterly","Plan exits years ahead","Coordinate trusts with your attorney"],["incentives","elite","finance"]],
+ marketing:["Brand, channels and campaigns for each venture.",["Pick one main channel per venture","Track leads by source","Reuse content across ventures"],["assist","ventures","scorecard"]],
+ operator:["Hiring and managing the SME operator who runs day-to-day operations.",["Write the scorecard before the job post","Use the interview plan","Hand off SOPs one at a time"],["ceo","automation","roadmap"]],
+ automation:["Automations that create tasks and the systems that save you hours each week.",["Turn on the rules you want","Log hours saved for each automation","Retire ones nobody uses"],["actions","operator","assist"]],
+ playbooks:["Step-by-step playbooks for recurring work in each venture.",["Follow a playbook the first time","Turn it into an SOP for your operator","Improve it after each use"],["operator","automation","roadmap"]],
+ assist:["Your AI team and message templates for outreach, proposals and follow-ups.",["Pick an agent for the job","Use a template and personalize it","Save outputs as tasks or notes"],["marketing","grants","actions"]],
+ calculators:["Calculators for SBA loans, DSCR, leases, revenue-based financing and more.",["Enter real numbers from the deal","Compare scenarios side by side","Save the result in the deal or capital notes"],["deals","acquisitions","scale"]],
+ glossary:["Plain-English definitions of the business, finance and government contracting terms used throughout.",["Search any term","Follow the link to the page where it matters"],["start","deals","govcon"]],
+ resources:["Official links for every program, agency and tool referenced in the dashboard.",["Filter by category","Search by keyword","Confirm rules on the official page before applying"],["fundfind","certs","glossary"]],
+ backup:["Export, restore or reset your data, and check cloud sync status.",["Copy a backup before big changes","Restore by pasting a backup","Reset replaces everything with examples"],["overview","start"]],
+ venture:["One venture's detail: stage, health, KPIs, playbook, SOPs and notes.",["Update stage and health","Enter this month's KPIs","Work the venture's next milestone"],["ventures","roadmap","scorecard"]]};
+function guideHTML(k){const g=GUIDE[k];if(!g)return `<p>No guide for this page yet.</p>`;
+ return `<div class="eyebrow">About this page</div><h3 style="font-size:1.3rem">${h(k==="venture"?"Venture detail":navLabel(k))}</h3><p>${h(g[0])}</p><b class="small">How to use it</b><ol class="small" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px">${g[1].map(s=>`<li>${h(s)}</li>`).join("")}</ol><b class="small">Related</b><div class="btn-row">${g[2].filter(r=>VIEWS[r]).map(r=>`<a class="btn" href="#${r}" data-closemodal>${ic(NAV_ICON[r]||"list","ic-s")} ${h(navLabel(r))}</a>`).join("")}</div>`;}
+
+/* ---------- glossary ---------- */
+const GLOSS=[
+ ["8(a) Business Development Program","SBA program for socially and economically disadvantaged owners; gives set-aside and sole-source access for up to nine years. Under audit and rule changes in 2026.","certs"],
+ ["Accredited investor","An investor who meets SEC income or net-worth tests (e.g., $200k income or $1M net worth excluding home). Required for most private placements.","deals"],
+ ["Add-on (tuck-in) acquisition","A smaller company bought and folded into an existing platform.","deals"],
+ ["Asset purchase","Buying a company's chosen assets rather than its shares, leaving most liabilities behind.","deals"],
+ ["Bid/no-bid","The decision whether a contract opportunity is worth pursuing.","radar"],
+ ["Blanket purchase agreement (BPA)","Pre-negotiated terms for repeat government purchases.","govcon"],
+ ["Bonus depreciation","Deducting most or all of an asset's cost in the first year. 100% made permanent for property acquired after January 19, 2025.","incentives"],
+ ["Bridge loan","Short-term financing used until permanent financing closes.","deals"],
+ ["BRRRR","Buy, rehab, rent, refinance, repeat: recycling the same cash across rental properties.","deals"],
+ ["CAGE code","Five-character ID assigned during SAM.gov registration, used on defense contracts.","govcon"],
+ ["Capital stack","The layers of money funding a deal: senior debt, junior debt, preferred equity and common equity.","deals"],
+ ["CDFI","Community Development Financial Institution: a mission-driven lender serving underserved communities.","fundfind"],
+ ["CMMC","Cybersecurity Maturity Model Certification, required for many DoD contracts that handle controlled information.","certs"],
+ ["Contracting officer (CO)","The government official with authority to award and change contracts.","govcon"],
+ ["Cost-plus contract","The government reimburses allowable costs plus a fee.","deals"],
+ ["Covenant","A condition in a loan agreement, such as a minimum DSCR, that you must keep.","deals"],
+ ["CPARS","The government's contractor performance ratings; your past performance record.","govcon"],
+ ["DCAA","Defense Contract Audit Agency; audits accounting systems on cost-type contracts.","govcon"],
+ ["DSCR","Debt service coverage ratio: cash flow divided by loan payments. Lenders usually want 1.25 or higher.","calculators"],
+ ["Due diligence","Checking a business's financials, contracts, legal and operations before buying.","acquisitions"],
+ ["Earn-out","Part of a purchase price paid later only if targets are met.","deals"],
+ ["EBITDA","Earnings before interest, taxes, depreciation and amortization; a common measure of cash profit.","acquisitions"],
+ ["Entity stacking","Holding each business or property in its own LLC under a holding company.","wealth"],
+ ["Equity injection","The cash a buyer must contribute; SBA generally requires 10% for change-of-ownership deals.","deals"],
+ ["Escrow / holdback","Part of the price held back after closing to cover claims.","deals"],
+ ["Factoring","Selling invoices at a discount for immediate cash.","deals"],
+ ["FAR","Federal Acquisition Regulation, the rules for federal purchasing.","govcon"],
+ ["Firm-fixed-price (FFP)","A contract paid at a set price regardless of your costs.","deals"],
+ ["GSA Schedule (MAS)","A government-wide contract vehicle with pre-negotiated prices any agency can use.","govcon"],
+ ["GWAC","Government-wide acquisition contract, usually for IT (e.g., VETS 2).","fundfind"],
+ ["HUBZone","SBA program for firms located in and hiring from historically underutilized business zones; gives a 10% price preference.","certs"],
+ ["IDIQ","Indefinite delivery, indefinite quantity contract: an umbrella with task orders issued over years.","govcon"],
+ ["Independent sponsor","A dealmaker who finds and runs acquisitions and raises capital deal by deal.","deals"],
+ ["Joint venture (JV)","Two firms combining to bid or operate; SDVOSB JVs must follow 13 CFR 128.402.","programs"],
+ ["Lease option","A lease that gives you the right to buy the property later at a set price.","deals"],
+ ["Letter of intent (LOI)","A mostly non-binding document setting the main terms of a deal before diligence.","acquisitions"],
+ ["Leverage","Using borrowed money to increase buying power and returns (and risk).","scale"],
+ ["LIHTC","Low-Income Housing Tax Credit; investors fund affordable housing for tax credits.","fundfind"],
+ ["Limitations on subcontracting","Rules requiring a set-aside prime to keep a share of the work (e.g., 50% of services cost).","programs"],
+ ["Liquidation preference","An investor's right to get money back before common shareholders in a sale.","deals"],
+ ["Mentor-Protégé Program","SBA or DoD program pairing a small business with an experienced firm for help and joint ventures.","programs"],
+ ["Mezzanine debt","Subordinated, high-interest debt between senior debt and equity, often with warrants.","deals"],
+ ["NAICS code","Six-digit industry code used to define your business and set-aside size standards.","govcon"],
+ ["New Markets Tax Credit (NMTC)","Credit that brings low-cost capital to projects in low-income communities; permanent at $5B a year from 2026.","incentives"],
+ ["NMLS","Nationwide Multistate Licensing System, where mortgage loan originators are licensed.","ventures"],
+ ["Novation","Government approval to transfer a contract to a company's buyer.","deals"],
+ ["Opportunity Zone","Designated low-income area where investing capital gains can defer and reduce tax; made permanent in 2025.","programs"],
+ ["OTA (Other Transaction Agreement)","Flexible prototype agreement outside the FAR, common in defense tech.","deals"],
+ ["Past performance","Your record on previous contracts; heavily weighted in federal awards.","govcon"],
+ ["Personal guarantee","Your personal promise to repay a business loan if the business can't.","deals"],
+ ["Preferred return","A priority return (often 8%) paid to investors before the sponsor shares profits.","deals"],
+ ["Prime contractor","The company holding the contract directly with the government.","govcon"],
+ ["Profits interest","LLC interest giving a share of future profits without voting control.","deals"],
+ ["Program-related investment (PRI)","A below-market loan or investment a private foundation makes for its mission.","fundfind"],
+ ["QSBS (Section 1202)","Exclusion of gain on qualified C-corp stock; after 2025 law, up to $15M, with 50/75/100% exclusion at 3/4/5 years.","incentives"],
+ ["Quality of earnings (QoE)","An accountant's review confirming a target's real, repeatable earnings.","acquisitions"],
+ ["R&D credit","Tax credit for qualified research spending; Section 174A restored immediate expensing of domestic research.","incentives"],
+ ["Recapitalization","Changing a company's mix of debt and equity, often to give owners partial liquidity.","deals"],
+ ["Rep & warranty insurance","Insurance covering a seller's breaches of promises in a purchase agreement.","deals"],
+ ["Revenue-based financing","Funding repaid as a percentage of revenue up to a cap.","scale"],
+ ["Rollover equity","The share of a business the seller keeps after selling.","deals"],
+ ["Sale-leaseback","Selling an asset you use and leasing it back to free up cash.","deals"],
+ ["SAM.gov","System for Award Management: required registration for federal contracts and grants.","govcon"],
+ ["SBA 504 loan","Long-term fixed-rate loan for owner-occupied real estate and heavy equipment.","funding"],
+ ["SBA 7(a) loan","SBA's main guaranteed loan, up to $5M, used for acquisitions, working capital and more.","funding"],
+ ["SBIC","SBA-licensed Small Business Investment Company that lends to or invests in small businesses.","fundfind"],
+ ["SBIR / STTR","Federal R&D funding for small businesses; reauthorized through September 30, 2031.","fundfind"],
+ ["SDE","Seller's discretionary earnings: profit plus owner pay and perks; used to value small businesses.","acquisitions"],
+ ["SDVOSB","Service-disabled veteran-owned small business: at least 51% owned and controlled by service-disabled veterans, certified through SBA VetCert.","certs"],
+ ["Section 179","Immediate expensing of equipment, up to $2.5M with a $4M phase-out threshold after the 2025 law.","incentives"],
+ ["Seller note","Part of the purchase price the seller lends to the buyer.","deals"],
+ ["Set-aside","A contract competition limited to a certain type of small business.","govcon"],
+ ["Size standard","The revenue or employee cap that defines 'small' for a NAICS code.","govcon"],
+ ["Sole-source award","A contract awarded without competition, allowed under certain thresholds and programs.","govcon"],
+ ["SOP","Standard operating procedure: written steps so others can do the work the same way.","operator"],
+ ["SSBCI","State Small Business Credit Initiative: Treasury funds state loan and investment programs.","fundfind"],
+ ["Standby (seller note)","A seller note with no payments for a set period so it can count as buyer equity for SBA.","deals"],
+ ["Subcontracting plan","A large prime's plan to award work to small businesses, including SDVOSBs.","programs"],
+ ["Syndication","Pooling investors' money into one deal under a sponsor's management.","deals"],
+ ["Tax abatement","A temporary reduction or elimination of property or other taxes, often negotiated for jobs.","incentives"],
+ ["Teaming agreement","Agreement between a prime and sub to pursue a contract together.","programs"],
+ ["TIF","Tax increment financing: future property tax growth repays development costs.","elite"],
+ ["UEI","Unique Entity ID, assigned by SAM.gov, that identifies your business on federal awards.","govcon"],
+ ["VA funding fee","Fee on VA home loans; waived for veterans receiving VA disability compensation.","deals"],
+ ["VetCert","SBA's certification program for veteran-owned and service-disabled veteran-owned small businesses.","certs"],
+ ["VOSB","Veteran-owned small business; certified through VetCert, preferred by the VA's Veterans First program.","certs"],
+ ["Warrant","A right to buy shares at a set price, often added to loans.","deals"],
+ ["Working capital peg","A target level of working capital at closing; the price adjusts for differences.","deals"],
+ ["WOTC","Work Opportunity Tax Credit for hiring certain groups, including veterans; lapsed after December 31, 2025 unless renewed.","incentives"],
+ ["Wrap rate","Your fully burdened cost multiplier on direct labor, used to price government work.","govcon"]];
+let GLQ="";
+function glRows(){const q=GLQ.toLowerCase();const L=GLOSS.filter(g=>!q||(g[0]+" "+g[1]).toLowerCase().includes(q));
+ if(!L.length)return `<p class="small muted">No terms match. Try a shorter word.</p>`;
+ let last="";return L.map(g=>{const L1=g[0][0].toUpperCase();const head=/[0-9]/.test(L1)?"#":L1;const hd=head!==last?`<div class="gl-l" id="gl-${head==="#"?"num":head}">${head}</div>`:"";last=head;
+  return hd+`<div class="gl-i"><dt>${h(g[0])}</dt><dd>${h(g[1])} ${VIEWS[g[2]]?`<a class="gl-go" href="#${g[2]}">${h(navLabel(g[2]))} ›</a>`:""}</dd></div>`;}).join("");}
+VIEWS.glossary=()=>`
+ <div class="sec"><div class="eyebrow">Reference</div><h2>Glossary</h2><p class="lede">${GLOSS.length} terms used across the command center, in plain English, each linked to the page where it matters most.</p></div>
+ <div class="gl-tools"><input class="field" id="glQ" type="search" placeholder="Search terms" value="${h(GLQ)}"><div class="gl-az">${["#",..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"].map(c=>`<button class="gl-j" data-glj="${c==="#"?"num":c}">${c}</button>`).join("")}</div></div>
+ <dl class="gl panel" id="glList">${glRows()}</dl>`;
+document.addEventListener("input",e=>{if(e.target.id==="glQ"){GLQ=e.target.value;document.getElementById("glList").innerHTML=glRows();}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-glj]");if(!b)return;const t=document.getElementById("gl-"+b.dataset.glj);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});else toast("No terms under "+b.textContent);});
+
+/* ---------- start here ---------- */
+const GROUP_DESC={Home:"Your daily view: what's due, how each venture is doing and your weekly CEO routine.",Ventures:"Every venture's plan and detail, plus new ideas and the 100 resilient industries.",Capital:"Funding sources, missing programs, 1,000 deal structures, incentives and elite case studies.",Government:"Federal contracting, live opportunities, certifications and grants.",Operations:"Finance, legal, wealth, marketing, your operator, automations and playbooks.",Tools:"AI team, calculators, glossary, links and backup.",More:"Pages added recently."};
+VIEWS.start=()=>`
+ <div class="hero-s"><div class="eyebrow">Start here</div><h2>Welcome to your command center</h2><p class="lede">Everything for your ten ventures lives here: plans, money, government contracting, operations and tools. Use the sidebar to move between sections, ⌘K (Ctrl K on Windows) to search everything, and the ⓘ button on any page for a quick guide.</p>
+ <div class="btn-row"><a class="btn primary" href="#overview">Open Overview</a><a class="btn" href="#actions">See today's tasks</a><button class="btn" id="startSearch">Search everything</button></div></div>
+ <div class="sec"><h3>How it's organized</h3><div class="grp-grid">${navGroups().map(([g,ks])=>`<div class="grp"><div class="grp-h">${ic(NAV_ICON[ks[0]]||"list","ic-l")}<div><b>${h(g)}</b><small>${ks.length} pages</small></div></div><p class="small muted">${h(GROUP_DESC[g]||"")}</p><div class="grp-links">${ks.map(k=>`<a href="#${k}">${h(navLabel(k))}</a>`).join("")}</div></div>`).join("")}</div></div>
+ <div class="cols">
+  <div class="panel sec"><h3>Your first week</h3><ol class="steps">${[["certs","Start VetCert and gather SDVOSB documents"],["overview","Set each venture's stage and health on Overview"],["fundfind","Track the funding programs that fit, in Funding Finder"],["deals","Compare structures for your next acquisition in the Deal Playbook"],["radar","Shortlist contract opportunities in GovCon Radar"],["automation","Turn on the automations you want"],["backup","Make a backup and confirm sync is on"]].map(([k,t])=>`<li><a class="step-a" href="#${k}"><span>${h(t)}</span><small>${h(navLabel(k))} ›</small></a></li>`).join("")}</ol></div>
+  <div class="panel sec"><h3>Keyboard shortcuts</h3><table class="kbd-t"><tbody>${[[IS_MAC?"⌘ K":"Ctrl K","Search everything"],["/","Search everything"],["C","Capture a task, deal or note"],["[","Previous page"],["]","Next page"],["\\","Show or hide the sidebar"],["Esc","Close a dialog"]].map(r=>`<tr><td><kbd>${h(r[0])}</kbd></td><td>${h(r[1])}</td></tr>`).join("")}</tbody></table>
+  <h3 style="margin-top:8px">Good to know</h3>${ul(["Your data saves automatically and syncs to your account when cloud sync is on","Rows marked EX are examples; clear them when you add your own","☆ in the toolbar pins a page to the top of the sidebar","Program rules change often; each program links to its official page"])}</div>
+ </div>
+ <div class="sec"><h3>Every page</h3><div class="tbl-wrap"><table><thead><tr><th>Page</th><th>Section</th><th>What it's for</th></tr></thead><tbody>${navFlat().map(([k,g])=>`<tr><td><a href="#${k}"><b>${h(navLabel(k))}</b></a></td><td class="small muted">${h(g)}</td><td class="small">${h((GUIDE[k]||["—"])[0])}</td></tr>`).join("")}</tbody></table></div></div>`;
+document.addEventListener("click",e=>{if(e.target.closest("#startSearch"))openPalette();});
+
+/* ---------- shell rendering ---------- */
+function curKey(){const k=(location.hash||"#overview").slice(1);if(k.startsWith("v-"))return k;return VIEWS[k]?k:"overview";}
+function groupOf(k){if(k.startsWith("v-"))return "Ventures";const f=navFlat().find(x=>x[0]===k);return f?f[1]:"Home";}
+function sideHTML(cur){const tab=cur.startsWith("v-")?"ventures":cur;let open=0;try{open=typeof taskBuckets==="function"?(()=>{const b=taskBuckets();return b.overdue.length+b.today.length;})():0;}catch(e){}
+ const item=(k)=>`<a class="side-a" href="#${k}" ${k===tab&&!cur.startsWith("v-")?'aria-current="page"':""}>${ic(NAV_ICON[k]||"list")}<span>${h(navLabel(k))}</span>${k==="actions"&&open?`<span class="badge" title="Overdue or due today">${open}</span>`:""}</a>`;
+ const pins=PINS.filter(k=>VIEWS[k]);
+ const grp=(g,ks,extra)=>{const c=!!NAVCOLL[g]&&groupOf(cur)!==g;return `<div class="side-sec"><button class="side-gh" data-navg="${h(g)}" aria-expanded="${!c}"><span>${h(g)}</span>${ic("chd","ic-s")}</button><div class="side-items" ${c?"hidden":""}>${ks.map(k=>item(k)+(k==="ventures"?(extra||""):"")).join("")}</div></div>`;};
+ const vents=`<div class="side-vents">${VENTURES.map(v=>`<a class="side-a sub" href="#v-${v.id}" ${cur==="v-"+v.id?'aria-current="page"':""}><i class="dot"></i><span>${h(v.name)}</span></a>`).join("")}</div>`;
+ return `<a class="side-brand" href="#start"><span class="logo">★</span><span><b>Venture Command Center</b><small>HoldCo · ${VENTURES.length} ventures · Veteran-owned</small></span></a>
+ <button class="side-search" id="sideSearch">${ic("search","ic-s")}<span>Search</span><kbd>${IS_MAC?"⌘K":"Ctrl K"}</kbd></button>
+ <nav class="side-nav" aria-label="Sections">${pins.length?grp("Pinned",pins):""}${navGroups().map(([g,ks])=>grp(g,ks,g==="Ventures"?vents:"")).join("")}</nav>
+ <div class="side-foot"><span id="sideSync"></span></div>`;}
+function tabbarHTML(cur){const g=groupOf(cur);const T=[["overview","Home","house",cur==="overview"||cur==="start"],["actions","Today","check",cur==="actions"],["@Capital","Capital","dollar",g==="Capital"],["@Government","GovCon","flag",g==="Government"],["@browse","Browse","grid",false]];
+ return T.map(([k,l,i,on])=>k[0]==="@"?`<button class="${on?"on":""}" data-tbar="${k.slice(1)}" ${on?'aria-current="page"':""}>${ic(i,"ic-t")}<span>${l}</span></button>`:`<a href="#${k}" class="${on?"on":""}" ${on?'aria-current="page"':""}>${ic(i,"ic-t")}<span>${l}</span></a>`).join("");}
+function crumbHTML(cur){const g=groupOf(cur);const v=cur.startsWith("v-")?VENTURES.find(x=>"v-"+x.id===cur):null;
+ return `<span class="g">${h(g)}</span><span class="sep">${ic("chr","ic-xs")}</span>${v?`<a class="g" href="#ventures">Ventures</a><span class="sep">${ic("chr","ic-xs")}</span>`:""}<span class="p">${h(v?v.name:navLabel(cur))}</span>`;}
+function pnHTML(cur){if(cur.startsWith("v-")){const i=VENTURES.findIndex(x=>"v-"+x.id===cur);const p=VENTURES[i-1],n=VENTURES[i+1];return `<nav class="pn" aria-label="Previous and next">${p?`<a class="prev" href="#v-${p.id}"><small>‹ Previous venture</small><b>${h(p.name)}</b></a>`:"<span></span>"}${n?`<a class="next" href="#v-${n.id}"><small>Next venture ›</small><b>${h(n.name)}</b></a>`:""}</nav>`;}
+ const F=navFlat();const i=F.findIndex(x=>x[0]===cur);if(i<0)return "";const p=F[i-1],n=F[i+1];
+ return `<nav class="pn" aria-label="Previous and next">${p?`<a class="prev" href="#${p[0]}"><small>‹ ${h(p[1])}</small><b>${h(navLabel(p[0]))}</b></a>`:"<span></span>"}${n?`<a class="next" href="#${n[0]}"><small>${h(n[1])} ›</small><b>${h(navLabel(n[0]))}</b></a>`:""}</nav>`;}
+function buildOTP(){const app=document.getElementById("app");const old=app.querySelector(".otp");if(old)old.remove();app.classList.remove("has-otp");
+ const hs=[...app.querySelectorAll(".view h3")].filter(x=>x.textContent.trim()&&!x.closest(".modal-card,.dsdet,.grp,details:not([open])"));
+ if(hs.length<4)return;hs.forEach((x,i)=>{x.id="otp-"+i;});
+ const el=document.createElement("aside");el.className="otp";el.setAttribute("aria-label","On this page");
+ el.innerHTML=`<b>On this page</b>${hs.slice(0,40).map((x,i)=>`<button data-otp="${i}">${h(x.textContent.trim().slice(0,60))}</button>`).join("")}<select class="field otp-sel" id="otpSel" aria-label="Jump to a section"><option value="">On this page…</option>${hs.slice(0,40).map((x,i)=>`<option value="${i}">${h(x.textContent.trim().slice(0,60))}</option>`).join("")}</select>`;
+ app.insertBefore(el,app.firstChild);app.classList.add("has-otp");}
+function renderShell(){const cur=curKey();const g=groupOf(cur);if(g!=="Home"||cur!=="overview")LASTG[g]=cur;
+ const side=document.getElementById("side");if(side){side.innerHTML=sideHTML(cur);const a=side.querySelector('[aria-current="page"]');if(a&&!side.dataset.user){const sr=side.getBoundingClientRect(),ar=a.getBoundingClientRect();if(ar.top<sr.top+60||ar.bottom>sr.bottom-20)side.scrollTop+=ar.top-sr.top-sr.height/3;}}
+ const c=document.getElementById("crumb");if(c)c.innerHTML=crumbHTML(cur);
+ const tb=document.getElementById("tabbar");if(tb)tb.innerHTML=tabbarHTML(cur);
+ const pin=document.getElementById("pinBtn");if(pin){const k=cur.startsWith("v-")?null:cur;pin.hidden=!k;pin.classList.toggle("on",!!k&&PINS.includes(k));pin.setAttribute("aria-pressed",!!k&&PINS.includes(k));pin.title=PINS.includes(k)?"Unpin from sidebar":"Pin to sidebar";}
+ const view=document.querySelector("#app .view");if(view&&!view.querySelector(".pn"))view.insertAdjacentHTML("beforeend",pnHTML(cur));
+ buildOTP();renderSideSync();document.body.classList.remove("side-open");const s=document.getElementById("scrim");if(s)s.hidden=true;}
+function renderSideSync(){const s=document.getElementById("sideSync"),n=document.getElementById("savedNote");if(s&&n){s.textContent=n.textContent;s.dataset.sync=n.dataset.sync||"";}}
+const _routeShell=route;
+route=function(){_routeShell();renderShell();};
+function openSide(){document.body.classList.add("side-open");document.getElementById("scrim").hidden=false;const f=document.querySelector("#side .side-a");if(f)f.focus({preventScroll:true});}
+function closeSide(){document.body.classList.remove("side-open");document.getElementById("scrim").hidden=true;}
+function toggleSide(){if(matchMedia("(max-width:1023px)").matches){document.body.classList.contains("side-open")?closeSide():openSide();}else{const off=!document.body.classList.contains("side-off");document.body.classList.toggle("side-off",off);UI.set("sideOff",off);}}
+if(UI.get("sideOff",false))document.body.classList.add("side-off");
+function goRel(d){const cur=curKey();if(cur.startsWith("v-")){const i=VENTURES.findIndex(x=>"v-"+x.id===cur);const v=VENTURES[i+d];if(v)location.hash="v-"+v.id;return;}const F=navFlat();const i=F.findIndex(x=>x[0]===cur);const t=F[i+d];if(t)location.hash=t[0];}
+document.addEventListener("click",e=>{const b=e.target.closest("button,a");if(!b)return;const d=b.dataset;
+ if(d.navg!=null){const g=d.navg;const was=b.getAttribute("aria-expanded")==="true";NAVCOLL[g]=was;UI.set("coll",NAVCOLL);b.setAttribute("aria-expanded",!was);b.nextElementSibling.hidden=was;document.getElementById("side").dataset.user="1";return;}
+ if(b.id==="sideBtn"){toggleSide();return;}
+ if(b.id==="sideSearch"){closeSide();openPalette();return;}
+ if(b.id==="histBack"){history.back();return;}
+ if(b.id==="histFwd"){history.forward();return;}
+ if(b.id==="infoBtn"){const k=curKey();openModal(guideHTML(k.startsWith("v-")?"venture":k));return;}
+ if(b.id==="pinBtn"){const k=curKey();if(k.startsWith("v-"))return;PINS=PINS.includes(k)?PINS.filter(x=>x!==k):[...PINS,k];UI.set("pins",PINS);renderShell();toast(PINS.includes(k)?"Pinned to sidebar":"Unpinned");return;}
+ if(d.tbar){if(d.tbar==="browse"){openSide();return;}const g=d.tbar;const ks=(navGroups().find(x=>x[0]===g)||[0,[]])[1];location.hash=LASTG[g]&&ks.includes(LASTG[g])?LASTG[g]:ks[0];return;}
+ if(d.otp!=null){const t=document.getElementById("otp-"+d.otp);if(t)t.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});return;}
+ if(d.closemodal!=null){closeModal();}
+ if(b.classList.contains("side-a")&&matchMedia("(max-width:1023px)").matches)closeSide();});
+document.addEventListener("change",e=>{if(e.target.id==="otpSel"&&e.target.value!==""){const t=document.getElementById("otp-"+e.target.value);if(t)t.scrollIntoView({block:"start"});e.target.value="";}});
+document.addEventListener("keydown",e=>{const m=document.getElementById("modal");if(e.key==="Escape"&&document.body.classList.contains("side-open")){closeSide();return;}
+ if(!m.hidden||typing()||e.ctrlKey||e.metaKey||e.altKey)return;
+ if(e.key==="["){e.preventDefault();goRel(-1);}else if(e.key==="]"){e.preventDefault();goRel(1);}else if(e.key==="\\"){e.preventDefault();toggleSide();}});
+document.addEventListener("click",e=>{if(e.target.id==="scrim")closeSide();});
+(function(){const n=document.getElementById("savedNote");if(n&&window.MutationObserver)new MutationObserver(renderSideSync).observe(n,{childList:true,attributes:true,characterData:true,subtree:true});})();
+/* greeting strip on Overview */
+const _ovShell=VIEWS.overview;
+VIEWS.overview=()=>{const hr=new Date().getHours();const gr=hr<12?"Good morning":hr<18?"Good afternoon":"Good evening";
+ return `<div class="greet"><div><div class="eyebrow">Welcome back</div><h2>${gr}</h2></div><div class="greet-q">${[["actions","check","Today's tasks"],["radar","radar","Contract feed"],["deals","arrows","Deal Playbook"],["fundfind","search","Funding Finder"]].filter(x=>VIEWS[x[0]]).map(([k,i,l])=>`<a class="qa" href="#${k}">${ic(i,"ic-l")}<span>${l}</span></a>`).join("")}</div></div>`+_ovShell();};
+
 /* =========================================================
    ROUTER + EVENTS
    ========================================================= */
@@ -3020,5 +3399,5 @@ document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)r
  else if(t.id==="resetBtn"){if(!t.classList.contains("armed")){t.classList.add("armed");t.textContent="Confirm reset";$("#resetNote").textContent="This replaces everything with the example data. Click again to confirm.";return;}
    S=defaults();save();toast("Reset to examples");route();}
 });
-route();persistLocal();renderSync();
+route();persistLocal();renderSync();(function(){const k=document.getElementById("kbdHint");if(k&&IS_MAC)k.textContent="⌘K";})();
 </script>
