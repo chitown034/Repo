@@ -87,7 +87,18 @@ const STUB=`(()=>{window.__prompts=[];window.__mode="ok";window.__n=0;pbCall=asy
  ok(NV.loan==="2026-12-07"&&NV.lockWarn,"contingency dates computed and a lock expiring before close is flagged ("+NV.loan+")");ok(NV.net===386565,"seller net sheet math ("+NV.net+")");ok(NV.rb&&NV.fr,"rent vs buy and data freshness tools respond");ok(NV.tick,"market shows the dated Nov 25 snapshot, never 'simulated'");
  await p.keyboard.press("Control+k");await p.waitForTimeout(250);await p.keyboard.type("rent vs");await p.waitForTimeout(150);await p.keyboard.press("Enter");await p.waitForTimeout(600);ok(await p.evaluate(()=>location.hash==="#rentbuy"&&!!document.querySelector("#rb_svg path")),"⌘K palette finds a page and opens it");
  for(const h of["closings","netsheet","freshness","market"]){await p.evaluate(h=>location.hash="#"+h,h);await p.waitForTimeout(500);ok(await p.evaluate(()=>document.body.innerText.length>800),"page renders: "+h)}
+ /* v143: Lender Atlas */
+ const LA=await p.evaluate(async()=>{const t=n=>PB_TOOLS().find(x=>x.name===n);const r={};r.mhl=Object.keys(window.LENDER_MHL||{}).length;
+  const a=await t("lender_rank_scenario").execute({type:"mfg",state:"CA",fico:700,value:300000,loan:270000,mhWidth:"single",mhLand:"owned",mhYear:2010});
+  r.sorted=a.ranked.every((x,i,A)=>!i||A[i-1].likelihood>=x.likelihood);r.reason=!!(a.ranked[0]&&a.ranked[0].reason&&a.ranked[0].askAE);
+  const out=a.ruledOut.map(x=>x.lender).join("|");r.aaa=/AAA Lendings/.test(out);r.angel=/Angel Oak/.test(out)&&!a.ranked.some(x=>/Angel Oak/.test(x.lender));
+  const l=await t("lender_rank_scenario").execute({type:"lot",state:"CA",fico:700,value:200000,loan:120000,landType:"raw",acres:5});r.fnba=l.ranked.some(x=>/FNBA/.test(x.lender));
+  const l2=await t("lender_rank_scenario").execute({type:"lot",state:"CA",fico:700,value:200000,loan:150000,landType:"raw",acres:5});r.ltvStop=l2.ruledOut.some(x=>/FNBA/.test(x.lender)&&/LTV/.test(x.why.join(" ")));
+  const m=await t("lender_niche_matrix").execute({niche:"mh"});r.mx=m.offered.length>=10&&m.notOffered.length>=3;r.comp=!/\b(lpc|bps|basis points)\b|comp(ensation)?\s*[:=]?\s*\d/i.test(JSON.stringify(a.ranked));return r});
+ ok(LA.mhl>=60,"Lender Atlas: MH & land research loaded for "+LA.mhl+" lenders");ok(LA.sorted&&LA.reason,"lenders ranked by approval likelihood with a reason and AE questions");
+ ok(LA.aaa&&LA.angel,"MH rules: lender that excludes MH and lender that excludes single-wides are ruled out");ok(LA.fnba&&LA.ltvStop,"land rules: raw-land lender ranks; land LTV over its max is ruled out");ok(LA.mx,"niche matrix lists MH lenders and exclusions");ok(LA.comp,"ranking output carries no compensation terms");
+ for(const t of["rank","matrix","profile"]){await p.evaluate(t=>{location.hash="#lenderatlas";laTab=t},t);await p.evaluate(()=>route());await p.waitForTimeout(400);ok(await p.evaluate(()=>document.body.innerText.length>1500),"Lender Atlas tab renders: "+t)}
  /* layout */
- await p.setViewportSize({width:390,height:800});for(const h of["leadflow","agenteng","sellbird","lecd","ccresearch","loanlimits","closings","netsheet","rentbuy","today"]){await p.evaluate(h=>location.hash="#"+h,h);await p.waitForTimeout(500);ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"no sideways scroll on a phone: "+h)}
+ await p.setViewportSize({width:390,height:800});for(const h of["leadflow","agenteng","sellbird","lecd","ccresearch","loanlimits","closings","netsheet","rentbuy","today","lenderatlas"]){await p.evaluate(h=>location.hash="#"+h,h);await p.waitForTimeout(500);ok(await p.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),"no sideways scroll on a phone: "+h)}
  ok(!errs.length,"no page or console errors"+(errs.length?" — "+errs.slice(0,3).join(" | "):""));
  console.log(`\n${pass} passed, ${fail} failed`);await b.close();process.exit(fail?1:0)})();
