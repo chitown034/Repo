@@ -2072,6 +2072,102 @@ document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)r
 (function(){if(!Array.isArray(S.agentLog))S.agentLog=[];})();
 
 /* =========================================================
+   ROUND 8: GOVCON RADAR (federal opportunity feed)
+   ========================================================= */
+const RD={feed:[],naics:{},meta:null,db:null,F:{type:"all",lanes:[],q:"",sa:"",st:"",nc:"",so:"due"},limit:50,status:"loading"};
+const RD_TYPES=[["all","All"],["Solicitation","Solicitations"],["Combined Synopsis/Solicitation","Combined"],["Sources Sought","Sources sought"],["Presolicitation","Presolicitation"],["Special Notice","Special notices"]];
+const RD_LANES=[["sb","Any small-business set-aside"],["vet","SDVOSB / VOSB"],["dod","Navy / DoD"],["ca","California"],["it","IT & AI (5415xx)"],["pm","Program management"],["due7","Due in 7 days"],["int","Interested only"],["hid","Show dismissed"]];
+function rdSt(){if(!S.radar||typeof S.radar!=="object")S.radar={};return S.radar;}
+function rdObj(r){const[id,type,setAside,title,agency,summary,naics,place,solNum,office,due,posted]=r;return{id:String(id).replace(/-/g,""),type,setAside,title,agency,summary,naics,place,solNum,office,due,posted};}
+function rdState(p){if(!p)return"";const m=p.match(/\b([A-Z]{2}(?:-[A-Z0-9]{1,3})?)\b(?:\s+\d{3,6}(?:-\d+)?)?\s*$/);if(m)return m[1];if(/^[A-Z]{3}$/.test(p.trim()))return p.trim();return"";}
+function rdSB(o){return !!o.setAside&&!/no set aside/i.test(o.setAside);}
+function rdVet(o){return /veteran|SDVOSB|VOSB/i.test(o.setAside||"");}
+function rdNext(o){const t=o.type||"",tl=(o.title+" "+o.summary).toLowerCase();
+ if(/sole source|intent to award|intent to sole/.test(tl))return"Sole-source notice: respond only if you can show you deliver the same thing. Otherwise note the agency and incumbent for market research.";
+ if(/industry day/.test(tl))return"Register for the industry day and use it to meet primes for teaming.";
+ if(t==="Sources Sought")return"Send a tailored capability statement and confirm your set-aside status. This is how small businesses shape set-asides.";
+ if(t==="Presolicitation")return"Contact the contracting officer, line up teaming partners, and start your bid/no-bid review.";
+ if(/Solicitation/.test(t))return"Run bid/no-bid now: requirements, past performance, pricing and teaming.";
+ return"Read the full notice on SAM.gov and decide whether to track it.";}
+function rdUrg(d){if(d===null)return"";if(d<=3)return"bad";if(d<=7)return"warn";return"good";}
+function rdBucket(d){if(d===null)return"No date";if(d<0)return"Past due";if(d<=7)return"Closing this week";if(d<=30)return"Next 30 days";return"Later";}
+function rdList(){const F=RD.F,L=F.lanes,q=F.q.toLowerCase(),st=rdSt();
+ return RD.feed.filter(o=>{const s=st[o.id]||{};
+  if(!L.includes("hid")&&s.d)return false;if(L.includes("int")&&!s.i)return false;
+  if(F.type!=="all"&&o.type!==F.type)return false;if(F.sa&&o.setAside!==F.sa)return false;if(F.st&&rdState(o.place)!==F.st)return false;if(F.nc&&o.naics!==F.nc)return false;
+  if(L.includes("sb")&&!rdSB(o))return false;if(L.includes("vet")&&!rdVet(o))return false;
+  if(L.includes("dod")&&!/NAVY|DOD|DEFENSE|ARMY|AIR FORCE/i.test(o.agency))return false;
+  if(L.includes("ca")&&rdState(o.place)!=="CA")return false;if(L.includes("it")&&!/^5415/.test(o.naics||""))return false;
+  if(L.includes("pm")&&!(/^54161/.test(o.naics||"")||/program management|pmo|acquisition management/i.test(o.title+" "+o.summary)))return false;
+  if(L.includes("due7")){const d=daysUntil(o.due);if(d===null||d<0||d>7)return false;}
+  if(q&&!(o.title+" "+o.agency+" "+o.solNum+" "+o.summary+" "+o.office).toLowerCase().includes(q))return false;return true;})
+  .sort((a,b)=>F.so==="new"?(b.posted||"").localeCompare(a.posted||""):F.so==="agency"?(a.agency||"").localeCompare(b.agency||""):(a.due||"9").localeCompare(b.due||"9"));}
+function rdStats(){const live=RD.feed.filter(o=>{const d=daysUntil(o.due);return d===null||d>=0;});const st=rdSt();
+ return sumStrip([["Open notices",live.length],["Due in 7 days",live.filter(o=>{const d=daysUntil(o.due);return d!==null&&d<=7;}).length],["Set-aside",live.filter(rdSB).length],["Sources sought",live.filter(o=>o.type==="Sources Sought").length],["SDVOSB / VOSB",live.filter(rdVet).length],["Interested",Object.values(st).filter(s=>s.i).length]]);}
+function rdOpts(vals,label,cur){return `<option value="">${label}</option>`+vals.map(([v,t])=>`<option value="${h(v)}"${v===cur?" selected":""}>${h(t)}</option>`).join("");}
+function rdControls(){const cnt=k=>{const m={};RD.feed.forEach(o=>{const v=k(o);if(v)m[v]=(m[v]||0)+1;});return m;};const sa=cnt(o=>o.setAside),st=cnt(o=>rdState(o.place)),nc=cnt(o=>o.naics),F=RD.F;
+ return `<div class="panel sec"><div class="calc">
+  <label class="lbl">Search<input class="field" id="rdQ" placeholder="Title, agency, notice #" value="${h(F.q)}"></label>
+  <label class="lbl">Set-aside<select class="field" id="rdSa">${rdOpts(Object.keys(sa).sort().map(v=>[v,v+" ("+sa[v]+")"]),"All set-asides",F.sa)}</select></label>
+  <label class="lbl">State / country<select class="field" id="rdSt">${rdOpts(Object.keys(st).sort().map(v=>[v,v+" ("+st[v]+")"]),"All locations",F.st)}</select></label>
+  <label class="lbl">NAICS<select class="field" id="rdNc">${rdOpts(Object.keys(nc).sort().map(v=>[v,v+" "+(RD.naics[v]||"")+" ("+nc[v]+")"]),"All NAICS",F.nc)}</select></label>
+  <label class="lbl">Sort<select class="field" id="rdSo">${[["due","Response due (soonest)"],["new","Newest posted"],["agency","Agency A to Z"]].map(([v,t])=>`<option value="${v}"${v===F.so?" selected":""}>${t}</option>`).join("")}</select></label></div>
+  <div class="filters" id="rdChips">${rdChips()}</div></div>`;}
+function rdChips(){const F=RD.F;return RD_TYPES.map(([v,t])=>`<button class="chipbtn" data-rdtype="${h(v)}" aria-pressed="${F.type===v}">${t}</button>`).join("")+`<span style="flex-basis:100%;height:0"></span>`+RD_LANES.map(([v,t])=>`<button class="chipbtn" data-rdlane="${v}" aria-pressed="${F.lanes.includes(v)}">${t}</button>`).join("");}
+function rdCard(o){const d=daysUntil(o.due),s=rdSt()[o.id]||{},u=rdUrg(d);const dl=d===null?"":d<0?"Past due":d===0?"Due today":d+" day"+(d===1?"":"s")+" left";
+ return `<div class="vcard" style="border-top:0;border-left:4px solid var(--${u||"line"});${s.d?"opacity:.55":""}">
+  <div class="vmeta"><span class="pill">${h(o.type)}</span>${rdSB(o)?`<span class="pill brass">${h(o.setAside)}</span>`:""}${dl?`<span class="pill ${u}">${dl}</span>`:""}</div>
+  <h3 style="font-family:var(--f-body);text-transform:none;letter-spacing:0;font-size:1.02rem;line-height:1.3">${h(o.title)}</h3>
+  <p class="m">${h(o.agency)}</p>${o.summary?`<p class="small" style="overflow-wrap:anywhere">${h(o.summary)}</p>`:""}
+  <dl class="kv small"><dt>NAICS</dt><dd>${h(o.naics)} ${h(RD.naics[o.naics]||"")}</dd>${o.place?`<dt>Place</dt><dd>${h(o.place)}</dd>`:""}${o.solNum?`<dt>Notice #</dt><dd>${h(o.solNum)}</dd>`:""}${o.office?`<dt>Office</dt><dd>${h(o.office)}</dd>`:""}<dt>Due</dt><dd>${h(fmtD(o.due))} · posted ${h(fmtD(o.posted))}</dd></dl>
+  <div class="callout" style="padding:6px 10px;font-size:.84rem"><b>Next:</b> ${h(rdNext(o))}</div>
+  <div class="btn-row"><button class="btn ${s.i?"primary":""}" data-rdact="int" data-rdid="${o.id}">${s.i?"✓ Interested":"Interested"}</button><a class="btn" href="https://sam.gov/opp/${o.id}/view" target="_blank" rel="noopener">Open on SAM.gov</a><button class="btn ghost" data-rdact="dis" data-rdid="${o.id}">${s.d?"Restore":"Dismiss"}</button></div></div>`;}
+function rdFeedHTML(){if(!RD.feed.length)return `<div class="panel"><p class="small muted">${RD.status==="loading"?"Loading the opportunity feed…":"No opportunities loaded yet. Claude refreshes this feed weekly, or paste a feed export below."}</p></div>`;
+ const list=rdList();if(!list.length)return `<div class="panel"><p class="small muted">Nothing matches these filters.</p></div>`;
+ let out="",last="";list.slice(0,RD.limit).forEach(o=>{const b=RD.F.so==="due"?rdBucket(daysUntil(o.due)):"";if(b&&b!==last){out+=`<div class="eyebrow" style="margin-top:6px">${b}</div>`;last=b;}out+=rdCard(o);});return out;}
+function rdPipeHTML(){const st=rdSt();const rows=RD.feed.filter(o=>(st[o.id]||{}).i).sort((a,b)=>(a.due||"9").localeCompare(b.due||"9"));
+ return `<div class="tbl-wrap"><table><thead><tr><th>Due</th><th>Opportunity</th><th>Agency</th><th>Type</th><th></th></tr></thead><tbody>${rows.length?rows.map(o=>`<tr><td class="num">${h(fmtD(o.due))}</td><td><a href="https://sam.gov/opp/${o.id}/view" target="_blank" rel="noopener">${h(o.title)}</a></td><td class="small muted">${h(o.agency)}</td><td><span class="pill">${h(o.type)}</span></td><td><button class="del" data-rdact="int" data-rdid="${o.id}">Remove</button></td></tr>`).join(""):`<tr><td colspan="5" class="muted small">Mark opportunities Interested. Each one is also added to the bid tracker on the <a href="#govcon">Veteran GovCon</a> tab.</td></tr>`}</tbody></table></div>`;}
+function rdShowing(){const n=rdList().length;return RD.feed.length?`Showing ${Math.min(RD.limit,n)} of ${n}`:"";}
+VIEWS.radar=()=>`
+ <div class="sec"><div class="eyebrow">Federal opportunity feed</div><h2>GovCon Radar</h2><p class="lede">Every open federal notice in your feed: filter by set-aside, NAICS, place and urgency, mark the ones worth chasing, and they flow into your bid tracker. ${RD.meta?`Last refreshed <b>${h(new Date(RD.meta.at).toLocaleString(undefined,{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}))}</b> · ${RD.meta.count} notices.`:""}</p></div>
+ <div id="rdStats">${rdStats()}</div>
+ ${rdControls()}
+ <div class="sec"><div class="sec-head"><h3>Interested</h3><a class="small" href="#govcon">Bid tracker →</a></div><div id="rdPipe">${rdPipeHTML()}</div></div>
+ <div class="sec"><div class="sec-head"><h3>Feed</h3><span class="small muted" id="rdShowing">${rdShowing()}</span></div><div class="sec" id="rdFeed" style="gap:10px">${rdFeedHTML()}</div>
+ <div class="btn-row" style="justify-content:center"><button class="btn" id="rdMore" ${rdList().length>RD.limit?"":"hidden"}>Show 50 more</button></div></div>
+ <details class="panel"><summary><b>Refresh the feed</b> <span class="small muted">(paste an export)</span></summary><div class="sec" style="margin-top:10px"><p class="small muted">Claude refreshes this weekly from your Mindy feed. To load one yourself, paste the feed export here.</p><textarea class="field" id="rdPaste" placeholder="Paste a Radar feed export"></textarea><div class="btn-row"><button class="btn primary" id="rdLoad">Load feed</button></div></div></details>
+ <p class="small muted">Notices are public SAM.gov records. Confirm details, amendments and deadlines on SAM.gov before acting.</p>`;
+function rdRefresh(){if(location.hash!=="#radar")return;const set=(id,v)=>{const el=document.getElementById(id);if(el)el.innerHTML=v;};
+ set("rdStats",rdStats());set("rdPipe",rdPipeHTML());set("rdFeed",rdFeedHTML());set("rdChips",rdChips());const sh=document.getElementById("rdShowing");if(sh)sh.textContent=rdShowing();const m=document.getElementById("rdMore");if(m)m.hidden=rdList().length<=RD.limit;}
+function rdApply(rows,meta){RD.feed=rows.map(rdObj);RD.meta=meta;RD.naics=(meta&&meta.naics)||{};RD.status="ready";}
+function rdBidType(t){return /Sources Sought/.test(t)?"Sources Sought":/Solicitation|Presolicitation/.test(t)?"Solicitation":"RFI";}
+function rdToggleInt(id){const st=rdSt(),s=Object.assign({},st[id]||{});s.i=!s.i;st[id]=s;const o=RD.feed.find(x=>x.id===id);
+ if(s.i&&o&&!S.bids.some(b=>b.title===o.title)){S.bids.push({title:o.title,agency:(o.agency||"").split("•")[0].trim(),naics:o.naics||"",type:rdBidType(o.type),value:0,due:o.due||"",decision:"Evaluate"});toast("Added to your bid tracker");}
+ else if(!s.i)toast("Removed from Interested (bid tracker row kept)");save();rdRefresh();}
+async function rdStore(p){const rows=p.rows,size=100,n=Math.ceil(rows.length/size);const meta={at:p.at||Date.now(),count:rows.length,chunks:n,source:p.source||"Import",naics:p.naics||{}};
+ rdApply(rows,meta);softRender();if(!RD.db){toast("Feed loaded for this visit only (sync not available)");return;}
+ try{const old=RD.oldChunks||0;for(let i=0;i<n;i++)await RD.db.doc("radar_feed/c"+i).set({rows:rows.slice(i*size,(i+1)*size)});for(let i=n;i<old;i++)await RD.db.doc("radar_feed/c"+i).delete().catch(()=>{});await RD.db.doc("radar_meta/feed").set(meta);RD.oldChunks=n;toast("Feed saved: "+rows.length+" notices");}catch(e){toast("Loaded, but couldn't save the feed to your account");}}
+function rdValid(p){return p&&Array.isArray(p.rows)&&p.rows.length<5000&&p.rows.every(r=>Array.isArray(r)&&r.length>=12);}
+async function rdLoadDb(){RD.db=await cuse("db");if(!RD.db){RD.status="empty";if(location.hash==="#radar")softRender();return;}
+ const t=setTimeout(()=>{if(RD.status==="loading"){RD.status="empty";if(location.hash==="#radar")softRender();}},10000);
+ try{const m=await RD.db.doc("radar_meta/feed").get();if(m.exists){const meta=m.data();RD.oldChunks=meta.chunks||0;const snaps=await Promise.all(Array.from({length:meta.chunks||0},(_,i)=>RD.db.doc("radar_feed/c"+i).get()));let rows=[];snaps.forEach(s=>{if(s.exists)rows=rows.concat(s.data().rows||[]);});rdApply(rows,meta);}else RD.status="empty";}
+ catch(e){RD.status="empty";}clearTimeout(t);if(location.hash==="#radar")softRender();}
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+ if(d.rdtype){RD.F.type=d.rdtype;RD.limit=50;rdRefresh();return;}
+ if(d.rdlane){const L=RD.F.lanes,i=L.indexOf(d.rdlane);if(i>=0)L.splice(i,1);else L.push(d.rdlane);RD.limit=50;rdRefresh();return;}
+ if(d.rdact==="int"){rdToggleInt(d.rdid);return;}
+ if(d.rdact==="dis"){const st=rdSt(),s=Object.assign({},st[d.rdid]||{});s.d=!s.d;st[d.rdid]=s;save();rdRefresh();return;}
+ if(b.id==="rdMore"){RD.limit+=50;rdRefresh();return;}
+ if(b.id==="rdLoad"){const ta=document.getElementById("rdPaste");try{const p=JSON.parse(ta.value);if(!rdValid(p))throw 0;ta.value="";rdStore(p);}catch(x){toast("That text isn't a Radar feed export");}return;}});
+document.addEventListener("change",e=>{const t=e.target,k={rdSa:"sa",rdSt:"st",rdNc:"nc",rdSo:"so"}[t.id];if(k){RD.F[k]=t.value;RD.limit=50;rdRefresh();}});
+document.addEventListener("input",e=>{if(e.target.id==="rdQ"){RD.F.q=e.target.value;RD.limit=50;rdRefresh();}});
+TABS.splice(TABS.findIndex(t=>t[0]==="govcon")+1,0,["radar","GovCon Radar"]);
+const _gov3=VIEWS.govcon;
+VIEWS.govcon=()=>`<div class="callout navy"><b>GovCon Radar:</b> ${RD.feed.length?RD.feed.length+" open federal notices in your feed.":"your live opportunity feed."} <a href="#radar">Open the Radar →</a></div>`+_gov3();
+rdLoadDb().catch(()=>{});
+
+
+/* =========================================================
    ROUND 8: SCALE & CAPITAL, PROGRAMS MAX, ELITE PLAYBOOKS, 100 INDUSTRIES
    ========================================================= */
 function EXTRA_DEFAULTS7(){return{
