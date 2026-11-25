@@ -382,3 +382,14 @@ Added 2026-11-23. Reports to Derek; member of the Automation & AI and Growth & M
 member's GBots examples (buyer rep in zipForm → signatures → SkySlope; daily content into Skool; personal replies to
 new followers; a talk turned into a shopping list). See `wiki/ai-team/tech-stack.md`. Nothing is sent, signed or
 posted without Steven's click. Vanessa tool: `tech_stack`.
+
+## Offer Comparison — upload and compare (Marguerite, with Bianca and Alexandra)
+
+Updated 2026-11-25. Broker Command Center → Offer Comparison (the old Offer Comparison page and the Offer Analyzer are
+now one page). Offers come in as PDF (text or scanned), photos, Word .docx, email .eml, .txt, or text pasted from an
+email or portal message, by upload, drag-and-drop or paste; Claude reads each into its own column. Side by side: net to
+seller, strength score, price, financing, proof, deposit, contingencies, appraisal gap, credits, buyer-broker
+compensation asked, close, rent-back, COP, escalation, expiration and red flags. A comparison can start with no listing
+on file (address, list price, commission). Seller outputs: a print-ready comparison file (print or save as PDF), a Gmail
+draft to the seller, or copied text. Every extracted number is checked against the signed offer before advising. Vanessa
+tool: `offer_comparison`.
