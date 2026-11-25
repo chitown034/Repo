@@ -104,7 +104,34 @@ html.ax .ax-foot .wc-zone { justify-content: space-between; }
   #axHero { padding-top: 18px; }
 }
 
+/* ---- Dashboards tab: an App-Library-style launcher built from the deck's own Dashboards menu ---- */
+#axDashPage { display: none; font-family: var(--ax-font); }
+html.ax-dash #axDashPage { display: block; }
+html.ax-dash #a11yMain > :not(#axHero):not(#axDashPage) { display: none !important; }
+.ax-dfilter { display: flex; align-items: center; gap: 8px; max-width: 420px; margin: 14px 0 6px; padding: 8px 12px; border-radius: 10px; background: color-mix(in srgb, var(--text) 7%, transparent); color: var(--text-faint); }
+.ax-dfilter svg { width: 16px; height: 16px; flex: none; }
+.ax-dfilter input { border: 0 !important; background: transparent !important; padding: 0 !important; font: 400 15px var(--ax-font) !important; color: var(--text) !important; box-shadow: none !important; outline: none; width: 100%; }
+.ax-dgroup { margin-top: 26px; }
+.ax-dgroup h2 { font: 700 20px/1.2 var(--ax-font); letter-spacing: -0.012em; margin: 0 0 12px; color: var(--text); display: flex; align-items: baseline; gap: 8px; }
+.ax-dgroup h2 span { font-size: 13px; font-weight: 500; color: var(--text-faint); letter-spacing: 0; }
+.ax-dgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.ax-dcard { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--ax-line);
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 20px -14px rgba(0,0,0,.22); color: var(--text); text-decoration: none; min-width: 0;
+  transition: transform .3s var(--ax-ease), box-shadow .3s var(--ax-ease); }
+.ax-dcard:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,.06), 0 16px 30px -16px rgba(0,0,0,.3); }
+.ax-dcard:active { transform: scale(.98); transition-duration: .1s; }
+.ax-dicon { width: 44px; height: 44px; flex: none; border-radius: 11px; display: grid; place-items: center; color: #fff; font: 700 19px var(--ax-font); letter-spacing: -0.02em;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--ax-hue) 78%, #fff), var(--ax-hue)); box-shadow: inset 0 0 0 .5px rgba(255,255,255,.35), 0 2px 6px -2px rgba(0,0,0,.3); }
+.ax-dtext { min-width: 0; flex: 1; }
+.ax-dname { font-size: 15px; font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ax-dsub { display: block; font-size: 12.5px; color: var(--text-dim); line-height: 1.3; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ax-dgo { color: var(--text-faint); flex: none; font-size: 15px; }
+.ax-dnone { color: var(--text-faint); font-size: 15px; margin-top: 24px; }
+html.ax .ax-hiddenmenu { display: none !important; }
+@media (max-width: 899.98px) { .ax-dgrid { grid-template-columns: 1fr; gap: 8px; } .ax-dcard { padding: 10px 12px; } }
+
 @media (prefers-reduced-motion: reduce) {
+  .ax-dcard { transition: none !important; }
   html.ax #axSide, #axScrim, #axBarTitle, .ax-sec > summary::after { transition: none !important; }
 }
 @media (prefers-reduced-transparency: reduce) {
@@ -118,7 +145,8 @@ html.ax .ax-foot .wc-zone { justify-content: space-between; }
 (function () {
   var GROUPS = [["Run the day", ["daily", "showings", "realestate"]], ["Money & markets", ["markets", "wealth", "rewards"]],
     ["Team & tools", ["aiteam", "toolkit", "orchestration"]], ["Growth & strategy", ["career", "nextmoves", "pedefense", "eliteaffluent"]], ["Life", ["health", "travel"]]];
-  var TABBAR = [["daily", "Today"], ["realestate", "Lending"], ["markets", "Markets"], ["aiteam", "Team"]];
+  var TABBAR = [["daily", "Today"], ["realestate", "Lending"], ["markets", "Markets"], ["dashboards", "Dashboards"]];
+  var DASH = "dashboards", dashMode = false, HUES = ["#0A84FF", "#30B0C7", "#34C759", "#FF9F0A", "#FF375F", "#BF5AF2", "#5E5CE6", "#AC8E68", "#64D2FF", "#FF6961"];
   var P = {
     daily: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     markets: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',
@@ -135,6 +163,7 @@ html.ax .ax-foot .wc-zone { justify-content: space-between; }
     travel: '<path d="M2 13l20-8-8 16-2-7z"/>',
     toolkit: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/>',
     orchestration: '<path d="M4 12a8 8 0 0 1 14-5.3M20 4v4h-4M20 12a8 8 0 0 1-14 5.3M4 20v-4h4"/>',
+    dashboards: '<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/>',
     _more: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
     _search: '<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>',
     _dot: '<circle cx="12" cy="12" r="4"/>'
@@ -149,10 +178,18 @@ html.ax .ax-foot .wc-zone { justify-content: space-between; }
   function groupOf(id) { for (var i = 0; i < GROUPS.length; i++) if (GROUPS[i][1].indexOf(id) >= 0) return GROUPS[i][0]; return "More"; }
   function isPhone() { return window.matchMedia("(max-width: 899.98px)").matches; }
 
+  function setDash(on) {
+    dashMode = !!on;
+    document.documentElement.classList.toggle("ax-dash", dashMode);
+    try { localStorage.setItem("ax.dashMode", dashMode ? "1" : "0"); } catch (e) {}
+  }
   function go(id) {
+    if (id === DASH) { setDash(true); sync(); closeSheet(false); try { window.scrollTo({ top: 0, behavior: "instant" }); } catch (e) { window.scrollTo(0, 0); } var f = $("axDFilter"); if (f && !isPhone()) try { f.focus({ preventScroll: true }); } catch (e) {} return; }
     var t = document.querySelector('#pageTabs .page-tab[data-tab="' + id + '"]');
     if (!t) return;
+    var was = dashMode; setDash(false);
     t.click();
+    if (was) sync();
     closeSheet(false);
     try { window.scrollTo({ top: 0, behavior: "instant" }); } catch (e) { window.scrollTo(0, 0); }
   }
@@ -169,22 +206,57 @@ html.ax .ax-foot .wc-zone { justify-content: space-between; }
         html += '<button type="button" class="ax-item" data-ax="' + esc(id) + '">' + icon(id) + "<span>" + esc(byId[id].label) + '</span><span class="ax-n" aria-label="' + count(id) + ' panels">' + count(id) + "</span></button>";
       });
     });
-    $("axNav").innerHTML = html;
+    var nd = dashLinks().length;
+    $("axNav").innerHTML = '<div class="ax-group" role="presentation">Launch</div><button type="button" class="ax-item" data-ax="dashboards">' + icon(DASH) + '<span>Dashboards</span><span class="ax-n" aria-label="' + nd + ' dashboards">' + nd + "</span></button>" + html;
+  }
+
+  /* The deck's own Dashboards menu (#dashMenu) stays the single list of links: add a link there and it shows up here. */
+  function dashLinks() {
+    var m = $("dashMenu"), out = [], grp = "Dashboards";
+    if (!m) return out;
+    Array.prototype.forEach.call(m.children, function (el) {
+      if (el.classList.contains("pm-group")) { grp = (el.textContent || "").trim() || grp; return; }
+      if (el.tagName === "A" && el.href) {
+        var raw = (el.childNodes[0] && el.childNodes[0].nodeType === 3 ? el.childNodes[0].nodeValue : el.textContent || "").replace(/[\u2197]/g, "").trim();
+        var parts = raw.split(/\s+[\u2014\u2013-]\s+/), name = parts.shift().replace(/^\u21b3\s*/, "").trim(), sub = parts.join(" \u2014 ");
+        var host = ""; try { host = new URL(el.href).hostname.replace(/^www\./, ""); } catch (e) {}
+        if (!sub) sub = /claude\.ai$/.test(host) ? "Dashboard" : host;
+        out.push({ group: grp, name: name, sub: sub, href: el.href });
+      }
+    });
+    return out;
+  }
+  function hue(name) { var h = 0; for (var i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0; return HUES[h % HUES.length]; }
+  function initials(name) { var w = name.replace(/[^A-Za-z0-9 ]/g, " ").split(/\s+/).filter(Boolean); return ((w[0] || "?")[0] + (w[1] ? w[1][0] : "")).toUpperCase(); }
+  function renderDash(q) {
+    var box = $("axDList"); if (!box) return;
+    q = (q || "").toLowerCase().trim();
+    var items = dashLinks().filter(function (d) { return !q || (d.name + " " + d.sub + " " + d.group).toLowerCase().indexOf(q) >= 0; });
+    var groups = [], by = {};
+    items.forEach(function (d) { if (!by[d.group]) { by[d.group] = []; groups.push(d.group); } by[d.group].push(d); });
+    box.innerHTML = groups.map(function (g) {
+      return '<section class="ax-dgroup"><h2>' + esc(g) + "<span>" + by[g].length + '</span></h2><div class="ax-dgrid">' + by[g].map(function (d) {
+        return '<a class="ax-dcard" href="' + esc(d.href) + '" target="_blank" rel="noopener"><span class="ax-dicon" style="--ax-hue:' + hue(d.name) + '" aria-hidden="true">' + esc(initials(d.name)) +
+          '</span><span class="ax-dtext"><span class="ax-dname">' + esc(d.name) + '</span><span class="ax-dsub">' + esc(d.sub) + '</span></span><span class="ax-dgo" aria-hidden="true">\u2197</span></a>';
+      }).join("") + "</div></section>";
+    }).join("") || '<p class="ax-dnone">No dashboard matches \u201c' + esc(q) + '\u201d.</p>';
   }
 
   function sync() {
     var id = current(), p = pages().filter(function (x) { return x.id === id; })[0];
+    if (dashMode) { var nd = dashLinks().length; id = DASH; p = { id: DASH, label: "Dashboards" }; }
     if (!p) return;
     document.querySelectorAll("[data-ax]").forEach(function (b) { if (b.getAttribute("data-ax") === id) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
     var inBar = TABBAR.some(function (t) { return t[0] === id; });
     var more = $("axMoreTab"); if (more) { if (!inBar) more.setAttribute("aria-current", "page"); else more.removeAttribute("aria-current"); }
     $("axTitle").textContent = p.label;
-    $("axEyebrow").textContent = groupOf(id);
-    var n = count(id);
-    $("axSub").textContent = n + " panel" + (n === 1 ? "" : "s") + " on this page";
+    $("axEyebrow").textContent = dashMode ? "Launch" : groupOf(id);
+    var n = dashMode ? nd : count(id);
+    $("axSub").textContent = dashMode ? n + " dashboards and tools, one tap away \u2014 each opens in its own tab" : n + " panel" + (n === 1 ? "" : "s") + " on this page";
     $("axBarTitle").textContent = p.label;
     try { document.title = p.label + " — Command Deck"; } catch (e) {}
     var qa = $("qaStart"); if (qa) qa.style.display = id === "daily" ? "" : "none";
+    if (dashMode) { var tt = $("axDFilter"); renderDash(tt ? tt.value : ""); }
   }
 
   var lastFocus = null;
@@ -213,7 +285,7 @@ html.ax .ax-foot .wc-zone { justify-content: space-between; }
     side.id = "axSide"; side.setAttribute("aria-label", "Command Deck navigation");
     side.innerHTML = '<div class="ax-side-head"><span class="ax-app">Command Deck</span><span class="ax-date" id="axDate"></span><button type="button" class="ax-done" id="axDone">Done</button></div>' +
       '<button type="button" class="ax-searchbtn" id="axSearch">' + icon("_search").replace('aria-hidden="true"', 'aria-hidden="true" width="15" height="15"') + "<span>Search</span><kbd>⌘K</kbd></button>" +
-      '<div class="ax-scroll"><nav id="axNav" aria-label="Pages"></nav><details class="ax-sec" id="axDash"><summary>Other dashboards</summary></details>' +
+      '<div class="ax-scroll"><nav id="axNav" aria-label="Pages"></nav><div class="ax-hiddenmenu" id="axDash"></div>' +
       '<div class="ax-foot" id="axFoot"><div class="ax-status" id="axStatus"></div><details id="axClocks"><summary>World clocks</summary></details></div></div>';
     document.body.appendChild(side);
     var scrim = document.createElement("div"); scrim.id = "axScrim"; document.body.appendChild(scrim);
@@ -237,12 +309,18 @@ html.ax .ax-foot .wc-zone { justify-content: space-between; }
     var nw = document.querySelector(".deck-head .head-nw"); if (nw) foot.insertBefore(nw, status);
     ["pillSync", "pillChecklist", "pillShift", "headClock"].forEach(function (id) { var el = $(id); if (el) status.appendChild(el); });
     var wc = $("worldClockBar"); if (wc) $("axClocks").appendChild(wc);
-    var dm = $("dashMenu"); if (dm) $("axDash").appendChild(dm); else $("axDash").style.display = "none";
+    var dm = $("dashMenu"); if (dm) $("axDash").appendChild(dm);
+    var dp = document.createElement("section");
+    dp.id = "axDashPage"; dp.setAttribute("aria-label", "Dashboards");
+    dp.innerHTML = '<label class="ax-dfilter">' + icon("_search") + '<input type="search" id="axDFilter" placeholder="Find a dashboard" aria-label="Find a dashboard" autocomplete="off"></label><div id="axDList"></div>';
+    if (main) main.insertBefore(dp, hero.nextSibling);
     var ds = $("deckDateShort"); if (ds) $("axDate").textContent = ds.textContent;
 
     buildSide();
     root.classList.add("ax");
+    try { if (localStorage.getItem("ax.dashMode") === "1") setDash(true); } catch (e) {}
     sync();
+    $("axDFilter").addEventListener("input", function () { renderDash(this.value); });
 
     document.addEventListener("click", function (e) {
       var b = e.target.closest && e.target.closest("[data-ax]");
@@ -255,7 +333,10 @@ html.ax .ax-foot .wc-zone { justify-content: space-between; }
     window.addEventListener("resize", function () { if (!isPhone()) closeSheet(false); });
 
     /* Keep the shell in step however the page changes: its own buttons, [ ] keys, number keys, search jumps, #panel links. */
-    var mo = new MutationObserver(function () { sync(); });
+    var mo = new MutationObserver(function () { if (dashMode) setDash(false); sync(); });
+    document.addEventListener("click", function (e) {
+      if (dashMode && e.target.closest && e.target.closest('.panel-search-result, a[href^="#panel-"], [data-qa-go], .notif-item')) { setDash(false); sync(); }
+    }, true);
     tabs().forEach(function (t) { mo.observe(t, { attributes: true, attributeFilter: ["class"] }); });
     var ds2 = $("deckDateShort"); if (ds2) new MutationObserver(function () { $("axDate").textContent = ds2.textContent; }).observe(ds2, { childList: true, characterData: true, subtree: true });
 

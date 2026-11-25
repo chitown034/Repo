@@ -11,3 +11,12 @@ Live since deck version 1795629268-94df.
 - **Start here row:** a single scrolling row, shown on Daily Ops only.
 - **Accessibility:** respects reduced motion, reduced transparency and print.
 - **To remove:** delete the marked block and the old navigation returns unchanged.
+
+## Dashboards tab (2026-11-25, deck version 1795648803-750d)
+
+- **Where it lives:** the first sidebar item ("Launch → Dashboards") and a bottom-tab-bar slot on the phone. On the phone, Team moved into More.
+- **What it shows:** an App-Library-style grid built at load time from the deck's own `#dashMenu`, so adding a link there adds a tile here. At publish that was 61 links in 9 groups.
+- **Cards:** each has a coloured initials icon, a name, a subtitle and ↗. Every card opens in its own tab, and "Find a dashboard" filters the grid.
+- **Remembered between visits:** the `ax.dashMode` key in localStorage.
+- **Leaving it:** picking any page, the `[` `]` keys, a search result, a `#panel-` link or a Start-here button.
+- **Sidebar change:** the old "Other dashboards" disclosure in the sidebar was replaced by this tab.
