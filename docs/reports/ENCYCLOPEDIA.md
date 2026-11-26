@@ -1,6 +1,6 @@
 # Encyclopedia of the second brain
 
-Generated 2026-11-25 by `bin/brain encyclopedia` from `brain/index.json` — 792 pages, 936 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
+Generated 2026-11-26 by `bin/brain encyclopedia` from `brain/index.json` — 792 pages, 936 links. A living page: the weekly `bin/brain loop` rewrites it, so edit the source pages, never this file. Open a page with `bin/brain recall "<title>"`.
 
 Jump: [#](#other) · [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [H](#h) · [I](#i) · [J](#j) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [Q](#q) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v) · [W](#w) · [X](#x) · [Z](#z)
 
@@ -594,9 +594,9 @@ Not ingested yet (2026-10-23). This file is written by bin/brain ingest claude-e
 `memory/claude-chats.md` · Memory · newest date stamp 2026-10-23  
 See also: `integrations/MCP-SERVERS.md`, `integrations/pivo/README.md`, `wiki/real-estate-playbooks/showing-operations.md`
 
-### Claude Code sessions — ledger (generated 2026-11-24; newest first)
+### Claude Code sessions — ledger (generated 2026-11-25; newest first)
 Every Claude Code session on Steven's account: title, when, status.  
-`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-11-24  
+`docs/inventory/claude-sessions.md` · Loop & findings · newest date stamp 2026-11-25  
 Linked from: `docs/CAIO-DISRUPTION-BRIEF.md`, `memory.md`  
 See also: `docs/inventory/cloud-routines.md`
 
@@ -1215,7 +1215,7 @@ See also: `agent:architect`, `agent:automation-engineer`, `agent:build-error-res
 
 ### Desk seats — seven report seats added 2026-10-22 (Opus 5.5 since 2026-11-08)
 Seven report-tier seats that prepare lists and drafts for Steven, the ISA and the executives.  
-`wiki/ai-team/desk-seats.md` · AI team · newest date stamp 2026-11-23  
+`wiki/ai-team/desk-seats.md` · AI team · newest date stamp 2026-11-25  
 Sections: Refi Watch Analyst; Sphere Nurture Coordinator; Voicemail & Inbox Triage; Document Intake Clerk; Open House Captain; Travel Desk; Meeting Scribe; Booking Concierge  
 Linked from: `wiki/ai-team/org-chart.md`  
 See also: `wiki/ai-team/index.md`, `wiki/real-estate-playbooks/buyer-process.md`, `wiki/real-estate-playbooks/post-close-care.md`
@@ -1465,8 +1465,8 @@ Derek · [reconnect] reconnected; daily digest ran 2026-11-22 (0 new meetings)
 See also: `integrations/CONNECTIONS.md`
 
 ### Fieldy meetings — digest (written daily by the "Fieldy → brain" task)
-Last checked: 2026-11-24  
-`memory/fieldy-meetings.md` · Memory · newest date stamp 2026-11-24  
+Last checked: 2026-11-25  
+`memory/fieldy-meetings.md` · Memory · newest date stamp 2026-11-25  
 Sections: 2026-10-31  
 See also: `routines/fub-removal-2026-09-24.md`, `wiki/mortgage-programs/loan-task-agents.md`, `wiki/mortgage-programs/va-eligibility.md`
 
