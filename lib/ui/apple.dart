@@ -579,12 +579,11 @@ class AppleButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (icon != null) ...[Icon(icon, size: 19, color: fg), const SizedBox(width: 7)],
+        // Like iOS buttons, long labels shrink a little to fit instead of being cut off.
         Flexible(
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: context.t.labelLarge?.copyWith(color: fg),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(label, maxLines: 1, style: context.t.labelLarge?.copyWith(color: fg)),
           ),
         ),
       ],

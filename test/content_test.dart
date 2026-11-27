@@ -62,6 +62,31 @@ void main() {
     expect(File('assets/content/site.json').readAsStringSync(), isNot(contains('exprealty')));
   });
 
+  test('website text reads cleanly: no split sentences, stray letters or empty menus', () {
+    for (final entry in site.pages.entries) {
+      final blocks = entry.value.blocks;
+      for (final b in blocks.whereType<TextBlock>()) {
+        expect(b.text.trim(), isNot(matches(RegExp(r'^[A-Z]$'))), reason: '${entry.key}: stray letter');
+        expect(b.text.trim(), isNot(anyOf('Join our free', ', or', 'or')), reason: '${entry.key}: split sentence');
+      }
+      if (entry.key.contains('county')) {
+        var run = 0;
+        for (final b in blocks) {
+          run = b is HeadingBlock ? run + 1 : 0;
+          expect(run, lessThan(4), reason: '${entry.key}: empty category menu');
+        }
+      }
+    }
+  });
+
+  test('every county guide is listed, including Clark County and Las Vegas', () {
+    final resources = catalog.expand((g) => g.entries).map((e) => e.slug).toSet();
+    for (final slug in site.pages.keys.where((k) => k.endsWith('-county') || k.startsWith('clark-county'))) {
+      expect(resources, contains(slug), reason: slug);
+    }
+    expect(site['clark-county-las-vegas'], isNotNull);
+  });
+
   test('street address is not included anywhere in the app', () {
     // Everything that ships in the app or its store listing: code, bundled content and tools,
     // iOS and Android settings, and the README.

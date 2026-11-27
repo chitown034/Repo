@@ -71,8 +71,6 @@ class MoreScreen extends StatelessWidget {
               nav(CupertinoIcons.person_3_fill, Hue.teal, 'Board Members', 'app://board-members'),
               nav(CupertinoIcons.quote_bubble_fill, Hue.orange, 'Testimonials', 'app://testimonials'),
               nav(CupertinoIcons.checkmark_seal_fill, Hue.green, 'Verify Our 501(c)(3)', Org.candidUrl),
-              nav(CupertinoIcons.lock_shield_fill, Hue.gray, 'Privacy Policy', Org.privacyUrl),
-              nav(CupertinoIcons.doc_text_fill, Hue.gray, 'Terms of Use', Org.termsUrl),
             ],
           ),
         ),
@@ -133,13 +131,7 @@ class MoreScreen extends StatelessWidget {
                 'when you use Pay It Forward and are never uploaded.',
             children: [
               nav(CupertinoIcons.doc_text_fill, Hue.gray, 'Terms & Conditions', 'app://terms-and-conditions'),
-              const AppleRow(
-                icon: CupertinoIcons.lock_shield_fill,
-                iconColor: Hue.blue,
-                title: 'Privacy',
-                value: 'On Device',
-                accessory: RowAccessory.none,
-              ),
+              nav(CupertinoIcons.lock_shield_fill, Hue.blue, 'Privacy Policy', Org.privacyUrl),
             ],
           ),
         ),

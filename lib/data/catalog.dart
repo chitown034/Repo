@@ -158,6 +158,7 @@ const catalog = <CatalogGroup>[
     CatalogEntry('riverside-county', 'Riverside County', CupertinoIcons.building_2_fill),
     CatalogEntry('orange-county', 'Orange County', CupertinoIcons.building_2_fill),
     CatalogEntry('los-angeles-county', 'Los Angeles County', CupertinoIcons.building_2_fill),
+    CatalogEntry('clark-county-las-vegas', 'Clark County & Las Vegas', CupertinoIcons.building_2_fill),
   ]),
 ];
 

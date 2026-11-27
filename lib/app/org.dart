@@ -16,7 +16,6 @@ class Org {
   static const donateUrl = 'https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=AFAKYM9EPMML4&source=url';
   static const candidUrl = 'https://www.guidestar.org/profile/84-3348125';
   static const privacyUrl = 'https://chitown034.github.io/pay-it-forward/privacy.html';
-  static const termsUrl = 'https://www.veteransresourcenetwork.org/terms-and-conditions';
   static const facebookUrl = 'https://www.facebook.com/advethometownherohomeownersclub';
   static const instagramUrl = 'https://www.instagram.com/active_duty_heroes/';
   static const youtubeUrl = 'https://www.youtube.com/channel/UC7HCgbNzImAG2e4RLAAoRPA?view_as=subscriber';

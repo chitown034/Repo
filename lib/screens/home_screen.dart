@@ -101,7 +101,7 @@ class HomeScreen extends StatelessWidget {
                   CupertinoIcons.location_solid,
                   Hue.purple,
                   'County Resources',
-                  'San Diego, Riverside, Orange, LA',
+                  'SoCal counties and Las Vegas',
                   'san-diego-county',
                 ),
                 (
@@ -166,7 +166,10 @@ class HomeScreen extends StatelessWidget {
         SliverToBoxAdapter(child: FaqSection(faqs: faqs)),
         const SliverToBoxAdapter(child: _DonateCard()),
         const SliverToBoxAdapter(
-          child: SectionTitle('Southern California', subtitle: 'Veteran services offices and programs near you.'),
+          child: SectionTitle(
+            'County Guides',
+            subtitle: 'Veteran services and programs in Southern California and Las Vegas.',
+          ),
         ),
         SliverToBoxAdapter(
           child: InsetSection(
@@ -176,6 +179,7 @@ class HomeScreen extends StatelessWidget {
                 ('Riverside County', 'riverside-county'),
                 ('Orange County', 'orange-county'),
                 ('Los Angeles County', 'los-angeles-county'),
+                ('Clark County & Las Vegas', 'clark-county-las-vegas'),
               ])
                 AppleRow(
                   icon: CupertinoIcons.location_solid,
@@ -442,7 +446,7 @@ class _WebinarCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: AppleButton(
-                    label: 'Reserve My Seat',
+                    label: 'Reserve a Seat',
                     onPressed: () => openLink(context, 'app://va-home-buying-webinar'),
                   ),
                 ),
