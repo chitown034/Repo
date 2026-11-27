@@ -65,13 +65,13 @@ All tests should pass.
 
 ## 1. Set the version number
 
-Open `pubspec.yaml` and find the line `version: 2.0.0+20`.
+Open `pubspec.yaml` and find the line `version: 2.0.0+21`.
 
 - `2.0.0` is the version people see in the store.
-- `20` is the build number. **It must be higher than the build number of the version that is live
+- `21` is the build number. **It must be higher than the build number of the version that is live
   now** in both stores. Check it in App Store Connect (your app › TestFlight › builds) and in Play
-  Console (your app › Test and release › App bundle explorer). If either is 20 or higher, change
-  `+20` to one more than the highest, for example `+25`.
+  Console (your app › Test and release › App bundle explorer). If either is 21 or higher, change
+  `+21` to one more than the highest, for example `+25`.
 
 Every new upload needs a higher build number than the last one, even after a rejected upload.
 
@@ -182,15 +182,15 @@ flutter build appbundle --release
 This creates `build/app/outputs/bundle/release/app-release.aab`. The app targets Android 16
 (API level 36), which Google Play requires for updates.
 
-**Already have a ready-made unsigned bundle** (for example `hometown-hero-2.0.0-20-google-play-UNSIGNED.aab`)?
+**Already have a ready-made unsigned bundle** (for example `hometown-hero-2.0.0-21-google-play-UNSIGNED.aab`)?
 Instead of building, sign it with your upload key in one command (Java's `jarsigner` comes with
 Android Studio), using your keystore path and key alias:
 
 ```bash
-jarsigner -keystore /path/to/your-upload-keystore.jks -signedjar hometown-hero-2.0.0-20-google-play.aab hometown-hero-2.0.0-20-google-play-UNSIGNED.aab upload
+jarsigner -keystore /path/to/your-upload-keystore.jks -signedjar hometown-hero-2.0.0-21-google-play.aab hometown-hero-2.0.0-21-google-play-UNSIGNED.aab upload
 ```
 
-It asks for the keystore password. Upload the signed `hometown-hero-2.0.0-20-google-play.aab`.
+It asks for the keystore password. Upload the signed `hometown-hero-2.0.0-21-google-play.aab`.
 
 ### 3c. Test first (recommended)
 Play Console › your app › **Test and release** › **Testing** › **Internal testing** › **Create new

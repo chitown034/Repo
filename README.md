@@ -40,7 +40,7 @@ The native pieces are in `ios/Runner/AppDelegate.swift` (`MessageComposerPlugin`
 
 - Android `applicationId`: `com.active_duty.active_dutyMobile`
 - iOS bundle ID: `com.activeduty.activedutyMobile` (team `FSUTAP9MFF`)
-- Version: `2.0.0+20` in `pubspec.yaml`. The build number must be higher than the one live in
+- Version: `2.0.0+21` in `pubspec.yaml`. The build number must be higher than the one live in
   Google Play / App Store Connect; raise it if needed.
 
 ## Build
