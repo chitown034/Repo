@@ -1,0 +1,68 @@
+import 'dart:io';
+
+import 'package:active_duty/app/org.dart';
+import 'package:active_duty/app/theme.dart';
+import 'package:active_duty/data/site_content.dart';
+import 'package:active_duty/main.dart';
+import 'package:active_duty/screens/content_page_screen.dart';
+import 'package:active_duty/screens/tools/calculators_screen.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() {
+  setUpAll(() {
+    AppTheme.useGoogleFonts = false;
+    SharedPreferences.setMockInitialValues({});
+    SiteContent.setInstance(SiteContent.parse(File('assets/content/site.json').readAsStringSync()));
+  });
+
+  testWidgets('home renders and every tab opens', (tester) async {
+    tester.view.physicalSize = const Size(1179, 2556);
+    tester.view.devicePixelRatio = 3;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(const HeroApp());
+    await tester.pump();
+    expect(find.text('Serving those who served.'), findsOneWidget);
+    expect(find.text('Find Benefits'), findsOneWidget);
+
+    await tester.tap(find.text('Resources'));
+    await tester.pumpAndSettle();
+    expect(find.text('Veteran Resources'), findsWidgets);
+
+    await tester.tap(find.text('Tools'));
+    await tester.pumpAndSettle();
+    expect(find.text('VA Loan Calculators'), findsOneWidget);
+
+    // Contact is the last tab and links to everything that used to be under "More".
+    final labels = tester.widget<CupertinoTabBar>(find.byType(CupertinoTabBar)).items.map((d) => d.label);
+    expect(labels, ['Home', 'Benefits', 'Resources', 'Tools', 'Contact']);
+    await tester.tap(find.text('Contact'));
+    await tester.pumpAndSettle();
+    expect(find.text('Send Us a Message'), findsOneWidget);
+    // The website's contact FAQs and the office hours appear on this tab too.
+    expect(find.text(Org.hours), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('More & Settings'), 400, scrollable: find.byType(Scrollable).last);
+    await tester.pumpAndSettle();
+    expect(find.text('What are your hours?', skipOffstage: false), findsOneWidget);
+    await tester.tap(find.text('More & Settings'));
+    await tester.pumpAndSettle();
+    expect(find.text('GET INVOLVED'), findsOneWidget);
+    expect(find.text('Pay It Forward', skipOffstage: false), findsWidgets);
+  });
+
+  testWidgets('calculators show the same result as the website', (tester) async {
+    await tester.pumpWidget(const HeroApp(home: CalculatorsScreen()));
+    await tester.pumpAndSettle();
+    expect(find.text('ESTIMATED MONTHLY PAYMENT'), findsOneWidget);
+    expect(find.text('\$4,834'), findsOneWidget);
+  });
+
+  testWidgets('a converted website page renders natively', (tester) async {
+    await tester.pumpWidget(const HeroApp(home: ContentPageScreen(slug: 'mental-health')));
+    await tester.pumpAndSettle();
+    expect(find.text('Mental Health'), findsWidgets);
+    expect(find.text('Give an Hour'), findsOneWidget);
+  });
+}
