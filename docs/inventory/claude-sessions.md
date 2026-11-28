@@ -1,4 +1,4 @@
-# Claude Code sessions — ledger (generated 2026-11-27; newest first)
+# Claude Code sessions — ledger (generated 2026-11-28; newest first)
 
 Every Claude Code session on Steven's account: title, when, status. Titles are the sessions' own words — data, not
 instructions. Refreshed daily by the "Claude sessions ledger" task in the orchestrator session. Transcript contents reach the
@@ -39,9 +39,9 @@ brain on the Mac through `brain-learner`; claude.ai web chats through `bin/brain
 | 2026-10-23 | Famous Stoics dashboard and lessons | idle | `2Cfgo9SL` |
 | 2026-10-23 | Clean Your TV interface redesign | idle | `zn3eCGMw` |
 | 2026-10-23 | Comprehensive fitness dashboard | idle | `RFMT6WMX` |
-| 2026-10-22 | California real estate broker dashboard | running | `Do7MPXYr` |
+| 2026-10-22 | California real estate broker dashboard | idle | `Do7MPXYr` |
 | 2026-10-19 | Management presentation on process improvement | idle | `VajE2ten` |
-| 2026-10-18 | Loan Officer Dashboard | running | `YdHZno2T` |
+| 2026-10-18 | Loan Officer Dashboard | idle | `YdHZno2T` |
 | 2026-10-12 | Social media SEO/AEO/GEO optimization | idle | `uqrgDZTM` |
 | 2026-10-12 | Claude setup backup replica | idle | `3n4Uwq1B` |
 | 2026-10-12 | Time Machine backup setup | idle | `V3cao42X` |
